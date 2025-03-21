@@ -37,20 +37,10 @@
         public bool IsActive { get => isActive; set => isActive = value; }
         public DateTime CreatedAt { get => createdAt; set => createdAt = value; }
 
-        /*public User(int id, string name, string email, string password, bool isActive)
-        {
-            this.id = id;
-            this.name = name;
-            this.email = email;
-            this.password = password;
-            this.IsActive = isActive;
-        }
-        public int Id { get => id; set => id = value; }
-        public string Name { get => name; set => name = value; }
-        public string Email { get => email; set => email = value; }
-        public string Password { get => password; set => password = value; }
-        public bool IsActive { get => isActive; set => isActive = value; }
-        */
+       
+
+
+
         public User ReadUserDetails(string Email, string Password)
         {
             DBservices dbs = new DBservices();
