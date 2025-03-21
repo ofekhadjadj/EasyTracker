@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "ILBaX0f7HmgMkK2pkbIMbI5ug1c9s4vQSqC/Oj8VnO4=",
+  "Source": "SteamApp",
+  "BasePath": "_content/SteamApp",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
