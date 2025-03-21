@@ -1,5 +1,5 @@
 ﻿namespace SteamApp.BL
-{//Arye note test
+{
     public class Game
     {
         int appID;

@@ -60,9 +60,11 @@ public class DBservices
         }
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@FirstName", user.FirstName);
+        paramDic.Add("@LastName", user.LastName);
         paramDic.Add("@Email", user.Email);
         paramDic.Add("@Password", user.Password);
-        paramDic.Add("@Name", user.Name);
+       
 
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddUser", con, paramDic);          // create the command
 
@@ -88,7 +90,7 @@ public class DBservices
 
     }
 
-
+    
     //--------------------------------------------------------------------------------------------------
     // This method inserts a new user to the users table 
     //--------------------------------------------------------------------------------------------------
@@ -112,7 +114,7 @@ public class DBservices
         paramDic.Add("@userID", user.Id);
         paramDic.Add("@Email", user.Email);
         paramDic.Add("@Password", user.Password);
-        paramDic.Add("@Name", user.Name);
+        //paramDic.Add("@Name", user.Name);
 
         cmd = CreateCommandWithStoredProcedureGeneral("SP_UpdateUserDetails", con, paramDic);          // create the command
 
@@ -170,20 +172,20 @@ public class DBservices
 
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-            
+
             if (!dataReader.Read())
             {
                 // אם לא נמצא משתמש כזה, זרוק שגיאה שקשורה לפרטי התחברות שגויים
                 throw new Exception("Incorrect login details");
             }
 
-            
+
 
             User u = new User();
             u.Id = Convert.ToInt32(dataReader["Id"]);
             u.Email = dataReader["Email"].ToString();
             u.Password = dataReader["Password"].ToString();
-            u.Name = dataReader["Name"].ToString();
+            //u.Name = dataReader["Name"].ToString();
             u.IsActive = Convert.ToBoolean(dataReader["IsActive"]);
 
             return u;
@@ -293,7 +295,7 @@ public class DBservices
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@userID", id);
         paramDic.Add("@isActive", isActive);
-      
+
 
         cmd = CreateCommandWithStoredProcedureGeneral("SP_UpdateUserIsActive", con, paramDic);          // create the command
 
@@ -453,7 +455,7 @@ public class DBservices
 
 
     }
-    
+
     //---------------------------------------------------------------------------------
     // This method get the games by user ID  
     //---------------------------------------------------------------------------------

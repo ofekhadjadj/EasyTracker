@@ -665,3 +665,28 @@ Invoke-Sqlcmd -ServerInstance "ServerName\InstanceName" `
 SELECT TABLE_NAME 
 FROM INFORMATION_SCHEMA.TABLES
 WHERE TABLE_SCHEMA = 'igroup4_prod';
+
+select * from ET_Users
+
+EXEC sp_helptext 'sp_ET_AddUser ';
+
+
+
+
+
+ALTER PROCEDURE sp_ET_AddUser
+    @FirstName NVARCHAR(50),
+    @LastName NVARCHAR(50),
+    @Email NVARCHAR(100),
+    @Password NVARCHAR(100),
+    @Role NVARCHAR(50) = 'User'  -- ברירת מחדל
+AS
+BEGIN
+    -- מוודא שהשרת יחזיר את מספר השורות שהושפעו
+    SET NOCOUNT OFF;
+
+    INSERT INTO ET_Users (FirstName, LastName, Email, [Password], [Role])
+    VALUES (@FirstName, @LastName, @Email, @Password, @Role);
+END
+
+

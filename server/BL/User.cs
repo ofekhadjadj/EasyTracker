@@ -38,7 +38,11 @@
         public DateTime CreatedAt { get => createdAt; set => createdAt = value; }
 
        
-
+         public int InsertNewUser()
+         {
+            DBservices dbs = new DBservices();
+            return dbs.InsertNewUser(this);
+         }
 
 
         public User ReadUserDetails(string Email, string Password)
@@ -47,11 +51,7 @@
             return dbs.ReadUserDetails(Email, Password);
         }
         
-        public int InsertNewUser()
-        {
-            DBservices dbs = new DBservices();
-            return dbs.InsertNewUser(this);
-        }
+      
 
         public int UpdateUserDetails()
         {
@@ -72,11 +72,6 @@
         }
 
         
-        /*
-        public List<User> ReadAllUsers()
-        {
-            DBservices dbs = new DBservices();
-            return dbs.ReadAllUsers();
-        }*/
+     
     }
 }

@@ -663,7 +663,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "name": {
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
             "type": "string",
             "nullable": true
           },
@@ -675,8 +679,16 @@
             "type": "string",
             "nullable": true
           },
+          "role": {
+            "type": "string",
+            "nullable": true
+          },
           "isActive": {
             "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
