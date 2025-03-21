@@ -1,0 +1,761 @@
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\bin\Debug\net6.0\appsettings.json
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\bin\Debug\net6.0\SteamApp.exe
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\bin\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\ofekh\Desktop\matla 1 intr 2\SteamApp\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\bin\Debug\net6.0\appsettings.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\bin\Debug\net6.0\SteamApp.exe
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\bin\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\SteamApp\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\bin\Debug\net6.0\appsettings.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\bin\Debug\net6.0\SteamApp.exe
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\bin\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\aryem\OneDrive\שולחן העבודה\SteamApp\StaemAppServer\SteamApp\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\matala 2 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏matala 3 intr 2 arr\‏‏matala 3 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\אמצע הדרך בפרונט\אריה לאחר סיום שרת וטיפול במשיכה משחקים שאיאשפר לבחור\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\אמצע הדרך בפרונט\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\‏‏matala 3 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\סיום קלינט וגם שרת\סיום קלינט וגם שרת\‏‏‏‏matala 3 intr 2 NEW\‏‏‏‏matala 3 intr 2 NEW\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\ofekh\Desktop\‏‏matala 3 intr 2\סופי אחרי עבודה שיעור שירלי נשאר רק לתקן update\סופי לבצע תיקון אחרון UPDATE\סופי לבצע תיקון אחרון UPDATE\‏‏matala 3 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 3 סופי\‏‏matala 3 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\ofekh\Desktop\‏‏‏‏matala 4 intr 2\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\web.config
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\appsettings.Development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\appsettings.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\pub\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.staticwebassets.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.exe
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.deps.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.runtimeconfig.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.SqlClient.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.AssemblyReference.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfoInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.AssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.CoreCompileInputs.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\scopedcss\bundle\SteamApp.styles.css
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.build.endpoints.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.SteamApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.build.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SteamApp.props
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.csproj.Up2Date
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\refint\SteamApp.dll
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.pdb
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\SteamApp.genruntimeconfig.cache
+C:\Users\aryem\OneDrive\מסמכים\C#\C# server side\מטלה 4 סופי להגשה\מטלה 4 מקומי\‏‏‏‏matala 4 intr 2\server\obj\Debug\net6.0\ref\SteamApp.dll
