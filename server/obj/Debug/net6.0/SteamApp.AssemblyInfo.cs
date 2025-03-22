@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SteamApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+80cc14e3c2413bdec724c72f82a9835fbd9b4cd7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+23061aed2eec5fd343e22ba43e13fdee36b312ac")]
 [assembly: System.Reflection.AssemblyProductAttribute("SteamApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SteamApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

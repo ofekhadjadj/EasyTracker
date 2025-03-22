@@ -690,3 +690,310 @@ BEGIN
 END
 
 
+
+
+
+ALTER TABLE ET_Sessions
+ADD UserID INT NULL;
+
+
+
+
+-- סשן תכנות למודול התחברות
+EXEC sp_ET_AddSession
+    @ProjectID = 10,
+    @UserID = 2,
+    @StartDate = '2025-03-21 09:00:00',
+    @EndDate = '2025-03-21 11:00:00',
+    @DurationSeconds = 7200,
+    @HourlyRate = 150.00,
+    @Description = 'פיתוח התחברות משתמשים',
+    @LabelID = 1;
+
+-- סשן עיצוב דשבורד
+EXEC sp_ET_AddSession
+    @ProjectID = 21,
+    @UserID = 3,
+    @StartDate = '2025-03-22 10:00:00',
+    @EndDate = '2025-03-22 12:30:00',
+    @DurationSeconds = 9000,
+    @HourlyRate = 160.00,
+    @Description = 'עיצוב דשבורד ניהול לקוחות',
+    @LabelID = 2;
+
+-- סשן QA ובדיקות
+EXEC sp_ET_AddSession
+    @ProjectID = 13,
+    @UserID = 4,
+    @StartDate = '2025-03-23 14:00:00',
+    @EndDate = '2025-03-23 15:45:00',
+    @DurationSeconds = 6300,
+    @HourlyRate = 145.00,
+    @Description = 'בדיקות פונקציונליות ו-QA לאפליקציה',
+    @LabelID = 3;
+
+-- סשן כתיבת תיעוד
+EXEC sp_ET_AddSession
+    @ProjectID = 1,
+    @UserID = 5,
+    @StartDate = '2025-03-24 08:30:00',
+    @EndDate = '2025-03-24 10:00:00',
+    @DurationSeconds = 5400,
+    @HourlyRate = 140.00,
+    @Description = 'כתיבת מסמכי API ומדריכים',
+    @LabelID = NULL;
+
+-- סשן תכנות בוקר
+EXEC sp_ET_AddSession
+    @ProjectID = 16,
+    @UserID = 2,
+    @StartDate = '2025-03-25 07:00:00',
+    @EndDate = '2025-03-25 09:00:00',
+    @DurationSeconds = 7200,
+    @HourlyRate = 150.00,
+    @Description = 'באגים ותיקונים קטנים',
+    @LabelID = 2;
+
+
+
+	ALTER PROCEDURE sp_ET_AddUser  
+    @FirstName NVARCHAR(50),  
+    @LastName NVARCHAR(50),  
+    @Email NVARCHAR(100),  
+    @Password NVARCHAR(100)  
+AS  
+BEGIN  
+    SET NOCOUNT OFF;  
+  
+    INSERT INTO ET_Users (FirstName, LastName, Email, [Password], [Role])  
+    VALUES (@FirstName, @LastName, @Email, @Password, 'User');  
+END  
+
+
+
+EXEC sp_ET_AddUser 
+    @FirstName = N'דנה',
+    @LastName = N'כהן',
+    @Email = N'dana@example.com',
+    @Password = N'SuperSecure123';
+
+
+
+
+
+	drop PROCEDURE sp_ET_AuthenticateUser  
+    @Email NVARCHAR(100),  
+    @Password NVARCHAR(100)  
+AS  
+BEGIN  
+    SET NOCOUNT OFF;
+
+    IF EXISTS (
+        SELECT 1 
+        FROM ET_Users  
+        WHERE Email = @Email AND [Password] = @Password
+    )
+    BEGIN
+        SELECT 1 AS IsAuthenticated;  -- משתמש קיים
+    END
+    ELSE
+    BEGIN
+        SELECT 0 AS IsAuthenticated;  -- לא נמצא משתמש
+    END
+END
+
+
+EXEC sp_ET_AuthenticateUser 
+    @Email = 'dana@example.com', 
+    @Password = 'SupכerSecure123';
+
+
+
+alter PROCEDURE sp_ET_UpdateUser  
+    @UserID INT,  
+    @FirstName VARCHAR(50) = NULL,  
+    @LastName VARCHAR(50) = NULL,  
+    @Email VARCHAR(255) = NULL,  
+    @Password VARCHAR(255) = NULL,  
+    @Role NVARCHAR(10) = NULL,  
+    @isActive BIT = NULL  
+AS  
+BEGIN  
+    SET NOCOUNT ON;  
+  
+    UPDATE ET_Users  
+    SET   
+        FirstName = COALESCE(@FirstName, FirstName),  
+        LastName = COALESCE(@LastName, LastName),  
+        Email = COALESCE(@Email, Email),  
+        Password = COALESCE(@Password, Password),  
+        Role = COALESCE(@Role, Role),  
+        isActive = COALESCE(@isActive, isActive)  
+    WHERE UserID = @UserID;  
+END;  
+
+
+
+	CREATE PROCEDURE sp_ET_LoginUser
+    @Email NVARCHAR(100),
+    @Password NVARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT OFF;
+
+    SELECT 
+        UserID,
+        FirstName,
+        LastName,
+        Email,
+        [Role],
+        IsActive
+    FROM ET_Users
+    WHERE Email = @Email AND [Password] = @Password;
+END
+
+
+EXEC sp_ET_LoginUser 
+    @Email = 'dana@example.com',
+    @Password = 'SuperSecure123';
+
+
+
+
+	ALTER PROCEDURE sp_ET_LoginUser
+    @Email NVARCHAR(100),
+    @Password NVARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT OFF;
+
+    IF EXISTS (
+        SELECT 1 
+        FROM ET_Users
+        WHERE Email = @Email AND [Password] = @Password AND IsActive = 1
+    )
+    BEGIN
+        SELECT 
+            UserID,
+            FirstName,
+            LastName,
+            Email,
+            [Role],
+            IsActive
+        FROM ET_Users
+        WHERE Email = @Email AND [Password] = @Password AND IsActive = 1;
+    END
+    ELSE
+    BEGIN
+        SELECT 0 AS Result;
+    END
+END
+
+
+
+
+alter PROCEDURE sp_ET_LoginUser
+    @Email NVARCHAR(100),
+    @Password NVARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        UserID,
+        FirstName,
+        LastName,
+        Email,
+        [Role],
+        IsActive
+    FROM ET_Users
+    WHERE Email = @Email AND [Password] = @Password;
+END
+
+
+
+
+
+
+
+
+ALTER PROCEDURE sp_ET_UpdateUser  
+    @UserID INT,  
+    @Password VARCHAR(255), -- חובה לבדוק התאמה
+    @FirstName VARCHAR(50) = NULL,  
+    @LastName VARCHAR(50) = NULL,  
+    @Email VARCHAR(255) = NULL
+AS  
+BEGIN  
+    SET NOCOUNT OFF;  
+
+    -- נבדוק האם קיים משתמש עם הסיסמה וה-ID שנשלחו
+    IF EXISTS (
+        SELECT 1 
+        FROM ET_Users 
+        WHERE UserID = @UserID AND [Password] = @Password
+    )
+    BEGIN
+        -- עדכון פרטים רק אם הסיסמה תואמת
+        UPDATE ET_Users  
+        SET   
+            FirstName = COALESCE(@FirstName, FirstName),  
+            LastName = COALESCE(@LastName, LastName),  
+            Email = COALESCE(@Email, Email)
+        WHERE UserID = @UserID;
+    END
+    ELSE
+    BEGIN
+        -- אם אין התאמה – לא מתבצע עדכון, אפשר להחזיר שורה לצורך בדיקה
+        RAISERROR('Password does not match user record.', 16, 1);
+    END
+END;
+
+
+
+EXEC sp_ET_UpdateUser
+    @UserID = 13,
+    @Password = 'SuperSecure123',
+    @FirstName = 'דנה',
+    @LastName = 'כהן חדשה',
+    @Email = 'dana.new@example.com';
+
+
+
+
+
+	CREATE PROCEDURE sp_ET_ChangePassword  
+    @UserID INT,  
+    @OldPassword VARCHAR(255),  
+    @NewPassword VARCHAR(255)  
+AS  
+BEGIN  
+    SET NOCOUNT ON;
+
+    -- בדיקה אם המשתמש קיים והסיסמה הישנה תואמת
+    IF EXISTS (
+        SELECT 1 
+        FROM ET_Users 
+        WHERE UserID = @UserID AND [Password] = @OldPassword
+    )
+    BEGIN
+        -- עדכון הסיסמה החדשה
+        UPDATE ET_Users  
+        SET [Password] = @NewPassword  
+        WHERE UserID = @UserID;
+
+        SELECT 1 AS Success, 'Password changed successfully' AS Message;
+    END
+    ELSE
+    BEGIN
+        -- לא נמצאה התאמה
+        SELECT 0 AS Success, 'Incorrect current password' AS Message;
+    END
+END;
+
+
+
+EXEC sp_ET_ChangePassword
+    @UserID = 3,
+    @OldPassword = 'hashed_password_789',
+    @NewPassword = 'new5678';

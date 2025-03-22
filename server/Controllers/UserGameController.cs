@@ -10,71 +10,71 @@ namespace SteamApp.Controllers
     public class UserGameController : ControllerBase
     {
 
-        // POST api/<UserGameController>
-        [HttpPost("userID/{id}/gameID/{appID}")]
-        public int PostNewUserGameConnection( int id, int appID)
-        {  
-            UserGame UG = new UserGame();
-            return UG.Insert(id, appID);
-        }
+        //// POST api/<UserGameController>
+        //[HttpPost("userID/{id}/gameID/{appID}")]
+        //public int PostNewUserGameConnection( int id, int appID)
+        //{  
+        //    UserGame UG = new UserGame();
+        //    return UG.Insert(id, appID);
+        //}
 
-        // DELETE api/<UserGameController>/5
-        [HttpDelete("RemoveFromUserGameConnection")]
-        public int RemoveFromUserGameConnection(int id, int appID)
-        {
-            UserGame UG = new UserGame();
-           return UG.Remove(id, appID);
-        }
-        /*
-        // GET api/<FlightsController>/5
-        [HttpGet("email/{Email}/password/{Password}")]
-        public List<User> Get(string Email, string Password)
-        {
-            User u = new User();
-            return u.Read(Email, Password);
-            //return "value";
-        }*/
+        //// DELETE api/<UserGameController>/5
+        //[HttpDelete("RemoveFromUserGameConnection")]
+        //public int RemoveFromUserGameConnection(int id, int appID)
+        //{
+        //    UserGame UG = new UserGame();
+        //   return UG.Remove(id, appID);
+        //}
+        ///*
+        //// GET api/<FlightsController>/5
+        //[HttpGet("email/{Email}/password/{Password}")]
+        //public List<User> Get(string Email, string Password)
+        //{
+        //    User u = new User();
+        //    return u.Read(Email, Password);
+        //    //return "value";
+        //}*/
 
-        /*
-        // POST api/<UsersController>
-        [HttpPost("RemoveFromUserGameConnection")]
-        public int RemoveFromUserGameConnection([FromBody] UserGame UG)
-        {
-            return UG.Remove(UG.user, UG.game);
-        }*/
+        ///*
+        //// POST api/<UsersController>
+        //[HttpPost("RemoveFromUserGameConnection")]
+        //public int RemoveFromUserGameConnection([FromBody] UserGame UG)
+        //{
+        //    return UG.Remove(UG.user, UG.game);
+        //}*/
 
-        /*
-        // GET: api/<UserGameController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        ///*
+        //// GET: api/<UserGameController>
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
-        // GET api/<UserGameController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //// GET api/<UserGameController>/5
+        //[HttpGet("{id}")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
-        // POST api/<UserGameController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+        //// POST api/<UserGameController>
+        //[HttpPost]
+        //public void Post([FromBody] string value)
+        //{
+        //}
 
-        // PUT api/<UserGameController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //// PUT api/<UserGameController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
-        // DELETE api/<UserGameController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-        */
+        //// DELETE api/<UserGameController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
+        //*/
     }
 }
