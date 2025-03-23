@@ -1,26 +1,30 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\",
+  "WorkspaceRootPath": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|c:\\users\\ofekh\\documents\\github\\easytracker\\server\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|c:\\users\\aryem\\onedrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\github\\easytracker\\server\\bl\\session.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|solutionrelative:bl\\session.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|c:\\users\\aryem\\onedrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\github\\easytracker\\server\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|c:\\users\\ofekh\\documents\\github\\easytracker\\server\\dal\\dbservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|c:\\users\\aryem\\onedrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\github\\easytracker\\server\\bl\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|solutionrelative:bl\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|c:\\users\\aryem\\onedrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\github\\easytracker\\server\\dal\\dbservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|solutionrelative:dal\\dbservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|c:\\users\\ofekh\\documents\\github\\easytracker\\server\\bl\\changepasswordrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|solutionrelative:bl\\changepasswordrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|c:\\users\\ofekh\\documents\\github\\easytracker\\server\\bl\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|c:\\users\\aryem\\onedrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\github\\easytracker\\server\\bl\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|solutionrelative:bl\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|c:\\users\\ofekh\\documents\\github\\easytracker\\server\\bl\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|solutionrelative:bl\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|c:\\users\\aryem\\onedrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\github\\easytracker\\server\\bl\\changepasswordrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|SteamApp.csproj|solutionrelative:bl\\changepasswordrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,28 +34,28 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ChangePasswordRequest.cs",
-              "DocumentMoniker": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\BL\\ChangePasswordRequest.cs",
-              "RelativeDocumentMoniker": "BL\\ChangePasswordRequest.cs",
-              "ToolTip": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\BL\\ChangePasswordRequest.cs",
-              "RelativeToolTip": "BL\\ChangePasswordRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "Session.cs",
+              "DocumentMoniker": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\Session.cs",
+              "RelativeDocumentMoniker": "BL\\Session.cs",
+              "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\Session.cs",
+              "RelativeToolTip": "BL\\Session.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-22T21:28:51.165Z",
+              "WhenOpened": "2025-03-23T18:51:15.946Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "LoginRequest.cs",
-              "DocumentMoniker": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\BL\\LoginRequest.cs",
+              "DocumentMoniker": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\LoginRequest.cs",
               "RelativeDocumentMoniker": "BL\\LoginRequest.cs",
-              "ToolTip": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\BL\\LoginRequest.cs",
+              "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\LoginRequest.cs",
               "RelativeToolTip": "BL\\LoginRequest.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -60,39 +64,52 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "UsersController.cs",
-              "DocumentMoniker": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\Controllers\\UsersController.cs",
+              "DocumentMoniker": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\Controllers\\UsersController.cs",
               "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
-              "ToolTip": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\Controllers\\UsersController.cs",
+              "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\Controllers\\UsersController.cs",
               "RelativeToolTip": "Controllers\\UsersController.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAAiwDAAAAAXAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADAAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-12T08:25:31.29Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
+              "Title": "ChangePasswordRequest.cs",
+              "DocumentMoniker": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\ChangePasswordRequest.cs",
+              "RelativeDocumentMoniker": "BL\\ChangePasswordRequest.cs",
+              "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\ChangePasswordRequest.cs",
+              "RelativeToolTip": "BL\\ChangePasswordRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-22T21:28:51.165Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\BL\\User.cs",
+              "DocumentMoniker": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\User.cs",
               "RelativeDocumentMoniker": "BL\\User.cs",
-              "ToolTip": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\BL\\User.cs",
+              "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\User.cs",
               "RelativeToolTip": "BL\\User.cs",
-              "ViewState": "AgIAADYAAAAAAAAAAAAAAD8AAAAHAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-12T08:24:25.089Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "DBservices.cs",
-              "DocumentMoniker": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\DAL\\DBservices.cs",
+              "DocumentMoniker": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\DAL\\DBservices.cs",
               "RelativeDocumentMoniker": "DAL\\DBservices.cs",
-              "ToolTip": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\DAL\\DBservices.cs",
+              "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\DAL\\DBservices.cs",
               "RelativeToolTip": "DAL\\DBservices.cs",
-              "ViewState": "AgIAAOwAAAAAAAAAAIAwwPUAAAAXAAAAAAAAAA==",
+              "ViewState": "AgIAABMAAAAAAAAAAADgvygAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-11T19:57:17.659Z",
               "EditorCaption": ""
