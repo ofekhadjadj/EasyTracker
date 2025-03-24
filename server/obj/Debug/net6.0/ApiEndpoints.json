@@ -1,5 +1,31 @@
 [
   {
+    "ContainingType": "EasyTracker.Controllers.ProjectsController",
+    "Method": "PostNewProject",
+    "RelativePath": "api/Projects/addNewProject",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "project",
+        "Type": "EasyTracker.BL.Project",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "SteamApp.Controllers.UsersController",
     "Method": "PostNewUser",
     "RelativePath": "api/Users/addNewUser",

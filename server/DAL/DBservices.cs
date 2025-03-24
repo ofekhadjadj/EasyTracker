@@ -7,6 +7,7 @@ using System.Data;
 using System.Text;
 using SteamApp.BL;
 using System.Security.Cryptography;
+using EasyTracker.BL;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -271,6 +272,61 @@ finally
     }
 
 
+
+
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method inserts a new project to the users table 
+    //--------------------------------------------------------------------------------------------------
+    public int InsertNewProject(Project project)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ProjectName", project.Projectname);
+        paramDic.Add("@Description", project.Description);
+        paramDic.Add("@HourlyRate", project.Hourlyrate);
+        paramDic.Add("@Image", project.Image);
+        paramDic.Add("@ClientID", project.Clientid);
+        paramDic.Add("@CreatedByUserID", project.Createdbyuserid);
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddProject", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
 
 

@@ -997,3 +997,47 @@ EXEC sp_ET_ChangePassword
     @UserID = 3,
     @OldPassword = 'hashed_password_789',
     @NewPassword = 'new5678';
+
+
+
+
+	ALTER PROCEDURE sp_ET_AddProject  
+    @ProjectName VARCHAR(255),  
+    @Description TEXT = NULL,  
+    @HourlyRate DECIMAL(10,2) = NULL,  
+    @Image VARCHAR(255) = NULL,  
+    @ClientID INT = NULL,  
+    @CreatedByUserID INT  
+AS  
+BEGIN  
+    SET NOCOUNT OFF;  -- ?? שונה לפי הבקשה שלך  
+  
+    DECLARE @NewProjectID INT;  
+  
+    -- הוספת הפרויקט  
+    INSERT INTO ET_Projects (  
+        ProjectName,  
+        Description,  
+        HourlyRate,  
+        Image,  
+        ClientID,  
+        CreatedByUserID,  
+        isArchived  
+    )  
+    VALUES (  
+        @ProjectName,  
+        @Description,  
+        @HourlyRate,  
+        @Image,  
+        @ClientID,  
+        @CreatedByUserID,  
+        0  
+    );  
+  
+    -- קבלת מזהה הפרויקט החדש  
+    SET @NewProjectID = SCOPE_IDENTITY();  
+  
+    -- הוספת היוזר שיצר את הפרויקט כ-ProjectManager לטבלת ET_UserProjects  
+    INSERT INTO ET_UserProjects (UserID, ProjectID, Role)  
+    VALUES (@CreatedByUserID, @NewProjectID, 'ProjectManager');  
+END;
