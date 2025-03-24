@@ -1,5 +1,6 @@
 ﻿using SteamApp.BL;
 
+
 namespace EasyTracker.BL
 {
     public class Project
@@ -56,6 +57,23 @@ namespace EasyTracker.BL
             DBservices dbs = new DBservices();
             return dbs.InsertNewProject(this);
         }
+
+
+
+        public List<Project> GetAllProjectsByUserId(int id)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetAllProjectsByUserId(id);
+        }
+
+
+
+
+
+
+
+
+
 
 
     }

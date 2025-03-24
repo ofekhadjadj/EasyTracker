@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|c:\\users\\ofekh\\documents\\github\\easytracker\\server\\bl\\session.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|solutionrelative:bl\\session.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|c:\\users\\ofekh\\documents\\github\\easytracker\\server\\dal\\dbservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|solutionrelative:dal\\dbservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|c:\\users\\ofekh\\documents\\github\\easytracker\\server\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|c:\\users\\ofekh\\documents\\github\\easytracker\\server\\controllers\\projectscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|solutionrelative:controllers\\projectscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|c:\\users\\ofekh\\documents\\github\\easytracker\\server\\bl\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|solutionrelative:bl\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|c:\\users\\ofekh\\documents\\github\\easytracker\\server\\controllers\\gamescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|solutionrelative:controllers\\gamescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,32 +26,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 181,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Session.cs",
-              "DocumentMoniker": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\BL\\Session.cs",
-              "RelativeDocumentMoniker": "BL\\Session.cs",
-              "ToolTip": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\BL\\Session.cs",
-              "RelativeToolTip": "BL\\Session.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAAwA0AAAAVAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "GamesController.cs",
+              "DocumentMoniker": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\Controllers\\GamesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\GamesController.cs",
+              "ToolTip": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\Controllers\\GamesController.cs",
+              "RelativeToolTip": "Controllers\\GamesController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABkAAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-24T09:36:28.715Z",
+              "WhenOpened": "2025-03-24T19:25:32.976Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "UsersController.cs",
-              "DocumentMoniker": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\Controllers\\UsersController.cs",
-              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
-              "ToolTip": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "Controllers\\UsersController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAAAgAAAAAAAAAA==",
+              "Title": "ProjectsController.cs",
+              "DocumentMoniker": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\Controllers\\ProjectsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ProjectsController.cs",
+              "ToolTip": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\Controllers\\ProjectsController.cs",
+              "RelativeToolTip": "Controllers\\ProjectsController.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAQwBcAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-24T07:12:00.449Z",
+              "WhenOpened": "2025-03-24T19:25:18.909Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Project.cs",
+              "DocumentMoniker": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\BL\\Project.cs",
+              "RelativeDocumentMoniker": "BL\\Project.cs",
+              "ToolTip": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\BL\\Project.cs",
+              "RelativeToolTip": "BL\\Project.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAwwEQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-24T19:18:57.896Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DBservices.cs",
+              "DocumentMoniker": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\DAL\\DBservices.cs",
+              "RelativeDocumentMoniker": "DAL\\DBservices.cs",
+              "ToolTip": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\DAL\\DBservices.cs",
+              "RelativeToolTip": "DAL\\DBservices.cs",
+              "ViewState": "AgIAAGQBAAAAAAAAAAAAAHYBAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-24T14:47:48.981Z",
               "EditorCaption": ""
             }
           ]

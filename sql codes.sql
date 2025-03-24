@@ -1041,3 +1041,126 @@ BEGIN
     INSERT INTO ET_UserProjects (UserID, ProjectID, Role)  
     VALUES (@CreatedByUserID, @NewProjectID, 'ProjectManager');  
 END;
+
+
+
+
+
+ ALTER PROCEDURE sp_ET_ChangePassword    
+    @UserID INT,    
+    @OldPassword VARCHAR(255),    
+    @NewPassword VARCHAR(255)    
+AS    
+BEGIN    
+    SET NOCOUNT OFF;  
+  
+    -- בדיקה אם המשתמש קיים והסיסמה הישנה תואמת  
+    IF EXISTS (  
+        SELECT 1   
+        FROM ET_Users   
+        WHERE UserID = @UserID AND [Password] = @OldPassword  
+    )  
+    BEGIN  
+        -- עדכון הסיסמה החדשה  
+        UPDATE ET_Users    
+        SET [Password] = @NewPassword    
+        WHERE UserID = @UserID;  
+  
+    END  
+      
+    
+END;  
+
+
+
+
+
+EXEC sp_ET_ChangePassword
+    @UserID = 2,
+    @OldPassword = 'hashed_password_456',
+    @NewPassword = '123456';
+
+
+
+
+	EXEC sp_ET_AddUser N'John', N'Doe', N'john.doe@example.com', N'1234', N'Admin';
+EXEC sp_ET_AddUser N'Sarah', N'Connor', N'sarah.connor@example.com', N'1234', N'User';
+EXEC sp_ET_AddUser N'Michael', N'Smith', N'mike.smith@example.com', N'pass123', N'User';
+EXEC sp_ET_AddUser N'Emily', N'Jones', N'emily.j@example.com', N'secret', N'User';
+EXEC sp_ET_AddUser N'David', N'Brown', N'david.b@example.com', N'5678', N'User';
+
+
+
+EXEC sp_ET_AddClient N'TechNova Ltd', N'John Doe', N'contact@technova.com', N'050-1234567', N'03-7771234', 1;
+EXEC sp_ET_AddClient N'DataBridge Inc', N'Sarah Connor', N'support@databridge.com', N'050-2345678', N'03-8885678', 2;
+EXEC sp_ET_AddClient N'PixelWave', N'Michael Smith', N'info@pixelwave.com', N'050-3456789', N'03-7779876', 3;
+EXEC sp_ET_AddClient N'Cloudify', N'Emily Jones', N'hello@cloudify.io', N'050-4567890', N'03-6665432', 4;
+EXEC sp_ET_AddClient N'BizTrack', N'David Brown', N'david@biztrack.com', N'050-5678901', N'03-5556789', 5;
+
+
+
+
+
+EXEC sp_ET_AddProject  
+    @ProjectName = N'Website Redesign',  
+    @Description = N'Modernizing the company website for better UX and SEO',  
+    @HourlyRate = 150,  
+    @Image = 'images/website_redesign.png',  
+    @ClientID = 1,  
+    @CreatedByUserID = 1;
+
+EXEC sp_ET_AddProject  
+    @ProjectName = N'Mobile App Development',  
+    @Description = N'Cross-platform app for food delivery with real-time tracking',  
+    @HourlyRate = 180,  
+    @Image = 'images/food_app.png',  
+    @ClientID = 2,  
+    @CreatedByUserID = 2;
+
+EXEC sp_ET_AddProject  
+    @ProjectName = N'Employee Management System',  
+    @Description = N'Internal tool to manage employees, time tracking and tasks',  
+    @HourlyRate = 160,  
+    @Image = 'images/ems.png',  
+    @ClientID = 3,  
+    @CreatedByUserID = 3;
+
+EXEC sp_ET_AddProject  
+    @ProjectName = N'E-commerce Platform',  
+    @Description = N'Full-stack development for online store with payment gateway',  
+    @HourlyRate = 200,  
+    @Image = 'images/ecommerce.png',  
+    @ClientID = 4,  
+    @CreatedByUserID = 4;
+
+EXEC sp_ET_AddProject  
+    @ProjectName = N'Customer Survey System',  
+    @Description = N'Web-based tool to collect feedback and generate visual reports',  
+    @HourlyRate = 130,  
+    @Image = 'images/survey_tool.png',  
+    @ClientID = 5,  
+    @CreatedByUserID = 5;
+
+
+
+	EXEC sp_ET_AddUser N'John', N'Doe', N'john.doe@example.com', N'1234', N'Admin';
+EXEC sp_ET_AddUser N'Sarah', N'Connor', N'sarah.connor@example.com', N'1234', N'User';
+EXEC sp_ET_AddUser N'Michael', N'Smith', N'mike.smith@example.com', N'pass123', N'User';
+EXEC sp_ET_AddUser N'Emily', N'Jones', N'emily.j@example.com', N'secret', N'User';
+EXEC sp_ET_AddUser N'David', N'Brown', N'david.b@example.com', N'5678', N'User';
+
+
+sp_helptext 'sp_ET_AddUser';
+
+
+
+EXEC sp_ET_AddUser N'John', N'Doe', N'john.doe@example.com', N'pass123';
+EXEC sp_ET_AddUser N'Sarah', N'Connor', N'sarah.connor@example.com', N'secure123';
+EXEC sp_ET_AddUser N'Michael', N'Smith', N'michael.smith@example.com', N'mikepass';
+EXEC sp_ET_AddUser N'Emily', N'Jones', N'emily.j@example.com', N'password1';
+EXEC sp_ET_AddUser N'David', N'Brown', N'david.b@example.com', N'dbpass';
+EXEC sp_ET_AddUser N'Emma', N'Wilson', N'emma.w@example.com', N'123456';
+EXEC sp_ET_AddUser N'Chris', N'Evans', N'chris.evans@example.com', N'marvel!';
+EXEC sp_ET_AddUser N'Nina', N'Martinez', N'nina.m@example.com', N'letmein';
+EXEC sp_ET_AddUser N'Liam', N'Johnson', N'liam.j@example.com', N'987654';
+EXEC sp_ET_AddUser N'Sophia', N'Taylor', N'sophia.t@example.com', N'qwerty123';

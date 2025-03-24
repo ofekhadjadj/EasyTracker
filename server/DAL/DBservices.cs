@@ -333,6 +333,86 @@ finally
 
 
 
+    //--------------------------------------------------------------------------------------------------
+    // This method get user projects by ID
+    //--------------------------------------------------------------------------------------------------
+    public List<Project> GetAllProjectsByUserId(int id)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        List<Project> Projects = new List<Project>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", id);
+        
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetProjectsById", con, paramDic);
+
+        try
+        {
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+
+            //if (!dataReader.Read())
+            //{
+            //    // אם לא נמצא משתמש כזה, זרוק שגיאה שקשורה לפרטי התחברות שגויים
+            //    //throw new Exception("Incorrect login details");
+            //    return null;
+
+            //}
+
+            while (dataReader.Read())
+            { 
+                Project p = new Project();
+            p.Projectid = Convert.ToInt32(dataReader["ProjectID"]);
+            p.Projectname = dataReader["ProjectName"].ToString();
+            p.Description = dataReader["Description"].ToString();
+            p.Hourlyrate = Convert.ToSingle(dataReader["HourlyRate"]);
+            p.Image = dataReader["Image"].ToString();
+            p.Clientid = Convert.ToInt32(dataReader["ClientID"]);
+            p.Isarchived = Convert.ToBoolean(dataReader["isArchived"]);
+            p.Createdbyuserid = Convert.ToInt32(dataReader["CreatedByUserID"]);
+            Projects.Add(p);
+            }
+            return Projects;
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+
+
+
+
+
+
 
 
 

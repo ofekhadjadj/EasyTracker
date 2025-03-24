@@ -17,5 +17,17 @@ namespace EasyTracker.Controllers
             return project.InsertNewProject();
         }
 
+
+
+        // GET: api/<GamesController>/GetGamesByUser/{id}
+        [HttpGet("GetProjectByUserId/{id}")]
+        public IEnumerable<Project> GetAllProjectsByUserId(int id)
+        {
+            Project project = new Project();
+            return project.GetAllProjectsByUserId(id);
+        }
+
+
+
     }
 }
