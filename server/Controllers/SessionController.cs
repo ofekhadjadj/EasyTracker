@@ -28,6 +28,17 @@ namespace EasyTracker.Controllers
 
             return Ok(new { sessionID = updatedSessionID });
         }
+
+        [HttpPut("delete_session")]
+        public IActionResult DeleteSession([FromQuery] int SessionID)
+        {
+            Session sessionLogic = new Session();
+            int deletedSessionID = sessionLogic.DeleteSession(SessionID);
+
+            return Ok(new { sessionID = deletedSessionID });
+        }
+
+
         /*
         [HttpPost("update_session")]
         public IActionResult updateSession([FromQuery] Session Session)

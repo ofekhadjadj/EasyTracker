@@ -67,5 +67,12 @@ namespace SteamApp.BL
             DBservices dbs = new DBservices();
             return dbs.GetAllSessionsByUserAndProject(userID, projectID);
         }
+
+        public int DeleteSession(int SessionID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.DeleteSession(SessionID);
+        }
+
     }
 }

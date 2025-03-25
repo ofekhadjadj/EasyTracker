@@ -494,9 +494,6 @@ finally
         paramDic.Add("@LabelID", Session.LabelID);
         //paramDic.Add("@isArchived", Session.IsArchived);
 
-
-
-
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateSession", con, paramDic);          // create the command
 
         try
@@ -520,6 +517,56 @@ finally
         }
 
     }
+
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method update session IsArchived in Sessions table 
+    //--------------------------------------------------------------------------------------------------
+    public int DeleteSession(int SessionID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@SessionID", SessionID);
+      
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_ArchiveSession", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
 
     /*
     //--------------------------------------------------------------------------------------------------

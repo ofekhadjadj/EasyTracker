@@ -53,6 +53,22 @@
   },
   {
     "ContainingType": "EasyTracker.Controllers.SessionController",
+    "Method": "DeleteSession",
+    "RelativePath": "api/Session/delete_session",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "SessionID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EasyTracker.Controllers.SessionController",
     "Method": "GetAllSessionsByUserAndProject",
     "RelativePath": "api/Session/GetAllSessionsByUserAndProject",
     "HttpMethod": "GET",

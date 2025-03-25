@@ -151,17 +151,17 @@ exec sp_ET_GetSessionsByUserAndProject 2, 16
 --------------------------------------------------------------------------------------------------
 EXEC sp_helptext 'sp_ET_ArchiveSession';
 --מחיקת סשן
-CREATE PROCEDURE sp_ET_ArchiveSession  
+ALTER PROCEDURE sp_ET_ArchiveSession  
     @SessionID INT  
 AS  
 BEGIN  
-    SET NOCOUNT ON;  
+    SET NOCOUNT OFF;  
   
     UPDATE ET_Sessions  
     SET isArchived = 1  
     WHERE SessionID = @SessionID;  
 END;  
-
+-----------------------------------------------------------------------------------
 
 
 select * from ET_Sessions

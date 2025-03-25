@@ -174,6 +174,28 @@
         }
       }
     },
+    "/api/Session/delete_session": {
+      "put": {
+        "tags": [
+          "Session"
+        ],
+        "parameters": [
+          {
+            "name": "SessionID",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Session/insert_session_Manually": {
       "post": {
         "tags": [

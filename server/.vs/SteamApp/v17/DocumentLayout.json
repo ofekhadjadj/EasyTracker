@@ -13,26 +13,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|c:\\users\\aryem\\onedrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\github\\easytracker\\server\\controllers\\sessioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|solutionrelative:controllers\\sessioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|c:\\users\\aryem\\onedrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\github\\easytracker\\server\\controllers\\projectscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|solutionrelative:controllers\\projectscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|c:\\users\\aryem\\onedrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\github\\easytracker\\server\\bl\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|solutionrelative:bl\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|c:\\users\\aryem\\onedrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\github\\easytracker\\server\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|c:\\users\\aryem\\onedrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\github\\easytracker\\server\\controllers\\gamescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|solutionrelative:controllers\\gamescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|c:\\users\\aryem\\onedrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\github\\easytracker\\server\\bl\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ADAA794A-A24C-4921-885B-2A01FCAF81F1}|EasyTracker.csproj|solutionrelative:bl\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,73 +22,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 181,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ProjectsController.cs",
-              "DocumentMoniker": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\Controllers\\ProjectsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ProjectsController.cs",
-              "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\Controllers\\ProjectsController.cs",
-              "RelativeToolTip": "Controllers\\ProjectsController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-25T12:38:51.733Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Project.cs",
-              "DocumentMoniker": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\Project.cs",
-              "RelativeDocumentMoniker": "BL\\Project.cs",
-              "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\Project.cs",
-              "RelativeToolTip": "BL\\Project.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADkAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-25T12:29:07.461Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "GamesController.cs",
-              "DocumentMoniker": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\Controllers\\GamesController.cs",
-              "RelativeDocumentMoniker": "Controllers\\GamesController.cs",
-              "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\Controllers\\GamesController.cs",
-              "RelativeToolTip": "Controllers\\GamesController.cs",
-              "ViewState": "AgIAADYAAAAAAAAAAAAAABAAAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-25T09:54:28.343Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "UsersController.cs",
-              "DocumentMoniker": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\Controllers\\UsersController.cs",
-              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
-              "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "Controllers\\UsersController.cs",
-              "ViewState": "AgIAADMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-25T09:53:51.157Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\User.cs",
-              "RelativeDocumentMoniker": "BL\\User.cs",
-              "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\User.cs",
-              "RelativeToolTip": "BL\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-25T07:42:25.427Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
@@ -117,7 +32,7 @@
               "RelativeDocumentMoniker": "Controllers\\SessionController.cs",
               "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\Controllers\\SessionController.cs",
               "RelativeToolTip": "Controllers\\SessionController.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAACgAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAABMAAAAAAAAAAAAAACUAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-25T09:50:20.584Z",
               "EditorCaption": ""
@@ -130,7 +45,7 @@
               "RelativeDocumentMoniker": "BL\\Session.cs",
               "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\BL\\Session.cs",
               "RelativeToolTip": "BL\\Session.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAEAAAABVAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAACkAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-25T07:39:25.596Z",
               "EditorCaption": ""
@@ -143,7 +58,7 @@
               "RelativeDocumentMoniker": "DAL\\DBservices.cs",
               "ToolTip": "C:\\Users\\aryem\\OneDrive\\\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD\\GitHub\\EasyTracker\\server\\DAL\\DBservices.cs",
               "RelativeToolTip": "DAL\\DBservices.cs",
-              "ViewState": "AgIAAN0BAAAAAAAAAAAiwAMCAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAUCAAAAAAAAAADwvwkCAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-24T14:47:48.981Z",
               "EditorCaption": ""
