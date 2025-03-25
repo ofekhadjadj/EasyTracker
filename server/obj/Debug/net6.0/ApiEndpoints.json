@@ -52,6 +52,95 @@
     ]
   },
   {
+    "ContainingType": "EasyTracker.Controllers.SessionController",
+    "Method": "GetAllSessionsByUserAndProject",
+    "RelativePath": "api/Session/GetAllSessionsByUserAndProject",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "projectID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SteamApp.BL.Session, EasyTracker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "EasyTracker.Controllers.SessionController",
+    "Method": "InsertSessionManually",
+    "RelativePath": "api/Session/insert_session_Manually",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Session",
+        "Type": "SteamApp.BL.Session",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EasyTracker.Controllers.SessionController",
+    "Method": "StartSession",
+    "RelativePath": "api/Session/start_auto_session",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "projectID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "startDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EasyTracker.Controllers.SessionController",
+    "Method": "UpdateSession",
+    "RelativePath": "api/Session/update_session",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "session",
+        "Type": "SteamApp.BL.Session",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "SteamApp.Controllers.UsersController",
     "Method": "PostNewUser",
     "RelativePath": "api/Users/addNewUser",

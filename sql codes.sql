@@ -1164,3 +1164,12 @@ EXEC sp_ET_AddUser N'Chris', N'Evans', N'chris.evans@example.com', N'marvel!';
 EXEC sp_ET_AddUser N'Nina', N'Martinez', N'nina.m@example.com', N'letmein';
 EXEC sp_ET_AddUser N'Liam', N'Johnson', N'liam.j@example.com', N'987654';
 EXEC sp_ET_AddUser N'Sophia', N'Taylor', N'sophia.t@example.com', N'qwerty123';
+
+
+
+
+ALTER TABLE dbo.ET_Sessions
+ALTER COLUMN EndDate datetime NULL;
+
+ALTER TABLE dbo.ET_Sessions
+ALTER COLUMN DurationSeconds int NULL;

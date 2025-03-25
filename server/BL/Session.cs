@@ -1,19 +1,19 @@
-﻿using System;
+﻿//using SteamApp.BL;
 
 namespace SteamApp.BL
 {
     public class Session
     {
-        int SessionID;
-        int ProjectID;
-        DateTime StartDate;
-        DateTime EndDate;
-        int DurationSeconds;
-        decimal? HourlyRate;
-        string? Description;
-        int? LabelID;
+        int sessionID;
+        int projectID;
+        DateTime startDate;
+        DateTime? endDate;
+        int? durationSeconds;
+        decimal? hourlyRate;
+        string? description;
+        int? labelID;
         bool isArchived;
-        int? UserID;
+        int? userID;
 
         public Session() { }
 
@@ -31,20 +31,41 @@ namespace SteamApp.BL
             UserID = userID;
         }
 
-        public int SessionID1 { get => SessionID; set => SessionID = value; }
-        public int ProjectID1 { get => ProjectID; set => ProjectID = value; }
-        public DateTime StartDate1 { get => StartDate; set => StartDate = value; }
-        public DateTime EndDate1 { get => EndDate; set => EndDate = value; }
-        public int DurationSeconds1 { get => DurationSeconds; set => DurationSeconds = value; }
-        public decimal? HourlyRate1 { get => HourlyRate; set => HourlyRate = value; }
-        public string? Description1 { get => Description; set => Description = value; }
-        public int? LabelID1 { get => LabelID; set => LabelID = value; }
+        public int SessionID { get => sessionID; set => sessionID = value; }
+        public int ProjectID { get => projectID; set => projectID = value; }
+        public DateTime StartDate { get => startDate; set => startDate = value; }
+        public DateTime? EndDate { get => endDate; set => endDate = value; }
+        public int? DurationSeconds { get => durationSeconds; set => durationSeconds = value; }
+        public decimal? HourlyRate { get => hourlyRate; set => hourlyRate = value; }
+        public string? Description { get => description; set => description = value; }
+        public int? LabelID { get => labelID; set => labelID = value; }
         public bool IsArchived { get => isArchived; set => isArchived = value; }
-        public int? UserID1 { get => UserID; set => UserID = value; }
+        public int? UserID { get => userID; set => userID = value; }
 
 
 
+        public int InsertNewSessionAutomatic(int UserID, int ProjectID, DateTime StartDate)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.InsertNewSessionAutomatic(UserID, ProjectID, StartDate);
+        }
 
+        public int UpdateSession(Session Session)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.UpdateSession(Session);
+        }
 
+        public int InsertNewSessionManually(Session Session)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.InsertNewSessionManually(Session);
+        }
+
+        public List<Session> GetAllSessionsByUserAndProject(int userID, int projectID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetAllSessionsByUserAndProject(userID, projectID);
+        }
     }
 }

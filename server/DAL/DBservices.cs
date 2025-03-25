@@ -8,6 +8,7 @@ using System.Text;
 using SteamApp.BL;
 using System.Security.Cryptography;
 using EasyTracker.BL;
+using Microsoft.AspNetCore.Http;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -409,15 +410,303 @@ finally
 
 
 
+    //--------------------------------------------------------------------------------------------------
+    // This method inserts a new Session to the Sessions table 
+    //--------------------------------------------------------------------------------------------------
+    public int InsertNewSessionAutomatic(int UserID, int ProjectID, DateTime StartDate)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ProjectID", ProjectID);
+        paramDic.Add("@UserID", UserID);
+        paramDic.Add("@StartDate", StartDate);
+        
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddStartSessionAutomatic", con, paramDic);          // create the command
+
+        try
+        {
+            //int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            //return numEffected;
+
+            object result = cmd.ExecuteScalar(); // מחזיר את ה-SessionID
+            int newSessionID = Convert.ToInt32(result);
+            return newSessionID;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method update session in Sessions table 
+    //--------------------------------------------------------------------------------------------------
+    public int UpdateSession(Session Session)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@SessionID", Session.SessionID);
+        //paramDic.Add("@ProjectID", Session.ProjectID);
+        //paramDic.Add("@UserID", Session.UserID);
+        paramDic.Add("@EndDate", Session.EndDate);
+        paramDic.Add("@DurationSeconds", Session.DurationSeconds);
+        paramDic.Add("@HourlyRate", Session.HourlyRate);
+        paramDic.Add("@Description", Session.Description);
+        paramDic.Add("@LabelID", Session.LabelID);
+        //paramDic.Add("@isArchived", Session.IsArchived);
+
+
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateSession", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    /*
+    //--------------------------------------------------------------------------------------------------
+    // This method update session in Sessions table 
+    //--------------------------------------------------------------------------------------------------
+    public int UpdateSession(Session Session)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        //paramDic.Add("@SessionID", Session.SessionID);
+        paramDic.Add("@ProjectID", Session.ProjectID);
+        paramDic.Add("@UserID", Session.UserID);
+        paramDic.Add("@EndDate", Session.EndDate);
+        paramDic.Add("@DurationSeconds", Session.DurationSeconds);
+        paramDic.Add("@HourlyRate", Session.HourlyRate);
+        paramDic.Add("@Description", Session.Description);
+        paramDic.Add("@LabelID", Session.LabelID);
+        //paramDic.Add("@isArchived", Session.IsArchived);
+        
+
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateSession", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+    */
+
+    //--------------------------------------------------------------------------------------------------
+    // This method update session in Sessions table 
+    //--------------------------------------------------------------------------------------------------
+    public int InsertNewSessionManually(Session Session)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ProjectID", Session.ProjectID);
+        paramDic.Add("@UserID", Session.UserID);
+        paramDic.Add("@StartDate", Session.StartDate);
+        paramDic.Add("@EndDate", Session.EndDate);
+        paramDic.Add("@DurationSeconds", Session.DurationSeconds);
+        paramDic.Add("@HourlyRate", Session.HourlyRate);
+        paramDic.Add("@Description", Session.Description);
+        paramDic.Add("@LabelID", Session.LabelID);
+        
+        
 
 
 
 
 
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddSessionManually", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get sessions by user and Project
+    //--------------------------------------------------------------------------------------------------
+    public List<Session> GetAllSessionsByUserAndProject(int userID, int projectID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        List<Session> Sessions = new List<Session>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+        paramDic.Add("@ProjectID", projectID);
 
 
 
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetSessionsByUserAndProject", con, paramDic);
 
+        try
+        {
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Session s = new Session();
+                s.SessionID = Convert.ToInt32(dataReader["SessionID"]);
+                s.ProjectID = Convert.ToInt32(dataReader["ProjectID"]);
+                s.StartDate = Convert.ToDateTime(dataReader["StartDate"]);
+                s.EndDate = dataReader["EndDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(dataReader["EndDate"]);
+                s.DurationSeconds = dataReader["DurationSeconds"] == DBNull.Value ? (int?)null : Convert.ToInt32(dataReader["DurationSeconds"]);
+                s.HourlyRate = dataReader["HourlyRate"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(dataReader["HourlyRate"]);
+                s.Description = dataReader["Description"] == DBNull.Value ? null : dataReader["Description"].ToString();
+                s.LabelID = dataReader["LabelID"] == DBNull.Value ? (int?)null : Convert.ToInt32(dataReader["LabelID"]);
+                s.IsArchived = Convert.ToBoolean(dataReader["isArchived"]);
+                s.UserID = dataReader["UserID"] == DBNull.Value ? (int?)null : Convert.ToInt32(dataReader["UserID"]);
+
+                Sessions.Add(s);
+            }
+            return Sessions;
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
 
 
