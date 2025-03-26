@@ -5,7 +5,6 @@ select * from ET_Users
 select * from ET_Projects
 select * from ET_UserProjects
 
-exec sp_ET_ArchiveProject  @ProjectID=14
 
 select * 
 from ET_Projects inner join ET_UserProjects on ET_Projects.ProjectID=ET_UserProjects.ProjectID
@@ -39,7 +38,8 @@ exec sp_ET_GetProjectsById  @UserID=3
 
 
 
-EXEC sp_helptext 'sp_ET_ArchiveProject';
+EXEC sp_help 'sp_ET_AddProject';
+
 
 
 -------------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ BEGIN
         -- ממשיכים את הסשן המושהה
         UPDATE ET_Sessions
         SET 
-            StartDate = @StartDate, -- אפשר גם לשמור את הישן אם רוצים
+            --StartDate = @StartDate, -- אפשר גם לשמור את הישן אם רוצים
             EndDate = NULL,
             DurationSeconds = NULL,
             SessionStatus = 'Active'
@@ -145,6 +145,7 @@ EXEC sp_helptext 'sp_ET_UpdateSession';
 --בלחיצה על השהיה או סיום
 ALTER PROCEDURE sp_ET_UpdateSession  
     @SessionID INT,
+	@StartDate DATETIME = NULL, 
     @EndDate DATETIME = NULL,  
     @DurationSeconds INT = NULL,  
     @HourlyRate DECIMAL(10,2) = NULL,  
@@ -157,7 +158,8 @@ BEGIN
 
     UPDATE ET_Sessions
     SET 
-        EndDate = @EndDate,
+		StartDate = COALESCE(@StartDate, StartDate),
+		EndDate = @EndDate,
         DurationSeconds = COALESCE(@DurationSeconds, DATEDIFF(SECOND, StartDate, @EndDate)),
         HourlyRate = COALESCE(@HourlyRate, HourlyRate),
         Description = COALESCE(@Description, Description),
@@ -201,7 +203,7 @@ EXEC sp_ET_UpdateSession
     @HourlyRate = 132.90,
 	@Description = 'בדיקת עדכון סשן';
 --------------------------------------------------------------------------------------------------
-CREATE PROCEDURE sp_ET_GetSessionsByUserAndProject
+ALTER PROCEDURE sp_ET_GetSessionsByUserAndProject
     @UserID INT,
     @ProjectID INT
 AS
@@ -211,10 +213,11 @@ BEGIN
     SELECT *
     FROM ET_Sessions
     WHERE UserID = @UserID
-      AND ProjectID = @ProjectID;
+      AND ProjectID = @ProjectID
+	  AND isArchived = 0;
 END;
 
-exec sp_ET_GetSessionsByUserAndProject 2, 16
+exec sp_ET_GetSessionsByUserAndProject 20, 20
 --------------------------------------------------------------------------------------------------
 EXEC sp_helptext 'sp_ET_ArchiveSession';
 --מחיקת סשן
@@ -228,6 +231,8 @@ BEGIN
     SET isArchived = 1  
     WHERE SessionID = @SessionID;  
 END;  
+
+exec sp_ET_ArchiveSession 43
 -----------------------------------------------------------------------------------
 
 
@@ -239,17 +244,3 @@ SELECT * FROM ET_Projects WHERE ProjectID = 10;
 --2025-03-25T14:30:00.000
 
 -----------------------------------------------------------------------------------
-
-
-
-ALTER PROCEDURE sp_ET_ArchiveProject  
-    @ProjectID INT  
-AS  
-BEGIN  
-    SET NOCOUNT OFF;  
-  
-    UPDATE ET_Projects  
-    SET isArchived = 1  
-    WHERE ProjectID = @ProjectID;  
-END;  
-

@@ -6,7 +6,7 @@ namespace SteamApp.BL
     {
         int sessionID;
         int projectID;
-        DateTime startDate;
+        DateTime? startDate;
         DateTime? endDate;
         int? durationSeconds;
         decimal? hourlyRate;
@@ -14,10 +14,11 @@ namespace SteamApp.BL
         int? labelID;
         bool isArchived;
         int? userID;
+        string? status;
 
         public Session() { }
 
-        public Session(int sessionID, int projectID, DateTime startDate, DateTime endDate, int durationSeconds, decimal? hourlyRate, string? description, int? labelID, bool isArchived, int? userID)
+        public Session(int sessionID, int projectID, DateTime startDate, DateTime endDate, int durationSeconds, decimal? hourlyRate, string? description, int? labelID, bool isArchived, int? userID, string status)
         {
             SessionID = sessionID;
             ProjectID = projectID;
@@ -29,11 +30,12 @@ namespace SteamApp.BL
             LabelID = labelID;
             this.isArchived = isArchived;
             UserID = userID;
+            this.status = status;  
         }
 
         public int SessionID { get => sessionID; set => sessionID = value; }
         public int ProjectID { get => projectID; set => projectID = value; }
-        public DateTime StartDate { get => startDate; set => startDate = value; }
+        public DateTime? StartDate { get => startDate; set => startDate = value; }
         public DateTime? EndDate { get => endDate; set => endDate = value; }
         public int? DurationSeconds { get => durationSeconds; set => durationSeconds = value; }
         public decimal? HourlyRate { get => hourlyRate; set => hourlyRate = value; }
@@ -41,7 +43,7 @@ namespace SteamApp.BL
         public int? LabelID { get => labelID; set => labelID = value; }
         public bool IsArchived { get => isArchived; set => isArchived = value; }
         public int? UserID { get => userID; set => userID = value; }
-
+        public string? Status { get => status; set => status = value; }
 
 
         public int InsertNewSessionAutomatic(int UserID, int ProjectID, DateTime StartDate)

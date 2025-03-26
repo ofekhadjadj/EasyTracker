@@ -598,23 +598,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ofekh\\.nuget\\packages\\": {},
+    "C:\\Users\\aryem\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\EasyTracker.csproj",
+      "projectUniqueName": "C:\\Users\\aryem\\OneDrive\\מסמכים\\GitHub\\EasyTracker\\server\\EasyTracker.csproj",
       "projectName": "EasyTracker",
-      "projectPath": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\EasyTracker.csproj",
-      "packagesPath": "C:\\Users\\ofekh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ofekh\\Documents\\GitHub\\EasyTracker\\Server\\obj\\",
+      "projectPath": "C:\\Users\\aryem\\OneDrive\\מסמכים\\GitHub\\EasyTracker\\server\\EasyTracker.csproj",
+      "packagesPath": "C:\\Users\\aryem\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\aryem\\OneDrive\\מסמכים\\GitHub\\EasyTracker\\server\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\ofekh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\aryem\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
