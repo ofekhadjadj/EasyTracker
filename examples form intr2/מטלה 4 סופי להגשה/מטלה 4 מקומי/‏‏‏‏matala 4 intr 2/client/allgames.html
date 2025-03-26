@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="./script/ajaxCall.js"></script>
+    <script src="./script/game.js"></script>
+    <!-- JavaScript -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"
+    />
+    <!-- Default theme -->
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"
+    />
+    <!-- Semantic UI theme -->
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/semantic.min.css"
+    />
+    <!-- Bootstrap theme -->
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/bootstrap.min.css"
+    />
+
+    <!-- Default theme -->
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.rtl.min.css"
+    />
+    <!-- Semantic UI theme -->
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/semantic.rtl.min.css"
+    />
+    <!-- Bootstrap theme -->
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/bootstrap.rtl.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Steam-main</title>
+  </head>
+  <body>
+    <div class="header">
+      <div class="edit-my-profile" style="text-align: center">
+        <img
+          style="vertical-align: middle; margin: auto"
+          src="./images/avatar.svg"
+          width="25"
+          height="25"
+        />
+        <h4
+          style="font-size: 18px; display: inline-block; vertical-align: middle"
+          id="gretting"
+        >
+          hello name
+        </h4>
+      </div>
+      <nav class="menu">
+        <a href="http://127.0.0.1:5500/allgames.html">All Games</a>
+        <a href="http://127.0.0.1:5500/mygames.html">My Games</a>
+        <a href="http://127.0.0.1:5500/profile.html">Edit My Profile </a>
+        <a href="#" id="logout">Logout</a>
+      </nav>
+    </div>
+    <div class="continer">
+      <h1>Games</h1>
+      <div id="main"></div>
+    </div>
+    <script src="./script/main.js"></script>
+    <script src="./script/ajaxCall.js"></script>
+    <script>
+      // בדיקה אם המשתמש נמצא ב-localStorage
+      const user = JSON.parse(localStorage.getItem("user"));
+      console.log(user[0].email);
+
+      // מזהה את רשימת התפריט
+      const menu = document.querySelector(".menu");
+
+      // הוספת קישור רק אם המשתמש הוא "admin"
+      if (user[0].email === "admin@admin.com") {
+        const newLink = document.createElement("a");
+        newLink.href = "/adminPage.html";
+        newLink.textContent = "Admin Panel";
+
+        // הוספת הקישור לתפריט
+        menu.appendChild(newLink);
+      }
+    </script>
+  </body>
+</html>
