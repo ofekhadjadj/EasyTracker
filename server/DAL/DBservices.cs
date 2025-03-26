@@ -9,6 +9,7 @@ using SteamApp.BL;
 using System.Security.Cryptography;
 using EasyTracker.BL;
 using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -406,6 +407,62 @@ finally
         }
 
     }
+
+
+
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method put project in Archive  
+    //--------------------------------------------------------------------------------------------------
+    public int DeleteProject(int ProjectId)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ProjectID", ProjectId);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_ArchiveProject", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+
+
+
+
+
 
 
 

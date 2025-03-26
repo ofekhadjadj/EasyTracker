@@ -29,5 +29,16 @@ namespace EasyTracker.Controllers
 
 
 
+
+        [HttpPut("delete_project")]
+        public IActionResult DeleteProject([FromQuery] int ProjectId)
+        {
+            Project projectLogic = new Project();
+            int deletedProhjectID = projectLogic.DeleteProject(ProjectId);
+
+            return Ok(new { ProjectId = deletedProhjectID });
+        }
+
+
     }
 }
