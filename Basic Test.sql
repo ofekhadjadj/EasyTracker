@@ -78,8 +78,48 @@ EXEC sp_ET_AddSessionManually
     @LabelID = NULL;
 
 
-
 --בלחיצה על התחל סשן אוטומטי
+ALTER PROCEDURE sp_ET_AddStartSessionAutomatic  
+    @ProjectID INT,  
+    @UserID INT,  
+    @StartDate DATETIME
+AS  
+BEGIN  
+    SET NOCOUNT OFF;
+
+    DECLARE @ExistingSessionID INT;
+
+    -- בודק אם קיים סשן במצב Paused
+    SELECT TOP 1 @ExistingSessionID = SessionID
+    FROM ET_Sessions
+    WHERE UserID = @UserID 
+      AND ProjectID = @ProjectID 
+      AND SessionStatus = 'Paused'
+    ORDER BY StartDate DESC;
+
+    IF @ExistingSessionID IS NOT NULL
+    BEGIN
+        -- ממשיכים את הסשן המושהה
+        UPDATE ET_Sessions
+        SET 
+            StartDate = @StartDate, -- אפשר גם לשמור את הישן אם רוצים
+            EndDate = NULL,
+            DurationSeconds = NULL,
+            SessionStatus = 'Active'
+        WHERE SessionID = @ExistingSessionID;
+
+        SELECT @ExistingSessionID AS SessionID;
+        RETURN;
+    END
+
+    -- אין סשן מושהה – יוצרים חדש
+    INSERT INTO ET_Sessions (ProjectID, UserID, StartDate, isArchived, SessionStatus)  
+    VALUES (@ProjectID, @UserID, @StartDate, 0, 'Active');
+
+    SELECT SCOPE_IDENTITY() AS SessionID;
+END;
+
+/*
 ALTER PROCEDURE sp_ET_AddStartSessionAutomatic  
     @ProjectID INT,  
     @UserID INT,  
@@ -92,7 +132,7 @@ BEGIN
     VALUES (@ProjectID, @UserID, @StartDate, 0);  
 
 	SELECT SCOPE_IDENTITY() AS SessionID;
-END;
+END;*/
 
 DECLARE @Now DATETIME = GETDATE();
 EXEC sp_ET_AddStartSessionAutomatic 
@@ -103,6 +143,33 @@ EXEC sp_ET_AddStartSessionAutomatic
 	--------------------------------------------------------------------------------------------------
 EXEC sp_helptext 'sp_ET_UpdateSession';
 --בלחיצה על השהיה או סיום
+ALTER PROCEDURE sp_ET_UpdateSession  
+    @SessionID INT,
+    @EndDate DATETIME = NULL,  
+    @DurationSeconds INT = NULL,  
+    @HourlyRate DECIMAL(10,2) = NULL,  
+    @Description TEXT = NULL,  
+    @LabelID INT = NULL,
+    @Status VARCHAR(20) = NULL
+AS  
+BEGIN  
+    SET NOCOUNT OFF;  
+
+    UPDATE ET_Sessions
+    SET 
+        EndDate = @EndDate,
+        DurationSeconds = COALESCE(@DurationSeconds, DATEDIFF(SECOND, StartDate, @EndDate)),
+        HourlyRate = COALESCE(@HourlyRate, HourlyRate),
+        Description = COALESCE(@Description, Description),
+        LabelID = COALESCE(@LabelID, LabelID),
+        SessionStatus = COALESCE(@Status, SessionStatus)
+    WHERE SessionID = @SessionID;
+
+    SELECT @SessionID AS UpdatedSessionID;
+END
+
+
+/*
 ALTER PROCEDURE sp_ET_UpdateSession  
     @SessionID INT,
     @EndDate DATETIME = NULL,  
@@ -123,7 +190,7 @@ BEGIN
         LabelID = COALESCE(@LabelID, LabelID)
     WHERE SessionID = @SessionID;
 END
-
+*/
 
 DECLARE @Now DATETIME = GETDATE()+2;
 EXEC sp_ET_UpdateSession
