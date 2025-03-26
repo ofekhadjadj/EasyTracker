@@ -5,6 +5,7 @@ select * from ET_Users
 select * from ET_Projects
 select * from ET_UserProjects
 
+exec sp_ET_ArchiveProject  @ProjectID=14
 
 select * 
 from ET_Projects inner join ET_UserProjects on ET_Projects.ProjectID=ET_UserProjects.ProjectID
@@ -38,8 +39,7 @@ exec sp_ET_GetProjectsById  @UserID=3
 
 
 
-EXEC sp_help 'sp_ET_AddProject';
-
+EXEC sp_helptext 'sp_ET_ArchiveProject';
 
 
 -------------------------------------------------------------------------------------
@@ -172,3 +172,17 @@ SELECT * FROM ET_Projects WHERE ProjectID = 10;
 --2025-03-25T14:30:00.000
 
 -----------------------------------------------------------------------------------
+
+
+
+ALTER PROCEDURE sp_ET_ArchiveProject  
+    @ProjectID INT  
+AS  
+BEGIN  
+    SET NOCOUNT OFF;  
+  
+    UPDATE ET_Projects  
+    SET isArchived = 1  
+    WHERE ProjectID = @ProjectID;  
+END;  
+

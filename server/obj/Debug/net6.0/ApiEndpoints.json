@@ -27,6 +27,22 @@
   },
   {
     "ContainingType": "EasyTracker.Controllers.ProjectsController",
+    "Method": "DeleteProject",
+    "RelativePath": "api/Projects/delete_project",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "ProjectId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EasyTracker.Controllers.ProjectsController",
     "Method": "GetAllProjectsByUserId",
     "RelativePath": "api/Projects/GetProjectByUserId/{id}",
     "HttpMethod": "GET",

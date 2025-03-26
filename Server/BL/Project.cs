@@ -67,7 +67,11 @@ namespace EasyTracker.BL
         }
 
 
-
+        public int DeleteProject(int ProjectId)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.DeleteProject(ProjectId);
+        }
 
 
 
