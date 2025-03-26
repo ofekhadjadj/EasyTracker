@@ -544,12 +544,15 @@ finally
         paramDic.Add("@SessionID", Session.SessionID);
         //paramDic.Add("@ProjectID", Session.ProjectID);
         //paramDic.Add("@UserID", Session.UserID);
+        paramDic.Add("@StartDate", Session.StartDate); 
         paramDic.Add("@EndDate", Session.EndDate);
         paramDic.Add("@DurationSeconds", Session.DurationSeconds);
         paramDic.Add("@HourlyRate", Session.HourlyRate);
         paramDic.Add("@Description", Session.Description);
         paramDic.Add("@LabelID", Session.LabelID);
+        paramDic.Add("@Status", Session.Status);
         //paramDic.Add("@isArchived", Session.IsArchived);
+        
 
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateSession", con, paramDic);          // create the command
 
@@ -574,9 +577,7 @@ finally
         }
 
     }
-
-
-
+    
     //--------------------------------------------------------------------------------------------------
     // This method update session IsArchived in Sessions table 
     //--------------------------------------------------------------------------------------------------
@@ -623,69 +624,8 @@ finally
 
     }
 
-
-
-    /*
     //--------------------------------------------------------------------------------------------------
-    // This method update session in Sessions table 
-    //--------------------------------------------------------------------------------------------------
-    public int UpdateSession(Session Session)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        Dictionary<string, object> paramDic = new Dictionary<string, object>();
-        //paramDic.Add("@SessionID", Session.SessionID);
-        paramDic.Add("@ProjectID", Session.ProjectID);
-        paramDic.Add("@UserID", Session.UserID);
-        paramDic.Add("@EndDate", Session.EndDate);
-        paramDic.Add("@DurationSeconds", Session.DurationSeconds);
-        paramDic.Add("@HourlyRate", Session.HourlyRate);
-        paramDic.Add("@Description", Session.Description);
-        paramDic.Add("@LabelID", Session.LabelID);
-        //paramDic.Add("@isArchived", Session.IsArchived);
-        
-
-
-
-        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateSession", con, paramDic);          // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-    */
-
-    //--------------------------------------------------------------------------------------------------
-    // This method update session in Sessions table 
+    // This method inserts a new Session in Sessions table 
     //--------------------------------------------------------------------------------------------------
     public int InsertNewSessionManually(Session Session)
     {
@@ -742,7 +682,6 @@ finally
         }
 
     }
-
 
     //--------------------------------------------------------------------------------------------------
     // This method get sessions by user and Project
