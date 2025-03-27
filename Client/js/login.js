@@ -1,8 +1,8 @@
 const loginForm = document.querySelector(".login-form");
-//Arye line new
+
 loginForm.addEventListener("submit", function (event) {
   event.preventDefault(); // מונע את רענון הדף
-  //ofek line new
+
   // שליפת ערכים מהשדות
   const email = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
