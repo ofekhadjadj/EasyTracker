@@ -1,5 +1,5 @@
 const loginForm = document.querySelector(".login-form");
-//Arye line
+//Arye line new
 loginForm.addEventListener("submit", function (event) {
   event.preventDefault(); // מונע את רענון הדף
 
