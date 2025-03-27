@@ -33,6 +33,7 @@ function handleLogin(email, password) {
         // מעבר לעמוד הבא
         // window.location.href = "dashboard.html";
         console.log("התחברות מוצלחת!");
+        localStorage.setItem("user", JSON.stringify(response.user));
       } else {
         alert("שם משתמש או סיסמה שגויים!");
       }
