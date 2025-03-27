@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Easy Tracker login</title>
+    <title>Easy Tracker register</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,40 +31,56 @@
       <div class="login-right">
         <div class="login-container">
           <img src="/images/logo.png" alt="" />
-          <h2>.ברוך הבא! 👋 התחבר והתחל לעבוד</h2>
+          <h2>!הצטרף עכשיו 💡 ותן לעבודה שלך לזרום</h2>
           <p>
-            ! 🚀 הפרויקטים שלך מחכים, והזמן שלך יקר. התחבר עכשיו וניתן לעבודה
-            שלך לרוץ על אוטומט
+            🚀 !הפרויקטים שלך חכמים, והזמן שלך יקר. הירשם עכשיו וניתן לעבודה שלך
+            לרוץ על אוטומט
           </p>
-          <form class="login-form">
+          <form class="register-form">
             <input
               type="text"
-              placeholder="אימייל"
-              id="username"
-              name="username"
-              required
-            />
-            <br />
-            <input
-              type="password"
-              placeholder="סיסמא"
-              id="password"
-              name="password"
+              placeholder="הכנס שם פרטי"
+              id="firstName"
+              name="firstName"
               required
             />
             <br />
 
-            <button type="submit" class="login-btn">התחבר</button>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              placeholder="הכנס שם משפחה"
+              required
+            />
+
+            <input
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="הכנס כתובת מייל תקנית"
+              required
+            />
+
+            <input
+              type="password"
+              id="password"
+              name="password"
+              pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$"
+              placeholder="הכנס סיסמא"
+              required
+              minlength="8"
+              maxlength="30"
+            />
+
+            <button type="submit" class="register-btn">הירשם</button>
             <br />
-            <button type="submit" class="login-google-btn">
-              התחבר באמצעות גוגל
-            </button>
           </form>
-          <p>?עדיין אין לך משתמש <a href="register.html"> !הירשם עכשיו</a></p>
         </div>
       </div>
     </div>
-    <script src="js/login.js"></script>
+    <script src="js/register.js"></script>
     <script src="js/AjaxCall.js"></script>
   </body>
 </html>

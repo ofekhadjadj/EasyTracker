@@ -190,7 +190,8 @@ table {
 }
 
 .login-btn,
-.login-google-btn {
+.login-google-btn,
+.register-btn {
   width: 49%;
   padding: 15px;
   margin: 10px;
@@ -198,7 +199,8 @@ table {
   cursor: pointer;
 }
 
-.login-btn {
+.login-btn,
+.register-btn {
   background: linear-gradient(90deg, #0097ff 26%, #007eff 56%, #0054ff 100%);
   color: white;
   border: none;

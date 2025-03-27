@@ -2,14 +2,14 @@
 {
     public class User
     {
-        int id;
+        int? id;
         string firstName;
         string lastName;
         string email;
         string password;
-        string role;
-        bool isActive;
-        DateTime createdAt;
+        string? role;
+        bool? isActive;
+        DateTime? createdAt;
 
 
 
@@ -30,14 +30,14 @@
             this.createdAt = createdAt;
         }
 
-        public int Id { get => id; set => id = value; }
+        public int? Id { get => id; set => id = value; }
         public string FirstName { get => firstName; set => firstName = value; }
         public string LastName { get => lastName; set => lastName = value; }
         public string Email { get => email; set => email = value; }
         public string Password { get => password; set => password = value; }
-        public string Role { get => role; set => role = value; }
-        public bool IsActive { get => isActive; set => isActive = value; }
-        public DateTime CreatedAt { get => createdAt; set => createdAt = value; }
+        public string? Role { get => role; set => role = value; }
+        public bool? IsActive { get => isActive; set => isActive = value; }
+        public DateTime? CreatedAt { get => createdAt; set => createdAt = value; }
 
        
          public int InsertNewUser()
