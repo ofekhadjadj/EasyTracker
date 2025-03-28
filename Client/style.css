@@ -407,6 +407,7 @@ img.logo-sidebar {
 }
 .title-and-btn h1 {
   font-size: 50px;
+  padding-left: 10px;
 }
 
 .title-and-btn img {
@@ -427,4 +428,128 @@ img.logo-sidebar {
   height: 250px;
   border-radius: 20px;
   overflow: hidden;
+}
+
+.project-card {
+  min-width: 23%;
+  height: 200px;
+  background-image: url("/images/project-image-demo.jpg");
+  background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease-in-out;
+}
+
+.project-content {
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(0, 126, 255, 0) -5%, #0095fb 57%);
+  color: white;
+  padding: 12px 13px;
+  width: 100%;
+  text-align: right;
+  border-radius: 0 0 20px 20px;
+  padding-top: 33px;
+  transition: all 0.3s ease-in-out;
+}
+
+.project-card:hover .project-content {
+  bottom: 50%; /* מעלה את התוכן למרכז */
+  transform: translateY(50%);
+  background: rgba(0, 0, 0, 0); /* כהה רקע במעבר */
+}
+
+.project-card:hover .project-content h2 {
+  font-size: 27px;
+  transition: all 0.3s ease-in-out;
+}
+
+.project-card:hover .project-content p {
+  font-size: 17px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* עיצוב טקסט */
+.project-card h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.project-card p {
+  font-size: 16px;
+  font-weight: 300;
+  transition: all 0.3s ease-in-out;
+}
+
+.status {
+  position: absolute;
+  top: 5px;
+  right: 14px;
+  background-color: white;
+  color: #0095fb;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.project-card:hover .status {
+  top: 33%;
+  transform: translateY(-100%);
+}
+
+.body-projects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+/* מיכל החיפוש */
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: #f8fbff;
+  border: 1px solid #dfe5f2;
+  border-radius: 25px;
+  padding: 10px 15px;
+  width: 280px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex-direction: row-reverse;
+}
+
+/* שדה החיפוש */
+.search-input {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  flex: 1;
+  font-size: 18px;
+  color: #333;
+  text-align: right; /* יישור טקסט מימין לשמאל */
+}
+
+/* אייקון החיפוש */
+.search-icon {
+  width: 24px;
+  height: 24px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.project-card:hover {
+  /* background: linear-gradient(90deg, #0097ff 26%, #007eff 56%, #0054ff 100%);
+   */
+  background-color: #0073ffcc;
+  background-blend-mode: multiply; /* ממזג את הרקע עם הצבע */
+  cursor: pointer; /* שינוי הסמן ליד למעלה */
+  transition: background 0.3s ease-in-out; /* אפקט חלק לשינוי הרקע */
 }
