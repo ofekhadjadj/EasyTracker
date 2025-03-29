@@ -93,10 +93,6 @@ public class DBservices
 
     }
 
-
-
-
-
     //--------------------------------------------------------------------------------------------------
     // This method get user details email and password
     //--------------------------------------------------------------------------------------------------
@@ -167,9 +163,6 @@ finally
 
     }
 
-
-
-
     //--------------------------------------------------------------------------------------------------
     // This method update user deatils in users table 
     //--------------------------------------------------------------------------------------------------
@@ -221,10 +214,6 @@ finally
 
     }
 
-
-
-
-
     //--------------------------------------------------------------------------------------------------
     // This method update user Password in users table 
     //--------------------------------------------------------------------------------------------------
@@ -272,11 +261,6 @@ finally
         }
 
     }
-
-
-
-
-
 
     //--------------------------------------------------------------------------------------------------
     // This method inserts a new project to the users table 
@@ -330,11 +314,6 @@ finally
 
     }
 
-
-
-
-
-
     //--------------------------------------------------------------------------------------------------
     // This method get user projects by ID
     //--------------------------------------------------------------------------------------------------
@@ -359,7 +338,6 @@ finally
         paramDic.Add("@UserID", id);
         
 
-
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetProjectsById", con, paramDic);
 
         try
@@ -367,27 +345,19 @@ finally
 
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-
-            //if (!dataReader.Read())
-            //{
-            //    // אם לא נמצא משתמש כזה, זרוק שגיאה שקשורה לפרטי התחברות שגויים
-            //    //throw new Exception("Incorrect login details");
-            //    return null;
-
-            //}
-
             while (dataReader.Read())
             { 
                 Project p = new Project();
-            p.Projectid = Convert.ToInt32(dataReader["ProjectID"]);
-            p.Projectname = dataReader["ProjectName"].ToString();
-            p.Description = dataReader["Description"].ToString();
-            p.Hourlyrate = Convert.ToSingle(dataReader["HourlyRate"]);
-            p.Image = dataReader["Image"].ToString();
-            p.Clientid = Convert.ToInt32(dataReader["ClientID"]);
-            p.Isarchived = Convert.ToBoolean(dataReader["isArchived"]);
-            p.Createdbyuserid = Convert.ToInt32(dataReader["CreatedByUserID"]);
-            Projects.Add(p);
+                p.Projectid = Convert.ToInt32(dataReader["ProjectID"]);
+                p.Projectname = dataReader["ProjectName"].ToString();
+                p.Description = dataReader["Description"].ToString();
+                p.Hourlyrate = Convert.ToSingle(dataReader["HourlyRate"]);
+                p.Image = dataReader["Image"].ToString();
+                p.Clientid = Convert.ToInt32(dataReader["ClientID"]);
+                p.Isarchived = Convert.ToBoolean(dataReader["isArchived"]);
+                p.Createdbyuserid = Convert.ToInt32(dataReader["CreatedByUserID"]);
+                p.IsDone = Convert.ToBoolean(dataReader["isDone"]);
+                Projects.Add(p);
             }
             return Projects;
 

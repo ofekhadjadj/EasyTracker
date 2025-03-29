@@ -13,6 +13,7 @@ namespace EasyTracker.BL
         int clientid;
         bool isarchived;
         int createdbyuserid;
+        bool isDone;
 
         static List<Project> projectsList = new List<Project>();
 
@@ -28,7 +29,8 @@ namespace EasyTracker.BL
                        string image,
                        int clientid,
                        bool isarchived,
-                       int createdbyuserid)
+                       int createdbyuserid,
+                       bool isDone)
         {
             this.projectid = projectid;
             this.projectname = projectname;
@@ -38,6 +40,7 @@ namespace EasyTracker.BL
             this.clientid = clientid;
             this.isarchived = isarchived;
             this.createdbyuserid = createdbyuserid;
+            this.isDone = isDone;   
         }
 
 
@@ -50,6 +53,7 @@ namespace EasyTracker.BL
         public int Clientid { get => clientid; set => clientid = value; }
         public bool Isarchived { get => isarchived; set => isarchived = value; }
         public int Createdbyuserid { get => createdbyuserid; set => createdbyuserid = value; }
+        public bool IsDone { get => isDone; set => isDone = value; }
 
 
         public int InsertNewProject()

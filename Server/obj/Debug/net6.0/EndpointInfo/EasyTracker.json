@@ -537,6 +537,9 @@
           "createdbyuserid": {
             "type": "integer",
             "format": "int32"
+          },
+          "isDone": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
