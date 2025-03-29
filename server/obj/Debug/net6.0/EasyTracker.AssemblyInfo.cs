@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EasyTracker")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+89c1aeb90afaf368994476b1a9fc125d944776b1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e846b7f1128cd133fd8f962badd61bca271a0c5d")]
 [assembly: System.Reflection.AssemblyProductAttribute("EasyTracker")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EasyTracker")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

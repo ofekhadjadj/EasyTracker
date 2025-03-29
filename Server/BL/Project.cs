@@ -64,7 +64,7 @@ namespace EasyTracker.BL
 
 
 
-        public List<Project> GetAllProjectsByUserId(int id)
+        public List<Dictionary<string, object>> GetAllProjectsByUserId(int id)
         {
             DBservices dbs = new DBservices();
             return dbs.GetAllProjectsByUserId(id);

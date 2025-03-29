@@ -21,10 +21,12 @@ namespace EasyTracker.Controllers
 
         // GET: api/<GamesController>/GetGamesByUser/{id}
         [HttpGet("GetProjectByUserId/{id}")]
-        public IEnumerable<Project> GetAllProjectsByUserId(int id)
+        public IActionResult GetAllProjectsByUserId(int id)
         {
             Project project = new Project();
-            return project.GetAllProjectsByUserId(id);
+
+            var userProjects = project.GetAllProjectsByUserId(id);
+            return Ok(userProjects);
         }
 
 
