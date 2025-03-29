@@ -93,10 +93,6 @@ public class DBservices
 
     }
 
-
-
-
-
     //--------------------------------------------------------------------------------------------------
     // This method get user details email and password
     //--------------------------------------------------------------------------------------------------
@@ -167,9 +163,6 @@ finally
 
     }
 
-
-
-
     //--------------------------------------------------------------------------------------------------
     // This method update user deatils in users table 
     //--------------------------------------------------------------------------------------------------
@@ -221,10 +214,6 @@ finally
 
     }
 
-
-
-
-
     //--------------------------------------------------------------------------------------------------
     // This method update user Password in users table 
     //--------------------------------------------------------------------------------------------------
@@ -272,11 +261,6 @@ finally
         }
 
     }
-
-
-
-
-
 
     //--------------------------------------------------------------------------------------------------
     // This method inserts a new project to the users table 
@@ -330,15 +314,10 @@ finally
 
     }
 
-
-
-
-
-
     //--------------------------------------------------------------------------------------------------
     // This method get user projects by ID
     //--------------------------------------------------------------------------------------------------
-    public List<Project> GetAllProjectsByUserId(int id)
+    public List<Dictionary<string, object>> GetAllProjectsByUserId(int id)
     {
 
         SqlConnection con;
@@ -354,11 +333,10 @@ finally
             throw (ex);
         }
 
-        List<Project> Projects = new List<Project>();
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@UserID", id);
         
-
 
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetProjectsById", con, paramDic);
 
@@ -367,29 +345,22 @@ finally
 
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-
-            //if (!dataReader.Read())
-            //{
-            //    // אם לא נמצא משתמש כזה, זרוק שגיאה שקשורה לפרטי התחברות שגויים
-            //    //throw new Exception("Incorrect login details");
-            //    return null;
-
-            //}
-
             while (dataReader.Read())
-            { 
-                Project p = new Project();
-            p.Projectid = Convert.ToInt32(dataReader["ProjectID"]);
-            p.Projectname = dataReader["ProjectName"].ToString();
-            p.Description = dataReader["Description"].ToString();
-            p.Hourlyrate = Convert.ToSingle(dataReader["HourlyRate"]);
-            p.Image = dataReader["Image"].ToString();
-            p.Clientid = Convert.ToInt32(dataReader["ClientID"]);
-            p.Isarchived = Convert.ToBoolean(dataReader["isArchived"]);
-            p.Createdbyuserid = Convert.ToInt32(dataReader["CreatedByUserID"]);
-            Projects.Add(p);
+            {
+                var item = new Dictionary<string, object>();
+                item["ProjectID"] = Convert.ToInt32(dataReader["ProjectID"]);
+                item["ProjectName"] = dataReader["ProjectName"].ToString();
+                item["Description"] = dataReader["Description"].ToString();
+                item["HourlyRate"] = Convert.ToSingle(dataReader["HourlyRate"]);
+                item["Image"] = dataReader["Image"].ToString();
+                item["ClientID"] = Convert.ToInt32(dataReader["ClientID"]);
+                item["isArchived"] = Convert.ToBoolean(dataReader["isArchived"]);
+                item["CreatedByUserID"] = Convert.ToInt32(dataReader["CreatedByUserID"]);
+                item["isDone"] = Convert.ToBoolean(dataReader["isDone"]);
+                item["CompanyName"] = dataReader["CompanyName"].ToString();
+                result.Add(item);
             }
-            return Projects;
+            return result;
 
         }
         catch (Exception ex)

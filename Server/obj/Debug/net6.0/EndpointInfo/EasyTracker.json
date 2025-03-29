@@ -74,33 +74,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Project"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Project"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Project"
-                  }
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
@@ -537,6 +511,9 @@
           "createdbyuserid": {
             "type": "integer",
             "format": "int32"
+          },
+          "isDone": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
