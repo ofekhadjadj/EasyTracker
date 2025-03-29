@@ -11,12 +11,17 @@
       href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap"
       rel="stylesheet"
     />
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
+  />
     <!-- jquery -->
     <script
       src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"
     ></script>
+    
   </head>
   <body>
     <div class="projects-continer">
@@ -96,7 +101,7 @@
           <div class="header-projects">
             <div class="title-and-btn">
               <h1>פרויקטים</h1>
-              <img src="./images/plus-btn.png" alt="" />
+              <a href="#new-project-form" data-fancybox class="btn">  <img src="./images/plus-btn.png" alt="" /> </a>
             </div>
             <span>סיימת 7 פרויקטים, ועוד 5 מחכים לכישרון שלך!</span>
             <div class="search-container">
@@ -119,7 +124,107 @@
 
             </div>
 
+
+
+
+            <div
+            id="new-project-form"
+            style="
+              display: none;
+              width: 25%;
+              padding: 20px;
+              background-color: #f8f8f8;
+              border-radius: 10px;
+              text-align: right;
+            "
+          >
+            <h2 style="color: #333; text-align: center">📝 יצירת פרויקט חדש</h2>
+            <form id="project-form">
+              <!-- שם פרויקט -->
+              <label for="projectName">:שם הפרויקט</label>
+              <input
+                type="text"
+                id="projectName"
+                name="projectName"
+                placeholder="הכנס שם פרויקט"
+                required
+              />
+              <br />
+      
+              <!-- תיאור פרויקט -->
+              <label for="projectDesc">:תיאור הפרויקט</label>
+              <textarea
+                id="projectDesc"
+                name="projectDesc"
+                placeholder="הכנס תיאור לפרויקט"
+                rows="3"
+                required
+              ></textarea>
+              <br />
+      
+              <!-- תעריף שעתי -->
+              <label for="hourlyRate">:(₪)תעריף שעתי </label>
+              <input
+                type="number"
+                id="hourlyRate"
+                name="hourlyRate"
+                placeholder="הכנס תעריף לשעה"
+                min="1"
+                required
+              />
+              <br />
+      
+              <!-- URL לתמונה -->
+              <label for="projectImage">:קישור לתמונה</label>
+              <input
+                type="url"
+                id="projectImage"
+                name="projectImage"
+                placeholder="הכנס URL לתמונה"
+              />
+              <br />
+      
+              <!-- לקוח -->
+              <label for="clientName">:שם הלקוח</label>
+              <input
+                type="text"
+                id="clientName"
+                name="clientName"
+                placeholder="הכנס שם לקוח"
+                required
+              />
+              <br />
+      
+              <!-- יוצר הפרויקט -->
+              <label for="creator">:יוצר הפרויקט</label>
+              <input
+                type="text"
+                id="creator"
+                name="creator"
+                placeholder="הכנס שם היוצר"
+                required
+              />
+              <br />
+      
+              <!-- כפתור שליחה -->
+              <button type="submit" class="btn-submit">📤 שמור פרויקט</button>
+            </form>
+          </div>
+
+
+
+
+
+
+
+
+
+
     <script src="js/projects.js"></script>
     <script src="js/AjaxCall.js"></script>
+     <!-- Fancybox JS -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
   </body>
 </html>
+
+
