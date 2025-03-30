@@ -157,7 +157,7 @@ table {
 }
 .continer-login img {
   max-width: 50%;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 
 .login-right {
@@ -179,14 +179,15 @@ table {
 }
 
 .login-right h2 {
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 400;
 }
 
 .login-right p {
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 300;
   padding-bottom: 25px;
+  padding-top: 5px;
 }
 
 .login-btn,
@@ -512,7 +513,7 @@ img.logo-sidebar {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding-top: 30px;
   padding-bottom: 30px;
 }
@@ -650,4 +651,9 @@ img.logo-sidebar {
   box-sizing: border-box;
   text-align: right;
   font-family: Assistant;
+}
+
+.logo-login {
+  width: 25%;
+  padding-top: 40px;
 }
