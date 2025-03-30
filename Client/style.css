@@ -214,14 +214,14 @@ table {
   display: flex;
 }
 .projects-continer .sidbar {
-  width: 20%;
+  width: 13%;
   background-color: white;
   padding: 10px;
   height: 100vh;
 }
 
 .projects-continer .content {
-  width: 80%;
+  width: 87%;
   padding: 10px;
   background-color: white;
 }
@@ -284,6 +284,10 @@ li.active span {
   font-size: 18px;
   color: #333;
   padding-right: 7px;
+}
+
+li.active span {
+  color: white;
 }
 
 div.profile {
@@ -390,7 +394,7 @@ img.logo-sidebar {
 }
 
 .inner-content {
-  width: 97%;
+  width: 98%;
   height: 100%;
   box-shadow: 0px 0px 14.399999618530273px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
@@ -552,4 +556,85 @@ img.logo-sidebar {
   background-blend-mode: multiply; /* ממזג את הרקע עם הצבע */
   cursor: pointer; /* שינוי הסמן ליד למעלה */
   transition: background 0.3s ease-in-out; /* אפקט חלק לשינוי הרקע */
+}
+
+/* עיצוב עבור הפופ-אפ של הפרויקט */
+#new-project-form {
+  width: 400px;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  text-align: right;
+}
+
+/* כותרת פופ-אפ */
+#new-project-form h2 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* עיצוב כל התגיות בפופ-אפ */
+#new-project-form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* עיצוב כל שדות הקלט והטקסט */
+#new-project-form input,
+#new-project-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box; /* מונע גלישה */
+  text-align: right;
+}
+
+/* שדה טקסט תיאור */
+#new-project-form textarea {
+  resize: none;
+  height: 80px;
+}
+
+/* כפתור שליחת הטופס */
+#new-project-form .btn-submit {
+  background: linear-gradient(90deg, #0097ff 26%, #007eff 56%, #0054ff 100%);
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  width: 100%;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+/* אפקט hover לכפתור שמירה */
+#new-project-form .btn-submit:hover {
+  background: #0054ff;
+  transition: background 0.3s ease;
+}
+
+/* כפתור לפתיחת פופ-אפ */
+.btn-add-project {
+  background: #0097ff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* אפקט hover לכפתור פתיחה */
+.btn-add-project:hover {
+  background: #007eff;
 }
