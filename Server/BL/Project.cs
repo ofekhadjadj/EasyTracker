@@ -14,6 +14,7 @@ namespace EasyTracker.BL
         bool isarchived;
         int createdbyuserid;
         bool isDone;
+        decimal? durationGoal;
 
         static List<Project> projectsList = new List<Project>();
 
@@ -30,7 +31,8 @@ namespace EasyTracker.BL
                        int clientid,
                        bool isarchived,
                        int createdbyuserid,
-                       bool isDone)
+                       bool isDone,
+                       decimal durationGoal)
         {
             this.projectid = projectid;
             this.projectname = projectname;
@@ -40,7 +42,8 @@ namespace EasyTracker.BL
             this.clientid = clientid;
             this.isarchived = isarchived;
             this.createdbyuserid = createdbyuserid;
-            this.isDone = isDone;   
+            this.isDone = isDone; 
+            this.DurationGoal = durationGoal;
         }
 
 
@@ -54,7 +57,7 @@ namespace EasyTracker.BL
         public bool Isarchived { get => isarchived; set => isarchived = value; }
         public int Createdbyuserid { get => createdbyuserid; set => createdbyuserid = value; }
         public bool IsDone { get => isDone; set => isDone = value; }
-
+        public decimal? DurationGoal { get => durationGoal; set => durationGoal = value; }
 
         public int InsertNewProject()
         {

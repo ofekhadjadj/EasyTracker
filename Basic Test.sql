@@ -1,4 +1,4 @@
-select * from ET_Sessions
+ο»Ώselect * from ET_Sessions
 select * from ET_Clients
 select * from ET_Labels
 select * from ET_Users
@@ -18,7 +18,7 @@ AS
 BEGIN    
     SET NOCOUNT OFF;  
   
-        -- ςγλεο δριρξδ δηγωδ  
+        -- ΧΆΧ“Χ›Χ•Χ Χ”Χ΅Χ™Χ΅ΧΧ” Χ”Χ—Χ“Χ©Χ”  
         select ET_Projects.ProjectID,
 		ET_Projects.ProjectName,
 		ET_Projects.Description,
@@ -43,7 +43,7 @@ EXEC sp_help 'sp_ET_AddProject';
 
 
 -------------------------------------------------------------------------------------
---δζπδ ιγπιϊ ωμ ρωο ηγω
+--Χ”Χ–Χ Χ” Χ™Χ“Χ Χ™Χª Χ©Χ Χ΅Χ©Χ Χ—Χ“Χ©
 EXEC sp_helptext 'sp_ET_AddSession';
 
 CREATE PROCEDURE sp_ET_AddSessionManually  
@@ -64,7 +64,7 @@ BEGIN
 END;
 
 DECLARE @StartDate DATETIME = DATEADD(DAY, -2, GETDATE());
-DECLARE @EndDate DATETIME = DATEADD(HOUR, 2, @StartDate);  -- ωςϊιιν ΰηψι
+DECLARE @EndDate DATETIME = DATEADD(HOUR, 2, @StartDate);  -- Χ©ΧΆΧªΧ™Χ™Χ ΧΧ—Χ¨Χ™
 DECLARE @DurationSeconds INT = DATEDIFF(SECOND, @StartDate, @EndDate);
 
 EXEC sp_ET_AddSessionManually
@@ -74,11 +74,11 @@ EXEC sp_ET_AddSessionManually
     @EndDate = @EndDate,
     @DurationSeconds = @DurationSeconds,
     @HourlyRate = 100.00,
-    @Description = N'ρωο αγιχδ διρθεψι',
+    @Description = N'Χ΅Χ©Χ Χ‘Χ“Χ™Χ§Χ” Χ”Χ™Χ΅ΧΧ•Χ¨Χ™',
     @LabelID = NULL;
 
 
---αμηιφδ ςμ δϊημ ρωο ΰεθεξθι
+--Χ‘ΧΧ—Χ™Χ¦Χ” ΧΆΧ Χ”ΧªΧ—Χ Χ΅Χ©Χ ΧΧ•ΧΧ•ΧΧΧ™
 ALTER PROCEDURE sp_ET_AddStartSessionAutomatic  
     @ProjectID INT,  
     @UserID INT,  
@@ -89,7 +89,7 @@ BEGIN
 
     DECLARE @ExistingSessionID INT;
 
-    -- αεγχ ΰν χιιν ρωο αξφα Paused
+    -- Χ‘Χ•Χ“Χ§ ΧΧ Χ§Χ™Χ™Χ Χ΅Χ©Χ Χ‘ΧΧ¦Χ‘ Paused
     SELECT TOP 1 @ExistingSessionID = SessionID
     FROM ET_Sessions
     WHERE UserID = @UserID 
@@ -99,10 +99,10 @@ BEGIN
 
     IF @ExistingSessionID IS NOT NULL
     BEGIN
-        -- ξξωιλιν ΰϊ δρωο δξεωδδ
+        -- ΧΧΧ©Χ™Χ›Χ™Χ ΧΧª Χ”Χ΅Χ©Χ Χ”ΧΧ•Χ©Χ”Χ”
         UPDATE ET_Sessions
         SET 
-            --StartDate = @StartDate, -- ΰτωψ βν μωξεψ ΰϊ διωο ΰν ψεφιν
+            --StartDate = @StartDate, -- ΧΧ¤Χ©Χ¨ Χ’Χ ΧΧ©ΧΧ•Χ¨ ΧΧª Χ”Χ™Χ©Χ ΧΧ Χ¨Χ•Χ¦Χ™Χ
             EndDate = NULL,
             DurationSeconds = NULL,
             SessionStatus = 'Active'
@@ -112,7 +112,7 @@ BEGIN
         RETURN;
     END
 
-    -- ΰιο ρωο ξεωδδ – ιεφψιν ηγω
+    -- ΧΧ™Χ Χ΅Χ©Χ ΧΧ•Χ©Χ”Χ” β€“ Χ™Χ•Χ¦Χ¨Χ™Χ Χ—Χ“Χ©
     INSERT INTO ET_Sessions (ProjectID, UserID, StartDate, isArchived, SessionStatus)  
     VALUES (@ProjectID, @UserID, @StartDate, 0, 'Active');
 
@@ -142,7 +142,7 @@ EXEC sp_ET_AddStartSessionAutomatic
 
 	--------------------------------------------------------------------------------------------------
 EXEC sp_helptext 'sp_ET_UpdateSession';
---αμηιφδ ςμ δωδιδ ΰε ριεν
+--Χ‘ΧΧ—Χ™Χ¦Χ” ΧΆΧ Χ”Χ©Χ”Χ™Χ” ΧΧ• Χ΅Χ™Χ•Χ
 ALTER PROCEDURE sp_ET_UpdateSession  
     @SessionID INT,
 	@StartDate DATETIME = NULL, 
@@ -201,7 +201,7 @@ EXEC sp_ET_UpdateSession
     @EndDate = @Now,
     @DurationSeconds = 5000,
     @HourlyRate = 132.90,
-	@Description = 'αγιχϊ ςγλεο ρωο';
+	@Description = 'Χ‘Χ“Χ™Χ§Χª ΧΆΧ“Χ›Χ•Χ Χ΅Χ©Χ';
 --------------------------------------------------------------------------------------------------
 ALTER PROCEDURE sp_ET_GetSessionsByUserAndProject
     @UserID INT,
@@ -220,7 +220,7 @@ END;
 exec sp_ET_GetSessionsByUserAndProject 20, 20
 --------------------------------------------------------------------------------------------------
 EXEC sp_helptext 'sp_ET_ArchiveSession';
---ξηιχϊ ρωο
+--ΧΧ—Χ™Χ§Χª Χ΅Χ©Χ
 ALTER PROCEDURE sp_ET_ArchiveSession  
     @SessionID INT  
 AS  
@@ -267,3 +267,61 @@ END;
 
 select * from [dbo].[ET_Clients]
 exec GetClientsByUserID 1
+
+ALTER TABLE dbo.ET_Projects
+ADD DurationGoal DECIMAL(10,2) NULL;
+
+exec [dbo].[sp_ET_GetProjectsById] 2
+
+UPDATE dbo.ET_Projects
+SET DurationGoal = CAST(15 + (RAND(CHECKSUM(NEWID())) * (50 - 15)) AS DECIMAL(10,2));
+
+EXEC sp_helptext 'sp_ET_GetProjectsById';
+
+
+
+EXEC sp_helptext 'sp_ET_AddProject';
+
+ ALTER PROCEDURE sp_ET_AddProject    
+    @ProjectName VARCHAR(255),    
+    @Description TEXT = NULL,    
+    @HourlyRate DECIMAL(10,2) = NULL,    
+    @Image VARCHAR(255) = NULL,    
+    @ClientID INT = NULL,    
+    @CreatedByUserID INT,
+	@DurationGoal DECIMAL(10,2) NULL
+AS    
+BEGIN    
+    SET NOCOUNT OFF;  -- β¬…οΈ Χ©Χ•Χ Χ” ΧΧ¤Χ™ Χ”Χ‘Χ§Χ©Χ” Χ©ΧΧ    
+    
+    DECLARE @NewProjectID INT;    
+    
+    -- Χ”Χ•Χ΅Χ¤Χª Χ”Χ¤Χ¨Χ•Χ™Χ§Χ    
+    INSERT INTO ET_Projects (    
+        ProjectName,    
+        Description,    
+        HourlyRate,    
+        Image,    
+        ClientID,    
+        CreatedByUserID,
+		DurationGoal,
+        isArchived    
+    )    
+    VALUES (    
+        @ProjectName,    
+        @Description,    
+        @HourlyRate,    
+        @Image,    
+        @ClientID,    
+        @CreatedByUserID,
+		@DurationGoal,
+        0    
+    );    
+    
+    -- Χ§Χ‘ΧΧª ΧΧ–Χ”Χ” Χ”Χ¤Χ¨Χ•Χ™Χ§Χ Χ”Χ—Χ“Χ©    
+    SET @NewProjectID = SCOPE_IDENTITY();    
+    
+    -- Χ”Χ•Χ΅Χ¤Χª Χ”Χ™Χ•Χ–Χ¨ Χ©Χ™Χ¦Χ¨ ΧΧª Χ”Χ¤Χ¨Χ•Χ™Χ§Χ Χ›-ProjectManager ΧΧΧ‘ΧΧª ET_UserProjects    
+    INSERT INTO ET_UserProjects (UserID, ProjectID, Role)    
+    VALUES (@CreatedByUserID, @NewProjectID, 'ProjectManager');    
+END;  

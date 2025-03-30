@@ -288,6 +288,7 @@ finally
         paramDic.Add("@Image", project.Image);
         paramDic.Add("@ClientID", project.Clientid);
         paramDic.Add("@CreatedByUserID", project.Createdbyuserid);
+        paramDic.Add("@DurationGoal", project.DurationGoal);
 
 
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddProject", con, paramDic);          // create the command
@@ -358,6 +359,8 @@ finally
                 item["CreatedByUserID"] = Convert.ToInt32(dataReader["CreatedByUserID"]);
                 item["isDone"] = Convert.ToBoolean(dataReader["isDone"]);
                 item["CompanyName"] = dataReader["CompanyName"].ToString();
+                item["DurationGoal"] = Convert.ToDecimal(dataReader["DurationGoal"]);
+
                 result.Add(item);
             }
             return result;

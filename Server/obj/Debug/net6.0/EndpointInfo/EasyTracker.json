@@ -603,6 +603,11 @@
           },
           "isDone": {
             "type": "boolean"
+          },
+          "durationGoal": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false
