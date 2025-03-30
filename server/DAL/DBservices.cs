@@ -41,7 +41,7 @@ public class DBservices
     }
 
 
-    //**** USERS TABLE ****
+    //**** USERS TABLE ******** USERS TABLE ******** USERS TABLE ******** USERS TABLE ******** USERS TABLE ******** USERS TABLE ****
 
     //--------------------------------------------------------------------------------------------------
     // This method inserts a new user to the users table 
@@ -262,6 +262,7 @@ finally
 
     }
 
+    //**** PROJECTS TABLE ******** PROJECTS TABLE ******** PROJECTS TABLE ******** PROJECTS TABLE ******** PROJECTS TABLE ******** PROJECTS TABLE ****
     //--------------------------------------------------------------------------------------------------
     // This method inserts a new project to the users table 
     //--------------------------------------------------------------------------------------------------
@@ -318,7 +319,7 @@ finally
     //--------------------------------------------------------------------------------------------------
     // This method get user projects by ID
     //--------------------------------------------------------------------------------------------------
-    public List<Dictionary<string, object>> GetAllProjectsByUserId(int id)
+    public List<Dictionary<string, object>> GetAllProjectsByUserId(int id) //ad-hoc
     {
 
         SqlConnection con;
@@ -334,7 +335,7 @@ finally
             throw (ex);
         }
 
-        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>(); //ad-hoc
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@UserID", id);
         
@@ -348,6 +349,7 @@ finally
 
             while (dataReader.Read())
             {
+                //ad-hoc
                 var item = new Dictionary<string, object>();
                 item["ProjectID"] = Convert.ToInt32(dataReader["ProjectID"]);
                 item["ProjectName"] = dataReader["ProjectName"].ToString();
@@ -381,10 +383,6 @@ finally
         }
 
     }
-
-
-
-
 
     //--------------------------------------------------------------------------------------------------
     // This method put project in Archive  
@@ -432,14 +430,7 @@ finally
     }
 
 
-
-
-
-
-
-
-
-
+    //**** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ****
 
     //--------------------------------------------------------------------------------------------------
     // This method inserts a new Session to the Sessions table 
@@ -726,6 +717,7 @@ finally
     }
 
 
+    //**** CLIENT TABLE ******** CLIENT TABLE ******** CLIENT TABLE ******** CLIENT TABLE ******** CLIENT TABLE ******** CLIENT TABLE ****
 
 
     //--------------------------------------------------------------------------------------------------
@@ -795,6 +787,57 @@ finally
 
     }
 
+    //שקד מכאן
+
+    //--------------------------------------------------------------------------------------------------
+    // This method inserts a new client to the clients table 
+    //--------------------------------------------------------------------------------------------------
+    public int InsertNewClient(User user)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@FirstName", user.FirstName);
+        paramDic.Add("@LastName", user.LastName);
+        paramDic.Add("@Email", user.Email);
+        paramDic.Add("@Password", user.Password);
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddUser", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
 
 

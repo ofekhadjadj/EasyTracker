@@ -45,5 +45,17 @@ namespace EasyTracker.BL
             DBservices dbs = new DBservices();
             return dbs.GetAllClientsByUserID(userID);
         }
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
