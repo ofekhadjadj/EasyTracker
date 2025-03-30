@@ -114,8 +114,10 @@ $(document).ready(function () {
       hourlyrate: $("#hourlyRate").val(),
       image: $("#projectImage").val(),
       clientid: $("#clientId").val(), // clientId מכיל את ה-ID של הלקוח
-      createdbyuserid: $("#creator").val(),
+      createdbyuserid: JSON.parse(localStorage.getItem("user"))?.id || null,
+      durationGoal: $("#durationGoal").val(), // הוספת משך הזמן המיועד
     };
+    console.log(projectData);
 
     const apiUrl = "https://localhost:7198/api/Projects/addNewProject";
 

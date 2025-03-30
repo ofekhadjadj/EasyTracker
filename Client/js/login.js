@@ -29,7 +29,7 @@ function handleLogin(email, password) {
 
       if (response.success == true) {
         // מעבר לעמוד הבא
-        // window.location.href = "dashboard.html";
+        window.location.href = "./projects.html";
         console.log("התחברות מוצלחת!");
         localStorage.setItem("user", JSON.stringify(response.user));
       } else {

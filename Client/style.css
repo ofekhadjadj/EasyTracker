@@ -593,6 +593,7 @@ img.logo-sidebar {
   font-size: 14px;
   box-sizing: border-box; /* מונע גלישה */
   text-align: right;
+  font-family: Assistant;
 }
 
 /* שדה טקסט תיאור */
@@ -637,4 +638,16 @@ img.logo-sidebar {
 /* אפקט hover לכפתור פתיחה */
 .btn-add-project:hover {
   background: #007eff;
+}
+
+#clientId {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+  text-align: right;
+  font-family: Assistant;
 }
