@@ -244,3 +244,26 @@ SELECT * FROM ET_Projects WHERE ProjectID = 10;
 --2025-03-25T14:30:00.000
 
 -----------------------------------------------------------------------------------
+
+ALTER PROCEDURE GetClientsByUserID
+    @UserID INT
+AS
+BEGIN
+    SET NOCOUNT OFF;
+
+    SELECT 
+        ClientID,
+        CompanyName,
+        ContactPerson,
+        Email,
+        ContactPersonPhone,
+        OfficePhone,
+        UserID,
+        isArchived,
+        Image
+    FROM dbo.ET_Clients
+    WHERE UserID = @UserID and isArchived = 0;
+END;
+
+select * from [dbo].[ET_Clients]
+exec GetClientsByUserID 1

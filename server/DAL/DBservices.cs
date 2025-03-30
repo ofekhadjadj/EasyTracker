@@ -725,7 +725,72 @@ finally
 
 
 
+    //--------------------------------------------------------------------------------------------------
+    // This method get clients by user ID
+    //--------------------------------------------------------------------------------------------------
+    public List<Client> GetAllClientsByUserID(int userID)
+    {
 
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        List<Client> Clients = new List<Client>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+        
+
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("GetClientsByUserID", con, paramDic);
+
+        try
+        {
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Client c = new Client();
+                c.ClientID = Convert.ToInt32(dataReader["ClientID"]);
+                c.CompanyName = dataReader["CompanyName"].ToString();
+                c.ContactPerson = dataReader["ContactPerson"] == DBNull.Value ? null : dataReader["ContactPerson"].ToString();
+                c.Email = dataReader["Email"] == DBNull.Value ? null : dataReader["Email"].ToString();
+                c.ContactPersonPhone = dataReader["ContactPersonPhone"] == DBNull.Value ? null : dataReader["ContactPersonPhone"].ToString();
+                c.OfficePhone = dataReader["OfficePhone"] == DBNull.Value ? null : dataReader["OfficePhone"].ToString();
+                c.UserID = Convert.ToInt32(dataReader["UserID"]);
+                c.IsArchived = Convert.ToBoolean(dataReader["isArchived"]);
+                c.Image = dataReader["Image"] == DBNull.Value ? null : dataReader["Image"].ToString();
+
+                Clients.Add(c);
+            }
+            return Clients;
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
 
 

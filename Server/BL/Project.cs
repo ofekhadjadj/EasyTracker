@@ -7,7 +7,7 @@ namespace EasyTracker.BL
     {
         int projectid;
         string projectname;
-        string description;
+        string? description;
         float hourlyrate;
         string image;
         int clientid;
@@ -47,7 +47,7 @@ namespace EasyTracker.BL
 
         public int Projectid { get => projectid; set => projectid = value; }
         public string Projectname { get => projectname; set => projectname = value; }
-        public string Description { get => description; set => description = value; }
+        public string? Description { get => description; set => description = value; }
         public float Hourlyrate { get => hourlyrate; set => hourlyrate = value; }
         public string Image { get => image; set => image = value; }
         public int Clientid { get => clientid; set => clientid = value; }
