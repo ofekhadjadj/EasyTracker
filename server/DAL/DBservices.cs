@@ -365,6 +365,20 @@ finally
 
                 result.Add(item);
             }
+
+            if (dataReader.NextResult() && dataReader.Read())
+            {
+                var stats = new Dictionary<string, object>();
+                stats["NotDoneCount"] = Convert.ToInt32(dataReader["NotDoneCount"]);
+                stats["DoneCount"] = Convert.ToInt32(dataReader["DoneCount"]);
+
+                // נכניס את זה כאייטם מיוחד בתוך הרשימה
+                var statsWrapper = new Dictionary<string, object>();
+                statsWrapper["Stats"] = stats;
+
+                result.Add(statsWrapper);
+            }
+
             return result;
 
         }

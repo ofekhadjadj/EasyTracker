@@ -245,24 +245,43 @@ SELECT * FROM ET_Projects WHERE ProjectID = 10;
 
 -----------------------------------------------------------------------------------
 
-ALTER PROCEDURE GetClientsByUserID
-    @UserID INT
-AS
-BEGIN
-    SET NOCOUNT OFF;
+ALTER PROCEDURE sp_ET_GetProjectsById          
+    @UserID INT      
+AS          
+BEGIN          
+    SET NOCOUNT OFF;        
+        
+    -- רשימת הפרויקטים    
+    SELECT     
+        P.ProjectID,      
+        P.ProjectName,      
+        P.Description,      
+        P.HourlyRate,      
+        P.Image,      
+        P.ClientID,      
+        C.CompanyName,    
+        P.isArchived,      
+        P.isDone,    
+        P.CreatedByUserID,     
+        P.DurationGoal  
+    FROM     
+        ET_Projects P    
+        INNER JOIN ET_UserProjects UP ON P.ProjectID = UP.ProjectID      
+        LEFT JOIN ET_Clients C ON P.ClientID = C.ClientID    
+    WHERE     
+        UP.UserID = @UserID AND P.isArchived = 0
+    ORDER BY
+        P.isDone;
 
-    SELECT 
-        ClientID,
-        CompanyName,
-        ContactPerson,
-        Email,
-        ContactPersonPhone,
-        OfficePhone,
-        UserID,
-        isArchived,
-        Image
-    FROM dbo.ET_Clients
-    WHERE UserID = @UserID and isArchived = 0;
+    -- כמות פרויקטים לפי isDone
+    SELECT  
+        SUM(CASE WHEN P.isDone = 0 THEN 1 ELSE 0 END) AS NotDoneCount,
+        SUM(CASE WHEN P.isDone = 1 THEN 1 ELSE 0 END) AS DoneCount
+    FROM
+        ET_Projects P
+        INNER JOIN ET_UserProjects UP ON P.ProjectID = UP.ProjectID
+    WHERE
+     UP.UserID = @UserID AND P.isArchived = 0;
 END;
 
 select * from [dbo].[ET_Clients]
@@ -325,3 +344,5 @@ BEGIN
     INSERT INTO ET_UserProjects (UserID, ProjectID, Role)    
     VALUES (@CreatedByUserID, @NewProjectID, 'ProjectManager');    
 END;  
+
+
