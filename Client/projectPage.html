@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
+  />
+    <!-- jquery -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    
+  </head>
+  <body>
+    <div class="projects-continer">
+      <div class="sidbar">
+        <div class="inner-sidbar">
+          <div class="profile">
+            <img src="./images/avatar.png" class="avatar-img" alt="" />
+            <h3>הי, משה 👋</h3>
+            <img
+              src="./images/profile arrow.png"
+              class="arrow-btn"
+              id="arrow-btn"
+              alt=""
+            />
+          </div>
+          <img src="./images/logo.png" class="logo-sidebar" alt="" />
+          <div class="nav-continer">
+            <div class="main-nav">
+              <ul>
+                <li class="active">
+                  <img
+                    src="./images/project icon.png"
+                    alt="פרויקטים"
+                    class="nav-icon"
+                  />
+                  <span>פרויקטים</span>
+                </li>
+                <li>
+                  <img
+                    src="./images/customers icon.png"
+                    alt="לקוחות"
+                    class="nav-icon"
+                  />
+                  <span>לקוחות</span>
+                </li>
+                <li>
+                  <img
+                    src="./images/reports.png"
+                    alt="ניתוח ודוחות"
+                    class="nav-icon"
+                  />
+                  <span>ניתוח ודוחות</span>
+                </li>
+                <li>
+                  <img src="./images/tags.png" alt="תיוגים" class="nav-icon" />
+                  <span>תיוגים</span>
+                </li>
+                <li>
+                  <img
+                    src="./images/reminders.png"
+                    alt="תזכורות"
+                    class="nav-icon"
+                  />
+                  <span>תזכורות</span>
+                </li>
+              </ul>
+            </div>
+            <div class="help-nav">
+              <li>
+                <img
+                  src="./images/settings-icon.png"
+                  alt="הגדרות"
+                  class="nav-icon"
+                />
+                <span>הגדרות</span>
+              </li>
+              <li>
+                <img src="./images/help-icon.png" alt="עזרה" class="nav-icon" />
+                <span>עזרה</span>
+              </li>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+          
+            <div class="dashboard-container">
+                <!-- שלוש קופסאות למעלה -->
+                <div class="team-box box">פרטי הפרויקט</div>
+                <div class="timer-box box">טיימר</div>
+                <div class="project-summary-box box">פרטי הפרויקט</div>
+              
+                <!-- קופסה גדולה במרכז -->
+                <div class="changes-box box">שינויים</div>
+              
+                <!-- קופסה אחרונה למטה -->
+                <div class="recent-projects-box box">פרויקטים אחרונים</div>
+              </div>
+              
+
+
+
+            </div>
+          </div>
+
+          <div class="body-projects" id="projects">
+
+              
+
+            </div>
+
+
+
+
+            <div
+            id="new-project-form"
+            style="
+              display: none;
+              width: 25%;
+              padding: 20px;
+              background-color: #f8f8f8;
+              border-radius: 10px;
+              text-align: right;
+            "
+          >
+            <h2 style="color: #333; text-align: center">📝 יצירת פרויקט חדש</h2>
+            <form id="project-form">
+              <!-- שם פרויקט -->
+              <label for="projectName">:שם הפרויקט</label>
+              <input
+                type="text"
+                id="projectName"
+                name="projectName"
+                placeholder="הכנס שם פרויקט"
+                required
+              />
+              <br />
+      
+              <!-- תיאור פרויקט -->
+              <label for="projectDesc">:תיאור הפרויקט</label>
+              <textarea
+                id="projectDesc"
+                name="projectDesc"
+                placeholder="הכנס תיאור לפרויקט"
+                rows="3"
+                required
+              ></textarea>
+              <br />
+      
+              <!-- תעריף שעתי -->
+              <label for="hourlyRate">:(₪)תעריף שעתי </label>
+              <input
+                type="number"
+                id="hourlyRate"
+                name="hourlyRate"
+                placeholder="הכנס תעריף לשעה"
+                min="1"
+                required
+              />
+              <br />
+      
+              <!-- URL לתמונה -->
+              <label for="projectImage">:קישור לתמונה</label>
+              <input
+                type="url"
+                id="projectImage"
+                name="projectImage"
+                placeholder="הכנס URL לתמונה"
+              />
+              <br />
+      
+                      <!-- לקוח -->
+            <label for="clientId">:שם הלקוח</label>
+            <select id="clientId" name="clientId" required>
+              <option value="">בחר לקוח</option>
+            </select>
+            <br />
+
+      
+              <label for="durationGoal">:יעד סיום פרוייקט</label>
+              <input
+                type="text"
+                id="durationGoal"
+                name="durationGoal"
+                placeholder="הכנס צפי שעות לסיום פרוייקט"
+                required
+              />
+              <br />
+      
+              <!-- כפתור שליחה -->
+              <button type="submit" class="btn-submit">📤 שמור פרויקט</button>
+            </form>
+
+
+
+
+
+
+
+
+
+
+    <script src="js/projectPage.js"></script>
+    <script src="js/AjaxCall.js"></script>
+     <!-- Fancybox JS -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  </body>
+</html>
+
+
