@@ -1,2 +1,7 @@
 appsettings.json
 .vs/
+*.bin
+*.v2
+*.v2
+*.cs
+*.cache
