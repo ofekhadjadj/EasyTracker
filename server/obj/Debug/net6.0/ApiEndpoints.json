@@ -26,6 +26,116 @@
     ]
   },
   {
+    "ContainingType": "EasyTracker.Controllers.LabelController",
+    "Method": "PostNewLabel",
+    "RelativePath": "api/Label/addNewLabel",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "label",
+        "Type": "EasyTracker.BL.Label",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "EasyTracker.Controllers.LabelController",
+    "Method": "DeleteLabel",
+    "RelativePath": "api/Label/delete_label",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "LabelID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EasyTracker.Controllers.LabelController",
+    "Method": "Get6ToplLabelsByUserID",
+    "RelativePath": "api/Label/Get6ToplLabelsByUserID",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[EasyTracker.BL.Label, EasyTracker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "EasyTracker.Controllers.LabelController",
+    "Method": "GetAllLabelsByUserID",
+    "RelativePath": "api/Label/GetAllLabelsByUserID",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[EasyTracker.BL.Label, EasyTracker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "EasyTracker.Controllers.LabelController",
+    "Method": "UpdateLabel",
+    "RelativePath": "api/Label/update_label",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "label",
+        "Type": "EasyTracker.BL.Label",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "EasyTracker.Controllers.ProjectsController",
     "Method": "PostNewProject",
     "RelativePath": "api/Projects/addNewProject",

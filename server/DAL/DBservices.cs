@@ -854,6 +854,276 @@ finally
     }
 
 
+    //**** LABEL TABLE ******** LABEL TABLE ******** LABEL TABLE ******** LABEL TABLE ******** LABEL TABLE ******** LABEL TABLE ****
+
+    //--------------------------------------------------------------------------------------------------
+    // This method inserts a new label to the labels table 
+    //
+    public int InsertNewLabel(Label label)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@LabelName", label.LabelName);
+        paramDic.Add("@LabelColor", label.LabelColor);
+        paramDic.Add("@UserID", label.UserID);
+     
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddLabel", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method update label IsArchived in Labels table 
+    //--------------------------------------------------------------------------------------------------
+    public int DeleteLabel(int LabelID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@LabelID", LabelID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_ArchiveLabel", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get labels by user ID
+    //--------------------------------------------------------------------------------------------------
+    public List<Label> GetAllLabelsByUserID(int userID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        List<Label> Labels = new List<Label>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+
+
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetLabelsByUserId", con, paramDic);
+
+        try
+        {
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Label l = new Label();
+                l.LabelID = Convert.ToInt32(dataReader["LabelID"]);
+                l.LabelName = dataReader["LabelName"].ToString();
+                l.LabelColor = dataReader["LabelColor"].ToString();
+                l.UserID = Convert.ToInt32(dataReader["UserID"]);
+
+                Labels.Add(l);
+            }
+            return Labels;
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get 6 top labels by user ID
+    //--------------------------------------------------------------------------------------------------
+    public List<Label> Get6ToplLabelsByUserID(int userID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        List<Label> Labels = new List<Label>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+
+
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetPopularLabelsByUserId", con, paramDic);
+
+        try
+        {
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Label l = new Label();
+                l.LabelID = Convert.ToInt32(dataReader["LabelID"]);
+                l.LabelName = dataReader["LabelName"].ToString();
+                l.LabelColor = dataReader["LabelColor"].ToString();
+                //l.UserID = Convert.ToInt32(dataReader["UserID"]);
+
+                Labels.Add(l);
+            }
+            return Labels;
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method update user deatils in users table 
+    //--------------------------------------------------------------------------------------------------
+    public int UpdateLabel(Label label)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@LabelID", label.LabelID);
+        paramDic.Add("@LabelName", label.LabelName);
+        paramDic.Add("@LabelColor", label.LabelColor);
+       
+        //paramDic.Add("@Name", user.Name);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateLabel", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
 
 

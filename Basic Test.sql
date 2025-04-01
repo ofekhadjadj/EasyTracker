@@ -346,3 +346,90 @@ BEGIN
 END;  
 
 
+ALTER PROCEDURE sp_ET_GetLabelsById          
+    @UserID INT      
+AS          
+BEGIN          
+    SET NOCOUNT OFF;        
+        
+    -- רשימת התגיות    
+    SELECT * FROM ET_Labels WHERE UserID = @UserID and isArchived = 0 
+END;
+
+exec sp_ET_GetLabelsByUserId 1
+
+EXEC sp_rename 'sp_ET_GetLabelsById', 'sp_ET_GetLabelsByUserId';
+
+ALTER PROCEDURE sp_ET_GetPopularLabelsByUserId
+    @UserID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT TOP 6 
+        S.LabelID,
+        L.LabelName,
+        L.LabelColor,
+        COUNT(*) AS UsageCount
+    FROM 
+        ET_Sessions S
+        INNER JOIN ET_Labels L ON S.LabelID = L.LabelID
+    WHERE 
+        S.UserID = @UserID
+        AND S.LabelID IS NOT NULL
+        AND L.isArchived = 0
+    GROUP BY 
+        S.LabelID, L.LabelName, L.LabelColor
+    ORDER BY 
+        UsageCount DESC;
+END;
+exec sp_ET_GetPopularLabelsByUserId 1
+
+select LabelID--, count(SessionID) as count
+from ET_Sessions
+where UserID =1
+group by LabelID
+order by count desc
+
+select * from ET_Sessions where UserID = 1
+select * from ET_Labels where UserID = 1
+
+
+SELECT
+    S.LabelID,
+    L.LabelName,
+    L.LabelColor,
+    COUNT(*) AS UsageCount
+FROM 
+    ET_Sessions S
+    INNER JOIN ET_Labels L ON S.LabelID = L.LabelID
+WHERE 
+    S.UserID = 1 AND S.LabelID IS NOT NULL AND L.isArchived = 0
+GROUP BY 
+    S.LabelID, L.LabelName, L.LabelColor
+ORDER BY 
+    UsageCount DESC;
+
+
+	CREATE OR ALTER PROCEDURE sp_ET_GetPopularLabelsByUserId
+    @UserID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT TOP 6 
+        S.LabelID,
+        L.LabelName,
+        L.LabelColor
+    FROM 
+        ET_Sessions S
+        INNER JOIN ET_Labels L ON S.LabelID = L.LabelID
+    WHERE 
+        S.UserID = @UserID
+        AND S.LabelID IS NOT NULL
+        AND L.isArchived = 0
+    GROUP BY 
+        S.LabelID, L.LabelName, L.LabelColor
+    ORDER BY 
+        COUNT(*) DESC;
+END;
