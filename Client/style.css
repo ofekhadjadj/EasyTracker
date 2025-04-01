@@ -215,7 +215,7 @@ table {
   display: flex;
 }
 .projects-continer .sidbar {
-  width: 13%;
+  width: 17%;
   background-color: white;
   padding: 10px;
   height: 100vh;
@@ -231,7 +231,6 @@ table {
 .main-nav {
   width: 95%;
   background-color: #fff;
-  margin-bottom: 15%;
 }
 
 /* רשימה בתוך התפריט */
@@ -326,6 +325,10 @@ img.arrow-btn {
 
 .nav-continer {
   width: 95%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 img.logo-sidebar {
@@ -656,4 +659,59 @@ img.logo-sidebar {
 .logo-login {
   width: 25%;
   padding-top: 40px;
+}
+
+/* מיכל ראשי ללייאאוט */
+.dashboard-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%; /* פריסה על כל הרוחב */
+  margin: 0; /* ביטול שוליים */
+}
+
+/* קופסאות בשורה הראשונה */
+.team-box,
+.timer-box,
+.project-summary-box {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  min-height: 150px;
+}
+
+/* קופסה אחת גדולה במרכז */
+.changes-box {
+  grid-column: span 3;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  min-height: 300px;
+}
+
+/* קופסה אחרונה על כל הרוחב */
+.recent-projects-box {
+  grid-column: span 3;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  min-height: 200px;
+}
+
+/* רספונסיביות */
+@media (max-width: 768px) {
+  .dashboard-container {
+    grid-template-columns: 1fr; /* שינוי לגריד של עמודה אחת במסכים קטנים */
+  }
+
+  .team-box,
+  .timer-box,
+  .project-summary-box,
+  .changes-box,
+  .recent-projects-box {
+    grid-column: span 1;
+  }
 }
