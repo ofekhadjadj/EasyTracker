@@ -67,7 +67,8 @@ public class DBservices
         paramDic.Add("@LastName", user.LastName);
         paramDic.Add("@Email", user.Email);
         paramDic.Add("@Password", user.Password);
-       
+        paramDic.Add("@Image", user.Image);
+
 
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddUser", con, paramDic);          // create the command
 
@@ -143,8 +144,10 @@ try
     u.LastName = dataReader["LastName"].ToString();
     u.Role = dataReader["Role"].ToString();
     u.IsActive = Convert.ToBoolean(dataReader["IsActive"]);
+    u.Image = dataReader["Image"].ToString();
 
-    return u;
+
+            return u;
 
     }
 catch (Exception ex)
@@ -188,6 +191,8 @@ finally
         paramDic.Add("@FirstName", user.FirstName);
         paramDic.Add("@LastName", user.LastName);
         paramDic.Add("@Password", user.Password);
+        paramDic.Add("@Image", user.Image);
+
         //paramDic.Add("@Name", user.Name);
 
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateUser", con, paramDic);          // create the command

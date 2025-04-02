@@ -3,13 +3,14 @@
     public class User
     {
         int? id;
-        string firstName;
-        string lastName;
-        string email;
+        string? firstName;
+        string? lastName;
+        string? email;
         string password;
         string? role;
         bool? isActive;
         DateTime? createdAt;
+        string? image;
 
 
 
@@ -18,7 +19,7 @@
         
         public User(){}
 
-        public User(int id, string firstName, string lastName, string email, string password, string role, bool isActive, DateTime createdAt)
+        public User(int id, string firstName, string lastName, string email, string password, string role, bool isActive, DateTime createdAt, string image)
         {
             this.id = id;
             this.firstName = firstName;
@@ -28,19 +29,21 @@
             this.role = role;
             this.isActive = isActive;
             this.createdAt = createdAt;
+            this.image = image;
         }
 
         public int? Id { get => id; set => id = value; }
-        public string FirstName { get => firstName; set => firstName = value; }
-        public string LastName { get => lastName; set => lastName = value; }
-        public string Email { get => email; set => email = value; }
+        public string? FirstName { get => firstName; set => firstName = value; }
+        public string? LastName { get => lastName; set => lastName = value; }
+        public string? Email { get => email; set => email = value; }
         public string Password { get => password; set => password = value; }
         public string? Role { get => role; set => role = value; }
         public bool? IsActive { get => isActive; set => isActive = value; }
         public DateTime? CreatedAt { get => createdAt; set => createdAt = value; }
+        public string? Image { get => image; set => image = value; }
 
-       
-         public int InsertNewUser()
+
+        public int InsertNewUser()
          {
             DBservices dbs = new DBservices();
             return dbs.InsertNewUser(this);
