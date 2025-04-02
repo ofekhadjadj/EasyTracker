@@ -100,9 +100,74 @@
           
             <div class="dashboard-container">
                 <!-- שלוש קופסאות למעלה -->
-                <div class="team-box box">פרטי הפרויקט</div>
-                <div class="timer-box box">טיימר</div>
-                <div class="project-summary-box box">פרטי הפרויקט</div>
+                <div class="team-box box box-info-proj">
+                  
+                  <nav class="breadcrumbs">
+                    <a href="#">פרויקטים</a>
+                    <span>&gt;</span>
+                    <span id="breadcrumbsProjName">פיתוח אתר אינטרנט - מכללת רופין</span>
+                  </nav>
+
+                    <h1 class="project-title">פיתוח אתר אינטרנט</h1>
+                    <h4 class="project-client">מכללת רופין</h1>
+                      <hr class="line" />
+                      <h5 class="info-save">
+                        כאן אנחנו שומרים לך על כל הפרטים וחומרי העזר החשובים שלך!
+                      </h5>
+                      <button class="gradient-button">כל הפרטים כאן!</button>
+
+
+
+                </div>
+                <div class="timer-box box center-content-flx">
+                  <div class="stopwatch-container">
+                    <div class="circle-timer">
+                      <svg width="200" height="200">
+                        <circle class="circle-bg" cx="100" cy="100" r="94" />
+                        <circle class="circle-progress" cx="100" cy="100" r="94" />
+                      </svg>
+                      <div class="time-display" id="time">00:00:00</div>
+                    </div>
+                    <div class="buttons">
+                      <button class="btn" id="toggle-btn">
+                        <img src="./images/play-icon.png" id="toggle-icon"/>
+                        <span id="toggle-text">התחל</span>
+                      </button>
+                      <button class="btn" id="stop-btn">
+                        <img src="./images/stop-icon.png" />
+                        <span>סיים</span>
+                      </button>
+                    </div>
+                  </div>
+
+              </div>
+                <div class="project-summary-box ">
+                  
+                  <div class="half-box">
+
+                      <h3 class="team-title">צוות הפרויקט:</h3>
+                      <div class="connected-users-to-project">
+                        <img src="./images/demo avatar 1.png" alt="">
+                        <img src="./images/demo avatar 2.png" alt="">
+                        <img src="./images/demo avatar 3.png" alt="">
+                        <img src="./images/profile arrow.png" class="arrow-btn" alt="">
+                      </div>
+
+                  </div>
+                  <div class="half-box">
+                    
+                    <div class="progress-box">
+                      <label class="progress-title">ההתקדמות שלי</label>
+                      <div class="progress-track">
+                        <div class="progress-fill" id="progress-fill">
+                          <span id="progress-text">0%</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+
+                  </div>
+                </div>
               
                 <!-- קופסה גדולה במרכז -->
                 <div class="changes-box box">שינויים</div>
@@ -212,12 +277,15 @@
 
 
 
+            <script src="https://cdn.jsdelivr.net/npm/easytimer.js@4.3.1/dist/easytimer.min.js"></script>
 
 
     <script src="js/projectPage.js"></script>
+    
     <script src="js/AjaxCall.js"></script>
      <!-- Fancybox JS -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
   </body>
 </html>
 
