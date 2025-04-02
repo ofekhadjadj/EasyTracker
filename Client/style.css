@@ -661,19 +661,15 @@ img.logo-sidebar {
   padding-top: 40px;
 }
 
-/* מיכל ראשי ללייאאוט */
 .dashboard-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto auto;
   gap: 20px;
-  width: 100%; /* פריסה על כל הרוחב */
-  margin: 0; /* ביטול שוליים */
+  width: 100%;
 }
 
-/* קופסאות בשורה הראשונה */
-.team-box,
-.timer-box,
-.project-summary-box {
+.box {
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -681,37 +677,244 @@ img.logo-sidebar {
   min-height: 150px;
 }
 
-/* קופסה אחת גדולה במרכז */
+/* שלוש קופסאות בשורה הראשונה */
+.team-box,
+.timer-box,
+.project-summary-box {
+  min-height: 150px;
+}
+
+/* שורה שנייה - קופסה אחת על כל הרוחב */
 .changes-box {
   grid-column: span 3;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
   min-height: 300px;
 }
 
-/* קופסה אחרונה על כל הרוחב */
+/* שורה שלישית - קופסה אחת על כל הרוחב */
 .recent-projects-box {
   grid-column: span 3;
+  min-height: 200px;
+}
+
+/* קופסה אמצעית שמחולקת לשניים */
+.project-summary-box {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.project-summary-box .half-box {
+  flex: 1;
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  min-height: 200px;
 }
 
 /* רספונסיביות */
 @media (max-width: 768px) {
   .dashboard-container {
-    grid-template-columns: 1fr; /* שינוי לגריד של עמודה אחת במסכים קטנים */
+    grid-template-columns: 1fr;
   }
-
-  .team-box,
-  .timer-box,
-  .project-summary-box,
   .changes-box,
   .recent-projects-box {
     grid-column: span 1;
   }
+  .project-summary-box {
+    flex-direction: column;
+  }
+}
+
+.breadcrumbs a {
+  color: #666;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbs span {
+  font-weight: 300;
+}
+
+/* stoper*/
+.stopwatch-container {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  flex-direction: row-reverse;
+  justify-content: center;
+}
+
+.circle-timer {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.circle-timer svg {
+  transform: rotate(-90deg);
+}
+
+.circle-timer circle {
+  fill: none;
+  stroke-width: 12;
+}
+
+.circle-bg {
+  stroke: #e5f0ff;
+}
+
+.circle-progress {
+  stroke: #6dbfff;
+  stroke-linecap: round;
+  stroke-dasharray: 628;
+  stroke-dashoffset: 628;
+  transition: stroke-dashoffset 0.2s linear;
+}
+
+.time-display {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: white;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn img {
+  width: 30px;
+  height: 30px;
+}
+
+.center-content-flx {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.connected-users-to-project {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.half-box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: start;
+  flex-direction: column;
+}
+
+.connected-users-to-project img {
+  border-radius: 50px;
+}
+
+.arrow-btn img {
+  cursor: pointer;
+}
+
+h3.team-title {
+  padding: 5px;
+  padding-left: 0px;
+}
+
+.progress-box {
+  width: 100%;
+  max-width: 500px;
+  direction: rtl;
+}
+
+.progress-title {
+  display: block;
+  font-size: 22px;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.progress-track {
+  background-color: #d8ecff;
+  border-radius: 999px;
+  height: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: linear-gradient(to left, #0099ff, #007bff);
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  transition: width 0.4s ease;
+}
+
+#progress-text {
+  color: black;
+}
+
+.gradient-button {
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  color: white;
+  font-size: 20px;
+  font-family: "Assistant", sans-serif;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gradient-button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+.box-info-proj {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.project-title {
+  font-size: 33px;
+  font-weight: 500;
+}
+
+.project-client {
+  font-size: 20px;
+  font-weight: 300;
+  margin-top: -10px;
+}
+
+hr.line {
+  color: black;
 }
