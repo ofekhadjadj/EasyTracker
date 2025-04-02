@@ -21,6 +21,15 @@
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"
     ></script>
+    <!-- טבלת סשנים עם עיצוב וסקריפט להרחבה -->
+    <link
+    href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
+    rel="stylesheet"
+    />
+    <link
+    href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css"
+    rel="stylesheet"
+    />
     
   </head>
   <body>
@@ -103,13 +112,13 @@
                 <div class="team-box box box-info-proj">
                   
                   <nav class="breadcrumbs">
-                    <a href="#">פרויקטים</a>
+                    <a href="./projects.html">פרויקטים</a>
                     <span>&gt;</span>
                     <span id="breadcrumbsProjName">פיתוח אתר אינטרנט - מכללת רופין</span>
                   </nav>
 
-                    <h1 class="project-title">פיתוח אתר אינטרנט</h1>
-                    <h4 class="project-client">מכללת רופין</h1>
+                    <h1 class="project-title" id="ProjectTitle">פיתוח אתר אינטרנט</h1>
+                    <h4 class="project-client" id="ProjectClient">מכללת רופין</h1>
                       <hr class="line" />
                       <h5 class="info-save">
                         כאן אנחנו שומרים לך על כל הפרטים וחומרי העזר החשובים שלך!
@@ -170,7 +179,45 @@
                 </div>
               
                 <!-- קופסה גדולה במרכז -->
-                <div class="changes-box box">שינויים</div>
+                <div class="changes-box box">
+                  
+
+                  <table id="sessionsTable" class="display responsive nowrap">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>תאריך</th>
+                        <th>שעת התחלה</th>
+                        <th>שעת סיום</th>
+                        <th>זמן עבודה</th>
+                        <th>תעריף</th>
+                        <th>שכר</th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td></td>
+                        <td>15/12/2024</td>
+                        <td>11:00</td>
+                        <td>--:--</td>
+                        <td>01:23:05</td>
+                        <td>₪150</td>
+                        <td>₪207</td>
+                        <td>
+                          <button class="action-btn">עריכה</button>
+                          <button class="action-btn">מחיקה</button>
+                        </td>
+                        <td>
+                          <button class="action-btn details-control">\u25BC</button>
+                        </td>
+                      </tr>
+                      <!-- עוד שורות... -->
+                    </tbody>
+                  </table>
+
+                </div>
               
                 <!-- קופסה אחרונה למטה -->
                 <div class="recent-projects-box box">פרויקטים אחרונים</div>
@@ -285,7 +332,9 @@
     <script src="js/AjaxCall.js"></script>
      <!-- Fancybox JS -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-
+     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+     <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+     
   </body>
 </html>
 

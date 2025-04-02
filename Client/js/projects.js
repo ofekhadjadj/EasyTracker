@@ -1,4 +1,5 @@
 const CardsDiv = document.getElementById("projects");
+let allProjects = [];
 
 document.addEventListener("DOMContentLoaded", LoadProject);
 
@@ -11,6 +12,7 @@ function LoadProject() {
 }
 function successCB(response) {
   renderProjects(response);
+  PushInfoToProjectDone(response);
 }
 
 function ErrorCB(xhr, status, error) {
@@ -18,6 +20,7 @@ function ErrorCB(xhr, status, error) {
 }
 
 function renderProjects(projects) {
+  allProjects = projects;
   console.log(projects);
 
   projects.forEach((project) => {
@@ -34,7 +37,7 @@ function renderProjects(projects) {
 
     let statusHtml = project.isDone ? '<span class="status">הושלם!</span>' : ""; // אם isDone true, הצג "הושלם!", אחרת ריק
     let html = `
-  <div class="project-card" style="background-image: url('${project.Image}');">
+  <div class="project-card" projectId="${project.ProjectID}" style="background-image: url('${project.Image}');">
     <div class="project-content">
       ${statusHtml}
       <h2>${project.ProjectName}</h2>
@@ -183,4 +186,29 @@ function populateClientDropdown(clients) {
       `<option value="${client.clientID}">${client.companyName}</option>`
     );
   });
+}
+
+CardsDiv.addEventListener("click", function (event) {
+  const card = event.target.closest(".project-card"); // חפש את ה-div עם class="project-card" מהאלמנט שנלחץ עליו
+  if (card) {
+    const projectId = card.getAttribute("projectId");
+    console.log("נלחץ על פרויקט עם ID:", projectId);
+    const selectedProject = allProjects.find((p) => p.ProjectID == projectId);
+    console.log("פרויקט שנבחר:", selectedProject);
+
+    localStorage.setItem("CurrentProject", JSON.stringify(selectedProject)); // שמור את ה-ID של הפרויקט ב-localStorage
+    window.location.href = "./projectPage.html"; // העבר לעמוד הפרויקט
+  }
+});
+//
+
+function PushInfoToProjectDone(ProjArray) {
+  let done = ProjArray[ProjArray.length - 1].Stats.DoneCount;
+  let notDone = ProjArray[ProjArray.length - 1].Stats.NotDoneCount;
+  console.log(done, notDone);
+
+  let textForTitleDone = `
+  סיימת ${done} פרויקטים, ועוד ${notDone} מחכים לכישרון שלך!
+  `;
+  document.getElementById("doneText").innerText = textForTitleDone;
 }
