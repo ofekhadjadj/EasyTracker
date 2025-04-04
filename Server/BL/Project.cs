@@ -65,8 +65,6 @@ namespace EasyTracker.BL
             return dbs.InsertNewProject(this);
         }
 
-
-
         public List<Dictionary<string, object>> GetAllProjectsByUserId(int id)
         {
             DBservices dbs = new DBservices();
@@ -80,7 +78,17 @@ namespace EasyTracker.BL
             return dbs.DeleteProject(ProjectId);
         }
 
+        public int AddNewTeamMemberToProject(string TeamMemberEmail, int projectID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.AddNewTeamMemberToProject(TeamMemberEmail, projectID);
+        }
 
+        public int RemoveTeamMemberFromProject(string TeamMemberEmail)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.RemoveTeamMemberFromProject(TeamMemberEmail);
+        }
 
 
 

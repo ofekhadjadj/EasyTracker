@@ -367,6 +367,9 @@ finally
                 item["isDone"] = Convert.ToBoolean(dataReader["isDone"]);
                 item["CompanyName"] = dataReader["CompanyName"].ToString();
                 item["DurationGoal"] = Convert.ToDecimal(dataReader["DurationGoal"]);
+                item["Role"] = dataReader["Role"].ToString();
+                item["isDisable"] = dataReader["isDisable"].ToString();
+
 
                 result.Add(item);
             }
@@ -448,6 +451,98 @@ finally
 
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method get user projects by ID
+    //--------------------------------------------------------------------------------------------------
+    public int AddNewTeamMemberToProject(string TeamMemberEmail, int projectID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+       
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@TeamMemberEmail", TeamMemberEmail);
+        paramDic.Add("@ProjectID", projectID);
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddNewTeamMemberToProject", con, paramDic);
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method put Team Member in disable  
+    //--------------------------------------------------------------------------------------------------
+    public int RemoveTeamMemberFromProject(string TeamMemberEmail)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@Email", TeamMemberEmail);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_RemoveTeamMemberFromProject", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
     //**** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ****
 
@@ -765,7 +860,7 @@ finally
 
 
 
-        cmd = CreateCommandWithStoredProcedureGeneral("GetClientsByUserID", con, paramDic);
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetClientsByUserID", con, paramDic);
 
         try
         {

@@ -30,8 +30,6 @@ namespace EasyTracker.Controllers
         }
 
 
-
-
         [HttpPut("delete_project")]
         public IActionResult DeleteProject([FromQuery] int ProjectId)
         {
@@ -40,6 +38,28 @@ namespace EasyTracker.Controllers
 
             return Ok(new { ProjectId = deletedProhjectID });
         }
+
+        // POST api/<UsersController>
+        [HttpPost("AddNewTeamMemberToProject")]
+        public IActionResult AddNewTeamMemberToProject([FromQuery] string TeamMemberEmail, [FromQuery] int projectID)
+        {
+            Project p = new Project();
+            int numEffected = p.AddNewTeamMemberToProject(TeamMemberEmail, projectID);
+
+            return Ok(numEffected);
+            
+        }
+
+        [HttpPut("RemoveTeamMemberFromProject")]
+        public IActionResult RemoveTeamMemberFromProject([FromQuery] string TeamMemberEmail)
+        {
+            Project p = new Project();
+            int numEffected = p.RemoveTeamMemberFromProject(TeamMemberEmail);
+
+            return Ok(numEffected);
+
+        }
+
 
 
     }

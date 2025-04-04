@@ -5,3 +5,10 @@ appsettings.json
 *.v2
 *.cs
 *.cache
+*.bin
+*.config
+*.v2
+*.dll
+*.pdb
+*.cache
+*.props

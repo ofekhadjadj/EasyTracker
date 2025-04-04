@@ -163,6 +163,27 @@
   },
   {
     "ContainingType": "EasyTracker.Controllers.ProjectsController",
+    "Method": "AddNewTeamMemberToProject",
+    "RelativePath": "api/Projects/AddNewTeamMemberToProject",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TeamMemberEmail",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "projectID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EasyTracker.Controllers.ProjectsController",
     "Method": "DeleteProject",
     "RelativePath": "api/Projects/delete_project",
     "HttpMethod": "PUT",
@@ -189,6 +210,22 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EasyTracker.Controllers.ProjectsController",
+    "Method": "RemoveTeamMemberFromProject",
+    "RelativePath": "api/Projects/RemoveTeamMemberFromProject",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TeamMemberEmail",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
