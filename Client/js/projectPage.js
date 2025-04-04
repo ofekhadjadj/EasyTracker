@@ -1,7 +1,12 @@
 let CurrentProject = JSON.parse(localStorage.getItem("CurrentProject"));
+let CurrentUser = JSON.parse(localStorage.getItem("user"));
 console.log("CurrentProject", CurrentProject);
+console.log("User", CurrentUser);
+let table;
 
-FillDeatils();
+document.addEventListener("DOMContentLoaded", renderTableFromDB);
+document.addEventListener("DOMContentLoaded", FillDeatils);
+
 function FillDeatils() {
   const projectName = document.getElementById("ProjectTitle");
   const ProjectClient = document.getElementById("ProjectClient");
@@ -102,7 +107,7 @@ stopBtn.addEventListener("click", () => {
 });
 
 $(document).ready(function () {
-  const table = $("#sessionsTable").DataTable({
+  table = $("#sessionsTable").DataTable({
     responsive: true,
     language: {
       url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/he.json",
@@ -131,3 +136,40 @@ $(document).ready(function () {
     }
   });
 });
+
+function renderTableFromDB() {
+  //bring sessions from db
+  const apiUrl = `https://localhost:7198/api/Session/GetAllSessionsByUserAndProject?userID=${CurrentUser.id}&projectID=${CurrentProject.ProjectID}`;
+
+  console.log(apiUrl);
+
+  ajaxCall("GET", apiUrl, "", successCB, ErrorCB);
+
+  function successCB(response) {
+    console.log(response);
+    console.log(table);
+
+    const newRow = [
+      "", // עמודה ריקה
+      "01/04/2025", // תאריך
+      "10:00", // שעת התחלה
+      "12:00", // שעת סיום
+      "שעתיים", // משך זמן
+      "₪150", // תעריף
+      "₪300", // שכר
+      '<button class="edit-btn">✏️</button><button class="delete-btn">🗑️</button>', // כפתורים
+      '<button class="details-control">▼</button>', // פרטים נוספים
+    ];
+
+    // הוספה ורינדור:
+    table.row.add(newRow).draw(false);
+    table.row.add(newRow).draw(false);
+    table.row.add(newRow).draw(false);
+    table.row.add(newRow).draw(false);
+    table.row.add(newRow).draw(false);
+  }
+
+  function ErrorCB(xhr, status, error) {
+    console.error("שגיאה בטעינת הפרויקטים:", error);
+  }
+}
