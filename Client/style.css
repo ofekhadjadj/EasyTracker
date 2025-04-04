@@ -955,3 +955,15 @@ table.dataTable tbody tr {
   font-size: 14px;
   border-right: 4px solid #007bff;
 }
+
+table.dataTable {
+  text-align: center;
+}
+
+th.sorting {
+  text-align: center !important;
+}
+
+#sessionsTable {
+  width: 85% !important;
+}
