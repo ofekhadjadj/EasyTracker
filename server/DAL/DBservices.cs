@@ -407,6 +407,79 @@ finally
     }
 
     //--------------------------------------------------------------------------------------------------
+    // This method get user projects by ID
+    //--------------------------------------------------------------------------------------------------
+    public List<Dictionary<string, object>> GetLast5ProjectsByUserId(int id) //ad-hoc
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>(); //ad-hoc
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", id);
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetLast5ProjectsByUserId", con, paramDic);
+
+        try
+        {
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                //ad-hoc
+                var item = new Dictionary<string, object>();
+                item["ProjectID"] = Convert.ToInt32(dataReader["ProjectID"]);
+                item["ProjectName"] = dataReader["ProjectName"].ToString();
+                item["Description"] = dataReader["Description"].ToString();
+                item["HourlyRate"] = Convert.ToSingle(dataReader["HourlyRate"]);
+                item["Image"] = dataReader["Image"].ToString();
+                item["ClientID"] = Convert.ToInt32(dataReader["ClientID"]);
+                item["isArchived"] = Convert.ToBoolean(dataReader["isArchived"]);
+                item["CreatedByUserID"] = Convert.ToInt32(dataReader["CreatedByUserID"]);
+                item["isDone"] = Convert.ToBoolean(dataReader["isDone"]);
+                //item["CompanyName"] = dataReader["CompanyName"].ToString();
+                item["DurationGoal"] = Convert.ToDecimal(dataReader["DurationGoal"]);
+                //item["Role"] = dataReader["Role"].ToString();
+                //item["isDisable"] = dataReader["isDisable"].ToString();
+
+
+                result.Add(item);
+            }
+
+
+            return result;
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //--------------------------------------------------------------------------------------------------
     // This method put project in Archive  
     //--------------------------------------------------------------------------------------------------
     public int DeleteProject(int ProjectId)

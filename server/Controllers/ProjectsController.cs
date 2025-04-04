@@ -29,6 +29,16 @@ namespace EasyTracker.Controllers
             return Ok(userProjects);
         }
 
+        // GET: api/<GamesController>/GetGamesByUser/{id}
+        [HttpGet("GetLast5ProjectsByUserId/{id}")]
+        public IActionResult GetLast5ProjectsByUserId(int id)
+        {
+            Project project = new Project();
+
+            var user5LastProjects = project.GetLast5ProjectsByUserId(id);
+            return Ok(user5LastProjects);
+        }
+
 
         [HttpPut("delete_project")]
         public IActionResult DeleteProject([FromQuery] int ProjectId)

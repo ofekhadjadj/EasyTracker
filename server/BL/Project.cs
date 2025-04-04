@@ -71,6 +71,11 @@ namespace EasyTracker.BL
             return dbs.GetAllProjectsByUserId(id);
         }
 
+        public List<Dictionary<string, object>> GetLast5ProjectsByUserId(int id)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetLast5ProjectsByUserId(id);
+        }
 
         public int DeleteProject(int ProjectId)
         {
