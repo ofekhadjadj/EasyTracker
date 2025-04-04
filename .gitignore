@@ -1,14 +1,25 @@
-appsettings.json
+# Ignore Visual Studio files
 .vs/
-*.bin
-*.v2
-*.v2
-*.cs
-*.cache
-*.bin
-*.config
-*.v2
-*.dll
-*.pdb
-*.cache
-*.props
+*.user
+*.suo
+
+# Ignore build artifacts
+bin/
+obj/
+out/
+
+# Ignore system files
+Thumbs.db
+.DS_Store
+
+# Ignore logs
+*.log
+
+# Ignore user-specific files
+*.userosscache
+*.sln.docstates
+
+# ASP.NET
+appsettings.Development.json
+appsettings.Production.json
+appsettings.*.json

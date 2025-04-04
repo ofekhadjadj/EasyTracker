@@ -1,3 +1,17 @@
+let CurrentProject = JSON.parse(localStorage.getItem("CurrentProject"));
+console.log("CurrentProject", CurrentProject);
+
+FillDeatils();
+function FillDeatils() {
+  const projectName = document.getElementById("ProjectTitle");
+  const ProjectClient = document.getElementById("ProjectClient");
+  const breadcrumbsProjName = document.getElementById("breadcrumbsProjName");
+  let breadcrumbsText = `${CurrentProject.ProjectName} - ${CurrentProject.CompanyName}`;
+  breadcrumbsProjName.innerText = breadcrumbsText;
+  projectName.innerText = CurrentProject.ProjectName;
+  ProjectClient.innerText = CurrentProject.CompanyName;
+}
+
 let interval = null;
 let seconds = 0;
 let isRunning = false;
@@ -85,4 +99,35 @@ stopBtn.addEventListener("click", () => {
   circle.style.strokeDashoffset = circumference;
   progressFill.style.width = `0%`;
   progressText.textContent = `0%`;
+});
+
+$(document).ready(function () {
+  const table = $("#sessionsTable").DataTable({
+    responsive: true,
+    language: {
+      url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/he.json",
+    },
+    paging: false,
+    searching: false,
+    info: false,
+  });
+
+  // פונקציית הרחבה
+  function format() {
+    return '<div class="details-row">כאן יופיע תיאור מפורט של הסשן שנבחר</div>';
+  }
+
+  // האזנה ללחיצה
+  $("#sessionsTable tbody").on("click", "td .details-control", function () {
+    const tr = $(this).closest("tr");
+    const row = table.row(tr);
+
+    if (row.child.isShown()) {
+      row.child.hide();
+      $(this).text("\u25BC");
+    } else {
+      row.child(format()).show();
+      $(this).text("\u25B2");
+    }
+  });
 });
