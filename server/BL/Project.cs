@@ -90,7 +90,11 @@ namespace EasyTracker.BL
             return dbs.RemoveTeamMemberFromProject(TeamMemberEmail, ProjectID);
         }
 
-
+        public List<Dictionary<string, object>> GetProjectTeam(int ProjectID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetProjectTeam(ProjectID);
+        }
 
 
 

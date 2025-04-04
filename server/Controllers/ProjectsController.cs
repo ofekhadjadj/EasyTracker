@@ -60,7 +60,15 @@ namespace EasyTracker.Controllers
 
         }
 
+        // GET: api/<GamesController>/GetProjectTeam
+        [HttpGet("GetProjectTeam")]
+        public IActionResult GetProjectTeam(int ProjectID)
+        {
+            Project p = new Project();
 
+            var Team = p.GetProjectTeam(ProjectID);
+            return Ok(Team);
+        }
 
     }
 }
