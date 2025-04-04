@@ -3,10 +3,6 @@ let CurrentUser = JSON.parse(localStorage.getItem("user"));
 console.log("CurrentProject", CurrentProject);
 console.log("User", CurrentUser);
 let table;
-// let deleteSession = document.getElementById("dlt-btn-session");
-// deleteSession.addEventListener("click", function (e) {
-//   console.log(e.target);
-// });
 
 document.addEventListener("DOMContentLoaded", renderTableFromDB);
 document.addEventListener("DOMContentLoaded", FillDeatils);
@@ -19,6 +15,8 @@ function FillDeatils() {
   breadcrumbsProjName.innerText = breadcrumbsText;
   projectName.innerText = CurrentProject.ProjectName;
   ProjectClient.innerText = CurrentProject.CompanyName;
+
+  //בנוסף לפרטים גם תכין איונט ללחיצה על מחק
 }
 
 let interval = null;
@@ -232,6 +230,30 @@ function renderTableFromDB() {
       $(rowNode).data("session", session); // שמירת הסשן כולו
       $(rowNode).attr("data-session-id", session.sessionID); // שמירת ה-ID כשדה data
     });
+
+    //הסרת סשן מהטבלה
+    document
+      .getElementById("sessionsTable")
+      .addEventListener("click", function (e) {
+        if (e.target.classList.contains("delete-btn")) {
+          const row = e.target.closest("tr");
+          const sessionId = row.getAttribute("data-session-id");
+          console.log("נמחק סשן עם ID:", sessionId);
+
+          // הסרת השורה מהטבלה דרך DataTables:
+          table.row(row).remove().draw(false);
+
+          // אם תרצה גם לשלוח בקשת DELETE לשרת:
+          const apiUrl = `https://localhost:7198/api/Session/delete_session?SessionID=${sessionId}`;
+          ajaxCall(
+            "PUT",
+            apiUrl,
+            "",
+            () => console.log(" נמחק בהצלחה מהשרת"),
+            () => console.error("שגיאה במחיקה")
+          );
+        }
+      });
   }
 
   function ErrorCB(xhr, status, error) {
