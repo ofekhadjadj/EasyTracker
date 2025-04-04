@@ -84,10 +84,10 @@ namespace EasyTracker.BL
             return dbs.AddNewTeamMemberToProject(TeamMemberEmail, projectID);
         }
 
-        public int RemoveTeamMemberFromProject(string TeamMemberEmail)
+        public int RemoveTeamMemberFromProject(string TeamMemberEmail, int ProjectID)
         {
             DBservices dbs = new DBservices();
-            return dbs.RemoveTeamMemberFromProject(TeamMemberEmail);
+            return dbs.RemoveTeamMemberFromProject(TeamMemberEmail, ProjectID);
         }
 
 

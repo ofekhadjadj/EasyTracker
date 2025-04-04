@@ -502,7 +502,7 @@ finally
     //--------------------------------------------------------------------------------------------------
     // This method put Team Member in disable  
     //--------------------------------------------------------------------------------------------------
-    public int RemoveTeamMemberFromProject(string TeamMemberEmail)
+    public int RemoveTeamMemberFromProject(string TeamMemberEmail, int ProjectID)
     {
 
         SqlConnection con;
@@ -519,6 +519,7 @@ finally
         }
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@Email", TeamMemberEmail);
+        paramDic.Add("@ProjectID", ProjectID);
 
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_RemoveTeamMemberFromProject", con, paramDic);          // create the command
 

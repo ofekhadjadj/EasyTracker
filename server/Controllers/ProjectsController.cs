@@ -41,7 +41,7 @@ namespace EasyTracker.Controllers
 
         // POST api/<UsersController>
         [HttpPost("AddNewTeamMemberToProject")]
-        public IActionResult AddNewTeamMemberToProject([FromQuery] string TeamMemberEmail, [FromQuery] int projectID)
+        public IActionResult AddNewTeamMemberToProject([FromQuery] string TeamMemberEmail, int projectID)
         {
             Project p = new Project();
             int numEffected = p.AddNewTeamMemberToProject(TeamMemberEmail, projectID);
@@ -51,10 +51,10 @@ namespace EasyTracker.Controllers
         }
 
         [HttpPut("RemoveTeamMemberFromProject")]
-        public IActionResult RemoveTeamMemberFromProject([FromQuery] string TeamMemberEmail)
+        public IActionResult RemoveTeamMemberFromProject([FromQuery] string TeamMemberEmail, int ProjectID)
         {
             Project p = new Project();
-            int numEffected = p.RemoveTeamMemberFromProject(TeamMemberEmail);
+            int numEffected = p.RemoveTeamMemberFromProject(TeamMemberEmail, ProjectID);
 
             return Ok(numEffected);
 
