@@ -545,6 +545,69 @@ finally
 
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method get user projects by ID
+    //--------------------------------------------------------------------------------------------------
+    public List<Dictionary<string, object>> GetProjectTeam(int ProjectID) //ad-hoc
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>(); //ad-hoc
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ProjectID", ProjectID);
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetProjectTeam", con, paramDic);
+
+        try
+        {
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                //ad-hoc
+                var item = new Dictionary<string, object>();
+                item["UserID"] = Convert.ToInt32(dataReader["UserID"]);
+                item["Full name"] = dataReader["Full name"].ToString();
+                item["Image"] = dataReader["Image"].ToString();
+                item["Role"] = dataReader["Role"].ToString();
+                
+                result.Add(item);
+            }
+
+            return result;
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
     //**** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ****
 
     //--------------------------------------------------------------------------------------------------
