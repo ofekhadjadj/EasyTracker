@@ -3,6 +3,10 @@ let CurrentUser = JSON.parse(localStorage.getItem("user"));
 console.log("CurrentProject", CurrentProject);
 console.log("User", CurrentUser);
 let table;
+// let deleteSession = document.getElementById("dlt-btn-session");
+// deleteSession.addEventListener("click", function (e) {
+//   console.log(e.target);
+// });
 
 document.addEventListener("DOMContentLoaded", renderTableFromDB);
 document.addEventListener("DOMContentLoaded", FillDeatils);
@@ -118,25 +122,75 @@ $(document).ready(function () {
   });
 
   // פונקציית הרחבה
-  function format() {
-    return '<div class="details-row">כאן יופיע תיאור מפורט של הסשן שנבחר</div>';
-  }
+  // function format() {
+  //   return '<div class="details-row">כאן יופיע תיאור מפורט של הסשן שנבחר</div>';
+  // }
 
+  function format(session) {
+    const desc = session.description || "אין תיאור זמין לסשן זה.";
+    return `<div class="details-row">תיאור הסשן: ${desc}</div>`;
+  }
   // האזנה ללחיצה
+  // $("#sessionsTable tbody").on("click", "td .details-control", function () {
+  //   const tr = $(this).closest("tr");
+  //   const row = table.row(tr);
+
+  //   if (row.child.isShown()) {
+  //     row.child.hide();
+  //     $(this).text("\u25BC");
+  //   } else {
+  //     row.child(format()).show();
+  //     $(this).text("\u25B2");
+  //   }
+  // });
+
   $("#sessionsTable tbody").on("click", "td .details-control", function () {
     const tr = $(this).closest("tr");
     const row = table.row(tr);
+    const session = $(tr).data("session"); // שליפת הסשן מהשורה
 
     if (row.child.isShown()) {
       row.child.hide();
       $(this).text("\u25BC");
     } else {
-      row.child(format()).show();
+      row.child(format(session)).show();
       $(this).text("\u25B2");
     }
   });
 });
 
+function formatDateTime(isoString) {
+  const date = new Date(isoString);
+
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // חודשים מ-0 עד 11
+  const year = date.getFullYear();
+
+  const time = `${hours}:${minutes}:${seconds}`;
+  const formattedDate = `${day}/${month}/${year}`;
+
+  return {
+    time,
+    formattedDate,
+  };
+}
+
+function formatSecondsToHHMMSS(seconds) {
+  const hours = String(Math.floor(seconds / 3600)).padStart(2, "0");
+  const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+  const secs = String(seconds % 60).padStart(2, "0");
+  return `${hours}:${minutes}:${secs}`;
+}
+
+function calculateEarnings(durationSeconds, hourlyRate) {
+  const hours = durationSeconds / 3600;
+  const earnings = hours * hourlyRate;
+  return earnings.toFixed(2); // נחזיר עם 2 ספרות אחרי הנקודה
+}
 function renderTableFromDB() {
   //bring sessions from db
   const apiUrl = `https://localhost:7198/api/Session/GetAllSessionsByUserAndProject?userID=${CurrentUser.id}&projectID=${CurrentProject.ProjectID}`;
@@ -149,24 +203,35 @@ function renderTableFromDB() {
     console.log(response);
     console.log(table);
 
-    const newRow = [
-      "", // עמודה ריקה
-      "01/04/2025", // תאריך
-      "10:00", // שעת התחלה
-      "12:00", // שעת סיום
-      "שעתיים", // משך זמן
-      "₪150", // תעריף
-      "₪300", // שכר
-      '<button class="edit-btn">✏️</button><button class="delete-btn">🗑️</button>', // כפתורים
-      '<button class="details-control">▼</button>', // פרטים נוספים
-    ];
+    response.forEach((session) => {
+      const rawDate = session.startDate;
+      const { time, formattedDate } = formatDateTime(rawDate);
 
-    // הוספה ורינדור:
-    table.row.add(newRow).draw(false);
-    table.row.add(newRow).draw(false);
-    table.row.add(newRow).draw(false);
-    table.row.add(newRow).draw(false);
-    table.row.add(newRow).draw(false);
+      const fDate = session.endDate;
+      // const { Ftime, formatFtedDate } = formatDateTime(fDate);
+      let finelFdate = formatDateTime(fDate);
+
+      const newRow = [
+        "", // עמודה ריקה
+        formattedDate, // תאריך
+        time, // שעת התחלה
+        finelFdate.time, // שעת סיום
+        formatSecondsToHHMMSS(session.durationSeconds), // משך זמן
+        session.hourlyRate, // תעריף
+        calculateEarnings(session.hourlyRate, session.durationSeconds), // שכר
+        '<button class="edit-btn">✏️</button><button id="dlt-btn-session" class="delete-btn">🗑️</button>', // כפתורים
+        '<button class="details-control">▼</button>', // פרטים נוספים
+      ];
+      // הוספה ורינדור:
+      // table.row.add(newRow).draw(false);
+
+      // const rowNode = table.row.add(newRow).draw(false).node();
+      // $(rowNode).data("session", session); // שמור את האובייקט המקורי בשורה
+
+      const rowNode = table.row.add(newRow).draw(false).node();
+      $(rowNode).data("session", session); // שמירת הסשן כולו
+      $(rowNode).attr("data-session-id", session.sessionID); // שמירת ה-ID כשדה data
+    });
   }
 
   function ErrorCB(xhr, status, error) {
