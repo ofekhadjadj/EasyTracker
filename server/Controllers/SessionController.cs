@@ -60,10 +60,11 @@ namespace EasyTracker.Controllers
 
        
         [HttpGet("GetAllSessionsByUserAndProject")]
-        public IEnumerable<Session> GetAllSessionsByUserAndProject([FromQuery] int userID, int projectID)
+        public IActionResult GetAllSessionsByUserAndProject([FromQuery] int userID, int projectID)
         {
             Session s = new Session();
-            return s.GetAllSessionsByUserAndProject(userID, projectID);
+            var sessions = s.GetAllSessionsByUserAndProject(userID, projectID);
+            return Ok(sessions);
         }
 
     }

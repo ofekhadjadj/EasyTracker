@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using EasyTracker.BL;
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
+//using System.Reflection.Emit;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -902,7 +903,7 @@ finally
     //--------------------------------------------------------------------------------------------------
     // This method get sessions by user and Project
     //--------------------------------------------------------------------------------------------------
-    public List<Session> GetAllSessionsByUserAndProject(int userID, int projectID)
+    public List<Dictionary<string, object>> GetAllSessionsByUserAndProject(int userID, int projectID)
     {
 
         SqlConnection con;
@@ -918,7 +919,8 @@ finally
             throw (ex);
         }
 
-        List<Session> Sessions = new List<Session>();
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>(); //ad-hoc
+
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@UserID", userID);
         paramDic.Add("@ProjectID", projectID);
@@ -934,21 +936,25 @@ finally
 
             while (dataReader.Read())
             {
-                Session s = new Session();
-                s.SessionID = Convert.ToInt32(dataReader["SessionID"]);
-                s.ProjectID = Convert.ToInt32(dataReader["ProjectID"]);
-                s.StartDate = Convert.ToDateTime(dataReader["StartDate"]);
-                s.EndDate = dataReader["EndDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(dataReader["EndDate"]);
-                s.DurationSeconds = dataReader["DurationSeconds"] == DBNull.Value ? (int?)null : Convert.ToInt32(dataReader["DurationSeconds"]);
-                s.HourlyRate = dataReader["HourlyRate"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(dataReader["HourlyRate"]);
-                s.Description = dataReader["Description"] == DBNull.Value ? null : dataReader["Description"].ToString();
-                s.LabelID = dataReader["LabelID"] == DBNull.Value ? (int?)null : Convert.ToInt32(dataReader["LabelID"]);
-                s.IsArchived = Convert.ToBoolean(dataReader["isArchived"]);
-                s.UserID = dataReader["UserID"] == DBNull.Value ? (int?)null : Convert.ToInt32(dataReader["UserID"]);
+                //ad-hoc
+                var item = new Dictionary<string, object>();
+                item["SessionID"] = Convert.ToInt32(dataReader["SessionID"]);
+                item["ProjectID"] = Convert.ToInt32(dataReader["ProjectID"]);
+                item["StartDate"] = Convert.ToDateTime(dataReader["StartDate"]);
+                item["EndDate"] = dataReader["EndDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(dataReader["EndDate"]);
+                item["DurationSeconds"] = dataReader["DurationSeconds"] == DBNull.Value ? (int?)null : Convert.ToInt32(dataReader["DurationSeconds"]);
+                item["HourlyRate"] = dataReader["HourlyRate"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(dataReader["HourlyRate"]);
+                item["Description"] = dataReader["Description"] == DBNull.Value ? null : dataReader["Description"].ToString();
+                item["LabelID"] = dataReader["LabelID"] == DBNull.Value ? (int?)null : Convert.ToInt32(dataReader["LabelID"]);
+                item["IsArchived"] = Convert.ToBoolean(dataReader["isArchived"]);
+                item["UserID"] = dataReader["UserID"] == DBNull.Value ? (int?)null : Convert.ToInt32(dataReader["UserID"]);
+                item["SessionStatus"] = dataReader["SessionStatus"] == DBNull.Value ? null : dataReader["SessionStatus"].ToString();
+                item["LabelName"] = dataReader["LabelName"] == DBNull.Value ? null : dataReader["LabelName"].ToString();
+                item["LabelColor"] = dataReader["LabelColor"] == DBNull.Value ? null : dataReader["LabelColor"].ToString();
 
-                Sessions.Add(s);
+                result.Add(item);   
             }
-            return Sessions;
+            return result;
 
         }
         catch (Exception ex)

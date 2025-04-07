@@ -64,7 +64,7 @@ namespace SteamApp.BL
             return dbs.InsertNewSessionManually(Session);
         }
 
-        public List<Session> GetAllSessionsByUserAndProject(int userID, int projectID)
+        public List<Dictionary<string, object>> GetAllSessionsByUserAndProject(int userID, int projectID)
         {
             DBservices dbs = new DBservices();
             return dbs.GetAllSessionsByUserAndProject(userID, projectID);
