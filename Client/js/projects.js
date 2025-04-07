@@ -1,5 +1,6 @@
 const CardsDiv = document.getElementById("projects");
 let allProjects = [];
+let CurrentUser = JSON.parse(localStorage.getItem("user"));
 
 document.addEventListener("DOMContentLoaded", LoadProject);
 
@@ -7,6 +8,8 @@ function LoadProject() {
   const userId = JSON.parse(localStorage.getItem("user"))?.id || null;
   const apiUrl = `https://localhost:7198/api/Projects/GetProjectByUserId/${userId}`;
   console.log(apiUrl);
+  const ProfName = document.getElementById("menu-prof-name");
+  ProfName.innerText = CurrentUser.firstName;
 
   ajaxCall("GET", apiUrl, "", successCB, ErrorCB);
 }

@@ -907,6 +907,7 @@ h3.team-title {
 .project-title {
   font-size: 33px;
   font-weight: 500;
+  padding-bottom: 5px;
 }
 
 .project-client {
@@ -916,7 +917,7 @@ h3.team-title {
 }
 
 hr.line {
-  color: black;
+  width: 100%;
 }
 
 table.dataTable {
@@ -966,4 +967,52 @@ th.sorting {
 
 #sessionsTable {
   width: 85% !important;
+}
+/* פופאפ עריכה */
+.edit-session-wrapper {
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  text-align: right;
+}
+
+.edit-session-wrapper input,
+.edit-session-wrapper textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* רק כפתור השמירה יעוצב כך */
+.edit-session-wrapper .save-btn {
+  background-color: #0072ff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+}
+
+.edit-session-wrapper .save-btn:hover {
+  background-color: #005edc;
+}
+
+div#edit-session-modal {
+  width: 80%;
+}
+
+form#edit-session-form {
+  text-align: right;
+}
+
+form#edit-session-form input,
+form#edit-session-form textarea {
+  text-align: right;
 }
