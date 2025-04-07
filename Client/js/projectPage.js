@@ -8,13 +8,29 @@ document.addEventListener("DOMContentLoaded", renderTableFromDB);
 document.addEventListener("DOMContentLoaded", FillDeatils);
 
 function FillDeatils() {
+  const ProfName = document.getElementById("menu-prof-name");
+
   const projectName = document.getElementById("ProjectTitle");
   const ProjectClient = document.getElementById("ProjectClient");
   const breadcrumbsProjName = document.getElementById("breadcrumbsProjName");
+  ProfName.innerText = CurrentUser.firstName;
   let breadcrumbsText = `${CurrentProject.ProjectName} - ${CurrentProject.CompanyName}`;
   breadcrumbsProjName.innerText = breadcrumbsText;
   projectName.innerText = CurrentProject.ProjectName;
   ProjectClient.innerText = CurrentProject.CompanyName;
+
+  document
+    .querySelector(".gradient-button")
+    .addEventListener("click", function () {
+      const description = CurrentProject.description || "אין תיאור לפרויקט זה";
+      document.getElementById("project-description-textarea").value =
+        description;
+
+      $.fancybox.open({
+        src: "#project-description-popup",
+        type: "inline",
+      });
+    });
 
   //בנוסף לפרטים גם תכין איונט ללחיצה על מחק
 }
@@ -210,7 +226,8 @@ function renderTableFromDB() {
       let finelFdate = formatDateTime(fDate);
 
       const newRow = [
-        "", // עמודה ריקה
+        `<span style="width: 100%; height: 15px; background-color: #0072ff; color: black; display: inline-block; padding: 2px 6px; border-radius: 6px;">משרד</span>
+`, // עמודה ריקה
         formattedDate, // תאריך
         time, // שעת התחלה
         finelFdate.time, // שעת סיום

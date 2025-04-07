@@ -27,6 +27,10 @@
     rel="stylesheet"
     />
     <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
+  />
+    <link
     href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css"
     rel="stylesheet"
     />
@@ -38,7 +42,8 @@
         <div class="inner-sidbar">
           <div class="profile">
             <img src="./images/avatar.png" class="avatar-img" alt="" />
-            <h3>הי, משה 👋</h3>
+            <h3>הי,             <span id="menu-prof-name">משה</span>
+              👋</h3>
             <img
               src="./images/profile arrow.png"
               class="arrow-btn"
@@ -303,10 +308,31 @@
             </form>
 
 
-
-
-
-
+            <div id="edit-session-modal" class="edit-session-wrapper" style="display: none">
+              <form id="edit-session-form">
+                <h3>✏️ עריכת סשן</h3>
+            
+                <label>תאריך:</label>
+                <input type="date" id="edit-date" required />
+            
+                <label>שעת התחלה:</label>
+                <input type="time" id="edit-start-time" required />
+            
+                <label>שעת סיום:</label>
+                <input type="time" id="edit-end-time" required />
+            
+                <label>תעריף שעתי (₪):</label>
+                <input type="number" id="edit-rate" min="0" required />
+            
+                <label>תיאור:</label>
+                <textarea id="edit-description" rows="3"></textarea>
+            
+                <input type="hidden" id="edit-session-id" />
+                <br />
+                <button type="submit" id="save-session-btn"  class="save-btn">💾 שמור שינויים</button>
+              </form>
+            </div>
+            
 
 
      <script src="https://cdn.jsdelivr.net/npm/easytimer.js@4.3.1/dist/easytimer.min.js"></script>
