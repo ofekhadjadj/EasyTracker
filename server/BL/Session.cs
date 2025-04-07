@@ -52,7 +52,7 @@ namespace SteamApp.BL
             return dbs.InsertNewSessionAutomatic(UserID, ProjectID, StartDate);
         }
 
-        public int UpdateSession(Session Session)
+        public List<Dictionary<string, object>> UpdateSession(Session Session)
         {
             DBservices dbs = new DBservices();
             return dbs.UpdateSession(Session);

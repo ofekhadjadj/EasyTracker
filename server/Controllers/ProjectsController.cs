@@ -80,5 +80,14 @@ namespace EasyTracker.Controllers
             return Ok(Team);
         }
 
+        [HttpPut("update_project")]
+        public IActionResult UpdateProject([FromBody] Project project)
+        {
+            Project p = new Project();
+            int res = p.UpdateProject(project);
+
+            return Ok(res);
+        }
+
     }
 }

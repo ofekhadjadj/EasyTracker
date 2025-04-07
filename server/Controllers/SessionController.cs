@@ -23,10 +23,10 @@ namespace EasyTracker.Controllers
         [HttpPut("update_session")]
         public IActionResult UpdateSession([FromBody] Session session)
         {
-            Session sessionLogic = new Session();
-            int updatedSessionID = sessionLogic.UpdateSession(session);
+            Session s = new Session();
+            var res = s.UpdateSession(session);
 
-            return Ok(new { sessionID = updatedSessionID });
+            return Ok(res);
         }
 
         [HttpPut("delete_session")]
@@ -39,15 +39,6 @@ namespace EasyTracker.Controllers
         }
 
 
-        /*
-        [HttpPost("update_session")]
-        public IActionResult updateSession([FromQuery] Session Session)
-        {
-            Session sessionLogic = new Session();
-            int newSessionID = sessionLogic.UpdateSession(Session);
-
-            return Ok(new { sessionID = newSessionID });
-        }*/
 
         [HttpPost("insert_session_Manually")]
         public IActionResult InsertSessionManually([FromBody] Session Session)

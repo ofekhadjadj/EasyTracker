@@ -6,14 +6,14 @@ namespace EasyTracker.BL
     public class Project
     {
         int projectid;
-        string projectname;
+        string? projectname;
         string? description;
-        float hourlyrate;
-        string image;
-        int clientid;
-        bool isarchived;
-        int createdbyuserid;
-        bool isDone;
+        float? hourlyrate;
+        string? image;
+        int? clientid;
+        bool? isarchived;
+        int? createdbyuserid;
+        bool? isDone;
         decimal? durationGoal;
 
         static List<Project> projectsList = new List<Project>();
@@ -49,14 +49,14 @@ namespace EasyTracker.BL
 
 
         public int Projectid { get => projectid; set => projectid = value; }
-        public string Projectname { get => projectname; set => projectname = value; }
+        public string? Projectname { get => projectname; set => projectname = value; }
         public string? Description { get => description; set => description = value; }
-        public float Hourlyrate { get => hourlyrate; set => hourlyrate = value; }
-        public string Image { get => image; set => image = value; }
-        public int Clientid { get => clientid; set => clientid = value; }
-        public bool Isarchived { get => isarchived; set => isarchived = value; }
-        public int Createdbyuserid { get => createdbyuserid; set => createdbyuserid = value; }
-        public bool IsDone { get => isDone; set => isDone = value; }
+        public float? Hourlyrate { get => hourlyrate; set => hourlyrate = value; }
+        public string? Image { get => image; set => image = value; }
+        public int? Clientid { get => clientid; set => clientid = value; }
+        public bool? Isarchived { get => isarchived; set => isarchived = value; }
+        public int? Createdbyuserid { get => createdbyuserid; set => createdbyuserid = value; }
+        public bool? IsDone { get => isDone; set => isDone = value; }
         public decimal? DurationGoal { get => durationGoal; set => durationGoal = value; }
 
         public int InsertNewProject()
@@ -99,6 +99,12 @@ namespace EasyTracker.BL
         {
             DBservices dbs = new DBservices();
             return dbs.GetProjectTeam(ProjectID);
+        }
+
+        public int UpdateProject(Project project)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.UpdateProject(project);
         }
 
 

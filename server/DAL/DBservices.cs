@@ -681,6 +681,59 @@ finally
 
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method inserts a new project to the users table 
+    //--------------------------------------------------------------------------------------------------
+    public int UpdateProject(Project project)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ProjectID", project.Projectid);
+        paramDic.Add("@ProjectName", project.Projectname);
+        paramDic.Add("@Description", project.Description);
+        paramDic.Add("@HourlyRate", project.Hourlyrate);
+        paramDic.Add("@Image", project.Image);
+        paramDic.Add("@ClientID", project.Clientid);
+        paramDic.Add("@DurationGoal", project.DurationGoal);
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateProject", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
     //**** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ****
 
@@ -741,7 +794,7 @@ finally
     //--------------------------------------------------------------------------------------------------
     // This method update session in Sessions table 
     //--------------------------------------------------------------------------------------------------
-    public int UpdateSession(Session Session)
+    public List<Dictionary<string, object>> UpdateSession(Session Session)
     {
 
         SqlConnection con;
@@ -756,6 +809,7 @@ finally
             // write to log
             throw (ex);
         }
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>(); //ad-hoc
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@SessionID", Session.SessionID);
@@ -775,8 +829,19 @@ finally
 
         try
         {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                //ad-hoc
+                var item = new Dictionary<string, object>();
+                item["UpdatedSessionID"] = Convert.ToInt32(dataReader["UpdatedSessionID"]);
+                item["SessionStatus"] = dataReader["SessionStatus"].ToString();
+
+                result.Add(item);
+            }
+
+            return result;
         }
         catch (Exception ex)
         {
