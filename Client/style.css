@@ -968,51 +968,60 @@ th.sorting {
 #sessionsTable {
   width: 85% !important;
 }
-/* פופאפ עריכה */
-.edit-session-wrapper {
-  padding: 20px;
-  width: 100%;
-  max-width: 400px;
+
+/* עיצוב של פופאפ עריכת סשן */
+#edit-session-modal {
+  max-width: 500px;
+  background-color: #ffffff;
+  padding: 25px 30px;
+  border-radius: 10px;
   text-align: right;
+  font-family: "Assistant", sans-serif;
 }
 
-.edit-session-wrapper input,
-.edit-session-wrapper textarea {
+#edit-session-modal h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #0072ff;
+}
+
+#edit-session-modal label {
+  display: block;
+  margin-bottom: 6px;
+  margin-top: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+#edit-session-modal input,
+#edit-session-modal textarea {
   width: 100%;
-  margin-bottom: 10px;
-  font-family: inherit;
-  font-size: 14px;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
   box-sizing: border-box;
 }
 
-/* רק כפתור השמירה יעוצב כך */
-.edit-session-wrapper .save-btn {
-  background-color: #0072ff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 10px;
-  cursor: pointer;
+#edit-session-modal textarea {
+  resize: vertical;
+}
+
+#edit-session-modal .save-btn {
+  display: block;
   width: 100%;
-  font-weight: bold;
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  color: #fff;
+  padding: 10px;
+  border: none;
+  margin-top: 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-.edit-session-wrapper .save-btn:hover {
-  background-color: #005edc;
-}
-
-div#edit-session-modal {
-  width: 80%;
-}
-
-form#edit-session-form {
-  text-align: right;
-}
-
-form#edit-session-form input,
-form#edit-session-form textarea {
-  text-align: right;
+#edit-session-modal .save-btn:hover {
+  background: linear-gradient(to right, #0072ff, #005ecb);
 }

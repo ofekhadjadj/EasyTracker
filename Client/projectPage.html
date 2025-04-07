@@ -308,31 +308,34 @@
             </form>
 
 
-            <div id="edit-session-modal" class="edit-session-wrapper" style="display: none">
-              <form id="edit-session-form">
-                <h3>✏️ עריכת סשן</h3>
-            
-                <label>תאריך:</label>
-                <input type="date" id="edit-date" required />
-            
-                <label>שעת התחלה:</label>
-                <input type="time" id="edit-start-time" required />
-            
-                <label>שעת סיום:</label>
-                <input type="time" id="edit-end-time" required />
-            
-                <label>תעריף שעתי (₪):</label>
-                <input type="number" id="edit-rate" min="0" required />
-            
-                <label>תיאור:</label>
-                <textarea id="edit-description" rows="3"></textarea>
-            
-                <input type="hidden" id="edit-session-id" />
-                <br />
-                <button type="submit" id="save-session-btn"  class="save-btn">💾 שמור שינויים</button>
-              </form>
-            </div>
-            
+           <!-- פופאפ עדכון סשן -->
+           <div style="display:none;" id="edit-session-modal">
+            <h2>✏️ עדכון סשן</h2>
+            <form id="edit-session-form">
+              <input type="hidden" id="edit-session-id" />
+          
+              <label>📅 תאריך</label>
+              <input type="date" id="edit-date" required />
+          
+              <label>⏰ שעת התחלה</label>
+              <input type="time" id="edit-start-time" required />
+          
+              <label>⏰ שעת סיום</label>
+              <input type="time" id="edit-end-time" required />
+          
+              <label>💰 תעריף שעתי</label>
+              <input type="number" id="edit-rate" required min="0" />
+          
+              <label>📝 תיאור</label>
+              <textarea id="edit-description" rows="3"></textarea>
+          
+              <label>🏷️ מזהה תיוג (labelID)</label>
+              <input type="number" id="edit-label-id" />
+         
+          
+              <button type="submit" class="save-btn">💾 שמור שינויים</button>
+            </form>
+          </div>
 
 
      <script src="https://cdn.jsdelivr.net/npm/easytimer.js@4.3.1/dist/easytimer.min.js"></script>
