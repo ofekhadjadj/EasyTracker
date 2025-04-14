@@ -50,8 +50,9 @@ const progressFill = document.getElementById("progress-fill");
 const progressText = document.getElementById("progress-text");
 
 // 🕒 יעד בזמן (בשעות) — אתה יכול לשנות לכמה שתרצה
-const goalHours = 0.01;
-const goalInSeconds = goalHours * 3600;
+// const goalHours = 0.01;
+// const goalInSeconds = goalHours * 3600;
+const goalInSeconds = CurrentProject.DurationGoal * 3600 || 3600; // ברירת מחדל לשעה אם לא קיים
 
 circle.style.strokeDasharray = circumference;
 circle.style.strokeDashoffset = circumference;
@@ -102,11 +103,43 @@ function getLocalISOString() {
 // 🟦 כפתור הפעלה
 
 toggleBtn.addEventListener("click", () => {
+  // כפתור השהייה תוספת
   if (isRunning) {
     clearInterval(interval);
     isRunning = false;
     toggleText.textContent = "התחל";
     toggleIcon.src = "./images/play-icon.png";
+
+    const durationSeconds = seconds;
+
+    const lastSessionRow = $("#sessionsTable tbody tr").first();
+    const sessionData = lastSessionRow.data("session");
+
+    if (!sessionData) {
+      console.error("❌ לא נמצא סשן פעיל לעדכון (Pause).");
+      return;
+    }
+
+    const pausedSession = {
+      sessionID: sessionData.SessionID,
+      projectID: sessionData.ProjectID,
+      durationSeconds: durationSeconds,
+      status: "Paused",
+    };
+
+    console.log("⏸️ השהיית סשן | נשלח לשרת:", pausedSession);
+
+    ajaxCall(
+      "PUT",
+      "https://localhost:7198/api/Session/update_session",
+      JSON.stringify(pausedSession),
+      () => {
+        console.log("✅ סשן הושהה בהצלחה!");
+      },
+      () => {
+        console.error("❌ שגיאה בהשהיית סשן.");
+      }
+    );
   } else {
     // קריאה לשרת לפני שמתחיל הסטופר
     const sessionStart = getLocalISOString();
