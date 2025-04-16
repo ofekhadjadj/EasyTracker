@@ -4,6 +4,48 @@ console.log("CurrentProject", CurrentProject);
 console.log("User", CurrentUser);
 let table;
 
+document
+  .getElementById("open-description-editor")
+  .addEventListener("click", function () {
+    const description = CurrentProject.Description || "";
+
+    document.getElementById("description-textarea").value = description;
+
+    $.fancybox.open({
+      src: "#description-editor-popup",
+      type: "inline",
+    });
+  });
+
+//שליחה לשרת של התיאור פרויקט מהכפתור שמירת פרטים
+document
+  .getElementById("save-description-btn")
+  .addEventListener("click", function () {
+    const newDescription = document.getElementById(
+      "description-textarea"
+    ).value;
+
+    const updatedProject = {
+      projectid: CurrentProject.ProjectID,
+      description: newDescription,
+    };
+
+    ajaxCall(
+      "PUT",
+      "https://localhost:7198/api/Projects/update_project",
+      JSON.stringify(updatedProject),
+      () => {
+        alert("✅ תיאור עודכן בהצלחה!");
+        CurrentProject.description = newDescription;
+        localStorage.setItem("CurrentProject", JSON.stringify(CurrentProject));
+        $.fancybox.close();
+      },
+      () => {
+        alert("❌ שגיאה בעדכון התיאור");
+      }
+    );
+  });
+
 document.addEventListener("DOMContentLoaded", renderTableFromDB);
 document.addEventListener("DOMContentLoaded", FillDeatils);
 
@@ -19,22 +61,24 @@ function FillDeatils() {
   projectName.innerText = CurrentProject.ProjectName;
   ProjectClient.innerText = CurrentProject.CompanyName;
 
-  document
-    .querySelector(".gradient-button")
-    .addEventListener("click", function () {
-      const description = CurrentProject.description || "אין תיאור לפרויקט זה";
-      document.getElementById("project-description-textarea").value =
-        description;
+  // document
+  //   .querySelector(".gradient-button")
+  //   .addEventListener("click", function () {
+  //     const description = CurrentProject.description || "אין תיאור לפרויקט זה";
+  //     document.getElementById("project-description-textarea").value =
+  //       description;
 
-      $.fancybox.open({
-        src: "#project-description-popup",
-        type: "inline",
-      });
-    });
+  //     $.fancybox.open({
+  //       src: "#project-description-popup",
+  //       type: "inline",
+  //     });
+  //   });
 }
 
 let interval = null;
 let seconds = 0;
+let totalPastSeconds = 0;
+
 let isRunning = false;
 
 const timeDisplay = document.getElementById("time");
@@ -92,6 +136,29 @@ function updateTime() {
   } else {
     progressText.style.color = "#fff"; // לבן
   }
+  updateOverallProgress();
+}
+
+function updateOverallProgress() {
+  const totalSeconds = totalPastSeconds + seconds; // כולל מה שרץ עכשיו
+  const progressPercent = Math.min((totalSeconds / goalInSeconds) * 100, 100);
+
+  progressFill.style.width = `${progressPercent}%`;
+  progressText.textContent = `${Math.floor(progressPercent)}%`;
+
+  // צבע רקע
+  if (progressPercent >= 90) {
+    progressFill.style.background =
+      "linear-gradient(to right, #ff4e50, #f00000)";
+  } else if (progressPercent >= 80) {
+    progressFill.style.background =
+      "linear-gradient(to right, #ff9900, #ff6600)";
+  } else {
+    progressFill.style.background =
+      "linear-gradient(to right, #00c6ff, #0072ff)";
+  }
+
+  progressText.style.color = progressPercent <= 10 ? "#000" : "#fff";
 }
 
 // 🟦 המרת זמן לשעון ישראל
@@ -369,6 +436,12 @@ function renderTableFromDB() {
       $(rowNode).data("session", session); // שמירת הסשן כולו
       $(rowNode).attr("data-session-id", session.SessionID); // שמירת ה-ID כשדה data
     });
+
+    totalPastSeconds = response.reduce(
+      (sum, session) => sum + session.DurationSeconds,
+      0
+    );
+    updateOverallProgress(); // נעדכן את בר ההתקדמות הכללי
 
     //הסרת סשן מהטבלה
     document
