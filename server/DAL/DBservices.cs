@@ -685,7 +685,7 @@ finally
     //--------------------------------------------------------------------------------------------------
     // This method get project by his ID
     //--------------------------------------------------------------------------------------------------
-   
+   /*
     public List<Dictionary<string, object>> GetThisProject(int ProjectID, int UserID) //ad-hoc
     {
 
@@ -754,6 +754,65 @@ finally
             }
         }
 
+    }
+   */
+
+    public Dictionary<string, object> GetThisProject(int ProjectID, int UserID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        Dictionary<string, object> item = null;
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ProjectID", ProjectID);
+        paramDic.Add("@UserID", UserID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetThisProject", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            if (dataReader.Read())
+            {
+                item = new Dictionary<string, object>();
+                item["ProjectID"] = Convert.ToInt32(dataReader["ProjectID"]);
+                item["ProjectName"] = dataReader["ProjectName"].ToString();
+                item["Description"] = dataReader["Description"].ToString();
+                item["HourlyRate"] = Convert.ToSingle(dataReader["HourlyRate"]);
+                item["Image"] = dataReader["Image"].ToString();
+                item["ClientID"] = Convert.ToInt32(dataReader["ClientID"]);
+                item["isArchived"] = Convert.ToBoolean(dataReader["isArchived"]);
+                item["CreatedByUserID"] = Convert.ToInt32(dataReader["CreatedByUserID"]);
+                item["isDone"] = Convert.ToBoolean(dataReader["isDone"]);
+                item["CompanyName"] = dataReader["CompanyName"].ToString();
+                item["DurationGoal"] = Convert.ToDecimal(dataReader["DurationGoal"]);
+                item["Role"] = dataReader["Role"].ToString();
+                item["isDisable"] = dataReader["isDisable"].ToString();
+            }
+
+            return item;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
     }
 
     //--------------------------------------------------------------------------------------------------
@@ -1569,6 +1628,52 @@ finally
 
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method update client IsArchived in clients table 
+    //--------------------------------------------------------------------------------------------------
+    public int ArchiveClient(int ClientID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ClientID", ClientID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_ArchiveClient", con, paramDic);          // create the command
+
+        try
+        {
+            object result = cmd.ExecuteScalar();  // מחזיר את SELECT מהפרוצדורה
+            int rowsAffected = Convert.ToInt32(result);
+            return rowsAffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
     ////--------------------------------------------------------------------------------------------------
     //// This method inserts a new user to the users table 
