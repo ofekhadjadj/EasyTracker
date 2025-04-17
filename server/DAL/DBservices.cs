@@ -685,7 +685,8 @@ finally
     //--------------------------------------------------------------------------------------------------
     // This method get project by his ID
     //--------------------------------------------------------------------------------------------------
-    public Project GetThisProject(int ProjectID) 
+   
+    public List<Dictionary<string, object>> GetThisProject(int ProjectID, int UserID) //ad-hoc
     {
 
         SqlConnection con;
@@ -701,9 +702,10 @@ finally
             throw (ex);
         }
 
-        Project project = new Project();
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>(); //ad-hoc
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@ProjectID", ProjectID);
+        paramDic.Add("@UserID", UserID);
 
 
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetThisProject", con, paramDic);
@@ -715,21 +717,27 @@ finally
 
             while (dataReader.Read())
             {
-                
-                project.Projectid = Convert.ToInt32(dataReader["ProjectID"]);
-                project.Projectname = dataReader["ProjectName"].ToString();
-                project.Description = dataReader["Description"].ToString();
-                project.Hourlyrate = Convert.ToSingle(dataReader["HourlyRate"]);
-                project.Image = dataReader["Image"].ToString();
-                project.Clientid = Convert.ToInt32(dataReader["ClientID"]);
-                project.Isarchived = Convert.ToBoolean(dataReader["isArchived"]);
-                project.Createdbyuserid = Convert.ToInt32(dataReader["CreatedByUserID"]);
-                project.IsDone = Convert.ToBoolean(dataReader["isDone"]);
-                project.DurationGoal = Convert.ToDecimal(dataReader["DurationGoal"]);
-                
+                //ad-hoc
+                var item = new Dictionary<string, object>();
+                item["ProjectID"] = Convert.ToInt32(dataReader["ProjectID"]);
+                item["ProjectName"] = dataReader["ProjectName"].ToString();
+                item["Description"] = dataReader["Description"].ToString();
+                item["HourlyRate"] = Convert.ToSingle(dataReader["HourlyRate"]);
+                item["Image"] = dataReader["Image"].ToString();
+                item["ClientID"] = Convert.ToInt32(dataReader["ClientID"]);
+                item["isArchived"] = Convert.ToBoolean(dataReader["isArchived"]);
+                item["CreatedByUserID"] = Convert.ToInt32(dataReader["CreatedByUserID"]);
+                item["isDone"] = Convert.ToBoolean(dataReader["isDone"]);
+                item["CompanyName"] = dataReader["CompanyName"].ToString();
+                item["DurationGoal"] = Convert.ToDecimal(dataReader["DurationGoal"]);
+                item["Role"] = dataReader["Role"].ToString();
+                item["isDisable"] = dataReader["isDisable"].ToString();
+
+
+                result.Add(item);
             }
 
-            return project;
+            return result;
 
         }
         catch (Exception ex)
@@ -1106,129 +1114,6 @@ finally
     }
 
 
-    //**** CLIENT TABLE ******** CLIENT TABLE ******** CLIENT TABLE ******** CLIENT TABLE ******** CLIENT TABLE ******** CLIENT TABLE ****
-
-
-    //--------------------------------------------------------------------------------------------------
-    // This method get clients by user ID
-    //--------------------------------------------------------------------------------------------------
-    public List<Client> GetAllClientsByUserID(int userID)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        List<Client> Clients = new List<Client>();
-        Dictionary<string, object> paramDic = new Dictionary<string, object>();
-        paramDic.Add("@UserID", userID);
-        
-
-
-
-        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetClientsByUserID", con, paramDic);
-
-        try
-        {
-
-            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-            while (dataReader.Read())
-            {
-                Client c = new Client();
-                c.ClientID = Convert.ToInt32(dataReader["ClientID"]);
-                c.CompanyName = dataReader["CompanyName"].ToString();
-                c.ContactPerson = dataReader["ContactPerson"] == DBNull.Value ? null : dataReader["ContactPerson"].ToString();
-                c.Email = dataReader["Email"] == DBNull.Value ? null : dataReader["Email"].ToString();
-                c.ContactPersonPhone = dataReader["ContactPersonPhone"] == DBNull.Value ? null : dataReader["ContactPersonPhone"].ToString();
-                c.OfficePhone = dataReader["OfficePhone"] == DBNull.Value ? null : dataReader["OfficePhone"].ToString();
-                c.UserID = Convert.ToInt32(dataReader["UserID"]);
-                c.IsArchived = Convert.ToBoolean(dataReader["isArchived"]);
-                c.Image = dataReader["Image"] == DBNull.Value ? null : dataReader["Image"].ToString();
-
-                Clients.Add(c);
-            }
-            return Clients;
-
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    //שקד מכאן
-
-    //--------------------------------------------------------------------------------------------------
-    // This method inserts a new client to the clients table 
-    //--------------------------------------------------------------------------------------------------
-    public int InsertNewClient(User user)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        Dictionary<string, object> paramDic = new Dictionary<string, object>();
-        paramDic.Add("@FirstName", user.FirstName);
-        paramDic.Add("@LastName", user.LastName);
-        paramDic.Add("@Email", user.Email);
-        paramDic.Add("@Password", user.Password);
-
-
-        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddUser", con, paramDic);          // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-
     //**** LABEL TABLE ******** LABEL TABLE ******** LABEL TABLE ******** LABEL TABLE ******** LABEL TABLE ******** LABEL TABLE ****
 
     //--------------------------------------------------------------------------------------------------
@@ -1254,7 +1139,7 @@ finally
         paramDic.Add("@LabelName", label.LabelName);
         paramDic.Add("@LabelColor", label.LabelColor);
         paramDic.Add("@UserID", label.UserID);
-     
+
 
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddLabel", con, paramDic);          // create the command
 
@@ -1473,7 +1358,7 @@ finally
         paramDic.Add("@LabelID", label.LabelID);
         paramDic.Add("@LabelName", label.LabelName);
         paramDic.Add("@LabelColor", label.LabelColor);
-       
+
         //paramDic.Add("@Name", user.Name);
 
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateLabel", con, paramDic);          // create the command
@@ -1501,10 +1386,188 @@ finally
     }
 
 
+    //**** CLIENT TABLE ******** CLIENT TABLE ******** CLIENT TABLE ******** CLIENT TABLE ******** CLIENT TABLE ******** CLIENT TABLE ****
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get clients by user ID
+    //--------------------------------------------------------------------------------------------------
+    public List<Client> GetAllClientsByUserID(int userID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        List<Client> Clients = new List<Client>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+        
+
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetClientsByUserID", con, paramDic);
+
+        try
+        {
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Client c = new Client();
+                c.ClientID = Convert.ToInt32(dataReader["ClientID"]);
+                c.CompanyName = dataReader["CompanyName"].ToString();
+                c.ContactPerson = dataReader["ContactPerson"] == DBNull.Value ? null : dataReader["ContactPerson"].ToString();
+                c.Email = dataReader["Email"] == DBNull.Value ? null : dataReader["Email"].ToString();
+                c.ContactPersonPhone = dataReader["ContactPersonPhone"] == DBNull.Value ? null : dataReader["ContactPersonPhone"].ToString();
+                c.OfficePhone = dataReader["OfficePhone"] == DBNull.Value ? null : dataReader["OfficePhone"].ToString();
+                c.UserID = Convert.ToInt32(dataReader["UserID"]);
+                c.IsArchived = Convert.ToBoolean(dataReader["isArchived"]);
+                c.Image = dataReader["Image"] == DBNull.Value ? null : dataReader["Image"].ToString();
+
+                Clients.Add(c);
+            }
+            return Clients;
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //שקד מכאן
+
+    //--------------------------------------------------------------------------------------------------
+    // This method inserts a new client to the clients table 
+    //--------------------------------------------------------------------------------------------------
+    public int InsertNewClient(Client client)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@companyName", client.CompanyName);
+        paramDic.Add("@contactPerson", client.ContactPerson ?? (object)DBNull.Value);
+        paramDic.Add("@email", client.Email ?? (object)DBNull.Value);
+        paramDic.Add("@contactPersonPhone", client.ContactPersonPhone ?? (object)DBNull.Value);
+        paramDic.Add("@officePhone", client.OfficePhone ?? (object)DBNull.Value);
+        paramDic.Add("@userID", client.UserID);
+        paramDic.Add("@image", client.Image ?? (object)DBNull.Value);
+
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddClient", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get update Client
+    //--------------------------------------------------------------------------------------------------
+    public int UpdateClient(Client client)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ClientID", client.ClientID);
+        paramDic.Add("@companyName", client.CompanyName);
+        paramDic.Add("@contactPerson", client.ContactPerson ?? (object)DBNull.Value);
+        paramDic.Add("@email", client.Email ?? (object)DBNull.Value);
+        paramDic.Add("@contactPersonPhone", client.ContactPersonPhone ?? (object)DBNull.Value);
+        paramDic.Add("@officePhone", client.OfficePhone ?? (object)DBNull.Value);
+        paramDic.Add("@userID", client.UserID);
+        paramDic.Add("@image", client.Image ?? (object)DBNull.Value);
 
 
 
 
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateClient", con, paramDic);          // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
 
     ////--------------------------------------------------------------------------------------------------

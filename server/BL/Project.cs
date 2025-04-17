@@ -107,10 +107,10 @@ namespace EasyTracker.BL
             return dbs.UpdateProject(project);
         }
 
-        public Project GetThisProject(int ProjectID)
+        public List<Dictionary<string, object>> GetThisProject(int ProjectID, int UserID)
         {
             DBservices dbs = new DBservices();
-            return dbs.GetThisProject(ProjectID);
+            return dbs.GetThisProject(ProjectID, UserID);
         }
 
 
