@@ -7,7 +7,10 @@ let table;
 document
   .getElementById("open-description-editor")
   .addEventListener("click", function () {
-    const description = CurrentProject.Description || "";
+    // 🟢 שלוף מה-LocalStorage את הגרסה הכי עדכנית
+    const freshProject =
+      JSON.parse(localStorage.getItem("CurrentProject")) || {};
+    const description = freshProject.Description || "";
 
     document.getElementById("description-textarea").value = description;
 
@@ -36,9 +39,27 @@ document
       JSON.stringify(updatedProject),
       () => {
         alert("✅ תיאור עודכן בהצלחה!");
-        CurrentProject.description = newDescription;
-        localStorage.setItem("CurrentProject", JSON.stringify(CurrentProject));
         $.fancybox.close();
+
+        // ❗ רענון ה-CurrentProject מהשרת
+        const refreshedApiUrl = `https://localhost:7198/api/Projects/GetThisProject/${CurrentProject.ProjectID}`;
+        ajaxCall(
+          "GET",
+          refreshedApiUrl,
+          "",
+          (updatedProjectFromServer) => {
+            // 🟢 שמירה גם בזיכרון וגם ב-localStorage
+            CurrentProject = updatedProjectFromServer;
+            localStorage.setItem(
+              "CurrentProject",
+              JSON.stringify(CurrentProject)
+            );
+            console.log("🎯 עודכן הפרויקט ב-localStorage:", CurrentProject);
+          },
+          (xhr) => {
+            console.error("❌ שגיאה ברענון CurrentProject מהשרת:", xhr);
+          }
+        );
       },
       () => {
         alert("❌ שגיאה בעדכון התיאור");
@@ -409,7 +430,11 @@ function renderTableFromDB() {
 
       const fDate = session.EndDate;
       // const { Ftime, formatFtedDate } = formatDateTime(fDate);
-      let finelFdate = formatDateTime(fDate);
+      // let finelFdate = formatDateTime(fDate);
+
+      const endTimeDisplay = session.EndDate
+        ? formatDateTime(session.EndDate).time
+        : "--:--:--";
 
       const newRow = [
         `<span style="width: 80%; height: 15px; background-color: ${
@@ -420,7 +445,7 @@ function renderTableFromDB() {
 `, // עמודה ריקה
         formattedDate, // תאריך
         time, // שעת התחלה
-        finelFdate.time, // שעת סיום
+        endTimeDisplay, // שעת סיום
         formatSecondsToHHMMSS(session.DurationSeconds), // משך זמן
         session.HourlyRate, // תעריף
         calculateEarnings(session.HourlyRate, session.DurationSeconds), // שכר
@@ -450,19 +475,32 @@ function renderTableFromDB() {
         if (e.target.classList.contains("delete-btn")) {
           const row = e.target.closest("tr");
           const sessionId = row.getAttribute("data-session-id");
-          console.log("נמחק סשן עם ID:", sessionId);
+          const session = $(row).data("session"); // ✅ שליפה מהשורה
 
-          // הסרת השורה מהטבלה דרך DataTables:
+          if (!session) {
+            console.warn("⚠️ לא נמצא session לשורה הזו.");
+            return;
+          }
+
+          console.log("🗑️ נמחק סשן עם ID:", sessionId);
+
+          // עדכון זמן כולל (בר)
+          if (session.DurationSeconds) {
+            totalPastSeconds -= session.DurationSeconds;
+            updateOverallProgress();
+          }
+
+          // הסרת השורה מהטבלה
           table.row(row).remove().draw(false);
 
-          // אם תרצה גם לשלוח בקשת DELETE לשרת:
+          // מחיקה מהשרת
           const apiUrl = `https://localhost:7198/api/Session/delete_session?SessionID=${sessionId}`;
           ajaxCall(
             "PUT",
             apiUrl,
             "",
-            () => console.log(" נמחק בהצלחה מהשרת"),
-            () => console.error("שגיאה במחיקה")
+            () => console.log("✅ הסשן נמחק מהשרת"),
+            () => console.error("❌ שגיאה במחיקת הסשן מהשרת")
           );
         }
       });
