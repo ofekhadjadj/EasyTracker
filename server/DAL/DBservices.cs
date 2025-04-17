@@ -681,6 +681,73 @@ finally
 
     }
 
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get project by his ID
+    //--------------------------------------------------------------------------------------------------
+    public Project GetThisProject(int ProjectID) 
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Project project = new Project();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ProjectID", ProjectID);
+
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetThisProject", con, paramDic);
+
+        try
+        {
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                
+                project.Projectid = Convert.ToInt32(dataReader["ProjectID"]);
+                project.Projectname = dataReader["ProjectName"].ToString();
+                project.Description = dataReader["Description"].ToString();
+                project.Hourlyrate = Convert.ToSingle(dataReader["HourlyRate"]);
+                project.Image = dataReader["Image"].ToString();
+                project.Clientid = Convert.ToInt32(dataReader["ClientID"]);
+                project.Isarchived = Convert.ToBoolean(dataReader["isArchived"]);
+                project.Createdbyuserid = Convert.ToInt32(dataReader["CreatedByUserID"]);
+                project.IsDone = Convert.ToBoolean(dataReader["isDone"]);
+                project.DurationGoal = Convert.ToDecimal(dataReader["DurationGoal"]);
+                
+            }
+
+            return project;
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
     //--------------------------------------------------------------------------------------------------
     // This method inserts a new project to the users table 
     //--------------------------------------------------------------------------------------------------

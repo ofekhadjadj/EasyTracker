@@ -107,7 +107,11 @@ namespace EasyTracker.BL
             return dbs.UpdateProject(project);
         }
 
-
+        public Project GetThisProject(int ProjectID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetThisProject(ProjectID);
+        }
 
 
     }

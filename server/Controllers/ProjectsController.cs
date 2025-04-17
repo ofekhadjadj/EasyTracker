@@ -89,5 +89,13 @@ namespace EasyTracker.Controllers
             return Ok(res);
         }
 
+        
+        [HttpGet("GetThisProject/{ProjectID}")]
+        public IActionResult GetThisProject(int ProjectID)
+        {
+            Project project = new Project();
+
+            return Ok(project.GetThisProject(ProjectID));
+        }
     }
 }
