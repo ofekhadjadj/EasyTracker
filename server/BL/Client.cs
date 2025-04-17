@@ -58,7 +58,11 @@ namespace EasyTracker.BL
             return dbs.UpdateClient(client);
         }
 
-
+        public int ArchiveClient(int clientID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.ArchiveClient(clientID);
+        }
 
 
 

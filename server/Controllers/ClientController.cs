@@ -54,15 +54,25 @@ namespace EasyTracker.Controllers
             }
         }
 
+        [HttpPut("Delete client/{clientID}")]
+        public IActionResult ArchiveClient(int clientID)
+        {
+            try
+            {
+                Client c = new Client();
+                int result = c.ArchiveClient(clientID);
+
+                if (result > 0)
+                    return Ok("Client archived successfully");
+                else
+                    return NotFound(new { message = "Client not found or already archived", clientID = clientID });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Exception during archive", error = ex.Message });
+            }
+        }
 
     }
-
-
-
-
-
-
-
-
 
 }
