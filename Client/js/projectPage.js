@@ -42,7 +42,7 @@ document
         $.fancybox.close();
 
         // ❗ רענון ה-CurrentProject מהשרת
-        const refreshedApiUrl = `https://localhost:7198/api/Projects/GetThisProject/${CurrentProject.ProjectID}`;
+        const refreshedApiUrl = `https://localhost:7198/api/Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`;
         ajaxCall(
           "GET",
           refreshedApiUrl,
@@ -66,6 +66,28 @@ document
       }
     );
   });
+
+function openEndSessionPopup() {
+  const labelApi = `https://localhost:7198/api/Label/Get6ToplLabelsByUserID?userID=${CurrentUser.id}`;
+
+  ajaxCall("GET", labelApi, "", (labels) => {
+    const labelSelect = document.getElementById("session-label");
+    labelSelect.innerHTML = '<option value="">בחר תווית</option>';
+
+    labels.forEach((label) => {
+      const option = document.createElement("option");
+      option.value = label.labelID;
+      option.textContent = label.labelName;
+      labelSelect.appendChild(option);
+    });
+
+    // פתיחת הפופאפ
+    $.fancybox.open({
+      src: "#end-session-popup",
+      type: "inline",
+    });
+  });
+}
 
 document.addEventListener("DOMContentLoaded", renderTableFromDB);
 document.addEventListener("DOMContentLoaded", FillDeatils);
@@ -275,6 +297,45 @@ toggleBtn.addEventListener("click", () => {
 // });
 
 //כפתור עצירה חדש מהצאט
+// stopBtn.addEventListener("click", () => {
+//   clearInterval(interval);
+//   isRunning = false;
+//   toggleText.textContent = "התחל";
+//   toggleIcon.src = "./images/play-icon.png";
+
+//   const endDate = getLocalISOString();
+//   const durationSeconds = seconds;
+
+//   // איפוס סטופר
+//   seconds = 0;
+//   timeDisplay.textContent = "00:00:00";
+//   circle.style.strokeDashoffset = circumference;
+//   progressFill.style.width = `0%`;
+//   progressText.textContent = `0%`;
+
+//   // שליפת sessionID האחרון (נניח שהוא האחרון שנוסף בטבלה)
+//   const lastSessionRow = $("#sessionsTable tbody tr").first();
+//   const sessionData = lastSessionRow.data("session");
+
+//   if (!sessionData) {
+//     console.error("❌ לא נמצא סשן פעיל לעדכון.");
+//     return;
+//   }
+
+//   const updatedSession = {
+//     sessionID: sessionData.SessionID,
+//     projectID: sessionData.ProjectID,
+//     startDate: sessionData.StartDate,
+//     endDate: endDate,
+//     durationSeconds: durationSeconds,
+//     hourlyRate: sessionData.HourlyRate,
+//     description: sessionData.Description,
+//     labelID: sessionData.LabelID,
+//     isArchived: false,
+//     userID: sessionData.UserID,
+//     status: "Ended",
+//   };
+
 stopBtn.addEventListener("click", () => {
   clearInterval(interval);
   isRunning = false;
@@ -284,14 +345,6 @@ stopBtn.addEventListener("click", () => {
   const endDate = getLocalISOString();
   const durationSeconds = seconds;
 
-  // איפוס סטופר
-  seconds = 0;
-  timeDisplay.textContent = "00:00:00";
-  circle.style.strokeDashoffset = circumference;
-  progressFill.style.width = `0%`;
-  progressText.textContent = `0%`;
-
-  // שליפת sessionID האחרון (נניח שהוא האחרון שנוסף בטבלה)
   const lastSessionRow = $("#sessionsTable tbody tr").first();
   const sessionData = lastSessionRow.data("session");
 
@@ -300,36 +353,74 @@ stopBtn.addEventListener("click", () => {
     return;
   }
 
-  const updatedSession = {
+  // שמור משתנים זמניים לצורך השליחה בסיום הפופאפ
+  window.sessionToClose = {
     sessionID: sessionData.SessionID,
     projectID: sessionData.ProjectID,
     startDate: sessionData.StartDate,
-    endDate: endDate,
-    durationSeconds: durationSeconds,
+    endDate,
+    durationSeconds,
     hourlyRate: sessionData.HourlyRate,
-    description: sessionData.Description,
-    labelID: sessionData.LabelID,
-    isArchived: false,
     userID: sessionData.UserID,
+  };
+
+  // אפס סטופר
+  seconds = 0;
+  timeDisplay.textContent = "00:00:00";
+  circle.style.strokeDashoffset = circumference;
+  progressFill.style.width = `0%`;
+  progressText.textContent = `0%`;
+
+  // פתח פופאפ לסיום סשן
+  openEndSessionPopup();
+});
+
+document.getElementById("submit-end-session").addEventListener("click", () => {
+  const description = document.getElementById("session-description").value;
+  const labelID = document.getElementById("session-label").value;
+
+  const data = {
+    ...window.sessionToClose,
+    description,
+    labelID: labelID ? parseInt(labelID) : null,
+    isArchived: false,
     status: "Ended",
   };
 
-  console.log("🔴 סיום סשן | נשלח לשרת:", updatedSession);
+  console.log("📤 סיום סשן נשלח:", data);
 
   ajaxCall(
     "PUT",
     "https://localhost:7198/api/Session/update_session",
-    JSON.stringify(updatedSession),
+    JSON.stringify(data),
     () => {
       alert("✅ הסשן הסתיים בהצלחה!");
+      $.fancybox.close();
       table.clear().draw();
       renderTableFromDB();
     },
     () => {
-      alert("❌ שגיאה בסיום הסשן.");
+      alert("❌ שגיאה בסיום הסשן");
     }
   );
 });
+
+//   console.log("🔴 סיום סשן | נשלח לשרת:", updatedSession);
+
+//   ajaxCall(
+//     "PUT",
+//     "https://localhost:7198/api/Session/update_session",
+//     JSON.stringify(updatedSession),
+//     () => {
+//       alert("✅ הסשן הסתיים בהצלחה!");
+//       table.clear().draw();
+//       renderTableFromDB();
+//     },
+//     () => {
+//       alert("❌ שגיאה בסיום הסשן.");
+//     }
+//   );
+// });
 
 $(document).ready(function () {
   table = $("#sessionsTable").DataTable({
