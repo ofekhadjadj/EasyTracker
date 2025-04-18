@@ -721,3 +721,72 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+// פופאפ צוות פרויקט
+
+const openPopupBtn = document.getElementById("open-team-popup");
+const teamList = document.getElementById("team-list");
+
+openPopupBtn.addEventListener("click", () => {
+  fetchTeamMembers();
+  $.fancybox.open({ src: "#team-popup", type: "inline" });
+});
+
+function fetchTeamMembers() {
+  const projectID = CurrentProject.ProjectID;
+  ajaxCall(
+    "GET",
+    `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectID}`,
+    "",
+    (members) => {
+      console.log(members);
+      teamList.innerHTML = "";
+      members.forEach((member) => {
+        const li = document.createElement("li");
+        li.textContent = member.FullName;
+        teamList.appendChild(li);
+      });
+    },
+    () => {
+      teamList.innerHTML = "<li>שגיאה בטעינת צוות</li>";
+    }
+  );
+}
+
+document.getElementById("add-user-btn").addEventListener("click", () => {
+  // const id = document.getElementById("add-project-id").value;
+  const email = document.getElementById("add-user-email").value;
+  const url = `https://localhost:7198/api/Projects/AddNewTeamMemberToProject?TeamMemberEmail=${encodeURIComponent(
+    email
+  )}&projectID=${CurrentProject.ProjectID}`;
+
+  ajaxCall(
+    "POST",
+    url,
+    "",
+    () => {
+      alert("✅ נוסף בהצלחה");
+      fetchTeamMembers();
+    },
+    () => alert("❌ שגיאה בהוספה")
+  );
+});
+
+document.getElementById("remove-user-btn").addEventListener("click", () => {
+  // const id = document.getElementById("remove-project-id").value;
+  const email = document.getElementById("remove-user-email").value;
+  const url = `https://localhost:7198/api/Projects/RemoveTeamMemberFromProject?TeamMemberEmail=${encodeURIComponent(
+    email
+  )}&ProjectID=${CurrentProject.ProjectID}`;
+
+  ajaxCall(
+    "PUT",
+    url,
+    "",
+    () => {
+      alert("✅ הוסר בהצלחה");
+      fetchTeamMembers();
+    },
+    () => alert("❌ שגיאה בהסרה")
+  );
+});
