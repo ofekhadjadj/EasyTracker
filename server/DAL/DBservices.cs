@@ -451,7 +451,7 @@ finally
                 item["isArchived"] = Convert.ToBoolean(dataReader["isArchived"]);
                 item["CreatedByUserID"] = Convert.ToInt32(dataReader["CreatedByUserID"]);
                 item["isDone"] = Convert.ToBoolean(dataReader["isDone"]);
-                //item["CompanyName"] = dataReader["CompanyName"].ToString();
+                item["CompanyName"] = dataReader["CompanyName"].ToString();
                 item["DurationGoal"] = Convert.ToDecimal(dataReader["DurationGoal"]);
                 //item["Role"] = dataReader["Role"].ToString();
                 //item["isDisable"] = dataReader["isDisable"].ToString();
