@@ -49,12 +49,8 @@
             <img src="./images/avatar.png" class="avatar-img" alt="" />
             <h3>הי,             <span id="menu-prof-name">משה</span>
               👋</h3>
-            <img
-              src="./images/profile arrow.png"
-              class="arrow-btn"
-              id="arrow-btn"
-              alt=""
-            />
+              <img src="./images/profile arrow.png" class="arrow-btn"  alt="">
+
           </div>
           <img src="./images/logo.png" class="logo-sidebar" alt="" />
           <div class="nav-continer">
@@ -169,7 +165,7 @@
                         <img src="./images/demo avatar 1.png" alt="">
                         <img src="./images/demo avatar 2.png" alt="">
                         <img src="./images/demo avatar 3.png" alt="">
-                        <img src="./images/profile arrow.png" class="arrow-btn" alt="">
+                        <img src="./images/profile arrow.png" id="open-team-popup"class="arrow-btn" alt="">
                       </div>
 
                   </div>
@@ -379,6 +375,36 @@
             <br /><br />
             <button id="submit-end-session">סיום</button>
           </div>
+
+
+
+          <!-- 🔵 פופאפ ניהול צוות -->
+<div style="display: none; width: 400px;" id="team-popup">
+  <h2>👥 צוות הפרויקט</h2>
+
+  <!-- 🔹 חלק ראשון: רשימת משתמשים -->
+  <div id="team-members-list">
+    <ul id="team-list">
+      <li>...טוען צוות</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <!-- 🔹 חלק שני: טופס הוספה -->
+  <h3>➕ הוסף חבר צוות</h3>
+  <!-- <input type="text" id="add-project-id" placeholder="מספר פרויקט" /> -->
+  <input type="email" id="add-user-email" placeholder="אימייל של המשתמש" />
+  <button id="add-user-btn">הוסף</button>
+
+  <hr>
+
+  <!-- 🔹 חלק שלישי: טופס הסרה -->
+  <h3>➖ הסר חבר צוות</h3>
+  <!-- <input type="text" id="remove-project-id" placeholder="מספר פרויקט" /> -->
+  <input type="email" id="remove-user-email" placeholder="אימייל של המשתמש" />
+  <button id="remove-user-btn">הסר</button>
+</div>
           
      <script src="https://cdn.jsdelivr.net/npm/easytimer.js@4.3.1/dist/easytimer.min.js"></script>
 
