@@ -357,19 +357,20 @@ finally
             {
                 //ad-hoc
                 var item = new Dictionary<string, object>();
-                item["ProjectID"] = Convert.ToInt32(dataReader["ProjectID"]);
-                item["ProjectName"] = dataReader["ProjectName"].ToString();
-                item["Description"] = dataReader["Description"].ToString();
-                item["HourlyRate"] = Convert.ToSingle(dataReader["HourlyRate"]);
-                item["Image"] = dataReader["Image"].ToString();
-                item["ClientID"] = Convert.ToInt32(dataReader["ClientID"]);
-                item["isArchived"] = Convert.ToBoolean(dataReader["isArchived"]);
-                item["CreatedByUserID"] = Convert.ToInt32(dataReader["CreatedByUserID"]);
-                item["isDone"] = Convert.ToBoolean(dataReader["isDone"]);
-                item["CompanyName"] = dataReader["CompanyName"].ToString();
-                item["DurationGoal"] = Convert.ToDecimal(dataReader["DurationGoal"]);
-                item["Role"] = dataReader["Role"].ToString();
-                item["isDisable"] = dataReader["isDisable"].ToString();
+                item["ProjectID"] = dataReader["ProjectID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["ProjectID"]);
+                item["ProjectName"] = dataReader["ProjectName"] == DBNull.Value ? null : dataReader["ProjectName"].ToString();
+                item["Description"] = dataReader["Description"] == DBNull.Value ? null : dataReader["Description"].ToString();
+                item["HourlyRate"] = dataReader["HourlyRate"] == DBNull.Value ? 0f : Convert.ToSingle(dataReader["HourlyRate"]);
+                item["Image"] = dataReader["Image"] == DBNull.Value ? null : dataReader["Image"].ToString();
+                item["ClientID"] = dataReader["ClientID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["ClientID"]);
+                item["isArchived"] = dataReader["isArchived"] == DBNull.Value ? false : Convert.ToBoolean(dataReader["isArchived"]);
+                item["CreatedByUserID"] = dataReader["CreatedByUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["CreatedByUserID"]);
+                item["isDone"] = dataReader["isDone"] == DBNull.Value ? false : Convert.ToBoolean(dataReader["isDone"]);
+                item["CompanyName"] = dataReader["CompanyName"] == DBNull.Value ? null : dataReader["CompanyName"].ToString();
+                item["DurationGoal"] = dataReader["DurationGoal"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["DurationGoal"]);
+                item["Role"] = dataReader["Role"] == DBNull.Value ? null : dataReader["Role"].ToString();
+                item["isDisable"] = dataReader["isDisable"] == DBNull.Value ? null : dataReader["isDisable"].ToString();
+
 
 
                 result.Add(item);
@@ -378,8 +379,9 @@ finally
             if (dataReader.NextResult() && dataReader.Read())
             {
                 var stats = new Dictionary<string, object>();
-                stats["NotDoneCount"] = Convert.ToInt32(dataReader["NotDoneCount"]);
-                stats["DoneCount"] = Convert.ToInt32(dataReader["DoneCount"]);
+                stats["NotDoneCount"] = dataReader["NotDoneCount"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["NotDoneCount"]);
+                stats["DoneCount"] = dataReader["DoneCount"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["DoneCount"]);
+
 
                 // נכניס את זה כאייטם מיוחד בתוך הרשימה
                 var statsWrapper = new Dictionary<string, object>();
