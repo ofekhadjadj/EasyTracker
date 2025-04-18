@@ -35,7 +35,7 @@ function handleRegister(firstName, lastName, email, password) {
     function (response) {
       console.log("התחברות הצליחה:", response);
 
-      if (response === 1) {
+      if (response === 7) {
         console.log("הרשמה הצליחה!");
         // אפשר לשמור נתונים ב-localStorage אם יש, או פשוט לעבור עמוד
         // window.location.href = "dashboard.html";
