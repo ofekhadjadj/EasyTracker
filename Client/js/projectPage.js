@@ -674,3 +674,50 @@ $(document).on("submit", "#edit-session-form", function (e) {
     }
   );
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const apiUrl = `https://localhost:7198/api/Projects/GetLast5ProjectsByUserId/${CurrentUser.id}`;
+
+  ajaxCall("GET", apiUrl, "", (projects) => {
+    const wrapper = document.getElementById("recent-projects-wrapper");
+    console.log(projects);
+
+    projects.forEach((project) => {
+      const slide = document.createElement("div");
+      slide.className = "swiper-slide";
+      slide.style.backgroundImage = `url(${project.Image})`;
+
+      slide.innerHTML = `
+        <div class="slide-content">
+          <h4>${project.ProjectName}</h4>
+          <p>${project.CompanyName}</p>
+        </div>
+      `;
+
+      // ✅ בלחיצה על הכרטיס – שמירה והפניה
+      slide.addEventListener("click", () => {
+        localStorage.setItem("CurrentProject", JSON.stringify(project));
+        window.location.href = "projectPage.html";
+      });
+
+      wrapper.appendChild(slide);
+    });
+
+    new Swiper(".recent-projects-swiper", {
+      slidesPerView: 2,
+      spaceBetween: 20,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: 3,
+        },
+        1024: {
+          slidesPerView: 4,
+        },
+      },
+    });
+  });
+});

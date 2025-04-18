@@ -34,7 +34,12 @@
     href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css"
     rel="stylesheet"
     />
-    
+    <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
   </head>
   <body>
     <div class="projects-continer">
@@ -210,7 +215,21 @@
                 </div>
               
                 <!-- קופסה אחרונה למטה -->
-                <div class="recent-projects-box box">פרויקטים אחרונים</div>
+                <div class="recent-projects-box box">
+                  
+
+                    <!-- בתוך ה-div של recent-projects-box -->
+                    <div class="swiper recent-projects-swiper">
+                      <div class="swiper-wrapper" id="recent-projects-wrapper">
+                        <!-- כרטיסים ייכנסו לכאן דינמית -->
+                      </div>
+                      <!-- כפתורי ניווט -->
+                      <div class="swiper-button-prev"></div>
+                      <div class="swiper-button-next"></div>
+                    </div>
+
+
+                </div>
               </div>
               
 
