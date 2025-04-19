@@ -26,7 +26,9 @@ function renderProjects(projects) {
   allProjects = projects;
   console.log(projects);
 
-  projects.forEach((project) => {
+  const onlyProjects = projects.slice(0, -1); // 🔥 מדלג על האובייקט האחרון (סטטיסטיקות)
+
+  onlyProjects.forEach((project) => {
     // let html = `
     //     <div class="project-card" style="background-image: url('${project.Image}');">
     //                         <div class="project-content">
