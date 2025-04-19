@@ -304,6 +304,7 @@ div.profile {
 
 .avatar-img {
   width: 55px;
+  border-radius: 30px;
 }
 
 div.profile h3 {

@@ -3,12 +3,11 @@ let CurrentUser = JSON.parse(localStorage.getItem("user"));
 console.log("CurrentProject", CurrentProject);
 console.log("User", CurrentUser);
 let table;
+const avatarImg = document.querySelector(".avatar-img");
 
 //תיקון  לזמנים של UTC עבור עריכה של סשן
-function toLocalISOString(dateStr, timeStr) {
-  const localDate = new Date(`${dateStr}T${timeStr}`);
-  const offsetMs = localDate.getTimezoneOffset() * 60000;
-  return new Date(localDate.getTime() - offsetMs).toISOString();
+function toLocalDateObject(dateStr, timeStr) {
+  return new Date(`${dateStr}T${timeStr}`);
 }
 
 document
@@ -110,6 +109,9 @@ function FillDeatils() {
   breadcrumbsProjName.innerText = breadcrumbsText;
   projectName.innerText = CurrentProject.ProjectName;
   ProjectClient.innerText = CurrentProject.CompanyName;
+  if (CurrentUser?.image && avatarImg) {
+    avatarImg.src = CurrentUser.image;
+  }
 
   // document
   //   .querySelector(".gradient-button")
@@ -478,15 +480,36 @@ $(document).ready(function () {
   });
 });
 
+// function formatDateTime(isoString) {
+//   const date = new Date(isoString);
+
+//   const hours = String(date.getHours()).padStart(2, "0");
+//   const minutes = String(date.getMinutes()).padStart(2, "0");
+//   const seconds = String(date.getSeconds()).padStart(2, "0");
+
+//   const day = String(date.getDate()).padStart(2, "0");
+//   const month = String(date.getMonth() + 1).padStart(2, "0"); // חודשים מ-0 עד 11
+//   const year = date.getFullYear();
+
+//   const time = `${hours}:${minutes}:${seconds}`;
+//   const formattedDate = `${day}/${month}/${year}`;
+
+//   return {
+//     time,
+//     formattedDate,
+//   };
+// }
+
 function formatDateTime(isoString) {
   const date = new Date(isoString);
 
+  // ☀️ החלק החשוב - תן לו להיות בשעה מקומית!
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
   const seconds = String(date.getSeconds()).padStart(2, "0");
 
   const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // חודשים מ-0 עד 11
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
 
   const time = `${hours}:${minutes}:${seconds}`;
@@ -647,16 +670,16 @@ $(document).on("submit", "#edit-session-form", function (e) {
     ? parseInt($("#edit-label-id").val())
     : null;
 
-  const startDateTime = toLocalISOString(startDate, startTime);
-  const endDateTime = toLocalISOString(startDate, endTime);
+  const startDateTime = toLocalDateObject(startDate, startTime);
+  const endDateTime = toLocalDateObject(startDate, endTime);
 
   const durationSeconds = Math.floor((endDateTime - startDateTime) / 1000);
 
   const updatedSession = {
     sessionID: sessionID,
     projectID: CurrentProject.ProjectID,
-    startDate: startDateTime,
-    endDate: endDateTime,
+    startDate: startDateTime.toISOString(),
+    endDate: endDateTime.toISOString(),
     durationSeconds: durationSeconds,
     hourlyRate: hourlyRate,
     description: description,

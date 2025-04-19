@@ -4,6 +4,15 @@ let CurrentUser = JSON.parse(localStorage.getItem("user"));
 
 document.addEventListener("DOMContentLoaded", LoadProject);
 
+document.addEventListener("DOMContentLoaded", function () {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const avatarImg = document.querySelector(".avatar-img");
+
+  if (user?.image && avatarImg) {
+    avatarImg.src = user.image;
+  }
+});
+
 function LoadProject() {
   const userId = JSON.parse(localStorage.getItem("user"))?.id || null;
   const apiUrl = `https://localhost:7198/api/Projects/GetProjectByUserId/${userId}`;
