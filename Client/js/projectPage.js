@@ -4,6 +4,13 @@ console.log("CurrentProject", CurrentProject);
 console.log("User", CurrentUser);
 let table;
 
+//תיקון  לזמנים של UTC עבור עריכה של סשן
+function toLocalISOString(dateStr, timeStr) {
+  const localDate = new Date(`${dateStr}T${timeStr}`);
+  const offsetMs = localDate.getTimezoneOffset() * 60000;
+  return new Date(localDate.getTime() - offsetMs).toISOString();
+}
+
 document
   .getElementById("open-description-editor")
   .addEventListener("click", function () {
@@ -640,15 +647,16 @@ $(document).on("submit", "#edit-session-form", function (e) {
     ? parseInt($("#edit-label-id").val())
     : null;
 
-  const startDateTime = new Date(`${startDate}T${startTime}`);
-  const endDateTime = new Date(`${startDate}T${endTime}`);
+  const startDateTime = toLocalISOString(startDate, startTime);
+  const endDateTime = toLocalISOString(startDate, endTime);
+
   const durationSeconds = Math.floor((endDateTime - startDateTime) / 1000);
 
   const updatedSession = {
     sessionID: sessionID,
     projectID: CurrentProject.ProjectID,
-    startDate: startDateTime.toISOString(),
-    endDate: endDateTime.toISOString(),
+    startDate: startDateTime,
+    endDate: endDateTime,
     durationSeconds: durationSeconds,
     hourlyRate: hourlyRate,
     description: description,
