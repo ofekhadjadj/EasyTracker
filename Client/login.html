@@ -17,10 +17,11 @@
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"
     ></script>
+    <link rel="stylesheet" href="animate.css" />
   </head>
   <body>
     <div class="continer-login">
-      <div class="login-left">
+      <div class="login-left wow fadeInLeftBig">
         <img
           class="vector-money-login"
           src="./images/login-vector.png"
@@ -32,7 +33,7 @@
           ולראות את הערך האמיתי של העבודה שלך.
         </p>
       </div>
-      <div class="login-right">
+      <div class="login-right wow fadeIn">
         <div class="login-container">
           <img class="logo-login" src="./images/logo.png" alt="" />
           <h2>.ברוך הבא! 👋 התחבר והתחל לעבוד</h2>
@@ -70,6 +71,10 @@
         </div>
       </div>
     </div>
+    <script src="js/wow.min.js"></script>
+    <script>
+      new WOW().init();
+    </script>
     <script src="js/login.js"></script>
     <script src="js/AjaxCall.js"></script>
   </body>

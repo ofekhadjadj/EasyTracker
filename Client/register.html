@@ -17,9 +17,11 @@
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"
     ></script>
+
+    <link rel="stylesheet" href="animate.css" />
   </head>
   <body>
-    <div class="continer-login">
+    <div class="continer-login wow fadeInLeftBig">
       <div class="login-left">
         <img src="/images/login-vector.png" alt="" />
         <h2>💵!קדימה, בואו נתחיל לספור את הירוקים</h2>
@@ -28,7 +30,7 @@
           ולראות את הערך האמיתי של העבודה שלך.
         </p>
       </div>
-      <div class="login-right">
+      <div class="login-right wow fadeIn">
         <div class="login-container">
           <img src="/images/logo.png" alt="" />
           <h2>!הצטרף עכשיו 💡 ותן לעבודה שלך לזרום</h2>
@@ -80,6 +82,12 @@
         </div>
       </div>
     </div>
+
+    <script src="js/wow.min.js"></script>
+    <script>
+      new WOW().init();
+    </script>
+
     <script src="js/register.js"></script>
     <script src="js/AjaxCall.js"></script>
   </body>
