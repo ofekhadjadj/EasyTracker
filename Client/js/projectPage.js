@@ -5,9 +5,73 @@ console.log("User", CurrentUser);
 let table;
 const avatarImg = document.querySelector(".avatar-img");
 
+function loadTeamPreview() {
+  const teamContainer = document.getElementById("project-team-preview");
+
+  // שמור את כפתור הפתיחה בצד (נוסיף אותו מחדש אחר כך)
+  const openPopupBtn = document.getElementById("open-team-popup");
+  const arrowImg = document.getElementById("open-team-popup");
+
+  // ננקה את התוכן הקיים
+  teamContainer.innerHTML = "";
+
+  const url = `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${CurrentProject.ProjectID}`;
+
+  ajaxCall(
+    "GET",
+    url,
+    "",
+    (members) => {
+      members.forEach((member) => {
+        const img = document.createElement("img");
+        img.src = member.Image ? member.Image : "./images/default-avatar.png"; // 🔁 ברירת מחדל אם אין תמונה
+        img.alt = member.FullName;
+        img.title = member.FullName;
+        img.style.width = "40px";
+        img.style.height = "40px";
+        img.style.borderRadius = "50%";
+        img.style.objectFit = "cover";
+        img.style.marginLeft = "4px";
+
+        teamContainer.appendChild(img);
+      });
+
+      // הוסף את החץ לפתיחת פופאפ
+      teamContainer.appendChild(arrowImg);
+    },
+    (err) => {
+      console.error("❌ שגיאה בשליפת חברי הצוות:", err);
+    }
+  );
+}
+
 //תיקון  לזמנים של UTC עבור עריכה של סשן
 function toLocalDateObject(dateStr, timeStr) {
   return new Date(`${dateStr}T${timeStr}`);
+}
+
+//טעינת לייבלים לעריכת סשן
+function loadEditLabelsDropdown() {
+  const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
+  const labelSelect = document.getElementById("edit-label-id");
+  labelSelect.innerHTML = '<option value="">בחר תווית</option>';
+
+  ajaxCall(
+    "GET",
+    labelApi,
+    "",
+    (labels) => {
+      labels.forEach((label) => {
+        const option = document.createElement("option");
+        option.value = label.labelID;
+        option.textContent = label.labelName;
+        labelSelect.appendChild(option);
+      });
+    },
+    (err) => {
+      console.error("❌ שגיאה בשליפת תוויות לעריכה:", err);
+    }
+  );
 }
 
 document
@@ -86,7 +150,8 @@ document
   });
 
 function openEndSessionPopup() {
-  const labelApi = `https://localhost:7198/api/Label/Get6ToplLabelsByUserID?userID=${CurrentUser.id}`;
+  // const labelApi = `https://localhost:7198/api/Label/Get6ToplLabelsByUserID?userID=${CurrentUser.id}`;
+  const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
 
   ajaxCall("GET", labelApi, "", (labels) => {
     const labelSelect = document.getElementById("session-label");
@@ -109,6 +174,7 @@ function openEndSessionPopup() {
 
 document.addEventListener("DOMContentLoaded", renderTableFromDB);
 document.addEventListener("DOMContentLoaded", FillDeatils);
+document.addEventListener("DOMContentLoaded", loadTeamPreview);
 
 function FillDeatils() {
   const ProfName = document.getElementById("menu-prof-name");
@@ -584,7 +650,7 @@ function renderTableFromDB() {
       const newRow = [
         `<span style="width: 80%; height: 15px; background-color: ${
           session.LabelColor ?? "#RRGGBBAA"
-        }; color: black; display: inline-block; padding: 2px 6px; border-radius: 6px;">${
+        }; color: black; display: inline-block; padding: 4px 10px; border-radius: 6px;">${
           session.LabelName ?? "-"
         }</span>
 `, // עמודה ריקה
@@ -679,6 +745,7 @@ $(document).on("click", ".edit-btn", function () {
     src: "#edit-session-modal",
     type: "inline",
   });
+  loadEditLabelsDropdown();
 });
 
 // פופאפ עריכת סשן שליחה לשרת
@@ -696,10 +763,8 @@ $(document).on("submit", "#edit-session-form", function (e) {
     : null;
 
   const startDateTime = toLocalDateObject(startDate, startTime);
-  console.log("startDateTime", startDateTime);
 
   const endDateTime = toLocalDateObject(startDate, endTime);
-  console.log("endDateTime", endDateTime);
 
   const durationSeconds = Math.floor((endDateTime - startDateTime) / 1000);
 
@@ -826,6 +891,7 @@ document.getElementById("add-user-btn").addEventListener("click", () => {
     () => {
       alert("✅ נוסף בהצלחה");
       fetchTeamMembers();
+      loadTeamPreview();
     },
     () => alert("❌ שגיאה בהוספה")
   );
@@ -845,6 +911,7 @@ document.getElementById("remove-user-btn").addEventListener("click", () => {
     () => {
       alert("✅ הוסר בהצלחה");
       fetchTeamMembers();
+      loadTeamPreview();
     },
     () => alert("❌ שגיאה בהסרה")
   );

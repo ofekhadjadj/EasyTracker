@@ -161,10 +161,8 @@
                   <div class="half-box">
 
                       <h3 class="team-title">צוות הפרויקט:</h3>
-                      <div class="connected-users-to-project">
-                        <img src="./images/demo avatar 1.png" alt="">
-                        <img src="./images/demo avatar 2.png" alt="">
-                        <img src="./images/demo avatar 3.png" alt="">
+                      <div class="connected-users-to-project" id="project-team-preview">
+                        
                         <img src="./images/profile arrow.png" id="open-team-popup"class="arrow-btn" alt="">
                       </div>
 
@@ -344,8 +342,10 @@
               <label>📝 תיאור</label>
               <textarea id="edit-description" rows="3"></textarea>
           
-              <label>🏷️ מזהה תיוג (labelID)</label>
-              <input type="number" id="edit-label-id" />
+               <label>🏷️ בחר תווית:</label>
+              <select id="edit-label-id" style="width: 100%">
+               <option value="">בחר תווית</option>
+               </select>
          
           
               <button type="submit" class="save-btn">💾 שמור שינויים</button>
