@@ -35,20 +35,9 @@ function renderProjects(projects) {
   allProjects = projects;
   console.log(projects);
 
-  const onlyProjects = projects.slice(0, -1); // 🔥 מדלג על האובייקט האחרון (סטטיסטיקות)
+  const onlyProjects = projects.slice(0, -1); //  מדלג על האובייקט האחרון (סטטיסטיקות)
 
   onlyProjects.forEach((project) => {
-    // let html = `
-    //     <div class="project-card" style="background-image: url('${project.Image}');">
-    //                         <div class="project-content">
-    //                         <span class="status">הושלם!</span>
-    //                         <h2>${project.ProjectName}</h2>
-    //                         <p>${project.CompanyName}</p>
-    //                         </div>
-    //                     </div>
-
-    //     `;
-
     let statusHtml = project.isDone ? '<span class="status">הושלם!</span>' : ""; // אם isDone true, הצג "הושלם!", אחרת ריק
     let html = `
   <div class="project-card" projectId="${project.ProjectID}" style="background-image: url('${project.Image}');">
@@ -64,108 +53,13 @@ function renderProjects(projects) {
   });
 }
 
-// $(document).ready(function () {
-//   // שליחה של הטופס
-//   $("#project-form").on("submit", function (e) {
-//     e.preventDefault(); // מניעת ריענון הדף
-
-//     // שליפת הנתונים מהטופס
-//     const projectData = {
-//       projectname: $("#projectName").val(),
-//       description: $("#projectDesc").val(),
-//       hourlyrate: $("#hourlyRate").val(),
-//       image: $("#projectImage").val(),
-//       clientid: $("#clientName").val(),
-//       createdbyuserid: $("#creator").val(),
-//     };
-
-//     const apiUrl = "https://localhost:7198/api/Projects/addNewProject";
-
-//     const data = JSON.stringify(projectData);
-//     console.log("נתוני פרויקט:", data);
-
-//     ajaxCall(
-//       "POST",
-//       apiUrl,
-//       data,
-//       function (response) {
-//         console.log("הוספת פרויקט הצליחה:", response);
-
-//         if (response === 1) {
-//           console.log("הרשמה הצליחה!");
-//           // אפשר לשמור נתונים ב-localStorage אם יש, או פשוט לעבור עמוד
-//           // window.location.href = "dashboard.html";
-//           // window.location.href = "login.html";
-//         } else {
-//           alert("הרשמה נכשלה. ייתכן שהמשתמש כבר קיים.");
-//         }
-//       },
-//       function (xhr, status, error) {
-//         console.error("שגיאת התחברות:", error);
-//         alert("אירעה שגיאה בשרת. נסה שוב מאוחר יותר.");
-//       }
-//     );
-
-//     console.log("✅ פרויקט נוסף בהצלחה:", projectData);
-
-//     // סגירת הפופ-אפ לאחר השמירה
-//     $.fancybox.close();
-
-//     CardsDiv.innerHTML = "";
-//     LoadProject();
-//   });
-// });
-
 $(document).ready(function () {
   // קריאת לקוחות וטעינתם ל-Dropdown בעת טעינת הדף
   loadClients();
 
-  // // שליחה של הטופס
-  // $("#project-form").on("submit", function (e) {
-  //   e.preventDefault(); // מניעת ריענון הדף
-
-  //   // שליפת הנתונים מהטופס
-  //   const projectData = {
-  //     projectname: $("#projectName").val(),
-  //     description: $("#projectDesc").val(),
-  //     hourlyrate: $("#hourlyRate").val(),
-  //     image: $("#projectImage").val(),
-  //     clientid: $("#clientId").val(), // clientId מכיל את ה-ID של הלקוח
-  //     createdbyuserid: JSON.parse(localStorage.getItem("user"))?.id || null,
-  //     durationGoal: $("#durationGoal").val(), // הוספת משך הזמן המיועד
-  //   };
-  //   console.log(projectData);
-
-  //   const apiUrl = "https://localhost:7198/api/Projects/addNewProject";
-
-  //   const data = JSON.stringify(projectData);
-  //   console.log("נתוני פרויקט:", data);
-
-  //   ajaxCall(
-  //     "POST",
-  //     apiUrl,
-  //     data,
-  //     function (response) {
-  //       console.log("הוספת פרויקט הצליחה:", response);
-  //     },
-  //     function (xhr, status, error) {
-  //       console.error("שגיאת התחברות:", error);
-  //       alert("אירעה שגיאה בשרת. נסה שוב מאוחר יותר.");
-  //     }
-  //   );
-
-  //   console.log("✅ פרויקט נוסף בהצלחה:", projectData);
-
-  //   // סגירת הפופ-אפ לאחר השמירה
-  //   $.fancybox.close();
-
-  //   CardsDiv.innerHTML = "";
-  //   LoadProject();
-
-  // });
-
+  // שליחה של הטופס
   $("#project-form").on("submit", function (e) {
-    e.preventDefault();
+    e.preventDefault(); // מניעת ריענון הדף
 
     const fileInput = $("#projectImageFile").get(0);
     const files = fileInput.files;
@@ -188,6 +82,7 @@ $(document).ready(function () {
       success: function (uploadedImagePaths) {
         const uploadedImage = uploadedImagePaths[0]; // לדוגמה: "/Images/filename.jpg"
 
+        // שליפת הנתונים מהטופס
         const projectData = {
           projectname: $("#projectName").val(),
           description: $("#projectDesc").val(),
@@ -273,7 +168,6 @@ CardsDiv.addEventListener("click", function (event) {
     window.location.href = "./projectPage.html"; // העבר לעמוד הפרויקט
   }
 });
-//
 
 function PushInfoToProjectDone(ProjArray) {
   let done = ProjArray[ProjArray.length - 1].Stats.DoneCount;

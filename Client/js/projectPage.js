@@ -150,7 +150,6 @@ document
   });
 
 function openEndSessionPopup() {
-  // const labelApi = `https://localhost:7198/api/Label/Get6ToplLabelsByUserID?userID=${CurrentUser.id}`;
   const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
 
   ajaxCall("GET", labelApi, "", (labels) => {
@@ -190,19 +189,6 @@ function FillDeatils() {
   if (CurrentUser?.image && avatarImg) {
     avatarImg.src = CurrentUser.image;
   }
-
-  // document
-  //   .querySelector(".gradient-button")
-  //   .addEventListener("click", function () {
-  //     const description = CurrentProject.description || "אין תיאור לפרויקט זה";
-  //     document.getElementById("project-description-textarea").value =
-  //       description;
-
-  //     $.fancybox.open({
-  //       src: "#project-description-popup",
-  //       type: "inline",
-  //     });
-  //   });
 }
 
 let interval = null;
@@ -223,9 +209,8 @@ const circumference = 2 * Math.PI * 100;
 const progressFill = document.getElementById("progress-fill");
 const progressText = document.getElementById("progress-text");
 
-// 🕒 יעד בזמן (בשעות) — אתה יכול לשנות לכמה שתרצה
-// const goalHours = 0.01;
-// const goalInSeconds = goalHours * 3600;
+// הגדרת יעד משך הפרויקט בשעות ביחס לבר ההתקדמות
+
 const goalInSeconds = CurrentProject.DurationGoal * 3600 || 3600; // ברירת מחדל לשעה אם לא קיים
 
 circle.style.strokeDasharray = circumference;
@@ -379,62 +364,8 @@ toggleBtn.addEventListener("click", () => {
     toggleIcon.src = "./images/puse icon.png";
   }
 });
-// כפתור עצירה מקורי
-// stopBtn.addEventListener("click", () => {
-//   clearInterval(interval);
-//   isRunning = false;
-//   toggleText.textContent = "התחל";
-//   toggleIcon.src = "./images/play-icon.png";
-//   console.log("⏱️ זמן כולל בשניות:", seconds);
 
-//   // איפוס סטופר
-//   seconds = 0;
-//   timeDisplay.textContent = "00:00:00";
-//   circle.style.strokeDashoffset = circumference;
-//   progressFill.style.width = `0%`;
-//   progressText.textContent = `0%`;
-// });
-
-//כפתור עצירה חדש מהצאט
-// stopBtn.addEventListener("click", () => {
-//   clearInterval(interval);
-//   isRunning = false;
-//   toggleText.textContent = "התחל";
-//   toggleIcon.src = "./images/play-icon.png";
-
-//   const endDate = getLocalISOString();
-//   const durationSeconds = seconds;
-
-//   // איפוס סטופר
-//   seconds = 0;
-//   timeDisplay.textContent = "00:00:00";
-//   circle.style.strokeDashoffset = circumference;
-//   progressFill.style.width = `0%`;
-//   progressText.textContent = `0%`;
-
-//   // שליפת sessionID האחרון (נניח שהוא האחרון שנוסף בטבלה)
-//   const lastSessionRow = $("#sessionsTable tbody tr").first();
-//   const sessionData = lastSessionRow.data("session");
-
-//   if (!sessionData) {
-//     console.error("❌ לא נמצא סשן פעיל לעדכון.");
-//     return;
-//   }
-
-//   const updatedSession = {
-//     sessionID: sessionData.SessionID,
-//     projectID: sessionData.ProjectID,
-//     startDate: sessionData.StartDate,
-//     endDate: endDate,
-//     durationSeconds: durationSeconds,
-//     hourlyRate: sessionData.HourlyRate,
-//     description: sessionData.Description,
-//     labelID: sessionData.LabelID,
-//     isArchived: false,
-//     userID: sessionData.UserID,
-//     status: "Ended",
-//   };
-
+//סיום סשן
 stopBtn.addEventListener("click", () => {
   clearInterval(interval);
   isRunning = false;
@@ -504,23 +435,6 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
   );
 });
 
-//   console.log("🔴 סיום סשן | נשלח לשרת:", updatedSession);
-
-//   ajaxCall(
-//     "PUT",
-//     "https://localhost:7198/api/Session/update_session",
-//     JSON.stringify(updatedSession),
-//     () => {
-//       alert("✅ הסשן הסתיים בהצלחה!");
-//       table.clear().draw();
-//       renderTableFromDB();
-//     },
-//     () => {
-//       alert("❌ שגיאה בסיום הסשן.");
-//     }
-//   );
-// });
-
 $(document).ready(function () {
   table = $("#sessionsTable").DataTable({
     responsive: true,
@@ -532,28 +446,10 @@ $(document).ready(function () {
     info: false,
   });
 
-  // פונקציית הרחבה
-  // function format() {
-  //   return '<div class="details-row">כאן יופיע תיאור מפורט של הסשן שנבחר</div>';
-  // }
-
   function format(session) {
     const desc = session.Description || "אין תיאור זמין לסשן זה.";
     return `<div class="details-row">תיאור הסשן: ${desc}</div>`;
   }
-  // האזנה ללחיצה
-  // $("#sessionsTable tbody").on("click", "td .details-control", function () {
-  //   const tr = $(this).closest("tr");
-  //   const row = table.row(tr);
-
-  //   if (row.child.isShown()) {
-  //     row.child.hide();
-  //     $(this).text("\u25BC");
-  //   } else {
-  //     row.child(format()).show();
-  //     $(this).text("\u25B2");
-  //   }
-  // });
 
   $("#sessionsTable tbody").on("click", "td .details-control", function () {
     const tr = $(this).closest("tr");
@@ -570,30 +466,10 @@ $(document).ready(function () {
   });
 });
 
-// function formatDateTime(isoString) {
-//   const date = new Date(isoString);
-
-//   const hours = String(date.getHours()).padStart(2, "0");
-//   const minutes = String(date.getMinutes()).padStart(2, "0");
-//   const seconds = String(date.getSeconds()).padStart(2, "0");
-
-//   const day = String(date.getDate()).padStart(2, "0");
-//   const month = String(date.getMonth() + 1).padStart(2, "0"); // חודשים מ-0 עד 11
-//   const year = date.getFullYear();
-
-//   const time = `${hours}:${minutes}:${seconds}`;
-//   const formattedDate = `${day}/${month}/${year}`;
-
-//   return {
-//     time,
-//     formattedDate,
-//   };
-// }
-
 function formatDateTime(isoString) {
   const date = new Date(isoString);
 
-  // ☀️ החלק החשוב - תן לו להיות בשעה מקומית!
+  // הפיכת תאריך בפורמט ISO לפורמט מקומי
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
   const seconds = String(date.getSeconds()).padStart(2, "0");
@@ -640,8 +516,6 @@ function renderTableFromDB() {
       const { time, formattedDate } = formatDateTime(rawDate);
 
       const fDate = session.EndDate;
-      // const { Ftime, formatFtedDate } = formatDateTime(fDate);
-      // let finelFdate = formatDateTime(fDate);
 
       const endTimeDisplay = session.EndDate
         ? formatDateTime(session.EndDate).time
@@ -652,8 +526,7 @@ function renderTableFromDB() {
           session.LabelColor ?? "#RRGGBBAA"
         }; color: black; display: inline-block; padding: 4px 10px; border-radius: 6px;">${
           session.LabelName ?? "-"
-        }</span>
-`, // עמודה ריקה
+        }</span>`, // עמודה ריקה
         formattedDate, // תאריך
         time, // שעת התחלה
         endTimeDisplay, // שעת סיום
@@ -664,7 +537,6 @@ function renderTableFromDB() {
         '<button class="details-control">▼</button>', // פרטים נוספים
       ];
       // הוספה ורינדור:
-      // table.row.add(newRow).draw(false);
 
       const rowNode = table.row.add(newRow).draw(false).node();
       $(rowNode).prependTo("#sessionsTable tbody");
@@ -878,7 +750,6 @@ function fetchTeamMembers() {
 }
 
 document.getElementById("add-user-btn").addEventListener("click", () => {
-  // const id = document.getElementById("add-project-id").value;
   const email = document.getElementById("add-user-email").value;
   const url = `https://localhost:7198/api/Projects/AddNewTeamMemberToProject?TeamMemberEmail=${encodeURIComponent(
     email
@@ -898,7 +769,6 @@ document.getElementById("add-user-btn").addEventListener("click", () => {
 });
 
 document.getElementById("remove-user-btn").addEventListener("click", () => {
-  // const id = document.getElementById("remove-project-id").value;
   const email = document.getElementById("remove-user-email").value;
   const url = `https://localhost:7198/api/Projects/RemoveTeamMemberFromProject?TeamMemberEmail=${encodeURIComponent(
     email

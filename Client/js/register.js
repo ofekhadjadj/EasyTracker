@@ -37,8 +37,6 @@ function handleRegister(firstName, lastName, email, password) {
 
       if (response === 7) {
         console.log("הרשמה הצליחה!");
-        // אפשר לשמור נתונים ב-localStorage אם יש, או פשוט לעבור עמוד
-        // window.location.href = "dashboard.html";
         window.location.href = "login.html";
       } else {
         alert("הרשמה נכשלה. ייתכן שהמשתמש כבר קיים.");
