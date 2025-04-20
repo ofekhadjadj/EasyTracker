@@ -46,7 +46,9 @@ namespace EasyTracker.Controllers
                     {
                         await formFile.CopyToAsync(stream);
                     }
-                    imageLinks.Add(formFile.FileName);
+                    //imageLinks.Add(formFile.FileName);
+                    imageLinks.Add("/Images/" + formFile.FileName);
+
                 }
             }
 
