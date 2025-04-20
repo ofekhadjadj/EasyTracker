@@ -120,47 +120,106 @@ $(document).ready(function () {
   // קריאת לקוחות וטעינתם ל-Dropdown בעת טעינת הדף
   loadClients();
 
-  // שליחה של הטופס
+  // // שליחה של הטופס
+  // $("#project-form").on("submit", function (e) {
+  //   e.preventDefault(); // מניעת ריענון הדף
+
+  //   // שליפת הנתונים מהטופס
+  //   const projectData = {
+  //     projectname: $("#projectName").val(),
+  //     description: $("#projectDesc").val(),
+  //     hourlyrate: $("#hourlyRate").val(),
+  //     image: $("#projectImage").val(),
+  //     clientid: $("#clientId").val(), // clientId מכיל את ה-ID של הלקוח
+  //     createdbyuserid: JSON.parse(localStorage.getItem("user"))?.id || null,
+  //     durationGoal: $("#durationGoal").val(), // הוספת משך הזמן המיועד
+  //   };
+  //   console.log(projectData);
+
+  //   const apiUrl = "https://localhost:7198/api/Projects/addNewProject";
+
+  //   const data = JSON.stringify(projectData);
+  //   console.log("נתוני פרויקט:", data);
+
+  //   ajaxCall(
+  //     "POST",
+  //     apiUrl,
+  //     data,
+  //     function (response) {
+  //       console.log("הוספת פרויקט הצליחה:", response);
+  //     },
+  //     function (xhr, status, error) {
+  //       console.error("שגיאת התחברות:", error);
+  //       alert("אירעה שגיאה בשרת. נסה שוב מאוחר יותר.");
+  //     }
+  //   );
+
+  //   console.log("✅ פרויקט נוסף בהצלחה:", projectData);
+
+  //   // סגירת הפופ-אפ לאחר השמירה
+  //   $.fancybox.close();
+
+  //   CardsDiv.innerHTML = "";
+  //   LoadProject();
+
+  // });
+
   $("#project-form").on("submit", function (e) {
-    e.preventDefault(); // מניעת ריענון הדף
+    e.preventDefault();
 
-    // שליפת הנתונים מהטופס
-    const projectData = {
-      projectname: $("#projectName").val(),
-      description: $("#projectDesc").val(),
-      hourlyrate: $("#hourlyRate").val(),
-      image: $("#projectImage").val(),
-      clientid: $("#clientId").val(), // clientId מכיל את ה-ID של הלקוח
-      createdbyuserid: JSON.parse(localStorage.getItem("user"))?.id || null,
-      durationGoal: $("#durationGoal").val(), // הוספת משך הזמן המיועד
-    };
-    console.log(projectData);
+    const fileInput = $("#projectImageFile").get(0);
+    const files = fileInput.files;
 
-    const apiUrl = "https://localhost:7198/api/Projects/addNewProject";
+    if (files.length === 0) {
+      alert("אנא בחר תמונה לפני שמירת הפרויקט.");
+      return;
+    }
 
-    const data = JSON.stringify(projectData);
-    console.log("נתוני פרויקט:", data);
+    const formData = new FormData();
+    formData.append("files", files[0]);
 
-    ajaxCall(
-      "POST",
-      apiUrl,
-      data,
-      function (response) {
-        console.log("הוספת פרויקט הצליחה:", response);
+    // העלאת התמונה לשרת
+    $.ajax({
+      url: "https://localhost:7198/api/Upload",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (uploadedImagePaths) {
+        const uploadedImage = uploadedImagePaths[0]; // לדוגמה: "/Images/filename.jpg"
+
+        const projectData = {
+          projectname: $("#projectName").val(),
+          description: $("#projectDesc").val(),
+          hourlyrate: $("#hourlyRate").val(),
+          image: uploadedImage, // 👈 זה שדה התמונה שנשלח למסד
+          clientid: $("#clientId").val(),
+          createdbyuserid: JSON.parse(localStorage.getItem("user"))?.id || null,
+          durationGoal: $("#durationGoal").val(),
+        };
+
+        const data = JSON.stringify(projectData);
+
+        ajaxCall(
+          "POST",
+          "https://localhost:7198/api/Projects/addNewProject",
+          data,
+          function (response) {
+            console.log("✅ פרויקט נוסף בהצלחה:", response);
+            $.fancybox.close();
+            CardsDiv.innerHTML = "";
+            LoadProject();
+          },
+          function (xhr, status, error) {
+            console.error("שגיאה בשרת:", error);
+            alert("אירעה שגיאה בשמירת הפרויקט.");
+          }
+        );
       },
-      function (xhr, status, error) {
-        console.error("שגיאת התחברות:", error);
-        alert("אירעה שגיאה בשרת. נסה שוב מאוחר יותר.");
-      }
-    );
-
-    console.log("✅ פרויקט נוסף בהצלחה:", projectData);
-
-    // סגירת הפופ-אפ לאחר השמירה
-    $.fancybox.close();
-
-    CardsDiv.innerHTML = "";
-    LoadProject();
+      error: function () {
+        alert("שגיאה בהעלאת התמונה.");
+      },
+    });
   });
 });
 
