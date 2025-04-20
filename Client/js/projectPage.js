@@ -26,6 +26,18 @@ document
     });
   });
 
+function toIsoLocalFormat(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
+
 //שליחה לשרת של התיאור פרויקט מהכפתור שמירת פרטים
 document
   .getElementById("save-description-btn")
@@ -220,13 +232,24 @@ function getLocalISOString() {
 }
 
 // 🟦 כפתור הפעלה
+function getLocalISOStringWithoutZ() {
+  const now = new Date();
+
+  // מחשב את ההפרש בין הזמן המקומי ל־UTC
+  const localOffsetMs = now.getTimezoneOffset() * -60000;
+
+  // מוסיף את ההפרש כדי להגיע לזמן מקומי אמיתי
+  const localDate = new Date(now.getTime() + localOffsetMs);
+
+  return localDate.toISOString().replace("Z", "");
+}
 
 toggleBtn.addEventListener("click", () => {
   // כפתור השהייה תוספת
   if (isRunning) {
     clearInterval(interval);
     isRunning = false;
-    toggleText.textContent = "התחל";
+    toggleText.textContent = "המשך";
     toggleIcon.src = "./images/play-icon.png";
 
     const durationSeconds = seconds;
@@ -261,7 +284,8 @@ toggleBtn.addEventListener("click", () => {
     );
   } else {
     // קריאה לשרת לפני שמתחיל הסטופר
-    const sessionStart = getLocalISOString();
+    const sessionStart = getLocalISOStringWithoutZ();
+
     const apiUrl = `https://localhost:7198/api/Session/start_auto_session?userID=${
       CurrentUser.id
     }&projectID=${CurrentProject.ProjectID}&startDate=${encodeURIComponent(
@@ -351,7 +375,7 @@ stopBtn.addEventListener("click", () => {
   toggleText.textContent = "התחל";
   toggleIcon.src = "./images/play-icon.png";
 
-  const endDate = getLocalISOString();
+  const endDate = getLocalISOStringWithoutZ();
   const durationSeconds = seconds;
 
   const lastSessionRow = $("#sessionsTable tbody tr").first();
@@ -639,6 +663,7 @@ $(document).on("click", ".edit-btn", function () {
   if (!session) return;
 
   const start = new Date(session.StartDate);
+
   const end = new Date(session.EndDate);
 
   $("#edit-session-id").val(session.SessionID);
@@ -671,15 +696,18 @@ $(document).on("submit", "#edit-session-form", function (e) {
     : null;
 
   const startDateTime = toLocalDateObject(startDate, startTime);
+  console.log("startDateTime", startDateTime);
+
   const endDateTime = toLocalDateObject(startDate, endTime);
+  console.log("endDateTime", endDateTime);
 
   const durationSeconds = Math.floor((endDateTime - startDateTime) / 1000);
 
   const updatedSession = {
     sessionID: sessionID,
     projectID: CurrentProject.ProjectID,
-    startDate: startDateTime.toISOString(),
-    endDate: endDateTime.toISOString(),
+    startDate: toIsoLocalFormat(startDateTime),
+    endDate: toIsoLocalFormat(endDateTime),
     durationSeconds: durationSeconds,
     hourlyRate: hourlyRate,
     description: description,
