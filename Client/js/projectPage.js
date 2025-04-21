@@ -367,6 +367,10 @@ toggleBtn.addEventListener("click", () => {
 
 //סיום סשן
 stopBtn.addEventListener("click", () => {
+  if (!isRunning) {
+    alert("לא ניתן לסיים סשן לפני שהתחלת אחד.");
+    return;
+  }
   clearInterval(interval);
   isRunning = false;
   toggleText.textContent = "התחל";
