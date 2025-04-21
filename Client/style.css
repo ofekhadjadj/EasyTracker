@@ -1073,3 +1073,8 @@ th.sorting {
 .swiper-slide {
   cursor: pointer;
 }
+
+body > div > div.content > div > div.header-projects > div.title-and-btn > a {
+  width: unset;
+  height: unset;
+}
