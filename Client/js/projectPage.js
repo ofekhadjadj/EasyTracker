@@ -203,7 +203,7 @@ const toggleText = document.getElementById("toggle-text");
 const toggleIcon = document.getElementById("toggle-icon");
 const stopBtn = document.getElementById("stop-btn");
 const circle = document.querySelector(".circle-progress");
-const circumference = 2 * Math.PI * 100;
+const circumference = 2 * Math.PI * 100; //היקף המעגל
 
 // 🟦 בר התקדמות
 const progressFill = document.getElementById("progress-fill");
@@ -367,6 +367,10 @@ toggleBtn.addEventListener("click", () => {
 
 //סיום סשן
 stopBtn.addEventListener("click", () => {
+  if (!isRunning) {
+    alert("לא ניתן לסיים סשן לפני שהתחלת אחד.");
+    return;
+  }
   clearInterval(interval);
   isRunning = false;
   toggleText.textContent = "התחל";

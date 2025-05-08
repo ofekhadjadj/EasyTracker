@@ -455,8 +455,7 @@ finally
                 item["isDone"] = Convert.ToBoolean(dataReader["isDone"]);
                 item["CompanyName"] = dataReader["CompanyName"].ToString();
                 item["DurationGoal"] = Convert.ToDecimal(dataReader["DurationGoal"]);
-                //item["Role"] = dataReader["Role"].ToString();
-                //item["isDisable"] = dataReader["isDisable"].ToString();
+              
 
 
                 result.Add(item);
@@ -903,9 +902,6 @@ finally
 
         try
         {
-            //int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            //return numEffected;
-
             object result = cmd.ExecuteScalar(); // מחזיר את ה-SessionID
             int newSessionID = Convert.ToInt32(result);
             return newSessionID;
@@ -949,8 +945,6 @@ finally
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@SessionID", Session.SessionID);
-        //paramDic.Add("@ProjectID", Session.ProjectID);
-        //paramDic.Add("@UserID", Session.UserID);
         paramDic.Add("@StartDate", Session.StartDate); 
         paramDic.Add("@EndDate", Session.EndDate);
         paramDic.Add("@DurationSeconds", Session.DurationSeconds);
@@ -958,7 +952,7 @@ finally
         paramDic.Add("@Description", Session.Description);
         paramDic.Add("@LabelID", Session.LabelID);
         paramDic.Add("@Status", Session.Status);
-        //paramDic.Add("@isArchived", Session.IsArchived);
+       
         
 
         cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateSession", con, paramDic);          // create the command

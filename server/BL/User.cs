@@ -57,8 +57,6 @@
         }
 
 
-
-
         public int UpdateUserDetails()
         {
             DBservices dbs = new DBservices();
@@ -71,38 +69,6 @@
             DBservices dbs = new DBservices();
             return dbs.UpdateUserPassword(Id, OldPassword,NewPassword);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //public int UpdateUserIsActive(int id, bool isActive)
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.UpdateUserIsActive(id, isActive);
-        //}
-
-        //public List<Dictionary<string, object>> GetUsersWithGameStats()
-        //{
-        //    DBservices dbs = new DBservices();
-        //    return dbs.GetUsersWithGameStats();
-        //}
-
-
 
     }
 }
