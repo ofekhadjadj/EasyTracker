@@ -1671,729 +1671,301 @@ finally
 
     }
 
-    ////--------------------------------------------------------------------------------------------------
-    //// This method inserts a new user to the users table 
-    ////--------------------------------------------------------------------------------------------------
-    //public int UpdateUserDetails(User user)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@userID", user.Id);
-    //    paramDic.Add("@Email", user.Email);
-    //    paramDic.Add("@Password", user.Password);
-    //    //paramDic.Add("@Name", user.Name);
-
-    //    cmd = CreateCommandWithStoredProcedureGeneral("SP_UpdateUserDetails", con, paramDic);          // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method get user details email and password
-    ////--------------------------------------------------------------------------------------------------
-    //public User ReadUserDetails(string Email, string Password)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    //List<User> Users = new List<User>();
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@Email", Email);
-    //    paramDic.Add("@Password", Password);
-
-
-    //    cmd = CreateCommandWithStoredProcedureGeneral("SP_GetUser", con, paramDic);
-
-    //    try
-    //    {
-
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-
-    //        if (!dataReader.Read())
-    //        {
-    //            // אם לא נמצא משתמש כזה, זרוק שגיאה שקשורה לפרטי התחברות שגויים
-    //            throw new Exception("Incorrect login details");
-    //        }
-
-
-
-    //        User u = new User();
-    //        u.Id = Convert.ToInt32(dataReader["Id"]);
-    //        u.Email = dataReader["Email"].ToString();
-    //        u.Password = dataReader["Password"].ToString();
-    //        //u.Name = dataReader["Name"].ToString();
-    //        u.IsActive = Convert.ToBoolean(dataReader["IsActive"]);
-
-    //        return u;
-
-    //        /*
-    //        if (u.IsActive)
-    //        {
-    //            // אם משתמש קיים ובססטוס פעיל אז נחזיר את פרטיו
-    //            return u;
-    //        }
-    //        else
-    //        {
-    //            // אם משתמש קיים אבל בסטטוס לא פעיל, נזרוק שגיאה מותאמת
-    //            throw new Exception("Your account is inactive");
-    //        }*/
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-
-    ////---------------------------------------------------------------------------------
-    //// This method get the users statictics
-    ////---------------------------------------------------------------------------------
-    //public List<Dictionary<string, object>> GetUsersWithGameStats()
-    //{
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // יצירת חיבור
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // רשום שגיאה אם יש
-    //        throw (ex);
-    //    }
-
-    //    List<Dictionary<string, object>> usersStatsList = new List<Dictionary<string, object>>();
-
-    //    cmd = CreateCommandWithStoredProcedureGeneral("GetUsersWithGameStats", con, null);
-
-    //    try
-    //    {
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //        while (dataReader.Read())
-    //        {
-    //            // יצירת אובייקט דינמי (Ad-Hoc Object) לכל שורה ב-DataReader
-    //            var userStats = new Dictionary<string, object>();
-    //            userStats.Add("UserID", Convert.ToInt32(dataReader["UserID"]));
-    //            userStats.Add("UserName", dataReader["UserName"].ToString());
-    //            userStats.Add("NumberOfGamesBought", Convert.ToInt32(dataReader["NumberOfGamesBought"]));
-    //            userStats.Add("TotalAmountSpent", Convert.ToDouble(dataReader["TotalAmountSpent"]));
-    //            userStats.Add("IsActive", Convert.ToBoolean(dataReader["IsActive"]));
-    //            usersStatsList.Add(userStats);
-    //        }
-
-    //        return usersStatsList;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // רשום שגיאה אם יש
-    //        throw (ex);
-    //    }
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // סגור את החיבור
-    //            con.Close();
-    //        }
-    //    }
-    //}
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method inserts a new user to the users table 
-    ////--------------------------------------------------------------------------------------------------
-    //public int UpdateUserIsActive(int id, bool isActive)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@userID", id);
-    //    paramDic.Add("@isActive", isActive);
-
-
-    //    cmd = CreateCommandWithStoredProcedureGeneral("SP_UpdateUserIsActive", con, paramDic);          // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-    ////**** GAMES TABLE ****
-
-    ////---------------------------------------------------------------------------------
-    //// This method get the games table 
-    ////---------------------------------------------------------------------------------
-    //public List<Game> ReadAllGames()
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    List<Game> games = new List<Game>();
-
-    //    cmd = CreateCommandWithStoredProcedureGeneral("GetAllGames", con, null);
-
-    //    try
-    //    {
-
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //        while (dataReader.Read())
-    //        {
-    //            Game g = new Game();
-    //            g.AppID = Convert.ToInt32(dataReader["AppID"]);
-    //            g.Name = dataReader["Name"].ToString();
-    //            g.ReleaseDate = Convert.ToDateTime(dataReader["Release_date"]);
-    //            g.Price = Convert.ToDouble(dataReader["Price"]);
-    //            g.Description = dataReader["Description"].ToString();
-    //            g.HeaderImage = dataReader["Header_image"].ToString();
-    //            g.Website = dataReader["Website"].ToString();
-    //            g.Windows = Convert.ToInt32(dataReader["Windows"]) == 1;
-    //            g.Mac = Convert.ToInt32(dataReader["Mac"]) == 1;
-    //            g.Linux = Convert.ToInt32(dataReader["Linux"]) == 1;
-    //            g.ScoreRank = Convert.ToInt32(dataReader["Score_rank"]);
-    //            g.Recommendations = dataReader["Recommendations"].ToString();
-    //            g.Publisher = dataReader["Developers"].ToString();
-    //            g.NumberOfPurchases = Convert.ToInt32(dataReader["numberOfPurchases"]);
-    //            games.Add(g);
-    //        }
-    //        return games;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-
-    //}
-
-    ////---------------------------------------------------------------------------------
-    //// This method get the games that NOT LINKED to user  
-    ////---------------------------------------------------------------------------------
-    //public List<Game> ReadGamesNotLinkedToUser(int id)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    List<Game> games = new List<Game>();
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@userID", id);
-
-    //    cmd = CreateCommandWithStoredProcedureGeneral("GetGamesNotLinkedToUser", con, paramDic);
-
-    //    try
-    //    {
-
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //        while (dataReader.Read())
-    //        {
-    //            Game g = new Game();
-    //            g.AppID = Convert.ToInt32(dataReader["AppID"]);
-    //            g.Name = dataReader["Name"].ToString();
-    //            g.ReleaseDate = Convert.ToDateTime(dataReader["Release_date"]);
-    //            g.Price = Convert.ToDouble(dataReader["Price"]);
-    //            g.Description = dataReader["Description"].ToString();
-    //            g.HeaderImage = dataReader["Header_image"].ToString();
-    //            g.Website = dataReader["Website"].ToString();
-    //            g.Windows = Convert.ToInt32(dataReader["Windows"]) == 1;
-    //            g.Mac = Convert.ToInt32(dataReader["Mac"]) == 1;
-    //            g.Linux = Convert.ToInt32(dataReader["Linux"]) == 1;
-    //            g.ScoreRank = Convert.ToInt32(dataReader["Score_rank"]);
-    //            g.Recommendations = dataReader["Recommendations"].ToString();
-    //            g.Publisher = dataReader["Developers"].ToString();
-    //            g.NumberOfPurchases = Convert.ToInt32(dataReader["numberOfPurchases"]);
-    //            games.Add(g);
-    //        }
-    //        return games;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-
-    //}
-
-    ////---------------------------------------------------------------------------------
-    //// This method get the games by user ID  
-    ////---------------------------------------------------------------------------------
-    //public List<Game> ReadGamesByUserID(int id)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    List<Game> games = new List<Game>();
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@userID", id);
-
-    //    cmd = CreateCommandWithStoredProcedureGeneral("SP_GetGamesByUserId", con, paramDic);
-
-    //    try
-    //    {
-
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //        while (dataReader.Read())
-    //        {
-    //            Game g = new Game();
-    //            g.AppID = Convert.ToInt32(dataReader["AppID"]);
-    //            g.Name = dataReader["Name"].ToString();
-    //            g.ReleaseDate = Convert.ToDateTime(dataReader["Release_date"]);
-    //            g.Price = Convert.ToDouble(dataReader["Price"]);
-    //            g.Description = dataReader["Description"].ToString();
-    //            g.HeaderImage = dataReader["Header_image"].ToString();
-    //            g.Website = dataReader["Website"].ToString();
-    //            g.Windows = Convert.ToInt32(dataReader["Windows"]) == 1;
-    //            g.Mac = Convert.ToInt32(dataReader["Mac"]) == 1;
-    //            g.Linux = Convert.ToInt32(dataReader["Linux"]) == 1;
-    //            g.ScoreRank = Convert.ToInt32(dataReader["Score_rank"]);
-    //            g.Recommendations = dataReader["Recommendations"].ToString();
-    //            g.Publisher = dataReader["Developers"].ToString();
-    //            g.NumberOfPurchases = Convert.ToInt32(dataReader["numberOfPurchases"]);
-    //            games.Add(g);
-    //        }
-    //        return games;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-
-    //}
-
-    ////---------------------------------------------------------------------------------
-    //// This method get the games by min price  
-    ////---------------------------------------------------------------------------------
-    //public List<Game> ReadGameByMinPrice(int id, double price)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    List<Game> games = new List<Game>();
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@UserID", id);
-    //    paramDic.Add("@Price", price);
-
-    //    cmd = CreateCommandWithStoredProcedureGeneral("SP_GetGamesByMinPrice", con, paramDic);
-
-    //    try
-    //    {
-
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //        while (dataReader.Read())
-    //        {
-    //            Game g = new Game();
-    //            g.AppID = Convert.ToInt32(dataReader["AppID"]);
-    //            g.Name = dataReader["Name"].ToString();
-    //            g.ReleaseDate = Convert.ToDateTime(dataReader["Release_date"]);
-    //            g.Price = Convert.ToDouble(dataReader["Price"]);
-    //            g.Description = dataReader["Description"].ToString();
-    //            g.HeaderImage = dataReader["Header_image"].ToString();
-    //            g.Website = dataReader["Website"].ToString();
-    //            g.Windows = Convert.ToInt32(dataReader["Windows"]) == 1;
-    //            g.Mac = Convert.ToInt32(dataReader["Mac"]) == 1;
-    //            g.Linux = Convert.ToInt32(dataReader["Linux"]) == 1;
-    //            g.ScoreRank = Convert.ToInt32(dataReader["Score_rank"]);
-    //            g.Recommendations = dataReader["Recommendations"].ToString();
-    //            g.Publisher = dataReader["Developers"].ToString();
-    //            g.NumberOfPurchases = Convert.ToInt32(dataReader["numberOfPurchases"]);
-    //            games.Add(g);
-    //        }
-    //        return games;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-
-    //}
-
-    ////---------------------------------------------------------------------------------
-    //// This method get the games by min rank score  
-    ////---------------------------------------------------------------------------------
-    //public List<Game> ReadGameByMinRank(int id, int rank)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    List<Game> games = new List<Game>();
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@UserID", id);
-    //    paramDic.Add("@RankScore", rank);
-
-    //    cmd = CreateCommandWithStoredProcedureGeneral("SP_GetGamesByMinRank", con, paramDic);
-
-    //    try
-    //    {
-
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //        while (dataReader.Read())
-    //        {
-    //            Game g = new Game();
-    //            g.AppID = Convert.ToInt32(dataReader["AppID"]);
-    //            g.Name = dataReader["Name"].ToString();
-    //            g.ReleaseDate = Convert.ToDateTime(dataReader["Release_date"]);
-    //            g.Price = Convert.ToDouble(dataReader["Price"]);
-    //            g.Description = dataReader["Description"].ToString();
-    //            g.HeaderImage = dataReader["Header_image"].ToString();
-    //            g.Website = dataReader["Website"].ToString();
-    //            g.Windows = Convert.ToInt32(dataReader["Windows"]) == 1;
-    //            g.Mac = Convert.ToInt32(dataReader["Mac"]) == 1;
-    //            g.Linux = Convert.ToInt32(dataReader["Linux"]) == 1;
-    //            g.ScoreRank = Convert.ToInt32(dataReader["Score_rank"]);
-    //            g.Recommendations = dataReader["Recommendations"].ToString();
-    //            g.Publisher = dataReader["Developers"].ToString();
-    //            g.NumberOfPurchases = Convert.ToInt32(dataReader["numberOfPurchases"]);
-    //            games.Add(g);
-    //        }
-    //        return games;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-
-    //}
-
-    ////---------------------------------------------------------------------------------
-    //// This method get the games statictics
-    ////---------------------------------------------------------------------------------
-    //public List<Dictionary<string, object>> GetGamesWithStats()
-    //{
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // יצירת חיבור
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // רשום שגיאה אם יש
-    //        throw (ex);
-    //    }
-
-    //    List<Dictionary<string, object>> gameStatsList = new List<Dictionary<string, object>>();
-
-    //    cmd = CreateCommandWithStoredProcedureGeneral("GetGamesWithStats", con, null);
-
-    //    try
-    //    {
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //        while (dataReader.Read())
-    //        {
-    //            // יצירת אובייקט דינמי (Ad-Hoc Object) לכל שורה ב-DataReader
-    //            var gameStats = new Dictionary<string, object>();
-    //            gameStats.Add("AppID", Convert.ToInt32(dataReader["GameID"]));
-    //            gameStats.Add("Name", dataReader["Title"].ToString());
-    //            gameStats.Add("NumberOfDownloads", Convert.ToInt32(dataReader["NumberOfDownloads"]));
-    //            gameStats.Add("TotalRevenue", Convert.ToDouble(dataReader["TotalAmountPaid"]));
-
-    //            gameStatsList.Add(gameStats);
-    //        }
-
-    //        return gameStatsList;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // רשום שגיאה אם יש
-    //        throw (ex);
-    //    }
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // סגור את החיבור
-    //            con.Close();
-    //        }
-    //    }
-    //}
-
-    ////**** USER GAME CONNECTION TABLE ****
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method inserts a new user-game connection to the users-games table 
-    ////--------------------------------------------------------------------------------------------------
-    //public int Insert(int id, int appID)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@userID", id);
-    //    paramDic.Add("@gameID", appID);
-
-
-    //    cmd = CreateCommandWithStoredProcedureGeneral("SP_addGameToMyGames", con, paramDic);          // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method removes a new user-game connection from the users-games table 
-    ////--------------------------------------------------------------------------------------------------
-    //public int Remove(int id, int appID)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@userID", id);
-    //    paramDic.Add("@gameID", appID);
-
-
-    //    cmd = CreateCommandWithStoredProcedureGeneral("SP_RemoveGameFromMyGames", con, paramDic);          // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
+    //**** TASK TABLE ******** TASK TABLE ******** TASK TABLE ******** TASK TABLE ******** TASK TABLE ******** TASK TABLE ******** TASK TABLE ****
+
+    //--------------------------------------------------------------------------------------------------
+    // This method insert new tasks to tasks table 
+    //--------------------------------------------------------------------------------------------------
+    public List<int> AddMultipleTasksByEmail(string email, int projectID, List<ET_Task> tasks)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        List<int> insertedTaskIds = new List<int>();
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        DataTable taskTable = new DataTable();
+        taskTable.Columns.Add("Description", typeof(string));
+        taskTable.Columns.Add("DueDate", typeof(DateTime));
+
+        foreach (var task in tasks)
+        {
+            taskTable.Rows.Add(task.Description, task.DueDate);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@Email", email);
+        paramDic.Add("@ProjectID", projectID);
+        paramDic.Add("@Tasks", taskTable);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("ET_AddMultipleTasksByEmail", con, paramDic);
+        cmd.Parameters["@Tasks"].SqlDbType = SqlDbType.Structured;
+        cmd.Parameters["@Tasks"].TypeName = "ET_TaskTableType";
+
+        try
+        {
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    insertedTaskIds.Add(reader.GetInt32(0)); // מוסיף את TaskID לרשימה
+                }
+            }
+
+            return insertedTaskIds;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get tasks by userID and projectID 
+    //--------------------------------------------------------------------------------------------------
+    public List<ET_Task> GetTasksByUserAndProject(int userID, int projectID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        SqlDataReader reader;
+
+        List<ET_Task> taskList = new List<ET_Task>();
+
+        try
+        {
+            con = connect("myProjDB");
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+        paramDic.Add("@ProjectID", projectID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("ET_GetTasksByUserAndProject", con, paramDic);
+
+        try
+        {
+            reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                ET_Task task = new ET_Task();
+                task.TaskID = Convert.ToInt32(reader["TaskID"]);
+                task.ProjectID = Convert.ToInt32(reader["ProjectID"]);
+                task.UserID = Convert.ToInt32(reader["UserID"]);
+                task.Description = reader["Description"].ToString();
+                task.DueDate = Convert.ToDateTime(reader["DueDate"]);
+                task.IsDone = Convert.ToBoolean(reader["IsDone"]);
+                task.CompletedAt = reader["CompletedAt"] == DBNull.Value ? null : Convert.ToDateTime(reader["CompletedAt"]);
+                task.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
+                task.IsArchived = Convert.ToBoolean(reader["IsArchived"]);
+
+                taskList.Add(task);
+            }
+
+            reader.Close();
+            return taskList;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method update tasks in tasks table 
+    //--------------------------------------------------------------------------------------------------
+    public int UpdateTask(ET_Task task)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // יצירת חיבור
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@TaskID", task.TaskID);
+        paramDic.Add("@Description", task.Description);
+        paramDic.Add("@DueDate", task.DueDate);
+        //paramDic.Add("@IsDone", task.IsDone);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("ET_UpdateTask", con, paramDic);
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // ביצוע עדכון
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method update task status in tasks table 
+    //--------------------------------------------------------------------------------------------------
+    public int UpdateTaskStatus(int taskID, bool isDone)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB");
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@TaskID", taskID);
+        paramDic.Add("@IsDone", isDone);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("ET_UpdateTaskStatus", con, paramDic);
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery();
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method update task Archive in tasks table 
+    //--------------------------------------------------------------------------------------------------
+    public int ArchiveTask(int taskID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // יצירת החיבור למסד הנתונים
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@TaskID", taskID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("ET_ArchiveTask", con, paramDic); // יצירת הפקודה
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // ביצוע הפקודה
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method insert 1 task to tasks table 
+    //--------------------------------------------------------------------------------------------------
+    public int AddTask(ET_Task task)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // יצירת חיבור למסד
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", task.UserID);
+        paramDic.Add("@ProjectID", task.ProjectID);
+        paramDic.Add("@Description", task.Description);
+        paramDic.Add("@DueDate", task.DueDate);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("ET_AddTask", con, paramDic);
+
+        try
+        {
+            object result = cmd.ExecuteScalar(); // החזרת TaskID החדש
+            return Convert.ToInt32(result);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
 
 
     //---------------------------------------------------------------------------------
