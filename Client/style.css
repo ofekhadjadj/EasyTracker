@@ -1078,3 +1078,128 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
   width: unset;
   height: unset;
 }
+
+/* כרטיס לקוח */
+.client-card {
+  min-width: 23%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+/* תוכן הכרטיס */
+.client-card .project-content {
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(0, 126, 255, 0) -5%, #0095fb 57%);
+  color: white;
+  padding: 12px 13px;
+  width: 100%;
+  text-align: right;
+  border-radius: 0 0 20px 20px;
+  padding-top: 33px;
+  transition: all 0.3s ease-in-out;
+}
+
+.client-card:hover .project-content {
+  bottom: 50%;
+  transform: translateY(50%);
+  background: rgba(0, 0, 0, 0);
+}
+
+.client-card:hover .project-content h2 {
+  font-size: 27px;
+  transition: all 0.3s ease-in-out;
+}
+
+.client-card:hover .project-content p {
+  font-size: 17px;
+  transition: all 0.3s ease-in-out;
+}
+
+.client-card .project-content h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.client-card .project-content p {
+  font-size: 16px;
+  font-weight: 300;
+  transition: all 0.3s ease-in-out;
+}
+
+.popup-form {
+  display: none;
+  width: 400px;
+  padding: 25px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  text-align: right;
+  font-family: Assistant, sans-serif;
+}
+
+.popup-form h2 {
+  color: #007bff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.popup-form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.popup-form input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  font-family: Assistant;
+}
+
+.popup-form .btn-submit {
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  color: white;
+  border: none;
+  padding: 12px;
+  margin-top: 20px;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.popup-form .btn-submit:hover {
+  background: #0054ff;
+}
+
+.no-results {
+  text-align: center;
+  font-size: 1.2em;
+  padding: 40px;
+  color: #666;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.no-results-msg {
+  text-align: center;
+  color: #555;
+  padding: 40px 0;
+  font-size: 20px;
+  font-weight: 500;
+  animation: fadeIn 0.6s ease-in-out;
+}

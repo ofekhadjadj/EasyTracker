@@ -688,11 +688,11 @@ document.addEventListener("DOMContentLoaded", function () {
       slide.style.backgroundImage = `url(${project.Image})`;
 
       slide.innerHTML = `
-        <div class="slide-content">
-          <h4>${project.ProjectName}</h4>
-          <p>${project.CompanyName}</p>
-        </div>
-      `;
+          <div class="slide-content">
+            <h4>${project.ProjectName}</h4>
+            <p>${project.CompanyName}</p>
+          </div>
+        `;
 
       // ✅ בלחיצה על הכרטיס – שמירה והפניה
       slide.addEventListener("click", () => {

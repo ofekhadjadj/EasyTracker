@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Easy Tracker - פרויקטים</title>
+    <title>Easy Tracker - לקוחות</title>
     <link rel="icon" href="/images/fav-icon.png" type="images/png" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="animate.css" />
@@ -31,7 +31,7 @@
           <div class="nav-continer">
             <div class="main-nav">
               <ul>
-                <li class="active">
+                <li>
                   <img
                     src="./images/project icon.png"
                     alt="פרויקטים"
@@ -39,7 +39,7 @@
                   />
                   <span>פרויקטים</span>
                 </li>
-                <li>
+                <li class="active">
                   <img
                     src="./images/customers icon.png"
                     alt="לקוחות"
@@ -97,20 +97,18 @@
         <div class="inner-content">
           <div class="header-projects">
             <div class="title-and-btn">
-              <h1>פרויקטים</h1>
-              <a href="#new-project-form" data-fancybox class="btn">
-                <img src="./images/plus-btn.png" alt="הוסף פרויקט" />
+              <h1>לקוחות</h1>
+              <a href="#new-client-form" data-fancybox class="btn">
+                <img src="./images/plus-btn.png" alt="הוסף לקוח" />
               </a>
             </div>
-            <span id="doneText"
-              >סיימת - פרויקטים, ועוד - מחכים לכישרון שלך!</span
-            >
+            <span id="doneText">הלקוחות שלך במערכת</span>
             <div class="search-container">
               <input
                 type="text"
                 class="search-input"
-                id="search-project"
-                placeholder="חיפוש פרויקט"
+                placeholder="חיפוש לקוח"
+                id="search-client"
               />
               <img
                 src="./images/search-icon.png"
@@ -120,68 +118,48 @@
             </div>
           </div>
 
-          <div class="body-projects wow bounceInUp" id="projects"></div>
+          <div class="body-projects wow bounceInUp" id="clients"></div>
         </div>
       </div>
     </div>
 
-    <!-- פופאפ יצירת פרויקט חדש -->
-    <div id="new-project-form" class="popup-form" style="display: none">
-      <h2>📝 יצירת פרויקט חדש</h2>
-      <form id="project-form">
-        <label for="projectName">שם הפרויקט:</label>
-        <input type="text" id="projectName" name="projectName" required />
+    <!-- פופ-אפ הוספת לקוח חדש -->
+    <div id="new-client-form" class="popup-form">
+      <h2>➕ לקוח חדש</h2>
+      <form id="client-form">
+        <label for="companyName">שם החברה:</label>
+        <input type="text" id="companyName" name="companyName" required />
 
-        <label for="projectDesc">תיאור:</label>
-        <textarea
-          id="projectDesc"
-          name="projectDesc"
-          rows="3"
-          required
-        ></textarea>
+        <label for="contactPerson">איש קשר:</label>
+        <input type="text" id="contactPerson" name="contactPerson" />
 
-        <label for="hourlyRate">תעריף שעתי (₪):</label>
-        <input
-          type="number"
-          id="hourlyRate"
-          name="hourlyRate"
-          required
-          min="1"
-        />
+        <label for="email">אימייל:</label>
+        <input type="email" id="email" name="email" />
 
-        <label for="projectImageFile">בחר תמונה:</label>
+        <label for="contactPersonPhone">נייד:</label>
+        <input type="text" id="contactPersonPhone" name="contactPersonPhone" />
+
+        <label for="officePhone">טלפון משרד:</label>
+        <input type="text" id="officePhone" name="officePhone" />
+
+        <label for="clientImageFile">תמונה:</label>
         <input
           type="file"
-          id="projectImageFile"
-          name="projectImageFile"
+          id="clientImageFile"
+          name="clientImageFile"
           accept="image/*"
         />
 
-        <label for="clientId">לקוח:</label>
-        <select id="clientId" name="clientId" required>
-          <option value="">בחר לקוח</option>
-        </select>
-
-        <label for="durationGoal">יעד סיום פרויקט (שעות):</label>
-        <input
-          type="number"
-          id="durationGoal"
-          name="durationGoal"
-          required
-          min="1"
-        />
-
-        <button type="submit" class="btn-submit">📤 שמור פרויקט</button>
+        <button type="submit" class="btn-submit">📤 שמור לקוח</button>
       </form>
     </div>
 
-    <!-- סקריפטים -->
+    <script src="js/AjaxCall.js"></script>
+    <script src="js/clients.js"></script>
     <script src="js/wow.min.js"></script>
     <script>
       new WOW().init();
     </script>
-    <script src="js/AjaxCall.js"></script>
-    <script src="js/projects.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
   </body>
 </html>

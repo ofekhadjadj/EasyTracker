@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Easy Tracker - פרויקטים</title>
+    <title>Easy Tracker - לקוח נבחר</title>
     <link rel="icon" href="/images/fav-icon.png" type="images/png" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="animate.css" />
@@ -19,7 +19,7 @@
         <div class="inner-sidbar">
           <div class="profile">
             <img src="#" class="avatar-img" alt="" />
-            <h3>הי, <span id="menu-prof-name">משה</span> 👋</h3>
+            <h3>הי, <span id="menu-prof-name">משתמש</span> 👋</h3>
             <img
               src="./images/profile arrow.png"
               class="arrow-btn"
@@ -27,11 +27,11 @@
               alt=""
             />
           </div>
-          <img src="./images/logo.png" class="logo-sidebar" alt="" />
+          <img src="./images/logo.png" class="logo-sidebar" alt="לוגו" />
           <div class="nav-continer">
             <div class="main-nav">
               <ul>
-                <li class="active">
+                <li>
                   <img
                     src="./images/project icon.png"
                     alt="פרויקטים"
@@ -39,7 +39,7 @@
                   />
                   <span>פרויקטים</span>
                 </li>
-                <li>
+                <li class="active">
                   <img
                     src="./images/customers icon.png"
                     alt="לקוחות"
@@ -70,24 +70,18 @@
               </ul>
             </div>
             <div class="help-nav">
-              <ul>
-                <li>
-                  <img
-                    src="./images/settings-icon.png"
-                    alt="הגדרות"
-                    class="nav-icon"
-                  />
-                  <span>הגדרות</span>
-                </li>
-                <li>
-                  <img
-                    src="./images/help-icon.png"
-                    alt="עזרה"
-                    class="nav-icon"
-                  />
-                  <span>עזרה</span>
-                </li>
-              </ul>
+              <li>
+                <img
+                  src="./images/settings-icon.png"
+                  alt="הגדרות"
+                  class="nav-icon"
+                />
+                <span>הגדרות</span>
+              </li>
+              <li>
+                <img src="./images/help-icon.png" alt="עזרה" class="nav-icon" />
+                <span>עזרה</span>
+              </li>
             </div>
           </div>
         </div>
@@ -96,21 +90,30 @@
       <div class="content">
         <div class="inner-content">
           <div class="header-projects">
-            <div class="title-and-btn">
-              <h1>פרויקטים</h1>
-              <a href="#new-project-form" data-fancybox class="btn">
-                <img src="./images/plus-btn.png" alt="הוסף פרויקט" />
-              </a>
-            </div>
-            <span id="doneText"
-              >סיימת - פרויקטים, ועוד - מחכים לכישרון שלך!</span
+            <div
+              class="title-and-btn"
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+              "
             >
+              <nav
+                id="breadcrumb-client"
+                class="breadcrumbs"
+                style="margin-bottom: 5px"
+              ></nav>
+              <h1 id="client-title">טוען...</h1>
+            </div>
+
+            <div id="client-summary-text" class="summary-info"></div>
+
             <div class="search-container">
               <input
                 type="text"
                 class="search-input"
-                id="search-project"
                 placeholder="חיפוש פרויקט"
+                id="search-client"
               />
               <img
                 src="./images/search-icon.png"
@@ -125,63 +128,13 @@
       </div>
     </div>
 
-    <!-- פופאפ יצירת פרויקט חדש -->
-    <div id="new-project-form" class="popup-form" style="display: none">
-      <h2>📝 יצירת פרויקט חדש</h2>
-      <form id="project-form">
-        <label for="projectName">שם הפרויקט:</label>
-        <input type="text" id="projectName" name="projectName" required />
-
-        <label for="projectDesc">תיאור:</label>
-        <textarea
-          id="projectDesc"
-          name="projectDesc"
-          rows="3"
-          required
-        ></textarea>
-
-        <label for="hourlyRate">תעריף שעתי (₪):</label>
-        <input
-          type="number"
-          id="hourlyRate"
-          name="hourlyRate"
-          required
-          min="1"
-        />
-
-        <label for="projectImageFile">בחר תמונה:</label>
-        <input
-          type="file"
-          id="projectImageFile"
-          name="projectImageFile"
-          accept="image/*"
-        />
-
-        <label for="clientId">לקוח:</label>
-        <select id="clientId" name="clientId" required>
-          <option value="">בחר לקוח</option>
-        </select>
-
-        <label for="durationGoal">יעד סיום פרויקט (שעות):</label>
-        <input
-          type="number"
-          id="durationGoal"
-          name="durationGoal"
-          required
-          min="1"
-        />
-
-        <button type="submit" class="btn-submit">📤 שמור פרויקט</button>
-      </form>
-    </div>
-
     <!-- סקריפטים -->
+    <script src="js/AjaxCall.js"></script>
+    <script src="js/clientPage.js"></script>
     <script src="js/wow.min.js"></script>
     <script>
       new WOW().init();
     </script>
-    <script src="js/AjaxCall.js"></script>
-    <script src="js/projects.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
   </body>
 </html>

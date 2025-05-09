@@ -73,6 +73,31 @@ namespace EasyTracker.Controllers
             }
         }
 
+
+        [HttpGet("GetClientSummariesByUserID")]
+        public IActionResult GetClientSummariesByUserID(int userID)
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                var (clients, projects) = dbs.GetClientsAndProjectsSummaryByUserID(userID);
+
+                var result = new ClientSummaryResult
+                {
+                    Clients = clients,
+                    Projects = projects
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"שגיאה בשרת: {ex.Message}");
+            }
+        }
+
+
+
     }
 
 }

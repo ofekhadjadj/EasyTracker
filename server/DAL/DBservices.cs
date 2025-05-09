@@ -268,6 +268,74 @@ finally
 
     }
 
+    public (List<ClientSummary>, List<ProjectIncomeSummary>) GetClientsAndProjectsSummaryByUserID(int userID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB");
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        List<ClientSummary> clients = new List<ClientSummary>();
+        List<ProjectIncomeSummary> projects = new List<ProjectIncomeSummary>();
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetClientsAndProjectsSummaryByUserID", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader();
+
+            // קריאה לטבלת הלקוחות
+            while (dataReader.Read())
+            {
+                ClientSummary c = new ClientSummary
+                {
+                    ClientID = Convert.ToInt32(dataReader["ClientID"]),
+                    CompanyName = dataReader["CompanyName"].ToString(),
+                    ProjectCount = Convert.ToInt32(dataReader["ProjectCount"]),
+                    TotalClientIncome = Convert.ToDouble(dataReader["TotalClientIncome"])
+                };
+                clients.Add(c);
+            }
+
+            // מעבר לטבלה השנייה
+            if (dataReader.NextResult())
+            {
+                while (dataReader.Read())
+                {
+                    ProjectIncomeSummary p = new ProjectIncomeSummary
+                    {
+                        ProjectID = Convert.ToInt32(dataReader["ProjectID"]),
+                        ClientID = Convert.ToInt32(dataReader["ClientID"]),
+                        ProjectName = dataReader["ProjectName"].ToString(),
+                        ProjectIncome = Convert.ToDouble(dataReader["ProjectIncome"])
+                    };
+                    projects.Add(p);
+                }
+            }
+
+            return (clients, projects);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (con != null) con.Close();
+        }
+    }
+
+
     //**** PROJECTS TABLE ******** PROJECTS TABLE ******** PROJECTS TABLE ******** PROJECTS TABLE ******** PROJECTS TABLE ******** PROJECTS TABLE ****
     //--------------------------------------------------------------------------------------------------
     // This method inserts a new project to the users table 
@@ -1569,7 +1637,7 @@ finally
 
 
     //--------------------------------------------------------------------------------------------------
-    // This method get update Client
+    // This method update Client
     //--------------------------------------------------------------------------------------------------
     public int UpdateClient(Client client)
     {

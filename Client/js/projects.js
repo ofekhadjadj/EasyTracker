@@ -16,14 +16,15 @@ document.addEventListener("DOMContentLoaded", function () {
 function LoadProject() {
   const userId = JSON.parse(localStorage.getItem("user"))?.id || null;
   const apiUrl = `https://localhost:7198/api/Projects/GetProjectByUserId/${userId}`;
-  console.log(apiUrl);
   const ProfName = document.getElementById("menu-prof-name");
   ProfName.innerText = CurrentUser.firstName;
 
   ajaxCall("GET", apiUrl, "", successCB, ErrorCB);
 }
+
 function successCB(response) {
-  renderProjects(response);
+  allProjects = response;
+  renderProjects(response.slice(0, -1)); // בלי האובייקט האחרון (סטטיסטיקה)
   PushInfoToProjectDone(response);
 }
 
@@ -32,34 +33,36 @@ function ErrorCB(xhr, status, error) {
 }
 
 function renderProjects(projects) {
-  allProjects = projects;
-  console.log(projects);
+  CardsDiv.innerHTML = "";
 
-  const onlyProjects = projects.slice(0, -1); //  מדלג על האובייקט האחרון (סטטיסטיקות)
+  if (projects.length === 0) {
+    CardsDiv.innerHTML = `
+      <div class="no-results-msg wow fadeIn">
+        <p>לא נמצאו פרויקטים התואמים לחיפוש.</p>
+      </div>`;
+    return;
+  }
 
-  onlyProjects.forEach((project) => {
-    let statusHtml = project.isDone ? '<span class="status">הושלם!</span>' : ""; // אם isDone true, הצג "הושלם!", אחרת ריק
+  projects.forEach((project) => {
+    let statusHtml = project.isDone ? '<span class="status">הושלם!</span>' : "";
     let html = `
-  <div class="project-card" projectId="${project.ProjectID}" style="background-image: url('${project.Image}');">
-    <div class="project-content">
-      ${statusHtml}
-      <h2>${project.ProjectName}</h2>
-      <p>${project.CompanyName}</p>
-    </div>
-  </div>
-`;
-
+      <div class="project-card wow bounceInUp" projectId="${project.ProjectID}" style="background-image: url('${project.Image}')">
+        <div class="project-content">
+          ${statusHtml}
+          <h2>${project.ProjectName}</h2>
+          <p>${project.CompanyName}</p>
+        </div>
+      </div>
+    `;
     CardsDiv.innerHTML += html;
   });
 }
 
 $(document).ready(function () {
-  // קריאת לקוחות וטעינתם ל-Dropdown בעת טעינת הדף
   loadClients();
 
-  // שליחה של הטופס
   $("#project-form").on("submit", function (e) {
-    e.preventDefault(); // מניעת ריענון הדף
+    e.preventDefault();
 
     const fileInput = $("#projectImageFile").get(0);
     const files = fileInput.files;
@@ -72,7 +75,6 @@ $(document).ready(function () {
     const formData = new FormData();
     formData.append("files", files[0]);
 
-    // העלאת התמונה לשרת
     $.ajax({
       url: "https://localhost:7198/api/Upload",
       type: "POST",
@@ -80,14 +82,13 @@ $(document).ready(function () {
       processData: false,
       contentType: false,
       success: function (uploadedImagePaths) {
-        const uploadedImage = uploadedImagePaths[0]; // לדוגמה: "/Images/filename.jpg"
+        const uploadedImage = uploadedImagePaths[0];
 
-        // שליפת הנתונים מהטופס
         const projectData = {
           projectname: $("#projectName").val(),
           description: $("#projectDesc").val(),
           hourlyrate: $("#hourlyRate").val(),
-          image: uploadedImage, // 👈 זה שדה התמונה שנשלח למסד
+          image: uploadedImage,
           clientid: $("#clientId").val(),
           createdbyuserid: JSON.parse(localStorage.getItem("user"))?.id || null,
           durationGoal: $("#durationGoal").val(),
@@ -99,15 +100,14 @@ $(document).ready(function () {
           "POST",
           "https://localhost:7198/api/Projects/addNewProject",
           data,
-          function (response) {
-            console.log("✅ פרויקט נוסף בהצלחה:", response);
+          function () {
             $.fancybox.close();
             CardsDiv.innerHTML = "";
             LoadProject();
           },
           function (xhr, status, error) {
-            console.error("שגיאה בשרת:", error);
-            alert("אירעה שגיאה בשמירת הפרויקט.");
+            console.error("שגיאה בשמירת פרויקט:", error);
+            alert("אירעה שגיאה.");
           }
         );
       },
@@ -116,9 +116,17 @@ $(document).ready(function () {
       },
     });
   });
+
+  // ✅ חיפוש פרויקטים לפי שם בלבד
+  $(".search-input").on("input", function () {
+    const searchTerm = $(this).val().trim().toLowerCase();
+    const filtered = allProjects
+      .slice(0, -1)
+      .filter((p) => p.ProjectName.toLowerCase().includes(searchTerm));
+    renderProjects(filtered);
+  });
 });
 
-// קריאת API כדי לטעון את הלקוחות ל-Dropdown
 function loadClients() {
   const userId = JSON.parse(localStorage.getItem("user"))?.id || null;
 
@@ -133,20 +141,16 @@ function loadClients() {
     "GET",
     apiUrl,
     null,
-    function (response) {
-      console.log("לקוחות נטענו בהצלחה:", response);
-      populateClientDropdown(response);
-    },
+    populateClientDropdown,
     function (xhr, status, error) {
       console.error("שגיאה בטעינת הלקוחות:", error);
     }
   );
 }
 
-// מילוי רשימת הלקוחות לתוך ה-Select
 function populateClientDropdown(clients) {
   const clientDropdown = $("#clientId");
-  clientDropdown.empty(); // נקה את התוכן הקיים
+  clientDropdown.empty();
   clientDropdown.append('<option value="">בחר לקוח</option>');
 
   clients.forEach((client) => {
@@ -157,25 +161,22 @@ function populateClientDropdown(clients) {
 }
 
 CardsDiv.addEventListener("click", function (event) {
-  const card = event.target.closest(".project-card"); // חפש את ה-div עם class="project-card" מהאלמנט שנלחץ עליו
-  if (card) {
-    const projectId = card.getAttribute("projectId");
-    console.log("נלחץ על פרויקט עם ID:", projectId);
-    const selectedProject = allProjects.find((p) => p.ProjectID == projectId);
-    console.log("פרויקט שנבחר:", selectedProject);
+  const card = event.target.closest(".project-card");
+  if (!card) return;
 
-    localStorage.setItem("CurrentProject", JSON.stringify(selectedProject)); // שמור את ה-ID של הפרויקט ב-localStorage
-    window.location.href = "./projectPage.html"; // העבר לעמוד הפרויקט
-  }
+  const projectId = card.getAttribute("projectId");
+  const selectedProject = allProjects.find((p) => p.ProjectID == projectId);
+
+  localStorage.setItem("CurrentProject", JSON.stringify(selectedProject));
+  window.location.href = "./projectPage.html";
 });
 
 function PushInfoToProjectDone(ProjArray) {
   let done = ProjArray[ProjArray.length - 1].Stats.DoneCount;
   let notDone = ProjArray[ProjArray.length - 1].Stats.NotDoneCount;
-  console.log(done, notDone);
 
   let textForTitleDone = `
-  סיימת ${done} פרויקטים, ועוד ${notDone} מחכים לכישרון שלך!
+    סיימת ${done} פרויקטים, ועוד ${notDone} מחכים לכישרון שלך!
   `;
   document.getElementById("doneText").innerText = textForTitleDone;
 }
