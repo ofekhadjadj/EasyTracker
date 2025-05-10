@@ -1,66 +1,28 @@
+// ✅ קובץ JS מלא עם נתיבים מעודכנים למחיקה ולעדכון לקוח
+
 const ClientsDiv = document.getElementById("clients");
 let allClients = [];
 let allProjects = [];
 let clientSummaries = [];
 let projectSummaries = [];
 let initialLoadComplete = false;
-
-const CurrentUser = JSON.parse(localStorage.getItem("user"));
+let CurrentUser = null;
 
 $(document).ready(function () {
+  CurrentUser = JSON.parse(localStorage.getItem("user"));
+
+  if (!CurrentUser || !CurrentUser.id) {
+    alert("לא נמצא משתמש מחובר. אנא התחבר מחדש.");
+    return;
+  }
+
   const avatarImg = document.querySelector(".avatar-img");
-  if (CurrentUser?.image && avatarImg) avatarImg.src = CurrentUser.image;
+  if (CurrentUser.image && avatarImg) avatarImg.src = CurrentUser.image;
+
   const ProfName = document.getElementById("menu-prof-name");
   if (ProfName) ProfName.innerText = CurrentUser.firstName;
 
   fetchAllData();
-
-  $("#client-form").on("submit", function (e) {
-    e.preventDefault();
-
-    const fileInput = $("#clientImageFile")[0];
-    const files = fileInput.files;
-
-    if (files.length > 0) {
-      const formData = new FormData();
-      formData.append("files", files[0]);
-
-      $.ajax({
-        url: "https://localhost:7198/api/Upload",
-        type: "POST",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (uploadedImagePaths) {
-          const uploadedImage = uploadedImagePaths[0];
-          sendClient(uploadedImage);
-        },
-        error: function () {
-          alert("שגיאה בהעלאת תמונת הלקוח.");
-        },
-      });
-    } else {
-      sendClient(null);
-    }
-  });
-
-  $("#search-client").on("input", function () {
-    const term = $(this).val().toLowerCase().trim();
-    if (term === "") {
-      renderClients(allClients, false);
-      return;
-    }
-
-    const filtered = allClients.filter((c) =>
-      c.companyName.toLowerCase().includes(term)
-    );
-
-    if (filtered.length > 0) {
-      renderClients(filtered, false);
-    } else {
-      ClientsDiv.innerHTML = `<div class="no-results-msg">לא נמצאו לקוחות תואמים</div>`;
-    }
-  });
 });
 
 function fetchAllData() {
@@ -117,7 +79,28 @@ function renderClients(clients, withAnimation = false) {
       <p>₪${income.toFixed(2)} הכנסות</p>
     `;
 
+    const actions = document.createElement("div");
+    actions.className = "client-actions";
+    actions.innerHTML = `
+      <i class="fas fa-edit edit-icon" title="ערוך לקוח"></i>
+      <i class="fas fa-trash delete-icon" title="מחק לקוח"></i>
+    `;
+
+    const editBtn = actions.querySelector(".edit-icon");
+    const deleteBtn = actions.querySelector(".delete-icon");
+
+    editBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openEditPopup(client);
+    });
+
+    deleteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openDeletePopup(client);
+    });
+
     card.appendChild(content);
+    card.appendChild(actions);
     ClientsDiv.appendChild(card);
 
     card.addEventListener("click", () => {
@@ -139,9 +122,127 @@ function renderClients(clients, withAnimation = false) {
     new WOW().init();
   }
 
-  // ✅ עדכון הטקסט "יש לך X לקוחות"
   const doneText = document.getElementById("doneText");
   if (doneText) {
     doneText.innerText = `יש לך ${clients.length} לקוחות`;
   }
+}
+
+function openEditPopup(client) {
+  $("#companyName").val(client.companyName);
+  $("#contactPerson").val(client.contactPerson);
+  $("#email").val(client.email);
+  $("#contactPersonPhone").val(client.contactPersonPhone);
+  $("#officePhone").val(client.officePhone);
+
+  $("#new-client-form h2").text("✏️ עדכון פרטי לקוח");
+  $("#client-form .btn-submit").text("עדכן");
+
+  const fileInput = document.getElementById("clientImageFile");
+  fileInput.value = "";
+  const label = document.querySelector("label[for='clientImageFile']");
+  label.innerText = "תמונה:";
+  if (client.image) label.innerText += ` (${client.image})`;
+
+  $("#client-form")
+    .off("submit")
+    .on("submit", function (e) {
+      e.preventDefault();
+      const files = fileInput.files;
+
+      if (files.length > 0) {
+        const formData = new FormData();
+        formData.append("files", files[0]);
+
+        $.ajax({
+          url: "https://localhost:7198/api/Upload",
+          type: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (uploadedImagePaths) {
+            const uploadedImage = uploadedImagePaths[0];
+            updateClient(client.clientID, uploadedImage);
+          },
+          error: function () {
+            alert("שגיאה בהעלאת תמונת הלקוח.");
+          },
+        });
+      } else {
+        updateClient(client.clientID, client.image);
+      }
+    });
+
+  $.fancybox.open({
+    src: "#new-client-form",
+    type: "inline",
+  });
+}
+
+function updateClient(clientID, imagePath = null) {
+  const updatedClient = {
+    clientID: clientID,
+    userID: CurrentUser?.id,
+    companyName: $("#companyName").val(),
+    contactPerson: $("#contactPerson").val(),
+    email: $("#email").val(),
+    contactPersonPhone: $("#contactPersonPhone").val(),
+    officePhone: $("#officePhone").val(),
+    image: imagePath,
+  };
+
+  $.ajax({
+    url: "https://localhost:7198/api/Client/Update Client",
+    type: "PUT",
+    contentType: "application/json",
+    data: JSON.stringify(updatedClient),
+    success: function () {
+      alert("הפרטים עודכנו בהצלחה.");
+      $.fancybox.close();
+      fetchAllData();
+    },
+    error: function () {
+      alert("אירעה שגיאה בעדכון הלקוח.");
+    },
+  });
+}
+
+function openDeletePopup(client) {
+  const popupHtml = `
+    <div style="max-width: 400px; text-align: center; font-family: Assistant; padding: 20px;">
+      <h3>מחיקת לקוח</h3>
+      <p>האם אתה בטוח שברצונך למחוק את הלקוח <strong>"${client.companyName}"</strong>?</p>
+      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+        <button class="gradient-button" id="confirmDeleteBtn">כן, מחק</button>
+        <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
+      </div>
+    </div>
+  `;
+
+  $.fancybox.open({
+    src: popupHtml,
+    type: "html",
+    smallBtn: false,
+  });
+
+  $(document)
+    .off("click", "#confirmDeleteBtn")
+    .on("click", "#confirmDeleteBtn", function () {
+      archiveClient(client.clientID);
+      $.fancybox.close();
+    });
+}
+
+function archiveClient(clientID) {
+  $.ajax({
+    url: `https://localhost:7198/api/Client/Delete client/${clientID}`,
+    type: "PUT",
+    success: function () {
+      alert("הלקוח הועבר לארכיון בהצלחה.");
+      fetchAllData();
+    },
+    error: function () {
+      alert("אירעה שגיאה במחיקת הלקוח.");
+    },
+  });
 }
