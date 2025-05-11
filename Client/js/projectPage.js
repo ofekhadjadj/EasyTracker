@@ -103,51 +103,33 @@ function toIsoLocalFormat(date) {
 }
 
 //שליחה לשרת של התיאור פרויקט מהכפתור שמירת פרטים
-document
-  .getElementById("save-description-btn")
-  .addEventListener("click", function () {
-    const newDescription = document.getElementById(
-      "description-textarea"
-    ).value;
+document.getElementById("desc-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const newDescription = document.getElementById("description-textarea").value;
 
-    const updatedProject = {
-      projectid: CurrentProject.ProjectID,
-      description: newDescription,
-    };
+  const updatedProject = {
+    projectid: CurrentProject.ProjectID,
+    description: newDescription,
+  };
 
-    ajaxCall(
-      "PUT",
-      "https://localhost:7198/api/Projects/update_project",
-      JSON.stringify(updatedProject),
-      () => {
-        alert("✅ תיאור עודכן בהצלחה!");
-        $.fancybox.close();
+  ajaxCall(
+    "PUT",
+    "https://localhost:7198/api/Projects/update_project",
+    JSON.stringify(updatedProject),
+    () => {
+      alert("✅ תיאור עודכן בהצלחה!");
+      $.fancybox.close();
 
-        // ❗ רענון ה-CurrentProject מהשרת
-        const refreshedApiUrl = `https://localhost:7198/api/Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`;
-        ajaxCall(
-          "GET",
-          refreshedApiUrl,
-          "",
-          (updatedProjectFromServer) => {
-            // 🟢 שמירה גם בזיכרון וגם ב-localStorage
-            CurrentProject = updatedProjectFromServer;
-            localStorage.setItem(
-              "CurrentProject",
-              JSON.stringify(CurrentProject)
-            );
-            console.log("🎯 עודכן הפרויקט ב-localStorage:", CurrentProject);
-          },
-          (xhr) => {
-            console.error("❌ שגיאה ברענון CurrentProject מהשרת:", xhr);
-          }
-        );
-      },
-      () => {
-        alert("❌ שגיאה בעדכון התיאור");
-      }
-    );
-  });
+      // רענון localStorage מהשרת
+      const refreshedApiUrl = `https://localhost:7198/api/Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`;
+      ajaxCall("GET", refreshedApiUrl, "", (updated) => {
+        CurrentProject = updated;
+        localStorage.setItem("CurrentProject", JSON.stringify(CurrentProject));
+      });
+    },
+    () => alert("❌ שגיאה בעדכון התיאור")
+  );
+});
 
 function openEndSessionPopup() {
   const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
@@ -569,28 +551,58 @@ function renderTableFromDB() {
             return;
           }
 
-          console.log("🗑️ נמחק סשן עם ID:", sessionId);
+          const message = `האם למחוק את הסשן שנוצר בתאריך ${
+            formatDateTime(session.StartDate).formattedDate
+          }?`;
+
+          const popupHtml = `
+        <div style="max-width: 400px; text-align: center; font-family: Assistant; padding: 20px;">
+          <h3>מחיקת סשן</h3>
+          <p>${message}</p>
+          <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+            <button class="gradient-button" id="confirmDeleteSessionBtn">כן, מחק</button>
+            <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
+          </div>
+        </div>
+      `;
+
+          $.fancybox.open({
+            src: popupHtml,
+            type: "html",
+            smallBtn: false,
+          });
+
+          $(document)
+            .off("click", "#confirmDeleteSessionBtn")
+            .on("click", "#confirmDeleteSessionBtn", function () {
+              deleteSession(sessionId, row, session.DurationSeconds);
+              $.fancybox.close();
+            });
+        }
+      });
+
+    function deleteSession(sessionId, row, durationSeconds) {
+      const apiUrl = `https://localhost:7198/api/Session/delete_session?SessionID=${sessionId}`;
+
+      ajaxCall(
+        "PUT",
+        apiUrl,
+        "",
+        () => {
+          console.log("✅ הסשן נמחק מהשרת");
 
           // עדכון זמן כולל (בר)
-          if (session.DurationSeconds) {
-            totalPastSeconds -= session.DurationSeconds;
+          if (durationSeconds) {
+            totalPastSeconds -= durationSeconds;
             updateOverallProgress();
           }
 
           // הסרת השורה מהטבלה
           table.row(row).remove().draw(false);
-
-          // מחיקה מהשרת
-          const apiUrl = `https://localhost:7198/api/Session/delete_session?SessionID=${sessionId}`;
-          ajaxCall(
-            "PUT",
-            apiUrl,
-            "",
-            () => console.log("✅ הסשן נמחק מהשרת"),
-            () => console.error("❌ שגיאה במחיקת הסשן מהשרת")
-          );
-        }
-      });
+        },
+        () => console.error("❌ שגיאה במחיקת הסשן מהשרת")
+      );
+    }
   }
 
   function ErrorCB(xhr, status, error) {
@@ -790,3 +802,30 @@ document.getElementById("remove-user-btn").addEventListener("click", () => {
     () => alert("❌ שגיאה בהסרה")
   );
 });
+
+/*
+ <!-- 🔵 פופאפ ניהול צוות -->
+<div style="display: none; width: 400px;" id="team-popup">
+  <h2>👥 צוות הפרויקט</h2>
+
+  <!-- 🔹 חלק ראשון: רשימת משתמשים -->
+  <div id="team-members-list">
+    <ul id="team-list">
+      <li>...טוען צוות</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <!-- 🔹 חלק שני: טופס הוספה -->
+  <h3>➕ הוסף חבר צוות</h3>
+  <input type="email" id="add-user-email" placeholder="אימייל של המשתמש" />
+  <button id="add-user-btn">הוסף</button>
+
+  <hr>
+
+  <!-- 🔹 חלק שלישי: טופס הסרה -->
+  <h3>➖ הסר חבר צוות</h3>
+  <input type="email" id="remove-user-email" placeholder="אימייל של המשתמש" />
+  <button id="remove-user-btn">הסר</button>
+</div>*/

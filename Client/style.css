@@ -1145,6 +1145,8 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   text-align: right;
   font-family: Assistant, sans-serif;
+  direction: rtl;
+  text-align: right;
 }
 
 .popup-form h2 {
@@ -1158,6 +1160,8 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
   margin-top: 10px;
   font-weight: bold;
   color: #333;
+  direction: rtl;
+  text-align: right;
 }
 
 .popup-form input {
@@ -1214,8 +1218,13 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
   transition: opacity 0.3s ease;
   z-index: 2;
 }
-
+/*
 .client-card:hover .client-actions {
+  opacity: 1;
+}*/
+
+.client-card:hover .client-actions,
+.project-card:hover .client-actions {
   opacity: 1;
 }
 
@@ -1236,4 +1245,91 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
 
 .delete-icon:hover {
   background-color: #dc3545;
+}
+
+.label-card {
+  width: 23%;
+  height: 200px;
+  background-image: none !important;
+  background-color: var(--label-color, #cccccc);
+  color: white;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.label-card:hover {
+  transform: scale(1.03);
+}
+
+.label-card .project-content {
+  background: none !important;
+  background-color: transparent !important;
+}
+
+.label-card h2,
+.label-card p {
+  color: #000; /* או לבן, לפי הצורך */
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.5); /* אם צריך ניגוד */
+}
+
+.sidbar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.sidbar ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidbar ul li a.active {
+  background: linear-gradient(90deg, #0097ff 26%, #007eff 56%, #0054ff 100%);
+  color: white;
+}
+
+li a.active span {
+  color: white;
+}
+
+.sidbar ul li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidbar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 48px; /* גובה אחיד לכל לשונית */
+  padding: 0 15px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.sidbar ul li a img.nav-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.sidbar ul li a span {
+  flex-grow: 1;
+  display: inline-block;
 }

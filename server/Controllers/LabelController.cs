@@ -27,10 +27,12 @@ namespace EasyTracker.Controllers
         }
 
         [HttpGet("GetAllLabelsByUserID")]
-        public IEnumerable<Label> GetAllLabelsByUserID([FromQuery] int userID)
+        public IActionResult GetAllLabelsByUserID(int userID)
         {
             Label l = new Label();
-            return l.GetAllLabelsByUserID(userID);
+            var userLabels = l.GetAllLabelsByUserID(userID);
+
+            return Ok(userLabels);
         }
 
         [HttpGet("Get6ToplLabelsByUserID")]

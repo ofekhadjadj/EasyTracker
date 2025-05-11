@@ -58,57 +58,81 @@
           <div class="nav-continer">
             <div class="main-nav">
               <ul>
-                <li class="active">
-                  <img
-                    src="./images/project icon.png"
-                    alt="פרויקטים"
-                    class="nav-icon"
-                  />
-                  <span>פרויקטים</span>
+                <li>
+                  <a href="projects.html" class="">
+                    <img
+                      src="./images/project icon.png"
+                      alt="פרויקטים"
+                      class="nav-icon"
+                    />
+                    <span>פרויקטים</span>
+                  </a>
                 </li>
                 <li>
-                  <img
-                    src="./images/customers icon.png"
-                    alt="לקוחות"
-                    class="nav-icon"
-                  />
-                  <span>לקוחות</span>
+                  <a href="clients.html" class="">
+                    <img
+                      src="./images/customers icon.png"
+                      alt="לקוחות"
+                      class="nav-icon"
+                    />
+                    <span>לקוחות</span>
+                  </a>
                 </li>
                 <li>
-                  <img
-                    src="./images/reports.png"
-                    alt="ניתוח ודוחות"
-                    class="nav-icon"
-                  />
-                  <span>ניתוח ודוחות</span>
+                  <a href="stats.html" class="">
+                    <img
+                      src="./images/reports.png"
+                      alt="דוחות"
+                      class="nav-icon"
+                    />
+                    <span>ניתוח ודוחות</span>
+                  </a>
                 </li>
                 <li>
-                  <img src="./images/tags.png" alt="תיוגים" class="nav-icon" />
-                  <span>תיוגים</span>
+                  <a href="labels.html" class="">
+                    <img
+                      src="./images/tags.png"
+                      alt="תיוגים"
+                      class="nav-icon"
+                    />
+                    <span>תיוגים</span>
+                  </a>
                 </li>
                 <li>
-                  <img
-                    src="./images/reminders.png"
-                    alt="תזכורות"
-                    class="nav-icon"
-                  />
-                  <span>תזכורות</span>
+                  <a href="reminders.html" class="">
+                    <img
+                      src="./images/reminders.png"
+                      alt="תזכורות"
+                      class="nav-icon"
+                    />
+                    <span>תזכורות</span>
+                  </a>
                 </li>
               </ul>
             </div>
             <div class="help-nav">
-              <li>
-                <img
-                  src="./images/settings-icon.png"
-                  alt="הגדרות"
-                  class="nav-icon"
-                />
-                <span>הגדרות</span>
-              </li>
-              <li>
-                <img src="./images/help-icon.png" alt="עזרה" class="nav-icon" />
-                <span>עזרה</span>
-              </li>
+              <ul>
+                <li>
+                  <a href="settings.html">
+                    <img
+                      src="./images/settings-icon.png"
+                      alt="הגדרות"
+                      class="nav-icon"
+                    />
+                    <span>הגדרות</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="help.html">
+                    <img
+                      src="./images/help-icon.png"
+                      alt="עזרה"
+                      class="nav-icon"
+                    />
+                    <span>עזרה</span>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -350,56 +374,88 @@
           </div>
 
 
-
-        
-          <div style="display: none;" id="description-editor-popup">
+<!-- <div style="display: none;" id="description-editor-popup"></div> 
+        <div id="description-editor-popup" class="popup-form" style="display: none;"></div>
             <h2>עריכת תיאור הפרויקט</h2>
             <textarea id="description-textarea" style="width: 100%; height: 200px;"></textarea>
             <button id="save-description-btn">שמור</button>
+          </div>-->
+          <div id="description-editor-popup" class="popup-form" style="display: none;">
+  <h2>✏️ עריכת תיאור הפרויקט</h2>
+  <form id="desc-form">
+    <label for="description-textarea">תיאור:</label>
+    <textarea
+      id="description-textarea"
+      name="description"
+      rows="5"
+      required
+      style="resize: vertical"
+    ></textarea>
+
+    <button type="submit" class="btn-submit">📤 שמור שינויים</button>
+  </form>
+</div>
+
+
+<div id="end-session-popup" class="popup-form" style="display: none;">
+            <h2 style="text-align: center; margin-bottom: 20px;">📝 סיום סשן</h2>
+<label for="session-description" style="font-size: 16px;">תיאור:</label>
+<textarea
+  id="session-description"
+  rows="4"
+  style="width: 100%; font-size: 15px; padding: 10px; margin-bottom: 20px; border-radius: 8px;"
+></textarea>
+
+<label for="session-label" style="font-size: 16px;">בחר תווית:</label>
+<select
+  id="session-label"
+  style="width: 100%; padding: 10px; font-size: 15px; margin-bottom: 20px; border-radius: 8px;"
+>
+  <option value="">בחר תווית</option>
+</select>
+
+<button id="submit-end-session" class="btn-submit" style="width: 100%;">סיום</button>
+
           </div>
 
 
-          <div style="display: none" id="end-session-popup">
-            <h2>📝 סיום סשן</h2>
-            <label for="session-description">תיאור:</label>
-            <textarea id="session-description" rows="4" style="width: 100%"></textarea>
-          
-            <label for="session-label">בחר תווית:</label>
-            <select id="session-label" style="width: 100%">
-              <option value="">בחר תווית</option>
-            </select>
-          
-            <br /><br />
-            <button id="submit-end-session">סיום</button>
-          </div>
 
+         <div id="team-popup" class="popup-form" style="display: none;">
+  <h2 style="text-align: center; margin-bottom: 20px;">👥 צוות הפרויקט</h2>
 
-
-          <!-- 🔵 פופאפ ניהול צוות -->
-<div style="display: none; width: 400px;" id="team-popup">
-  <h2>👥 צוות הפרויקט</h2>
-
-  <!-- 🔹 חלק ראשון: רשימת משתמשים -->
-  <div id="team-members-list">
-    <ul id="team-list">
+  <!-- 🔹 רשימת חברי צוות -->
+  <div id="team-members-list" style="margin-bottom: 20px;">
+    <h4 style="margin-bottom: 10px;">חברים קיימים:</h4>
+    <ul id="team-list" style="list-style: none; padding-right: 0;">
       <li>...טוען צוות</li>
     </ul>
   </div>
 
-  <hr>
+  <hr style="margin: 20px 0;" />
 
-  <!-- 🔹 חלק שני: טופס הוספה -->
-  <h3>➕ הוסף חבר צוות</h3>
-  <input type="email" id="add-user-email" placeholder="אימייל של המשתמש" />
-  <button id="add-user-btn">הוסף</button>
+  <!-- 🔹 טופס הוספה -->
+  <h4>➕ הוספת חבר צוות</h4>
+  <input
+    type="email"
+    id="add-user-email"
+    placeholder="אימייל של המשתמש"
+    style="width: 100%; padding: 10px; margin-bottom: 10px; font-size: 15px;"
+  />
+  <button id="add-user-btn" class="btn-submit" style="width: 100%;">הוסף</button>
 
-  <hr>
+  <hr style="margin: 20px 0;" />
 
-  <!-- 🔹 חלק שלישי: טופס הסרה -->
-  <h3>➖ הסר חבר צוות</h3>
-  <input type="email" id="remove-user-email" placeholder="אימייל של המשתמש" />
-  <button id="remove-user-btn">הסר</button>
+  <!-- 🔹 טופס הסרה -->
+  <h4>➖ הסרת חבר צוות</h4>
+  <input
+    type="email"
+    id="remove-user-email"
+    placeholder="אימייל של המשתמש"
+    style="width: 100%; padding: 10px; margin-bottom: 10px; font-size: 15px;"
+  />
+  <button id="remove-user-btn" class="btn-submit" style="width: 100%;">הסר</button>
 </div>
+
           
      <script src="https://cdn.jsdelivr.net/npm/easytimer.js@4.3.1/dist/easytimer.min.js"></script>
 
@@ -415,6 +471,8 @@
      <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
      <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
      <script src="js/projectPage.js"></script>
+         <script src="js/sidebar-active.js"></script>
+
 
   </body>
 </html>

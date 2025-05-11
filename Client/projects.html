@@ -11,6 +11,10 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   </head>
   <body>
@@ -31,61 +35,79 @@
           <div class="nav-continer">
             <div class="main-nav">
               <ul>
-                <li class="active">
-                  <img
-                    src="./images/project icon.png"
-                    alt="פרויקטים"
-                    class="nav-icon"
-                  />
-                  <span>פרויקטים</span>
+                <li>
+                  <a href="projects.html" class="">
+                    <img
+                      src="./images/project icon.png"
+                      alt="פרויקטים"
+                      class="nav-icon"
+                    />
+                    <span>פרויקטים</span>
+                  </a>
                 </li>
                 <li>
-                  <img
-                    src="./images/customers icon.png"
-                    alt="לקוחות"
-                    class="nav-icon"
-                  />
-                  <span>לקוחות</span>
+                  <a href="clients.html" class="">
+                    <img
+                      src="./images/customers icon.png"
+                      alt="לקוחות"
+                      class="nav-icon"
+                    />
+                    <span>לקוחות</span>
+                  </a>
                 </li>
                 <li>
-                  <img
-                    src="./images/reports.png"
-                    alt="ניתוח ודוחות"
-                    class="nav-icon"
-                  />
-                  <span>ניתוח ודוחות</span>
+                  <a href="stats.html" class="">
+                    <img
+                      src="./images/reports.png"
+                      alt="דוחות"
+                      class="nav-icon"
+                    />
+                    <span>ניתוח ודוחות</span>
+                  </a>
                 </li>
                 <li>
-                  <img src="./images/tags.png" alt="תיוגים" class="nav-icon" />
-                  <span>תיוגים</span>
+                  <a href="labels.html" class="">
+                    <img
+                      src="./images/tags.png"
+                      alt="תיוגים"
+                      class="nav-icon"
+                    />
+                    <span>תיוגים</span>
+                  </a>
                 </li>
                 <li>
-                  <img
-                    src="./images/reminders.png"
-                    alt="תזכורות"
-                    class="nav-icon"
-                  />
-                  <span>תזכורות</span>
+                  <a href="reminders.html" class="">
+                    <img
+                      src="./images/reminders.png"
+                      alt="תזכורות"
+                      class="nav-icon"
+                    />
+                    <span>תזכורות</span>
+                  </a>
                 </li>
               </ul>
             </div>
             <div class="help-nav">
               <ul>
                 <li>
-                  <img
-                    src="./images/settings-icon.png"
-                    alt="הגדרות"
-                    class="nav-icon"
-                  />
-                  <span>הגדרות</span>
+                  <a href="settings.html">
+                    <img
+                      src="./images/settings-icon.png"
+                      alt="הגדרות"
+                      class="nav-icon"
+                    />
+                    <span>הגדרות</span>
+                  </a>
                 </li>
                 <li>
-                  <img
-                    src="./images/help-icon.png"
-                    alt="עזרה"
-                    class="nav-icon"
-                  />
-                  <span>עזרה</span>
+                  <a href="help.html">
+                    <img
+                      src="./images/help-icon.png"
+                      alt="עזרה"
+                      class="nav-icon"
+                    />
+                    <span>עזרה</span>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -102,9 +124,9 @@
                 <img src="./images/plus-btn.png" alt="הוסף פרויקט" />
               </a>
             </div>
-            <span id="doneText"
-              >סיימת - פרויקטים, ועוד - מחכים לכישרון שלך!</span
-            >
+            <span id="doneText">
+              סיימת - פרויקטים, ועוד - מחכים לכישרון שלך!
+            </span>
             <div class="search-container">
               <input
                 type="text"
@@ -125,7 +147,7 @@
       </div>
     </div>
 
-    <!-- פופאפ יצירת פרויקט חדש -->
+    <!-- פופאפ יצירת / עריכת פרויקט -->
     <div id="new-project-form" class="popup-form" style="display: none">
       <h2>📝 יצירת פרויקט חדש</h2>
       <form id="project-form">
@@ -148,6 +170,22 @@
           required
           min="1"
         />
+
+        <!-- ✅ תצוגת תמונה ממוזערת -->
+        <div id="project-image-preview" style="margin-top: 10px">
+          <img
+            id="project-image-thumb"
+            src=""
+            alt="תמונה נוכחית"
+            style="
+              max-width: 120px;
+              max-height: 60px;
+              border-radius: 8px;
+              display: none;
+              box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+            "
+          />
+        </div>
 
         <label for="projectImageFile">בחר תמונה:</label>
         <input
@@ -183,5 +221,6 @@
     <script src="js/AjaxCall.js"></script>
     <script src="js/projects.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src="js/sidebar-active.js"></script>
   </body>
 </html>

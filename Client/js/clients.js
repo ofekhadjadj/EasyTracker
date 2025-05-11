@@ -1,5 +1,3 @@
-// ✅ קובץ JS מלא עם נתיבים מעודכנים למחיקה ולעדכון לקוח
-
 const ClientsDiv = document.getElementById("clients");
 let allClients = [];
 let allProjects = [];
@@ -23,6 +21,21 @@ $(document).ready(function () {
   if (ProfName) ProfName.innerText = CurrentUser.firstName;
 
   fetchAllData();
+
+  // ✅ חיפוש דינמי לפי שם החברה
+  $("#search-client").on("input", function () {
+    const term = $(this).val().toLowerCase().trim();
+    if (term === "") {
+      renderClients(allClients, false);
+      return;
+    }
+
+    const filtered = allClients.filter((client) =>
+      client.companyName?.toLowerCase().includes(term)
+    );
+
+    renderClients(filtered, false);
+  });
 });
 
 function fetchAllData() {
@@ -140,10 +153,15 @@ function openEditPopup(client) {
 
   const fileInput = document.getElementById("clientImageFile");
   fileInput.value = "";
-  const label = document.querySelector("label[for='clientImageFile']");
-  label.innerText = "תמונה:";
-  if (client.image) label.innerText += ` (${client.image})`;
 
+  // ✅ הצגת התמונה הממוזערת (אם קיימת)
+  if (client.image) {
+    $("#client-image-thumb").attr("src", client.image).show();
+  } else {
+    $("#client-image-thumb").hide();
+  }
+
+  // 🧾 שליחת טופס
   $("#client-form")
     .off("submit")
     .on("submit", function (e) {
@@ -173,6 +191,7 @@ function openEditPopup(client) {
       }
     });
 
+  // ✅ פתיחת הפופ-אפ
   $.fancybox.open({
     src: "#new-client-form",
     type: "inline",

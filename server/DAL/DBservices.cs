@@ -1337,6 +1337,64 @@ finally
     //--------------------------------------------------------------------------------------------------
     // This method get labels by user ID
     //--------------------------------------------------------------------------------------------------
+    public List<Dictionary<string, object>> GetAllLabelsByUserID(int userID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB");
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetLabelsByUserId", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                var item = new Dictionary<string, object>();
+
+                item["labelID"] = dataReader["LabelID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["LabelID"]);
+                item["labelName"] = dataReader["LabelName"] == DBNull.Value ? null : dataReader["LabelName"].ToString();
+                item["labelColor"] = dataReader["LabelColor"] == DBNull.Value ? null : dataReader["LabelColor"].ToString();
+                item["userID"] = dataReader["UserID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["UserID"]);
+                item["isArchived"] = dataReader["isArchived"] == DBNull.Value ? false : Convert.ToBoolean(dataReader["isArchived"]);
+
+                // ✅ ספירת הסשנים
+                item["SessionCount"] = dataReader["SessionCount"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["SessionCount"]);
+
+                result.Add(item);
+            }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+
+
+    /*
     public List<Label> GetAllLabelsByUserID(int userID)
     {
 
@@ -1394,7 +1452,7 @@ finally
             }
         }
 
-    }
+    }*/
 
     //--------------------------------------------------------------------------------------------------
     // This method get 6 top labels by user ID

@@ -40,7 +40,7 @@ namespace EasyTracker.BL
             return dbs.DeleteLabel(LabelID);
         }
 
-        public List<Label> GetAllLabelsByUserID(int userID)
+        public List<Dictionary<string, object>> GetAllLabelsByUserID(int userID)
         {
             DBservices dbs = new DBservices();
             return dbs.GetAllLabelsByUserID(userID);

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Easy Tracker - לקוחות</title>
+    <title>Easy Tracker - תגיות</title>
     <link rel="icon" href="/images/fav-icon.png" type="images/png" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="animate.css" />
@@ -11,7 +11,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
@@ -20,11 +19,12 @@
   </head>
   <body>
     <div class="projects-continer">
+      <!-- Sidebar -->
       <div class="sidbar wow fadeInRightBig">
         <div class="inner-sidbar">
           <div class="profile">
             <img src="#" class="avatar-img" alt="" />
-            <h3>הי, <span id="menu-prof-name">משה</span> 👋</h3>
+            <h3>הי, <span id="menu-prof-name">משתמש</span> 👋</h3>
             <img
               src="./images/profile arrow.png"
               class="arrow-btn"
@@ -116,22 +116,23 @@
         </div>
       </div>
 
+      <!-- תוכן ראשי -->
       <div class="content">
         <div class="inner-content">
           <div class="header-projects">
             <div class="title-and-btn">
-              <h1>לקוחות</h1>
-              <a href="#new-client-form" data-fancybox class="btn">
-                <img src="./images/plus-btn.png" alt="הוסף לקוח" />
+              <h1>תיוגים</h1>
+              <a href="#new-label-form" data-fancybox class="btn">
+                <img src="./images/plus-btn.png" alt="הוסף תגית" />
               </a>
             </div>
-            <span id="doneText">הלקוחות שלך במערכת</span>
+            <span id="doneText">התגיות שלך במערכת</span>
             <div class="search-container">
               <input
                 type="text"
                 class="search-input"
-                placeholder="חיפוש לקוח"
-                id="search-client"
+                placeholder="חיפוש תגית"
+                id="search-label"
               />
               <img
                 src="./images/search-icon.png"
@@ -141,60 +142,27 @@
             </div>
           </div>
 
-          <div class="body-projects wow bounceInUp" id="clients"></div>
+          <div class="body-projects wow bounceInUp" id="labels"></div>
         </div>
       </div>
     </div>
 
-    <!-- פופ-אפ הוספת לקוח חדש -->
-    <div id="new-client-form" class="popup-form">
-      <h2>➕ לקוח חדש</h2>
-      <form id="client-form">
-        <label for="companyName">שם החברה:</label>
-        <input type="text" id="companyName" name="companyName" required />
+    <!-- פופ-אפ הוספת/עריכת תגית -->
+    <div id="new-label-form" class="popup-form">
+      <h2>➕ תגית חדשה</h2>
+      <form id="label-form">
+        <label for="labelName">שם תגית:</label>
+        <input type="text" id="labelName" name="labelName" required />
 
-        <label for="contactPerson">איש קשר:</label>
-        <input type="text" id="contactPerson" name="contactPerson" />
+        <label for="labelColor">בחר צבע:</label>
+        <input type="color" id="labelColor" name="labelColor" value="#6699CC" />
 
-        <label for="email">אימייל:</label>
-        <input type="email" id="email" name="email" />
-
-        <label for="contactPersonPhone">נייד:</label>
-        <input type="text" id="contactPersonPhone" name="contactPersonPhone" />
-
-        <label for="officePhone">טלפון משרד:</label>
-        <input type="text" id="officePhone" name="officePhone" />
-
-        <!-- ✅ תצוגת תמונה ממוזערת -->
-        <div id="client-image-preview" style="margin-top: 10px">
-          <img
-            id="client-image-thumb"
-            src=""
-            alt="תמונה נוכחית"
-            style="
-              max-width: 120px;
-              max-height: 60px;
-              border-radius: 8px;
-              display: none;
-              box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-            "
-          />
-        </div>
-
-        <label for="clientImageFile">תמונה:</label>
-        <input
-          type="file"
-          id="clientImageFile"
-          name="clientImageFile"
-          accept="image/*"
-        />
-
-        <button type="submit" class="btn-submit">📤 שמור לקוח</button>
+        <button type="submit" class="btn-submit">📤 שמור תגית</button>
       </form>
     </div>
 
     <script src="js/AjaxCall.js"></script>
-    <script src="js/clients.js"></script>
+    <script src="js/labels.js"></script>
     <script src="js/wow.min.js"></script>
     <script>
       new WOW().init();
