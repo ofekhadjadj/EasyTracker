@@ -49,9 +49,13 @@
         <div class="inner-sidbar">
           <div class="profile">
             <img src="#" class="avatar-img" alt="" />
-            <h3>הי,             <span id="menu-prof-name">משה</span>
-              👋</h3>
-              <img src="./images/profile arrow.png" class="arrow-btn"  alt="">
+        <h3>הי, <span id="menu-prof-name">משתמש</span> 👋</h3>
+            <span
+              id="edit-user-btn"
+              style="cursor: pointer; font-size: 20px"
+              title="עריכת פרטי משתמש"
+              >✏️</span
+            >
 
           </div>
           <img src="./images/logo.png" class="logo-sidebar" alt="" />
@@ -456,6 +460,82 @@
   <button id="remove-user-btn" class="btn-submit" style="width: 100%;">הסר</button>
 </div>
 
+<!-- 🟦 פופאפ עריכת פרטי משתמש -->
+    <div id="edit-user-form" class="popup-form" style="display: none">
+      <h2>✏️ עריכת פרטי משתמש</h2>
+
+      <form id="user-details-form">
+        <label>תמונה נוכחית:</label>
+        <div id="user-image-preview" style="margin-bottom: 10px">
+          <img
+            id="user-image-thumb"
+            src=""
+            alt="תמונה נוכחית"
+            style="
+              max-width: 120px;
+              max-height: 80px;
+              border-radius: 8px;
+              display: none;
+              box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+            "
+          />
+        </div>
+
+        <label for="userImageFile">בחר תמונה חדשה:</label>
+        <input
+          type="file"
+          id="userImageFile"
+          name="userImageFile"
+          accept="image/*"
+        />
+
+        <label>שם פרטי:</label>
+        <input type="text" id="user-firstname" required />
+
+        <label>שם משפחה:</label>
+        <input type="text" id="user-lastname" required />
+
+        <label>אימייל:</label>
+        <input
+          type="email"
+          id="user-email"
+          required
+          pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+          placeholder="example@example.com"
+        />
+
+        <label>סיסמה נוכחית:</label>
+        <input type="password" id="user-current-password" required />
+
+        <button type="submit" class="btn-submit">📤 שמור פרטים</button>
+        <button type="button" id="open-password-popup" class="btn-submit">
+          🔒 החלפת סיסמה
+        </button>
+      </form>
+    </div>
+
+    <!-- 🟨 פופאפ שינוי סיסמה -->
+    <div id="change-password-form" class="popup-form" style="display: none">
+      <h2>🔒 שינוי סיסמה</h2>
+      <form id="user-password-form">
+        <label>סיסמה נוכחית:</label>
+        <input type="password" id="old-password" required />
+
+        <label>סיסמה חדשה:</label>
+        <input
+          type="password"
+          id="new-password"
+          required
+          minlength="8"
+          maxlength="30"
+          pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$"
+          placeholder="לפחות 8 תווים – אותיות ומספרים"
+        />
+
+        <button type="submit" class="btn-submit">🔁 שנה סיסמה</button>
+      </form>
+    </div>
+
           
      <script src="https://cdn.jsdelivr.net/npm/easytimer.js@4.3.1/dist/easytimer.min.js"></script>
 
@@ -472,6 +552,7 @@
      <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
      <script src="js/projectPage.js"></script>
          <script src="js/sidebar-active.js"></script>
+    <script src="js/edit-user.js"></script>
 
 
   </body>
