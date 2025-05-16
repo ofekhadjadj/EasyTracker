@@ -156,6 +156,7 @@ function openEndSessionPopup() {
 document.addEventListener("DOMContentLoaded", renderTableFromDB);
 document.addEventListener("DOMContentLoaded", FillDeatils);
 document.addEventListener("DOMContentLoaded", loadTeamPreview);
+document.addEventListener("DOMContentLoaded", setupTeamManagementButton);
 
 function FillDeatils() {
   const ProfName = document.getElementById("menu-prof-name");
@@ -830,61 +831,262 @@ document.getElementById("remove-user-btn").addEventListener("click", () => {
   <button id="remove-user-btn">הסר</button>
 </div>*/
 
+// New function to set up the team management button based on user role
+function setupTeamManagementButton() {
+  const teamBtn = document.getElementById("btn-header-team");
+  const teamMenu = document.getElementById("team-dropdown-menu");
+
+  console.log("Current Project Role:", CurrentProject.Role);
+
+  // Check if the current user is a Team Member or Project Manager
+  if (CurrentProject.Role === "TeamMember") {
+    // Change button text for team members
+    teamBtn.textContent = "המשימות שלי";
+    teamBtn.style.backgroundColor = "#5cb85c"; // Green color for tasks button
+
+    // For team members, clicking the button does nothing for now
+    teamBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      console.log("Tasks button clicked - functionality coming soon");
+      // Future: Open tasks panel or page
+    });
+
+    // Hide the dropdown menu for team members
+    teamMenu.style.display = "none";
+  } else {
+    // Default behavior for Project Managers
+    teamBtn.textContent = "ניהול צוות";
+
+    // Existing dropdown logic for project managers
+    teamBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const visible = teamMenu.style.display === "block";
+      teamMenu.style.display = visible ? "none" : "block";
+
+      // הצמדת התפריט לכפתור
+      const rect = teamBtn.getBoundingClientRect();
+      teamMenu.style.top = `${teamBtn.offsetTop + teamBtn.offsetHeight + 5}px`;
+      teamMenu.style.left = `${teamBtn.offsetLeft}px`;
+    });
+
+    // סגירה בלחיצה מחוץ
+    document.addEventListener("click", () => {
+      teamMenu.style.display = "none";
+    });
+
+    // מניעת סגירה כשלוחצים בתוך התפריט
+    teamMenu.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+
+    // Handle click on "Add team member" button in dropdown
+    document
+      .querySelector(".team-menu-btn:nth-child(1)")
+      .addEventListener("click", () => {
+        // Fetch team members and show them in the new popup
+        loadCurrentTeamMembers();
+
+        // Open the popup
+        $.fancybox.open({
+          src: "#add-team-member-popup",
+          type: "inline",
+        });
+      });
+
+    // Handle click on "Remove team member" button in dropdown
+    document
+      .querySelector(".team-menu-btn:nth-child(2)")
+      .addEventListener("click", () => {
+        // Fetch team members and show them in the remove popup
+        loadRemoveTeamMembers();
+
+        // Open the popup
+        $.fancybox.open({
+          src: "#remove-team-member-popup",
+          type: "inline",
+        });
+      });
+  }
+}
+
+// Function to load current team members for the add-member popup
+function loadCurrentTeamMembers() {
+  const projectID = CurrentProject.ProjectID;
+  const teamList = document.getElementById("current-team-list");
+
+  ajaxCall(
+    "GET",
+    `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectID}`,
+    "",
+    (members) => {
+      teamList.innerHTML = "";
+      if (members.length === 0) {
+        teamList.innerHTML =
+          "<div class='empty-team-message'>אין משתמשים בפרויקט</div>";
+      } else {
+        members.forEach((member) => {
+          const memberItem = document.createElement("div");
+          memberItem.className = "team-member-item";
+
+          // Create user avatar
+          const avatar = document.createElement("div");
+          avatar.className = "team-member-avatar";
+
+          // Use member image if available, otherwise use initials
+          if (member.Image) {
+            const img = document.createElement("img");
+            img.src = member.Image;
+            img.alt = member.FullName;
+            avatar.appendChild(img);
+          } else {
+            // Get initials from name
+            const initials = member.FullName.split(" ")
+              .map((name) => name.charAt(0))
+              .join("")
+              .substring(0, 2)
+              .toUpperCase();
+            avatar.textContent = initials;
+          }
+
+          // Create member details
+          const details = document.createElement("div");
+          details.className = "team-member-details";
+          details.textContent = member.FullName;
+
+          // Append elements to member item
+          memberItem.appendChild(avatar);
+          memberItem.appendChild(details);
+
+          teamList.appendChild(memberItem);
+        });
+      }
+
+      // Add CSS for the team members list
+      const style = document.createElement("style");
+      style.textContent = `
+        .team-member-item {
+          display: flex;
+          align-items: center;
+          padding: 6px 8px;
+          margin-bottom: 5px;
+          background-color: #f8f9fa;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+        }
+        .team-member-item:hover {
+          background-color: #e9ecef;
+        }
+        .team-member-avatar {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background-color: #0072ff;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: bold;
+          margin-left: 8px;
+          font-size: 14px;
+        }
+        .team-member-avatar img {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+        .team-member-details {
+          font-size: 14px;
+        }
+        .empty-team-message {
+          padding: 6px;
+          text-align: center;
+          color: #6c757d;
+          font-style: italic;
+        }
+        .team-members-container {
+          max-height: 150px;
+          overflow-y: auto;
+        }
+      `;
+
+      if (!document.getElementById("team-members-style")) {
+        style.id = "team-members-style";
+        document.head.appendChild(style);
+      }
+    },
+    (err) => {
+      teamList.innerHTML =
+        "<div class='empty-team-message error'>שגיאה בטעינת צוות</div>";
+      console.error("Error loading team members:", err);
+    }
+  );
+}
+
+// Function to load current team members for the remove-member popup
+function loadRemoveTeamMembers() {
+  const projectID = CurrentProject.ProjectID;
+  const teamList = document.getElementById("remove-team-list");
+
+  ajaxCall(
+    "GET",
+    `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectID}`,
+    "",
+    (members) => {
+      teamList.innerHTML = "";
+      if (members.length === 0) {
+        teamList.innerHTML =
+          "<div class='empty-team-message'>אין משתמשים בפרויקט</div>";
+      } else {
+        members.forEach((member) => {
+          const memberItem = document.createElement("div");
+          memberItem.className = "team-member-item";
+
+          // Create user avatar
+          const avatar = document.createElement("div");
+          avatar.className = "team-member-avatar";
+
+          // Use member image if available, otherwise use initials
+          if (member.Image) {
+            const img = document.createElement("img");
+            img.src = member.Image;
+            img.alt = member.FullName;
+            avatar.appendChild(img);
+          } else {
+            // Get initials from name
+            const initials = member.FullName.split(" ")
+              .map((name) => name.charAt(0))
+              .join("")
+              .substring(0, 2)
+              .toUpperCase();
+            avatar.textContent = initials;
+          }
+
+          // Create member details
+          const details = document.createElement("div");
+          details.className = "team-member-details";
+          details.textContent = member.FullName;
+
+          // Append elements to member item
+          memberItem.appendChild(avatar);
+          memberItem.appendChild(details);
+
+          teamList.appendChild(memberItem);
+        });
+      }
+    },
+    (err) => {
+      teamList.innerHTML =
+        "<div class='empty-team-message error'>שגיאה בטעינת צוות</div>";
+      console.error("Error loading team members:", err);
+    }
+  );
+}
+
+// Handle add team member form submission
 document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("btn-header-team");
-  const menu = document.getElementById("team-dropdown-menu");
-
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-
-    const visible = menu.style.display === "block";
-    menu.style.display = visible ? "none" : "block";
-
-    // הצמדת התפריט לכפתור
-    const rect = btn.getBoundingClientRect();
-    menu.style.top = `${btn.offsetTop + btn.offsetHeight + 5}px`;
-    menu.style.left = `${btn.offsetLeft}px`;
-  });
-
-  // סגירה בלחיצה מחוץ
-  document.addEventListener("click", () => {
-    menu.style.display = "none";
-  });
-
-  // מניעת סגירה כשלוחצים בתוך התפריט
-  menu.addEventListener("click", (e) => {
-    e.stopPropagation();
-  });
-
-  // Handle click on "Add team member" button in dropdown
-  document
-    .querySelector(".team-menu-btn:nth-child(1)")
-    .addEventListener("click", () => {
-      // Fetch team members and show them in the new popup
-      loadCurrentTeamMembers();
-
-      // Open the popup
-      $.fancybox.open({
-        src: "#add-team-member-popup",
-        type: "inline",
-      });
-    });
-
-  // Handle click on "Remove team member" button in dropdown
-  document
-    .querySelector(".team-menu-btn:nth-child(2)")
-    .addEventListener("click", () => {
-      // Fetch team members and show them in the remove popup
-      loadRemoveTeamMembers();
-
-      // Open the popup
-      $.fancybox.open({
-        src: "#remove-team-member-popup",
-        type: "inline",
-      });
-    });
-
-  // Handle add team member form submission
+  // Add team member form submission
   document
     .getElementById("add-team-member-btn")
     .addEventListener("click", () => {
@@ -916,7 +1118,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     });
 
-  // Handle remove team member form submission
+  // Remove team member form submission
   document
     .getElementById("remove-team-member-btn")
     .addEventListener("click", () => {
@@ -956,61 +1158,3 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     });
 });
-
-// Function to load current team members for the add-member popup
-function loadCurrentTeamMembers() {
-  const projectID = CurrentProject.ProjectID;
-  const teamList = document.getElementById("current-team-list");
-
-  ajaxCall(
-    "GET",
-    `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectID}`,
-    "",
-    (members) => {
-      teamList.innerHTML = "";
-      if (members.length === 0) {
-        teamList.innerHTML = "<li>אין משתמשים בפרויקט</li>";
-      } else {
-        members.forEach((member) => {
-          const li = document.createElement("li");
-          li.textContent = member.FullName;
-          li.style.margin = "8px 0";
-          teamList.appendChild(li);
-        });
-      }
-    },
-    (err) => {
-      teamList.innerHTML = "<li>שגיאה בטעינת צוות</li>";
-      console.error("Error loading team members:", err);
-    }
-  );
-}
-
-// Function to load current team members for the remove-member popup
-function loadRemoveTeamMembers() {
-  const projectID = CurrentProject.ProjectID;
-  const teamList = document.getElementById("remove-team-list");
-
-  ajaxCall(
-    "GET",
-    `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectID}`,
-    "",
-    (members) => {
-      teamList.innerHTML = "";
-      if (members.length === 0) {
-        teamList.innerHTML = "<li>אין משתמשים בפרויקט</li>";
-      } else {
-        members.forEach((member) => {
-          const li = document.createElement("li");
-          li.textContent = member.FullName;
-          li.style.margin = "8px 0";
-          teamList.appendChild(li);
-        });
-      }
-    },
-    (err) => {
-      teamList.innerHTML = "<li>שגיאה בטעינת צוות</li>";
-      console.error("Error loading team members:", err);
-    }
-  );
-}
