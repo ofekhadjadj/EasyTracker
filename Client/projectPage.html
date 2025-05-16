@@ -189,8 +189,15 @@
                 <div class="project-summary-box ">
                   
                   <div class="half-box">
-
-                      <h3 class="team-title">צוות הפרויקט:</h3>
+                    <div class="header-Of-Team"><h3 class="team-title">צוות הפרויקט:</h3>
+                      <button class="gradient-button-header-team" id="btn-header-team">ניהול צוות</button>
+                      <div id="team-dropdown-menu" style="display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 1000;">
+                          <button class="team-menu-btn">➕ הוסף איש צוות</button>
+                          <button class="team-menu-btn">➖ הסר איש צוות</button>
+                          <button class="team-menu-btn">🗂️ ניהול משימות</button>
+                        </div>
+                      </div>
+                      
                       <div class="connected-users-to-project" id="project-team-preview">
                         
                         <img src="./images/profile arrow.png" id="open-team-popup"class="arrow-btn" alt="">
@@ -554,6 +561,57 @@
          <script src="js/sidebar-active.js"></script>
     <script src="js/edit-user.js"></script>
 
+    <!-- Add the new popup for adding team members -->
+    <div id="add-team-member-popup" class="popup-form" style="display: none;">
+      <h2 style="text-align: center; margin-bottom: 12px; font-size: 18px;">➕ הוספת משתמש לפרויקט</h2>
+      
+      <!-- List of current team members -->
+      <div id="current-team-members" style="margin-bottom: 12px;">
+        <h4 style="margin-bottom: 8px; border-bottom: 1px solid #e0e0e0; padding-bottom: 5px; font-size: 15px;">משתמשים משויכים לפרויקט:</h4>
+        <div id="current-team-list" class="team-members-container">
+          <div class="empty-team-message">...טוען משתמשים</div>
+        </div>
+      </div>
+      
+      <hr style="margin: 12px 0;" />
+      
+      <!-- Add user form -->
+      <div style="margin-top: 12px;">
+        <input
+          type="email"
+          id="add-team-member-email"
+          placeholder="הזן את המייל של המשתמש"
+          style="width: 100%; padding: 8px; margin-bottom: 8px; font-size: 14px; border-radius: 6px;"
+        />
+        <button id="add-team-member-btn" class="btn-submit" style="width: 100%; padding: 8px;">הוסף משתמש</button>
+      </div>
+    </div>
+
+    <!-- Add the new popup for removing team members -->
+    <div id="remove-team-member-popup" class="popup-form" style="display: none;">
+      <h2 style="text-align: center; margin-bottom: 12px; font-size: 18px;">➖ הסרת משתמש מהפרויקט</h2>
+      
+      <!-- List of current team members -->
+      <div id="remove-current-team-members" style="margin-bottom: 12px;">
+        <h4 style="margin-bottom: 8px; border-bottom: 1px solid #e0e0e0; padding-bottom: 5px; font-size: 15px;">משתמשים משויכים לפרויקט:</h4>
+        <div id="remove-team-list" class="team-members-container">
+          <div class="empty-team-message">...טוען משתמשים</div>
+        </div>
+      </div>
+      
+      <hr style="margin: 12px 0;" />
+      
+      <!-- Remove user form -->
+      <div style="margin-top: 12px;">
+        <input
+          type="email"
+          id="remove-team-member-email"
+          placeholder="הזן את המייל של המשתמש להסרה"
+          style="width: 100%; padding: 8px; margin-bottom: 8px; font-size: 14px; border-radius: 6px;"
+        />
+        <button id="remove-team-member-btn" class="btn-submit" style="width: 100%; padding: 8px; background: linear-gradient(to right, #ff4e50, #f9d423);">הסר משתמש</button>
+      </div>
+    </div>
 
   </body>
 </html>
