@@ -9,8 +9,8 @@ function loadTeamPreview() {
   const teamContainer = document.getElementById("project-team-preview");
 
   // שמור את כפתור הפתיחה בצד (נוסיף אותו מחדש אחר כך)
-  const openPopupBtn = document.getElementById("open-team-popup");
-  const arrowImg = document.getElementById("open-team-popup");
+  // const openPopupBtn = document.getElementById("open-team-popup");
+  // const arrowImg = document.getElementById("open-team-popup");
 
   // ננקה את התוכן הקיים
   teamContainer.innerHTML = "";
@@ -37,7 +37,7 @@ function loadTeamPreview() {
       });
 
       // הוסף את החץ לפתיחת פופאפ
-      teamContainer.appendChild(arrowImg);
+      // teamContainer.appendChild(arrowImg);
     },
     (err) => {
       console.error("❌ שגיאה בשליפת חברי הצוות:", err);
@@ -87,6 +87,10 @@ document
     $.fancybox.open({
       src: "#description-editor-popup",
       type: "inline",
+      touch: false,
+      animationEffect: "fade",
+      animationDuration: 300,
+      closeExisting: true,
     });
   });
 
@@ -117,8 +121,32 @@ document.getElementById("desc-form").addEventListener("submit", function (e) {
     "https://localhost:7198/api/Projects/update_project",
     JSON.stringify(updatedProject),
     () => {
-      alert("✅ תיאור עודכן בהצלחה!");
+      // Create and show success notification
+      const notification = document.createElement("div");
+      notification.className = "save-notification";
+      notification.innerHTML = `
+        <div class="notification-icon">✓</div>
+        <div class="notification-message">תיאור הפרויקט נשמר בהצלחה!</div>
+      `;
+      document.body.appendChild(notification);
+
+      // Close the popup
       $.fancybox.close();
+
+      // Animate notification
+      setTimeout(() => {
+        notification.classList.add("show");
+      }, 10);
+
+      // Remove notification after delay
+      setTimeout(() => {
+        notification.classList.remove("show");
+        setTimeout(() => {
+          if (notification.parentNode) {
+            document.body.removeChild(notification);
+          }
+        }, 500);
+      }, 3000);
 
       // רענון localStorage מהשרת
       const refreshedApiUrl = `https://localhost:7198/api/Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`;
@@ -127,7 +155,31 @@ document.getElementById("desc-form").addEventListener("submit", function (e) {
         localStorage.setItem("CurrentProject", JSON.stringify(CurrentProject));
       });
     },
-    () => alert("❌ שגיאה בעדכון התיאור")
+    () => {
+      // Show error notification
+      const notification = document.createElement("div");
+      notification.className = "save-notification error";
+      notification.innerHTML = `
+        <div class="notification-icon">✕</div>
+        <div class="notification-message">שגיאה בשמירת התיאור</div>
+      `;
+      document.body.appendChild(notification);
+
+      // Animate notification
+      setTimeout(() => {
+        notification.classList.add("show");
+      }, 10);
+
+      // Remove notification after delay
+      setTimeout(() => {
+        notification.classList.remove("show");
+        setTimeout(() => {
+          if (notification.parentNode) {
+            document.body.removeChild(notification);
+          }
+        }, 500);
+      }, 3000);
+    }
   );
 });
 
@@ -740,10 +792,10 @@ document.addEventListener("DOMContentLoaded", function () {
 const openPopupBtn = document.getElementById("open-team-popup");
 const teamList = document.getElementById("team-list");
 
-openPopupBtn.addEventListener("click", () => {
-  fetchTeamMembers();
-  $.fancybox.open({ src: "#team-popup", type: "inline" });
-});
+// openPopupBtn.addEventListener("click", () => {
+//   fetchTeamMembers();
+//   $.fancybox.open({ src: "#team-popup", type: "inline" });
+// });
 
 function fetchTeamMembers() {
   const projectID = CurrentProject.ProjectID;
@@ -844,11 +896,15 @@ function setupTeamManagementButton() {
     teamBtn.textContent = "המשימות שלי";
     teamBtn.style.backgroundColor = "#5cb85c"; // Green color for tasks button
 
-    // For team members, clicking the button does nothing for now
+    // For team members, show their tasks
     teamBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      console.log("Tasks button clicked - functionality coming soon");
-      // Future: Open tasks panel or page
+      // Load and show the user's tasks
+      loadMyTasks(CurrentUser.id);
+      $.fancybox.open({
+        src: "#my-tasks-popup",
+        type: "inline",
+      });
     });
 
     // Hide the dropdown menu for team members
@@ -904,6 +960,20 @@ function setupTeamManagementButton() {
         // Open the popup
         $.fancybox.open({
           src: "#remove-team-member-popup",
+          type: "inline",
+        });
+      });
+
+    // Handle click on "Task management" button in dropdown
+    document
+      .querySelector(".team-menu-btn:nth-child(3)")
+      .addEventListener("click", () => {
+        // Load team members into the dropdown
+        loadTeamMembersForTasksDropdown();
+
+        // Open the popup
+        $.fancybox.open({
+          src: "#tasks-management-popup",
           type: "inline",
         });
       });
@@ -1052,6 +1122,9 @@ function loadRemoveTeamMembers() {
             const img = document.createElement("img");
             img.src = member.Image;
             img.alt = member.FullName;
+            img.style.width = "32px";
+            img.style.height = "32px";
+            img.style.objectFit = "cover";
             avatar.appendChild(img);
           } else {
             // Get initials from name
@@ -1068,12 +1141,121 @@ function loadRemoveTeamMembers() {
           details.className = "team-member-details";
           details.textContent = member.FullName;
 
+          // Create delete button
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "team-member-delete-btn";
+          deleteBtn.innerHTML = "🗑️";
+          deleteBtn.title = "הסר מהפרויקט";
+          deleteBtn.style.background = "none";
+          deleteBtn.style.border = "none";
+          deleteBtn.style.cursor = "pointer";
+          deleteBtn.style.fontSize = "16px";
+          deleteBtn.style.marginRight = "auto";
+          deleteBtn.style.color = "#dc3545";
+          deleteBtn.style.opacity = "0.7";
+          deleteBtn.style.transition = "opacity 0.2s";
+
+          // Show the delete button more prominently on hover
+          memberItem.addEventListener("mouseenter", () => {
+            deleteBtn.style.opacity = "1";
+          });
+
+          memberItem.addEventListener("mouseleave", () => {
+            deleteBtn.style.opacity = "0.7";
+          });
+
+          // Add click event to the delete button
+          deleteBtn.addEventListener("click", () => {
+            showCustomConfirm(
+              `האם אתה בטוח שברצונך להסיר את ${member.FullName} מהפרויקט?`,
+              () => {
+                // Call API to remove user
+                ajaxCall(
+                  "PUT",
+                  `https://localhost:7198/api/Projects/RemoveTeamMemberFromProject?TeamMemberEmail=${encodeURIComponent(
+                    member.Email
+                  )}&ProjectID=${CurrentProject.ProjectID}`,
+                  "",
+                  () => {
+                    showCustomAlert(
+                      `${member.FullName} הוסר בהצלחה`,
+                      "success",
+                      false
+                    );
+                    loadRemoveTeamMembers(); // Refresh the list
+                    loadTeamPreview(); // Update the preview in the main page
+                  },
+                  (err) => {
+                    showCustomAlert("שגיאה בהסרת המשתמש", "error", false);
+                    console.error("Error removing team member:", err);
+                  }
+                );
+              }
+            );
+          });
+
           // Append elements to member item
           memberItem.appendChild(avatar);
           memberItem.appendChild(details);
+          memberItem.appendChild(deleteBtn);
+
+          // Set flex layout for the member item
+          memberItem.style.display = "flex";
+          memberItem.style.alignItems = "center";
 
           teamList.appendChild(memberItem);
         });
+      }
+
+      // Add CSS for the team members list if not already added
+      if (!document.getElementById("remove-team-members-style")) {
+        const style = document.createElement("style");
+        style.id = "remove-team-members-style";
+        style.textContent = `
+          .team-member-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            margin-bottom: 5px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+          }
+          .team-member-item:hover {
+            background-color: #e9ecef;
+          }
+          .team-member-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #0072ff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-left: 8px;
+            font-size: 14px;
+            overflow: hidden;
+          }
+          .team-member-avatar img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+          .team-member-details {
+            font-size: 14px;
+            flex-grow: 1;
+          }
+          .empty-team-message {
+            padding: 6px;
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+          }
+        `;
+        document.head.appendChild(style);
       }
     },
     (err) => {
@@ -1093,7 +1275,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const email = document.getElementById("add-team-member-email").value;
 
       if (!email || !email.trim()) {
-        alert("יש להזין כתובת מייל");
+        showCustomAlert("יש להזין כתובת מייל", "error");
         return;
       }
 
@@ -1106,55 +1288,878 @@ document.addEventListener("DOMContentLoaded", () => {
         url,
         "",
         () => {
-          alert("✅ המשתמש נוסף בהצלחה");
+          showCustomAlert("המשתמש נוסף בהצלחה", "success", false); // Added parameter to not close popup
           document.getElementById("add-team-member-email").value = ""; // Clear the input
           loadCurrentTeamMembers(); // Refresh the team members list
           loadTeamPreview(); // Update the preview in the main page
         },
         (err) => {
-          alert("❌ שגיאה בהוספת המשתמש");
+          showCustomAlert("שגיאה בהוספת המשתמש", "error", false); // Added parameter to not close popup
           console.error("Error adding team member:", err);
         }
       );
     });
 
-  // Remove team member form submission
+  // Hide the email input field in the remove team member popup
+  const removeEmailSection = document.getElementById("remove-email-section");
+  if (removeEmailSection) {
+    removeEmailSection.style.display = "none";
+  }
+});
+
+// Function to show custom styled alerts
+function showCustomAlert(message, type = "success", closePopup = true) {
+  // Only close fancybox popups if closePopup is true
+  if (closePopup && $.fancybox.getInstance()) {
+    $.fancybox.close();
+
+    // Small delay to ensure fancybox is closed before showing alert
+    setTimeout(() => {
+      displayAlert();
+    }, 300);
+  } else {
+    displayAlert();
+  }
+
+  function displayAlert() {
+    // Remove any existing alerts
+    const existingAlerts = document.querySelectorAll(".custom-alert");
+    existingAlerts.forEach((alert) => {
+      if (alert.parentNode) {
+        document.body.removeChild(alert);
+      }
+    });
+
+    // Create alert container
+    const alertContainer = document.createElement("div");
+    alertContainer.className = `custom-alert ${type}`;
+
+    // Create icon based on type
+    const icon = document.createElement("div");
+    icon.className = "alert-icon";
+
+    if (type === "success") {
+      icon.innerHTML = `
+        <svg viewBox="0 0 52 52" width="50" height="50">
+          <circle cx="26" cy="26" r="25" fill="none" stroke="#4CAF50" stroke-width="2"></circle>
+          <path fill="none" stroke="#4CAF50" stroke-width="3" d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
+        </svg>
+      `;
+    } else {
+      icon.innerHTML = `
+        <svg viewBox="0 0 52 52" width="50" height="50">
+          <circle cx="26" cy="26" r="25" fill="none" stroke="#F44336" stroke-width="2"></circle>
+          <line x1="18" y1="18" x2="34" y2="34" stroke="#F44336" stroke-width="3"></line>
+          <line x1="34" y1="18" x2="18" y2="34" stroke="#F44336" stroke-width="3"></line>
+        </svg>
+      `;
+    }
+
+    // Create content
+    const content = document.createElement("div");
+    content.className = "alert-content";
+
+    const title = document.createElement("h3");
+    title.className = "alert-title";
+    title.textContent = type === "success" ? "הצלחה!" : "שגיאה!";
+
+    const text = document.createElement("p");
+    text.className = "alert-text";
+    text.textContent = message;
+
+    content.appendChild(title);
+    content.appendChild(text);
+
+    // Create close button
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "alert-close";
+    closeBtn.innerHTML = "&times;";
+    closeBtn.addEventListener("click", () => {
+      alertContainer.classList.add("closing");
+      setTimeout(() => {
+        if (alertContainer.parentNode) {
+          document.body.removeChild(alertContainer);
+        }
+      }, 300);
+    });
+
+    // Assemble the alert
+    alertContainer.appendChild(icon);
+    alertContainer.appendChild(content);
+    alertContainer.appendChild(closeBtn);
+
+    // Add to document
+    document.body.appendChild(alertContainer);
+
+    // Animate in
+    setTimeout(() => {
+      alertContainer.classList.add("show");
+    }, 10);
+
+    // Auto close after 4 seconds
+    setTimeout(() => {
+      alertContainer.classList.add("closing");
+      setTimeout(() => {
+        if (alertContainer.parentNode) {
+          document.body.removeChild(alertContainer);
+        }
+      }, 300);
+    }, 4000);
+  }
+}
+
+// Function to load team members into tasks dropdown
+function loadTeamMembersForTasksDropdown() {
+  const projectID = CurrentProject.ProjectID;
+  const userSelect = document.getElementById("task-user-select");
+
+  // Clear the dropdown
+  userSelect.innerHTML = '<option value="">בחר איש צוות...</option>';
+
+  // Add option for the current user
+  const currentUserOption = document.createElement("option");
+  currentUserOption.value = CurrentUser.id;
+  currentUserOption.textContent =
+    CurrentUser.firstName + " " + CurrentUser.lastName + " (אני)";
+  userSelect.appendChild(currentUserOption);
+
+  // Load team members
+  ajaxCall(
+    "GET",
+    `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectID}`,
+    "",
+    (members) => {
+      members.forEach((member) => {
+        // Skip current user as we've already added them
+        if (member.UserID == CurrentUser.id) return;
+
+        const option = document.createElement("option");
+        option.value = member.UserID;
+        option.textContent = member.FullName;
+        userSelect.appendChild(option);
+      });
+
+      // Set event listener for dropdown change
+      userSelect.addEventListener("change", function () {
+        const selectedUserId = this.value;
+        if (selectedUserId) {
+          loadTasksForUser(selectedUserId);
+        } else {
+          // Clear tasks if no user selected
+          document.getElementById("tasks-table-body").innerHTML =
+            '<tr><td colspan="3" style="text-align: center; padding: 10px;">בחר איש צוות כדי לצפות במשימות</td></tr>';
+        }
+      });
+
+      // Default to current user's tasks
+      userSelect.value = CurrentUser.id;
+      loadTasksForUser(CurrentUser.id);
+    },
+    (err) => {
+      console.error("שגיאה בטעינת אנשי צוות:", err);
+      userSelect.innerHTML = '<option value="">שגיאה בטעינת אנשי צוות</option>';
+    }
+  );
+}
+
+// Function to format a date from API to local display format DD/MM/YYYY
+function formatDateForDisplay(dateString) {
+  if (!dateString) return "לא נקבע";
+
+  try {
+    // Parse the date, being careful about timezone issues
+    const date = new Date(dateString);
+
+    // Check if valid date
+    if (isNaN(date.getTime())) {
+      return "תאריך לא תקין";
+    }
+
+    // Format as DD/MM/YYYY
+    return `${date.getDate().toString().padStart(2, "0")}/${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}/${date.getFullYear()}`;
+  } catch (e) {
+    console.error("Error formatting date for display:", e);
+    return "תאריך לא תקין";
+  }
+}
+
+// Function to format a date from API to YYYY-MM-DD for input fields
+function formatDateForInput(dateString) {
+  if (!dateString) return "";
+
+  try {
+    // Parse the date, being careful about timezone issues
+    const date = new Date(dateString);
+
+    // Check if valid date
+    if (isNaN(date.getTime())) {
+      return "";
+    }
+
+    // Format as YYYY-MM-DD
+    return `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+  } catch (e) {
+    console.error("Error formatting date for input:", e);
+    return "";
+  }
+}
+
+// Function to convert local date to UTC for API
+function formatDateForAPI(dateString) {
+  if (!dateString) return null;
+
+  try {
+    // If the format is YYYY-MM-DD, parse it correctly
+    if (dateString.includes("-")) {
+      const [year, month, day] = dateString
+        .split("-")
+        .map((num) => parseInt(num, 10));
+
+      // Create date at noon to avoid timezone issues
+      const date = new Date(year, month - 1, day, 12, 0, 0);
+
+      return date.toISOString();
+    } else {
+      // Handle other formats
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        throw new Error("Invalid date format");
+      }
+      return date.toISOString();
+    }
+  } catch (e) {
+    console.error("Error formatting date for API:", e);
+    throw e;
+  }
+}
+
+// Function to load tasks for a specific user - update the date handling
+function loadTasksForUser(userId) {
+  const projectId = CurrentProject.ProjectID;
+  const tasksTableBody = document.getElementById("tasks-table-body");
+
+  // Show loading indicator
+  tasksTableBody.innerHTML =
+    '<tr><td colspan="4" style="text-align: center; padding: 10px;">טוען משימות...</td></tr>';
+
+  console.log(`Loading tasks for user ${userId} in project ${projectId}`);
+
+  // Store the selected user ID for later use
+  window.selectedTaskUserId = userId;
+
+  // Fetch tasks from API
+  ajaxCall(
+    "GET",
+    `https://localhost:7198/api/Task/GetTasksByUserAndProject?userID=${userId}&projectID=${projectId}`,
+    "",
+    (tasks) => {
+      console.log("Tasks received:", tasks);
+
+      if (!tasks || tasks.length === 0) {
+        tasksTableBody.innerHTML =
+          '<tr><td colspan="4" style="text-align: center; padding: 10px;">לא נמצאו משימות</td></tr>';
+        return;
+      }
+
+      // Clear table
+      tasksTableBody.innerHTML = "";
+
+      // Add tasks to table
+      tasks.forEach((task) => {
+        // Create a new row
+        const row = document.createElement("tr");
+        row.setAttribute("data-task-id", task.taskID);
+
+        // Format date using our helper function
+        const formattedDueDate = formatDateForDisplay(task.dueDate);
+        const inputDueDate = formatDateForInput(task.dueDate);
+
+        // Create the description cell (editable)
+        const descriptionCell = document.createElement("td");
+        descriptionCell.style.padding = "8px";
+        descriptionCell.style.border = "1px solid #ddd";
+        descriptionCell.textContent = task.description || "ללא תיאור";
+        descriptionCell.setAttribute("data-original", task.description || "");
+        descriptionCell.style.cursor = "pointer";
+        descriptionCell.title = "לחץ לעריכה";
+
+        // Make description editable on click
+        descriptionCell.addEventListener("click", function () {
+          const originalText = this.getAttribute("data-original");
+
+          // Create input element
+          const input = document.createElement("input");
+          input.type = "text";
+          input.value = originalText;
+          input.style.width = "100%";
+          input.style.padding = "4px";
+          input.style.boxSizing = "border-box";
+
+          // Replace cell content with input
+          this.textContent = "";
+          this.appendChild(input);
+          input.focus();
+
+          // Save on enter key
+          input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+              const newValue = this.value.trim();
+              updateTask(task.taskID, newValue, inputDueDate);
+            }
+          });
+
+          // Save on blur (when focus is lost)
+          input.addEventListener("blur", function () {
+            const newValue = this.value.trim();
+            updateTask(task.taskID, newValue, inputDueDate);
+          });
+        });
+
+        // Create the due date cell (editable)
+        const dueDateCell = document.createElement("td");
+        dueDateCell.style.padding = "8px";
+        dueDateCell.style.border = "1px solid #ddd";
+        dueDateCell.textContent = formattedDueDate;
+        dueDateCell.setAttribute("data-original", inputDueDate || "");
+        dueDateCell.style.cursor = "pointer";
+        dueDateCell.title = "לחץ לעריכה";
+
+        // Make due date editable on click
+        dueDateCell.addEventListener("click", function () {
+          const originalDate = this.getAttribute("data-original");
+
+          // Create date input element
+          const input = document.createElement("input");
+          input.type = "date";
+          input.value = originalDate;
+          input.style.width = "100%";
+          input.style.padding = "4px";
+          input.style.boxSizing = "border-box";
+
+          // Replace cell content with input
+          this.textContent = "";
+          this.appendChild(input);
+          input.focus();
+
+          // Save on enter key
+          input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+              updateTask(task.taskID, task.description, this.value);
+            }
+          });
+
+          // Save on blur (when focus is lost)
+          input.addEventListener("blur", function () {
+            updateTask(task.taskID, task.description, this.value);
+          });
+        });
+
+        // Status cell with checkbox
+        const statusCell = document.createElement("td");
+        statusCell.style.textAlign = "center";
+        statusCell.style.padding = "8px";
+        statusCell.style.border = "1px solid #ddd";
+
+        const statusCheckbox = document.createElement("input");
+        statusCheckbox.type = "checkbox";
+        statusCheckbox.checked = task.isDone === true;
+        statusCheckbox.disabled = true; // Read-only for now
+
+        statusCell.appendChild(statusCheckbox);
+
+        // Actions cell with delete button
+        const actionsCell = document.createElement("td");
+        actionsCell.style.textAlign = "center";
+        actionsCell.style.padding = "8px";
+        actionsCell.style.border = "1px solid #ddd";
+
+        const deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "🗑️";
+        deleteButton.style.background = "none";
+        deleteButton.style.border = "none";
+        deleteButton.style.cursor = "pointer";
+        deleteButton.style.fontSize = "16px";
+        deleteButton.title = "מחק משימה";
+        deleteButton.style.opacity = "0.5";
+        deleteButton.style.transition = "opacity 0.3s";
+
+        // Show the delete button on hover
+        row.addEventListener("mouseenter", () => {
+          deleteButton.style.opacity = "1";
+        });
+
+        row.addEventListener("mouseleave", () => {
+          deleteButton.style.opacity = "0.5";
+        });
+
+        // Delete button click handler
+        deleteButton.addEventListener("click", () => {
+          if (
+            confirm(
+              `האם אתה בטוח שברצונך למחוק את המשימה "${task.description}"?`
+            )
+          ) {
+            deleteTask(task.taskID);
+          }
+        });
+
+        actionsCell.appendChild(deleteButton);
+
+        // Add cells to the row
+        row.appendChild(descriptionCell);
+        row.appendChild(dueDateCell);
+        row.appendChild(statusCell);
+        row.appendChild(actionsCell);
+
+        // Add the row to the table
+        tasksTableBody.appendChild(row);
+      });
+    },
+    (err) => {
+      console.error("שגיאה בטעינת משימות:", err);
+      tasksTableBody.innerHTML =
+        '<tr><td colspan="4" style="text-align: center; padding: 10px; color: red;">שגיאה בטעינת משימות</td></tr>';
+    }
+  );
+}
+
+// Function to update a task - update date formatting
+function updateTask(taskId, description, dueDate) {
+  // Format date for API
+  let formattedDate = null;
+  if (dueDate) {
+    try {
+      formattedDate = formatDateForAPI(dueDate);
+    } catch (e) {
+      console.error("Error formatting date for API:", e);
+      alert("שגיאה בפורמט התאריך");
+      return;
+    }
+  }
+
+  const taskData = {
+    taskID: taskId,
+    description: description,
+    dueDate: formattedDate,
+  };
+
+  console.log("Updating task:", taskData);
+
+  // Send the update request
+  ajaxCall(
+    "PUT",
+    "https://localhost:7198/api/Task/UpdateTask",
+    JSON.stringify(taskData),
+    (response) => {
+      console.log("Task updated successfully:", response);
+
+      // Reload the tasks to reflect changes
+      loadTasksForUser(window.selectedTaskUserId);
+    },
+    (err) => {
+      console.error("Error updating task:", err);
+      alert("שגיאה בעדכון המשימה");
+
+      // Reload to restore original values
+      loadTasksForUser(window.selectedTaskUserId);
+    }
+  );
+}
+
+// Function to delete a task
+function deleteTask(taskId) {
+  console.log("Deleting task ID:", taskId);
+
+  ajaxCall(
+    "PUT",
+    `https://localhost:7198/api/Task/ArchiveTask?taskID=${taskId}`,
+    "",
+    (response) => {
+      console.log("Task deleted successfully:", response);
+
+      // Reload tasks to reflect changes
+      loadTasksForUser(window.selectedTaskUserId);
+    },
+    (err) => {
+      console.error("Error deleting task:", err);
+      alert("שגיאה במחיקת המשימה");
+    }
+  );
+}
+
+// Add event listeners for task-related buttons
+document.addEventListener("DOMContentLoaded", function () {
+  // Add new task button
   document
-    .getElementById("remove-team-member-btn")
-    .addEventListener("click", () => {
-      const email = document.getElementById("remove-team-member-email").value;
+    .getElementById("add-new-task-btn")
+    .addEventListener("click", function () {
+      document.getElementById("add-task-form").style.display = "block";
+      document.getElementById("new-task-description").focus();
+    });
 
-      if (!email || !email.trim()) {
-        alert("יש להזין כתובת מייל");
+  // Cancel add task button
+  document
+    .getElementById("cancel-new-task-btn")
+    .addEventListener("click", function () {
+      document.getElementById("add-task-form").style.display = "none";
+      document.getElementById("new-task-description").value = "";
+      document.getElementById("new-task-due-date").value = "";
+    });
+
+  // Save new task button - update date formatting
+  document
+    .getElementById("save-new-task-btn")
+    .addEventListener("click", function () {
+      const description = document
+        .getElementById("new-task-description")
+        .value.trim();
+      const dueDate = document.getElementById("new-task-due-date").value;
+      const selectedUserId = window.selectedTaskUserId;
+
+      if (!description) {
+        alert("יש להזין תיאור למשימה");
         return;
       }
 
-      // Confirm before removing
-      const confirmRemove = confirm(
-        `האם אתה בטוח שברצונך להסיר את ${email} מהפרויקט?`
-      );
-      if (!confirmRemove) {
+      if (!selectedUserId) {
+        alert("יש לבחור משתמש");
         return;
       }
 
-      const url = `https://localhost:7198/api/Projects/RemoveTeamMemberFromProject?TeamMemberEmail=${encodeURIComponent(
-        email
-      )}&ProjectID=${CurrentProject.ProjectID}`;
+      // Format date for API
+      let formattedDate = null;
+      if (dueDate) {
+        try {
+          formattedDate = formatDateForAPI(dueDate);
+        } catch (e) {
+          console.error("Error formatting date for API:", e);
+          alert("שגיאה בפורמט התאריך");
+          return;
+        }
+      }
 
+      const taskData = {
+        projectID: CurrentProject.ProjectID,
+        userID: selectedUserId,
+        description: description,
+        dueDate: formattedDate,
+      };
+
+      console.log("Adding new task:", taskData);
+
+      // Send the add task request
       ajaxCall(
-        "PUT",
-        url,
-        "",
-        () => {
-          alert("✅ המשתמש הוסר בהצלחה");
-          document.getElementById("remove-team-member-email").value = ""; // Clear the input
-          loadRemoveTeamMembers(); // Refresh the team members list
-          loadTeamPreview(); // Update the preview in the main page
+        "POST",
+        "https://localhost:7198/api/Task/AddTask",
+        JSON.stringify(taskData),
+        (response) => {
+          console.log("Task added successfully:", response);
+
+          // Clear form and hide it
+          document.getElementById("add-task-form").style.display = "none";
+          document.getElementById("new-task-description").value = "";
+          document.getElementById("new-task-due-date").value = "";
+
+          // Reload tasks to show the new task
+          loadTasksForUser(selectedUserId);
         },
         (err) => {
-          alert("❌ שגיאה בהסרת המשתמש");
-          console.error("Error removing team member:", err);
+          console.error("Error adding task:", err);
+          alert("שגיאה בהוספת המשימה");
         }
       );
     });
 });
+
+// Add the function to load tasks for a TeamMember
+function loadMyTasks(userId) {
+  const projectId = CurrentProject.ProjectID;
+  const tasksTableBody = document.getElementById("my-tasks-table-body");
+
+  // Show loading indicator
+  tasksTableBody.innerHTML =
+    '<tr><td colspan="3" style="text-align: center; padding: 10px;">טוען משימות...</td></tr>';
+
+  console.log(
+    `Loading tasks for team member ${userId} in project ${projectId}`
+  );
+
+  // Fetch tasks from API
+  ajaxCall(
+    "GET",
+    `https://localhost:7198/api/Task/GetTasksByUserAndProject?userID=${userId}&projectID=${projectId}`,
+    "",
+    (tasks) => {
+      console.log("My tasks received:", tasks);
+
+      if (!tasks || tasks.length === 0) {
+        tasksTableBody.innerHTML =
+          '<tr><td colspan="3" style="text-align: center; padding: 10px;">לא נמצאו משימות</td></tr>';
+        return;
+      }
+
+      // Clear table
+      tasksTableBody.innerHTML = "";
+
+      // Add tasks to table
+      tasks.forEach((task) => {
+        // Create a new row
+        const row = document.createElement("tr");
+        row.setAttribute("data-task-id", task.taskID);
+
+        // Format date using our helper function
+        const formattedDueDate = formatDateForDisplay(task.dueDate);
+
+        // Create the description cell (read-only)
+        const descriptionCell = document.createElement("td");
+        descriptionCell.style.padding = "8px";
+        descriptionCell.style.border = "1px solid #ddd";
+        descriptionCell.textContent = task.description || "ללא תיאור";
+
+        // Create the due date cell (read-only)
+        const dueDateCell = document.createElement("td");
+        dueDateCell.style.padding = "8px";
+        dueDateCell.style.border = "1px solid #ddd";
+        dueDateCell.textContent = formattedDueDate;
+
+        // Status cell with checkbox (can be changed)
+        const statusCell = document.createElement("td");
+        statusCell.style.textAlign = "center";
+        statusCell.style.padding = "8px";
+        statusCell.style.border = "1px solid #ddd";
+
+        const statusCheckbox = document.createElement("input");
+        statusCheckbox.type = "checkbox";
+        statusCheckbox.checked = task.isDone === true;
+        statusCheckbox.style.transform = "scale(1.2)"; // Make checkbox a bit larger
+        statusCheckbox.style.cursor = "pointer";
+
+        // Add change event to update task status
+        statusCheckbox.addEventListener("change", function () {
+          updateTaskStatus(task.taskID, this.checked);
+        });
+
+        statusCell.appendChild(statusCheckbox);
+
+        // Add cells to the row
+        row.appendChild(descriptionCell);
+        row.appendChild(dueDateCell);
+        row.appendChild(statusCell);
+
+        // Add the row to the table
+        tasksTableBody.appendChild(row);
+
+        // Add visual indication of completed tasks
+        if (task.isDone === true) {
+          row.style.backgroundColor = "#f8f8f8";
+          descriptionCell.style.textDecoration = "line-through";
+          descriptionCell.style.color = "#888";
+        }
+      });
+    },
+    (err) => {
+      console.error("שגיאה בטעינת משימות:", err);
+      tasksTableBody.innerHTML =
+        '<tr><td colspan="3" style="text-align: center; padding: 10px; color: red;">שגיאה בטעינת משימות</td></tr>';
+    }
+  );
+}
+
+// Function to update task status
+function updateTaskStatus(taskId, isDone) {
+  console.log(
+    `Updating task ${taskId} status to ${
+      isDone ? "completed" : "not completed"
+    }`
+  );
+
+  // Send API request to update task status
+  ajaxCall(
+    "PUT",
+    `https://localhost:7198/api/Task/UpdateTaskStatus?taskID=${taskId}&isDone=${isDone}`,
+    "",
+    (response) => {
+      console.log("Task status updated successfully:", response);
+
+      // Visual feedback
+      const message = isDone
+        ? "✅ המשימה סומנה כהושלמה"
+        : "⭕ המשימה סומנה כלא הושלמה";
+      const notification = document.createElement("div");
+      notification.textContent = message;
+      notification.style.position = "fixed";
+      notification.style.top = "20px"; // Changed from bottom to top
+      notification.style.left = "50%"; // Center horizontally
+      notification.style.transform = "translateX(-50%)"; // Center alignment
+      notification.style.backgroundColor = isDone ? "#4CAF50" : "#FF9800";
+      notification.style.color = "white";
+      notification.style.padding = "12px 25px"; // Slightly larger padding
+      notification.style.borderRadius = "6px";
+      notification.style.zIndex = "999999999"; // Super high z-index
+      notification.style.opacity = "0";
+      notification.style.transition = "opacity 0.3s, transform 0.3s";
+      notification.style.boxShadow = "0 4px 8px rgba(0,0,0,0.3)"; // Add shadow for depth
+      notification.style.fontWeight = "bold"; // Make text bold
+      notification.style.fontSize = "16px"; // Slightly larger text
+
+      // Remove any existing notifications first
+      const existingNotifications = document.querySelectorAll(
+        ".task-status-notification"
+      );
+      existingNotifications.forEach((n) => document.body.removeChild(n));
+
+      // Add a class for easier selection
+      notification.classList.add("task-status-notification");
+
+      // Ensure it's inserted at the end of body to be on top
+      document.body.appendChild(notification);
+
+      // Fade in with a slight rise animation
+      notification.style.transform = "translateX(-50%) translateY(10px)";
+      setTimeout(() => {
+        notification.style.opacity = "1";
+        notification.style.transform = "translateX(-50%) translateY(0)";
+      }, 10);
+
+      // Fade out and remove
+      setTimeout(() => {
+        notification.style.opacity = "0";
+        notification.style.transform = "translateX(-50%) translateY(-10px)";
+        setTimeout(() => {
+          if (notification.parentNode) {
+            document.body.removeChild(notification);
+          }
+        }, 300);
+      }, 2500);
+
+      // Update the task row appearance
+      const row = document.querySelector(`tr[data-task-id="${taskId}"]`);
+      if (row) {
+        const descriptionCell = row.querySelector("td:first-child");
+
+        if (isDone) {
+          row.style.backgroundColor = "#f8f8f8";
+          descriptionCell.style.textDecoration = "line-through";
+          descriptionCell.style.color = "#888";
+        } else {
+          row.style.backgroundColor = "";
+          descriptionCell.style.textDecoration = "";
+          descriptionCell.style.color = "";
+        }
+      }
+    },
+    (err) => {
+      console.error("Error updating task status:", err);
+      alert("שגיאה בעדכון סטטוס המשימה");
+    }
+  );
+}
+
+// Function to show custom confirmation dialog
+function showCustomConfirm(message, onConfirm) {
+  // Remove any existing confirmation dialogs
+  const existingConfirms = document.querySelectorAll(".custom-confirm");
+  existingConfirms.forEach((confirm) => {
+    if (confirm.parentNode) {
+      document.body.removeChild(confirm);
+    }
+  });
+
+  // Create confirm container
+  const confirmContainer = document.createElement("div");
+  confirmContainer.className = "custom-alert custom-confirm";
+
+  // Create warning icon
+  const icon = document.createElement("div");
+  icon.className = "alert-icon";
+  icon.innerHTML = `
+    <svg viewBox="0 0 52 52" width="50" height="50">
+      <circle cx="26" cy="26" r="25" fill="none" stroke="#FF9800" stroke-width="2"></circle>
+      <path fill="none" stroke="#FF9800" stroke-width="3" d="M26 15v17"></path>
+      <circle cx="26" cy="38" r="2" fill="#FF9800"></circle>
+    </svg>
+  `;
+
+  // Create content
+  const content = document.createElement("div");
+  content.className = "alert-content";
+
+  const title = document.createElement("h3");
+  title.className = "alert-title";
+  title.textContent = "אישור פעולה";
+
+  const text = document.createElement("p");
+  text.className = "alert-text";
+  text.textContent = message;
+
+  content.appendChild(title);
+  content.appendChild(text);
+
+  // Create buttons container
+  const buttonsContainer = document.createElement("div");
+  buttonsContainer.className = "confirm-buttons";
+
+  // Create confirm button
+  const confirmBtn = document.createElement("button");
+  confirmBtn.className = "confirm-btn confirm-yes";
+  confirmBtn.textContent = "כן, הסר";
+  confirmBtn.addEventListener("click", () => {
+    confirmContainer.classList.add("closing");
+    setTimeout(() => {
+      if (confirmContainer.parentNode) {
+        document.body.removeChild(confirmContainer);
+        onConfirm(); // Execute the callback function
+      }
+    }, 300);
+  });
+
+  // Create cancel button
+  const cancelBtn = document.createElement("button");
+  cancelBtn.className = "confirm-btn confirm-no";
+  cancelBtn.textContent = "ביטול";
+  cancelBtn.addEventListener("click", () => {
+    confirmContainer.classList.add("closing");
+    setTimeout(() => {
+      if (confirmContainer.parentNode) {
+        document.body.removeChild(confirmContainer);
+      }
+    }, 300);
+  });
+
+  // Add buttons to container
+  buttonsContainer.appendChild(cancelBtn);
+  buttonsContainer.appendChild(confirmBtn);
+
+  // Create close button
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "alert-close";
+  closeBtn.innerHTML = "&times;";
+  closeBtn.addEventListener("click", () => {
+    confirmContainer.classList.add("closing");
+    setTimeout(() => {
+      if (confirmContainer.parentNode) {
+        document.body.removeChild(confirmContainer);
+      }
+    }, 300);
+  });
+
+  // Assemble the confirm dialog
+  confirmContainer.appendChild(icon);
+  confirmContainer.appendChild(content);
+  confirmContainer.appendChild(buttonsContainer);
+  confirmContainer.appendChild(closeBtn);
+
+  // Add to document
+  document.body.appendChild(confirmContainer);
+
+  // Animate in
+  setTimeout(() => {
+    confirmContainer.classList.add("show");
+  }, 10);
+}

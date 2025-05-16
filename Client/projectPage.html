@@ -200,7 +200,7 @@
                       
                       <div class="connected-users-to-project" id="project-team-preview">
                         
-                        <img src="./images/profile arrow.png" id="open-team-popup"class="arrow-btn" alt="">
+                        <!-- <img src="./images/profile arrow.png" id="open-team-popup"class="arrow-btn" alt=""> -->
                       </div>
 
                   </div>
@@ -394,16 +394,18 @@
           <div id="description-editor-popup" class="popup-form" style="display: none;">
   <h2>✏️ עריכת תיאור הפרויקט</h2>
   <form id="desc-form">
-    <label for="description-textarea">תיאור:</label>
-    <textarea
-      id="description-textarea"
-      name="description"
-      rows="5"
-      required
-      style="resize: vertical"
-    ></textarea>
+    <div class="form-group">
+      <label for="description-textarea">תיאור הפרויקט:</label>
+      <textarea
+        id="description-textarea"
+        name="description"
+        rows="8"
+        required
+        placeholder="הזן כאן את תיאור הפרויקט המפורט..."
+      ></textarea>
+    </div>
 
-    <button type="submit" class="btn-submit">📤 שמור שינויים</button>
+    <button type="submit" class="btn-submit">💾 שמור שינויים</button>
   </form>
 </div>
 
@@ -603,13 +605,97 @@
       
       <!-- Remove user form -->
       <div style="margin-top: 12px;">
-        <input
+        <!-- <input
           type="email"
           id="remove-team-member-email"
           placeholder="הזן את המייל של המשתמש להסרה"
           style="width: 100%; padding: 8px; margin-bottom: 8px; font-size: 14px; border-radius: 6px;"
-        />
-        <button id="remove-team-member-btn" class="btn-submit" style="width: 100%; padding: 8px; background: linear-gradient(to right, #ff4e50, #f9d423);">הסר משתמש</button>
+        /> -->
+        <!-- <button id="remove-team-member-btn" class="btn-submit" style="width: 100%; padding: 8px; background: linear-gradient(to right, #ff4e50, #b82613);">הסר משתמש</button> -->
+      </div>
+    </div>
+
+    <!-- Add the new popup for task management -->
+    <div id="tasks-management-popup" class="popup-form" style="display: none; max-width: 600px;">
+      <h2 style="text-align: center; margin-bottom: 12px; font-size: 18px;">🗂️ ניהול משימות</h2>
+      
+      <!-- Team member selection dropdown -->
+      <div style="margin-bottom: 15px;">
+        <label for="task-user-select" style="display: block; margin-bottom: 5px; font-weight: bold;">בחר איש צוות:</label>
+        <select id="task-user-select" style="width: 100%; padding: 8px; border-radius: 6px; font-size: 14px;">
+          <option value="">טוען אנשי צוות...</option>
+        </select>
+      </div>
+      
+      <!-- Tasks section -->
+      <div id="tasks-container" style="margin-top: 15px;">
+        <div style="margin-bottom: 10px;">
+          <h3 style="margin: 0; font-size: 16px;">משימות</h3>
+        </div>
+        
+        <!-- Tasks table -->
+        <div style="max-height: 300px; overflow-y: auto;">
+          <table id="tasks-table" style="width: 100%; border-collapse: collapse; font-size: 14px;">
+            <thead>
+              <tr style="background-color: #f0f0f0; text-align: right;">
+                <th style="padding: 8px; border: 1px solid #ddd;">משימה</th>
+                <th style="padding: 8px; border: 1px solid #ddd;">תאריך יעד</th>
+                <th style="padding: 8px; border: 1px solid #ddd;">סטטוס</th>
+                <th style="padding: 8px; border: 1px solid #ddd; width: 50px;">פעולות</th>
+              </tr>
+            </thead>
+            <tbody id="tasks-table-body">
+              <tr>
+                <td colspan="4" style="text-align: center; padding: 10px;">בחר איש צוות כדי לצפות במשימות</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Add task button -->
+        <div style="margin-top: 10px; text-align: left;">
+          <button id="add-new-task-btn" class="btn-submit" style="padding: 6px 12px; font-size: 14px;">➕ הוסף משימה</button>
+        </div>
+        
+        <!-- Add task form - Initially hidden -->
+        <div id="add-task-form" style="margin-top: 15px; padding: 10px; background-color: #f9f9f9; border-radius: 6px; display: none;">
+          <h4 style="margin-top: 0; margin-bottom: 10px; font-size: 15px;">הוסף משימה חדשה</h4>
+          <div style="margin-bottom: 8px;">
+            <label for="new-task-description" style="display: block; margin-bottom: 3px;">תיאור המשימה:</label>
+            <input type="text" id="new-task-description" style="width: 100%; padding: 6px; border-radius: 4px; border: 1px solid #ccc;" />
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label for="new-task-due-date" style="display: block; margin-bottom: 3px;">תאריך יעד:</label>
+            <input type="date" id="new-task-due-date" style="width: 100%; padding: 6px; border-radius: 4px; border: 1px solid #ccc;" />
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+            <button id="save-new-task-btn" class="btn-submit" style="padding: 6px 12px;">שמור משימה</button>
+            <button id="cancel-new-task-btn" type="button" style="padding: 6px 12px; background-color: #f0f0f0; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">ביטול</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add popup for TeamMember's tasks -->
+    <div id="my-tasks-popup" class="popup-form" style="display: none; max-width: 600px;">
+      <h2 style="text-align: center; margin-bottom: 12px; font-size: 18px;">📋 המשימות שלי</h2>
+      
+      <!-- Tasks table -->
+      <div style="max-height: 350px; overflow-y: auto;">
+        <table id="my-tasks-table" style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          <thead>
+            <tr style="background-color: #f0f0f0; text-align: right;">
+              <th style="padding: 8px; border: 1px solid #ddd;">משימה</th>
+              <th style="padding: 8px; border: 1px solid #ddd;">תאריך יעד</th>
+              <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">סטטוס</th>
+            </tr>
+          </thead>
+          <tbody id="my-tasks-table-body">
+            <tr>
+              <td colspan="3" style="text-align: center; padding: 10px;">טוען משימות...</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
