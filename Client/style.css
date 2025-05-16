@@ -1333,3 +1333,52 @@ li a.active span {
   flex-grow: 1;
   display: inline-block;
 }
+
+.gradient-button-header-team {
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  color: white;
+  font-size: 13px;
+  font-family: "Assistant", sans-serif;
+  padding: 3px 12px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.header-Of-Team {
+  display: flex;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.dropdown-menu-team {
+  display: none;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.99); /* לבן שקוף קצת */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 10px 0;
+  width: 180px;
+  z-index: 9999;
+  direction: rtl;
+}
+
+.team-menu-btn {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  text-align: right;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.team-menu-btn:hover {
+  background-color: #f0f0f0;
+}

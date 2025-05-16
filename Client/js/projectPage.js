@@ -829,3 +829,188 @@ document.getElementById("remove-user-btn").addEventListener("click", () => {
   <input type="email" id="remove-user-email" placeholder="אימייל של המשתמש" />
   <button id="remove-user-btn">הסר</button>
 </div>*/
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("btn-header-team");
+  const menu = document.getElementById("team-dropdown-menu");
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    const visible = menu.style.display === "block";
+    menu.style.display = visible ? "none" : "block";
+
+    // הצמדת התפריט לכפתור
+    const rect = btn.getBoundingClientRect();
+    menu.style.top = `${btn.offsetTop + btn.offsetHeight + 5}px`;
+    menu.style.left = `${btn.offsetLeft}px`;
+  });
+
+  // סגירה בלחיצה מחוץ
+  document.addEventListener("click", () => {
+    menu.style.display = "none";
+  });
+
+  // מניעת סגירה כשלוחצים בתוך התפריט
+  menu.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
+  // Handle click on "Add team member" button in dropdown
+  document
+    .querySelector(".team-menu-btn:nth-child(1)")
+    .addEventListener("click", () => {
+      // Fetch team members and show them in the new popup
+      loadCurrentTeamMembers();
+
+      // Open the popup
+      $.fancybox.open({
+        src: "#add-team-member-popup",
+        type: "inline",
+      });
+    });
+
+  // Handle click on "Remove team member" button in dropdown
+  document
+    .querySelector(".team-menu-btn:nth-child(2)")
+    .addEventListener("click", () => {
+      // Fetch team members and show them in the remove popup
+      loadRemoveTeamMembers();
+
+      // Open the popup
+      $.fancybox.open({
+        src: "#remove-team-member-popup",
+        type: "inline",
+      });
+    });
+
+  // Handle add team member form submission
+  document
+    .getElementById("add-team-member-btn")
+    .addEventListener("click", () => {
+      const email = document.getElementById("add-team-member-email").value;
+
+      if (!email || !email.trim()) {
+        alert("יש להזין כתובת מייל");
+        return;
+      }
+
+      const url = `https://localhost:7198/api/Projects/AddNewTeamMemberToProject?TeamMemberEmail=${encodeURIComponent(
+        email
+      )}&projectID=${CurrentProject.ProjectID}`;
+
+      ajaxCall(
+        "POST",
+        url,
+        "",
+        () => {
+          alert("✅ המשתמש נוסף בהצלחה");
+          document.getElementById("add-team-member-email").value = ""; // Clear the input
+          loadCurrentTeamMembers(); // Refresh the team members list
+          loadTeamPreview(); // Update the preview in the main page
+        },
+        (err) => {
+          alert("❌ שגיאה בהוספת המשתמש");
+          console.error("Error adding team member:", err);
+        }
+      );
+    });
+
+  // Handle remove team member form submission
+  document
+    .getElementById("remove-team-member-btn")
+    .addEventListener("click", () => {
+      const email = document.getElementById("remove-team-member-email").value;
+
+      if (!email || !email.trim()) {
+        alert("יש להזין כתובת מייל");
+        return;
+      }
+
+      // Confirm before removing
+      const confirmRemove = confirm(
+        `האם אתה בטוח שברצונך להסיר את ${email} מהפרויקט?`
+      );
+      if (!confirmRemove) {
+        return;
+      }
+
+      const url = `https://localhost:7198/api/Projects/RemoveTeamMemberFromProject?TeamMemberEmail=${encodeURIComponent(
+        email
+      )}&ProjectID=${CurrentProject.ProjectID}`;
+
+      ajaxCall(
+        "PUT",
+        url,
+        "",
+        () => {
+          alert("✅ המשתמש הוסר בהצלחה");
+          document.getElementById("remove-team-member-email").value = ""; // Clear the input
+          loadRemoveTeamMembers(); // Refresh the team members list
+          loadTeamPreview(); // Update the preview in the main page
+        },
+        (err) => {
+          alert("❌ שגיאה בהסרת המשתמש");
+          console.error("Error removing team member:", err);
+        }
+      );
+    });
+});
+
+// Function to load current team members for the add-member popup
+function loadCurrentTeamMembers() {
+  const projectID = CurrentProject.ProjectID;
+  const teamList = document.getElementById("current-team-list");
+
+  ajaxCall(
+    "GET",
+    `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectID}`,
+    "",
+    (members) => {
+      teamList.innerHTML = "";
+      if (members.length === 0) {
+        teamList.innerHTML = "<li>אין משתמשים בפרויקט</li>";
+      } else {
+        members.forEach((member) => {
+          const li = document.createElement("li");
+          li.textContent = member.FullName;
+          li.style.margin = "8px 0";
+          teamList.appendChild(li);
+        });
+      }
+    },
+    (err) => {
+      teamList.innerHTML = "<li>שגיאה בטעינת צוות</li>";
+      console.error("Error loading team members:", err);
+    }
+  );
+}
+
+// Function to load current team members for the remove-member popup
+function loadRemoveTeamMembers() {
+  const projectID = CurrentProject.ProjectID;
+  const teamList = document.getElementById("remove-team-list");
+
+  ajaxCall(
+    "GET",
+    `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectID}`,
+    "",
+    (members) => {
+      teamList.innerHTML = "";
+      if (members.length === 0) {
+        teamList.innerHTML = "<li>אין משתמשים בפרויקט</li>";
+      } else {
+        members.forEach((member) => {
+          const li = document.createElement("li");
+          li.textContent = member.FullName;
+          li.style.margin = "8px 0";
+          teamList.appendChild(li);
+        });
+      }
+    },
+    (err) => {
+      teamList.innerHTML = "<li>שגיאה בטעינת צוות</li>";
+      console.error("Error loading team members:", err);
+    }
+  );
+}
