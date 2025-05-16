@@ -1,0 +1,324 @@
+/*********************************************************STATS****************************************/
+/* עיגולי נתונים */
+
+.circle-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.circle-label {
+  font-size: 16px;
+  color: #666;
+  margin-top: 8px;
+}
+
+/* מלבני טופ 5 */
+.top5-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.top5-card h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.top5-card p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+/* כפתורי פופאפ */
+
+.popup-btns {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 25px 0;
+  margin-right: auto;
+  justify-content: center;
+}
+.header-projects {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-right: auto;
+}
+/* תצוגת גרפים */
+.charts-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-evenly;
+  padding-bottom: 40px;
+}
+
+.chart-box {
+  width: 100%;
+  max-width: 600px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.07);
+}
+
+.chart-box h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  text-align: center;
+  color: #333;
+}
+
+.popup-summary {
+  padding: 20px;
+  font-family: "Assistant", sans-serif;
+}
+
+.popup-summary table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.popup-summary th,
+.popup-summary td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.popup-summary th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+/* 🟢 עיגולי סטטיסטיקה עליונים */
+.dashboard-circles {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.circle-value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+}
+
+.circle-label {
+  font-size: 14px;
+  color: #555;
+  position: absolute;
+  bottom: -25px;
+  text-align: center;
+  width: 100%;
+}
+
+/* 🟣 כפתורי פופאפ למעלה */
+.header-projects {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.btn-popup {
+  padding: 6px 14px;
+  background: #ffffff;
+  border: 1px solid #aaa;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-popup:hover {
+  background: #f0f0f0;
+}
+
+/* 🔵 מלבני TOP 5 */
+.top5-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin: 30px 0;
+}
+
+.top-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.top-content p {
+  margin: 6px 0;
+  font-size: 16px;
+  color: #444;
+}
+
+.top-content p strong {
+  color: #222;
+}
+
+/* 🟡 פופאפ בעברית */
+.popup-summary {
+  direction: rtl;
+  font-family: "Assistant", sans-serif;
+  text-align: right;
+}
+
+.popup-summary table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.popup-summary th,
+.popup-summary td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.popup-summary th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+/* 🟢 עיגולי סטטיסטיקה עליונים */
+.dashboard-circles {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px 0 10px;
+  flex-wrap: wrap;
+}
+
+.circle-stat {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #f0f8ff;
+  border: 2px solid #3f51b5;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: "Assistant", sans-serif;
+  position: relative;
+}
+
+.circle-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1e1e1e;
+}
+
+.circle-label {
+  font-size: 13px;
+  color: #333;
+  position: absolute;
+  bottom: -25px;
+  text-align: center;
+  width: 100%;
+}
+
+/* 🟣 כפתורי פופאפ בשורה אחת */
+.header-projects {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.btn-popup,
+#go-to-team-tracking {
+  padding: 6px 14px;
+  background: #ffffff;
+  border: 1px solid #aaa;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.btn-popup:hover,
+#go-to-team-tracking:hover {
+  background: #f0f0f0;
+}
+
+/* 🔵 מלבני TOP 5 */
+.top5-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin: 30px 0;
+}
+
+.top5-card {
+  /* width: 280px; */
+  background: #fafcff;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  padding: 18px;
+  text-align: center;
+  font-family: "Assistant", sans-serif;
+  border: 1px solid #3f51b540;
+  width: 500px;
+  /* background: #fff; */
+  /* flex: 0.15 1 40%; */
+  background-color: #ffffff;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+  margin: 10px;
+}
+
+.top-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #1a237e;
+}
+
+.top-content p {
+  margin: 6px 0;
+  font-size: 15px;
+  color: #444;
+}
+
+.top-content p strong {
+  color: #222;
+}
+
+/* 🟡 פופאפ בעברית */
+.popup-summary {
+  direction: rtl;
+  font-family: "Assistant", sans-serif;
+  text-align: right;
+}
+
+.popup-summary table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.popup-summary th,
+.popup-summary td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.popup-summary th {
+  background-color: #83b2fd;
+  font-weight: bold;
+}
