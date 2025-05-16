@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Easy Tracker - תגיות</title>
+    <title>Easy Tracker - ניתוחים ודוחות</title>
     <link rel="icon" href="/images/fav-icon.png" type="images/png" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="animate.css" />
@@ -16,6 +16,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
     />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <div class="projects-continer">
@@ -37,78 +38,60 @@
             <div class="main-nav">
               <ul>
                 <li>
-                  <a href="projects.html" class="">
-                    <img
+                  <a href="projects.html"
+                    ><img
                       src="./images/project icon.png"
-                      alt="פרויקטים"
                       class="nav-icon"
-                    />
-                    <span>פרויקטים</span>
-                  </a>
+                    /><span>פרויקטים</span></a
+                  >
                 </li>
                 <li>
-                  <a href="clients.html" class="">
-                    <img
+                  <a href="clients.html"
+                    ><img
                       src="./images/customers icon.png"
-                      alt="לקוחות"
                       class="nav-icon"
-                    />
-                    <span>לקוחות</span>
-                  </a>
+                    /><span>לקוחות</span></a
+                  >
                 </li>
                 <li>
-                  <a href="stats.html" class="">
-                    <img
-                      src="./images/reports.png"
-                      alt="דוחות"
-                      class="nav-icon"
-                    />
-                    <span>ניתוח ודוחות</span>
-                  </a>
+                  <a href="stats.html" class="active"
+                    ><img src="./images/reports.png" class="nav-icon" /><span
+                      >ניתוחים ודוחות</span
+                    ></a
+                  >
                 </li>
                 <li>
-                  <a href="labels.html" class="">
-                    <img
-                      src="./images/tags.png"
-                      alt="תיוגים"
-                      class="nav-icon"
-                    />
-                    <span>תיוגים</span>
-                  </a>
+                  <a href="labels.html"
+                    ><img src="./images/tags.png" class="nav-icon" /><span
+                      >תיוגים</span
+                    ></a
+                  >
                 </li>
                 <li>
-                  <a href="reminders.html" class="">
-                    <img
-                      src="./images/reminders.png"
-                      alt="תזכורות"
-                      class="nav-icon"
-                    />
-                    <span>תזכורות</span>
-                  </a>
+                  <a href="reminders.html"
+                    ><img src="./images/reminders.png" class="nav-icon" /><span
+                      >תזכורות</span
+                    ></a
+                  >
                 </li>
               </ul>
             </div>
             <div class="help-nav">
               <ul>
                 <li>
-                  <a href="settings.html">
-                    <img
+                  <a href="settings.html"
+                    ><img
                       src="./images/settings-icon.png"
-                      alt="הגדרות"
                       class="nav-icon"
-                    />
-                    <span>הגדרות</span>
-                  </a>
+                    /><span>הגדרות</span></a
+                  >
                 </li>
                 <li>
-                  <a href="help.html">
-                    <img
-                      src="./images/help-icon.png"
-                      alt="עזרה"
-                      class="nav-icon"
-                    />
-                    <span>עזרה</span>
-                  </a>
+                  <a href="help.html"
+                    ><img src="./images/help-icon.png" class="nav-icon" /><span
+                      >עזרה</span
+                    ></a
+                  >
                 </li>
               </ul>
             </div>
@@ -122,127 +105,63 @@
           <div class="header-projects">
             <div class="title-and-btn">
               <h1>ניתוחים ודוחות</h1>
-              <a href="#new-label-form" data-fancybox class="btn">
-                <img src="./images/plus-btn.png" alt="הוסף תגית" />
-              </a>
             </div>
-            <span id="doneText">התגיות שלך במערכת</span>
-            <div class="search-container">
-              <input
-                type="text"
-                class="search-input"
-                placeholder="חיפוש תגית"
-                id="search-label"
-              />
-              <img
-                src="./images/search-icon.png"
-                alt="חיפוש"
-                class="search-icon"
-              />
+
+            <!-- 🔵 עיגולי סיכום -->
+            <div class="dashboard-circles" id="dashboard-circles"></div>
+            <div class="3-btn">
+              <!-- 🟨 כפתורים לפופ-אפ -->
+              <div class="popup-btns">
+                <button class="btn" id="go-to-team-tracking">
+                  👥 מעקב עבודת צוות
+                </button>
+                <button class="btn btn-popup" id="open-client-summary">
+                  📊 סיכום לפי לקוחות
+                </button>
+                <button class="btn btn-popup" id="open-project-summary">
+                  📊 סיכום לפי פרויקטים
+                </button>
+              </div>
             </div>
           </div>
 
-          <div class="body-projects wow bounceInUp" id="labels"></div>
+          <!-- 🟦 מלבני TOP 5 -->
+          <div class="top5-container">
+            <div class="top5-card" id="top-clients"></div>
+            <div class="top5-card" id="top-projects"></div>
+          </div>
+
+          <!-- 📊 גרפים עם סינון -->
+          <div class="charts-section">
+            <div class="chart-box">
+              <h3>התפלגות זמן לפי תקופה</h3>
+              <canvas id="workTimeChart"></canvas>
+            </div>
+            <div class="chart-box">
+              <h3>חלוקה לפי תגיות</h3>
+              <canvas id="labelChart"></canvas>
+            </div>
+            <div class="chart-box">
+              <h3>עבודה והכנסות לפי חודשים</h3>
+              <canvas id="monthlyChart"></canvas>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- פופ-אפ הוספת/עריכת תגית -->
-    <div id="new-label-form" class="popup-form">
-      <h2>➕ תגית חדשה</h2>
-      <form id="label-form">
-        <label for="labelName">שם תגית:</label>
-        <input type="text" id="labelName" name="labelName" required />
+    <!-- 🟦 פופאפים ללקוחות ופרויקטים -->
+    <div id="client-summary-popup" style="display: none"></div>
+    <div id="project-summary-popup" style="display: none"></div>
 
-        <label for="labelColor">בחר צבע:</label>
-        <input type="color" id="labelColor" name="labelColor" value="#6699CC" />
-
-        <button type="submit" class="btn-submit">📤 שמור תגית</button>
-      </form>
-    </div>
-    <!-- 🟦 פופאפ עריכת פרטי משתמש -->
-    <div id="edit-user-form" class="popup-form" style="display: none">
-      <h2>✏️ עריכת פרטי משתמש</h2>
-
-      <form id="user-details-form">
-        <label>תמונה נוכחית:</label>
-        <div id="user-image-preview" style="margin-bottom: 10px">
-          <img
-            id="user-image-thumb"
-            src=""
-            alt="תמונה נוכחית"
-            style="
-              max-width: 120px;
-              max-height: 80px;
-              border-radius: 8px;
-              display: none;
-              box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-            "
-          />
-        </div>
-
-        <label for="userImageFile">בחר תמונה חדשה:</label>
-        <input
-          type="file"
-          id="userImageFile"
-          name="userImageFile"
-          accept="image/*"
-        />
-
-        <label>שם פרטי:</label>
-        <input type="text" id="user-firstname" required />
-
-        <label>שם משפחה:</label>
-        <input type="text" id="user-lastname" required />
-
-        <label>אימייל:</label>
-        <input
-          type="email"
-          id="user-email"
-          required
-          pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-          placeholder="example@example.com"
-        />
-
-        <label>סיסמה נוכחית:</label>
-        <input type="password" id="user-current-password" required />
-
-        <button type="submit" class="btn-submit">📤 שמור פרטים</button>
-        <button type="button" id="open-password-popup" class="btn-submit">
-          🔒 החלפת סיסמה
-        </button>
-      </form>
-    </div>
-
-    <!-- 🟨 פופאפ שינוי סיסמה -->
-    <div id="change-password-form" class="popup-form" style="display: none">
-      <h2>🔒 שינוי סיסמה</h2>
-      <form id="user-password-form">
-        <label>סיסמה נוכחית:</label>
-        <input type="password" id="old-password" required />
-
-        <label>סיסמה חדשה:</label>
-        <input
-          type="password"
-          id="new-password"
-          required
-          minlength="8"
-          maxlength="30"
-          pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$"
-          placeholder="לפחות 8 תווים – אותיות ומספרים"
-        />
-
-        <button type="submit" class="btn-submit">🔁 שנה סיסמה</button>
-      </form>
-    </div>
-    <script src="js/AjaxCall.js"></script>
-    <script src="js/labels.js"></script>
     <script src="js/wow.min.js"></script>
     <script>
       new WOW().init();
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src="js/AjaxCall.js"></script>
     <script src="js/sidebar-active.js"></script>
     <script src="js/edit-user.js"></script>
+    <script src="js/stats.js"></script>
   </body>
 </html>

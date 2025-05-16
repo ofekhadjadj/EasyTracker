@@ -726,6 +726,7 @@ finally
                 item["UserID"] = Convert.ToInt32(dataReader["UserID"]);
                 item["FullName"] = dataReader["Full name"].ToString();
                 item["Image"] = dataReader["Image"].ToString();
+                item["Email"] = dataReader["Email"].ToString();
                 item["Role"] = dataReader["Role"].ToString();
                 
                 result.Add(item);
@@ -2092,6 +2093,349 @@ finally
         }
     }
 
+    //****report tabels*******report tabels*******report tabels*******report tabels*******report tabels*******report tabels***
+    public List<Dictionary<string, object>> GetDashboardSummary(int userID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB");
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetDashboardSummary", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                var item = new Dictionary<string, object>();
+                item["TotalClients"] = dataReader["TotalClients"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["TotalClients"]);
+                item["TotalProjects"] = dataReader["TotalProjects"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["TotalProjects"]);
+                item["TopClientName"] = dataReader["TopClientName"] == DBNull.Value ? null : dataReader["TopClientName"].ToString();
+                item["TopProjectName"] = dataReader["TopProjectName"] == DBNull.Value ? null : dataReader["TopProjectName"].ToString();
+                item["MonthlyMinutes"] = dataReader["MonthlyMinutes"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["MonthlyMinutes"]);
+                item["MonthlyEarnings"] = dataReader["MonthlyEarnings"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["MonthlyEarnings"]);
+
+                result.Add(item);
+            }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (con != null)
+                con.Close();
+        }
+    }
+
+
+    public List<Dictionary<string, object>> GetTopEarning5Clients(int userID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try { con = connect("myProjDB"); }
+        catch (Exception ex) { throw ex; }
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetTopEarning5Clients", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                var item = new Dictionary<string, object>();
+                item["ClientID"] = dataReader["ClientID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["ClientID"]);
+                item["CompanyName"] = dataReader["CompanyName"] == DBNull.Value ? null : dataReader["CompanyName"].ToString().Trim();
+                item["TotalEarnings"] = dataReader["TotalEarnings"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalEarnings"]);
+                result.Add(item);
+            }
+
+            return result;
+        }
+        catch (Exception ex) { { throw ex; } }
+        finally { { if (con != null) con.Close(); } }
+    }
+
+    public List<Dictionary<string, object>> GetTopEarning5Projects(int userID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try { con = connect("myProjDB"); }
+        catch (Exception ex) { throw ex; }
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetTopEarning5Projects", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                var item = new Dictionary<string, object>();
+                item["ProjectID"] = dataReader["ProjectID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["ProjectID"]);
+                item["ProjectName"] = dataReader["ProjectName"] == DBNull.Value ? null : dataReader["ProjectName"].ToString().Trim();
+                item["ClientName"] = dataReader["ClientName"] == DBNull.Value ? null : dataReader["ClientName"].ToString().Trim();
+                item["TotalEarnings"] = dataReader["TotalEarnings"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalEarnings"]);
+                result.Add(item);
+            }
+
+            return result;
+        }
+        catch (Exception ex) { { throw ex; } }
+        finally { { if (con != null) con.Close(); } }
+    }
+    public List<Dictionary<string, object>> GetClientSummaries(int userID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try { con = connect("myProjDB"); }
+        catch (Exception ex) { throw ex; }
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetClientSummariesByUserID", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                var item = new Dictionary<string, object>();
+                item["ClientID"] = dataReader["ClientID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["ClientID"]);
+                item["CompanyName"] = dataReader["CompanyName"] == DBNull.Value ? null : dataReader["CompanyName"].ToString().Trim();
+                item["ProjectCount"] = dataReader["ProjectCount"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["ProjectCount"]);
+                item["TotalMinutes"] = dataReader["TotalMinutes"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalMinutes"]);
+                item["TotalEarnings"] = dataReader["TotalEarnings"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalEarnings"]);
+                item["AvgHourlyRate"] = dataReader["AvgHourlyRate"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["AvgHourlyRate"]);
+                result.Add(item);
+            }
+
+            return result;
+        }
+        catch (Exception ex) { { throw ex; } }
+        finally { { if (con != null) con.Close(); } }
+    }
+
+    public List<Dictionary<string, object>> GetProjectSummaries(int userID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try { con = connect("myProjDB"); }
+        catch (Exception ex) { throw ex; }
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetProjectSummariesByUserID", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                var item = new Dictionary<string, object>();
+                item["ProjectID"] = dataReader["ProjectID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["ProjectID"]);
+                item["ProjectName"] = dataReader["ProjectName"] == DBNull.Value ? null : dataReader["ProjectName"].ToString().Trim();
+                item["ClientName"] = dataReader["ClientName"] == DBNull.Value ? null : dataReader["ClientName"].ToString().Trim();
+                item["TotalMinutes"] = dataReader["TotalMinutes"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalMinutes"]);
+                item["TotalEarnings"] = dataReader["TotalEarnings"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalEarnings"]);
+                item["AvgHourlyRate"] = dataReader["AvgHourlyRate"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["AvgHourlyRate"]);
+                result.Add(item);
+            }
+
+            return result;
+        }
+        catch (Exception ex) { { throw ex; } }
+        finally { { if (con != null) con.Close(); } }
+    }
+
+
+    public List<Dictionary<string, object>> GetWorkSummaryOverTime(int userID, string groupBy = null, DateTime? fromDate = null, DateTime? toDate = null, int? clientID = null, int? projectID = null)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try { con = connect("myProjDB"); }
+        catch (Exception ex) { throw ex; }
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+        if (groupBy != null) paramDic.Add("@GroupBy", groupBy);
+        if (fromDate.HasValue) paramDic.Add("@FromDate", fromDate.Value);
+        if (toDate.HasValue) paramDic.Add("@ToDate", toDate.Value);
+        if (clientID.HasValue) paramDic.Add("@ClientID", clientID.Value);
+        if (projectID.HasValue) paramDic.Add("@ProjectID", projectID.Value);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetWorkSummaryOverTime", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                var item = new Dictionary<string, object>();
+                item["Period"] = dataReader["Period"] == DBNull.Value ? null : dataReader["Period"].ToString().Trim();
+                item["TotalMinutes"] = dataReader["TotalMinutes"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalMinutes"]);
+                result.Add(item);
+            }
+
+            return result;
+        }
+        catch (Exception ex) { { throw ex; } }
+        finally { { if (con != null) con.Close(); } }
+    }
+
+    public List<Dictionary<string, object>> GetWorkByLabel(int userID, string groupBy = null, DateTime? fromDate = null, DateTime? toDate = null, int? clientID = null, int? projectID = null)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try { con = connect("myProjDB"); }
+        catch (Exception ex) { throw ex; }
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+        if (fromDate.HasValue) paramDic.Add("@FromDate", fromDate.Value);
+        if (toDate.HasValue) paramDic.Add("@ToDate", toDate.Value);
+        if (clientID.HasValue) paramDic.Add("@ClientID", clientID.Value);
+        if (projectID.HasValue) paramDic.Add("@ProjectID", projectID.Value);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetWorkByLabel", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                var item = new Dictionary<string, object>();
+                item["LabelID"] = dataReader["LabelID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["LabelID"]);
+                item["LabelName"] = dataReader["LabelName"] == DBNull.Value ? null : dataReader["LabelName"].ToString().Trim();
+                item["TotalMinutes"] = dataReader["TotalMinutes"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalMinutes"]);
+                result.Add(item);
+            }
+
+            return result;
+        }
+        catch (Exception ex) { { throw ex; } }
+        finally { { if (con != null) con.Close(); } }
+    }
+
+    public List<Dictionary<string, object>> GetMonthlyWorkAndEarnings(int userID, string groupBy = null, DateTime? fromDate = null, DateTime? toDate = null, int? clientID = null, int? projectID = null)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try { con = connect("myProjDB"); }
+        catch (Exception ex) { throw ex; }
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+        if (fromDate.HasValue) paramDic.Add("@FromDate", fromDate.Value);
+        if (toDate.HasValue) paramDic.Add("@ToDate", toDate.Value);
+        if (clientID.HasValue) paramDic.Add("@ClientID", clientID.Value);
+        if (projectID.HasValue) paramDic.Add("@ProjectID", projectID.Value);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetMonthlyWorkAndEarnings", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                var item = new Dictionary<string, object>();
+                item["Period"] = dataReader["Period"] == DBNull.Value ? null : dataReader["Period"].ToString().Trim();
+                item["TotalMinutes"] = dataReader["TotalMinutes"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalMinutes"]);
+                item["TotalEarnings"] = dataReader["TotalEarnings"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalEarnings"]);
+                result.Add(item);
+            }
+
+            return result;
+        }
+        catch (Exception ex) { { throw ex; } }
+        finally { { if (con != null) con.Close(); } }
+    }
+
+
+    public List<Dictionary<string, object>> GetTeamMonitoringData(int managerUserID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try { con = connect("myProjDB"); }
+        catch (Exception ex) { throw ex; }
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ManagerUserID", managerUserID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetTeamMonitoringData", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                var item = new Dictionary<string, object>();
+                item["ProjectID"] = dataReader["ProjectID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["ProjectID"]);
+                item["ProjectName"] = dataReader["ProjectName"] == DBNull.Value ? null : dataReader["ProjectName"].ToString().Trim();
+                item["ClientName"] = dataReader["ClientName"] == DBNull.Value ? null : dataReader["ClientName"].ToString().Trim();
+                item["UserID"] = dataReader["UserID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["UserID"]);
+                item["FullName"] = dataReader["FullName"] == DBNull.Value ? null : dataReader["FullName"].ToString().Trim();
+                item["Email"] = dataReader["Email"] == DBNull.Value ? null : dataReader["Email"].ToString().Trim();
+                item["TaskID"] = dataReader["TaskID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["TaskID"]);
+                item["Description"] = dataReader["Description"] == DBNull.Value ? null : dataReader["Description"].ToString().Trim();
+                item["DueDate"] = dataReader["DueDate"] == DBNull.Value ? null : Convert.ToDateTime(dataReader["DueDate"]);
+                item["IsDone"] = dataReader["IsDone"] == DBNull.Value ? false : Convert.ToBoolean(dataReader["IsDone"]);
+                item["IsOverdue"] = dataReader["IsOverdue"] == DBNull.Value ? false : Convert.ToBoolean(dataReader["IsOverdue"]);
+                result.Add(item);
+            }
+
+            return result;
+        }
+        catch (Exception ex) { throw ex; }
+        finally { if (con != null) con.Close(); }
+    }
 
 
     //---------------------------------------------------------------------------------
