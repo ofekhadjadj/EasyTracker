@@ -1333,3 +1333,62 @@ li a.active span {
   flex-grow: 1;
   display: inline-block;
 }
+
+.header-Of-Team {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Styling for the team management button */
+.gradient-button-header-team {
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  color: white;
+  font-size: 15px;
+  font-family: "Assistant", sans-serif;
+  padding: 2px 4px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 114, 255, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gradient-button-header-team:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 14px rgba(0, 114, 255, 0.2);
+}
+
+/* Styling for the team dropdown menu */
+#team-dropdown-menu {
+  min-width: 180px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.team-menu-btn {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  text-align: right;
+  background: none;
+  border: none;
+  font-family: "Assistant", sans-serif;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.team-menu-btn:hover {
+  background-color: #e8f4ff;
+}
+
+/* Add a subtle separator between menu items */
+.team-menu-btn:not(:last-child) {
+  border-bottom: 1px solid #f0f0f0;
+}
