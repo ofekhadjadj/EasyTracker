@@ -42,6 +42,9 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <link rel="stylesheet" href="animate.css" />
 
+<!-- SheetJS library for Excel export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
   </head>
   <body class="wow fadeIn">
     <div class="projects-continer">
@@ -242,6 +245,15 @@
                       <!--כאן נכנסים הסשנים  מה-JS.. -->
                     </tbody>
                   </table>
+
+                  <div id="export-buttons" class="export-buttons-container">
+                    <button id="export-pdf" class="export-button export-pdf">
+                      <span class="export-icon">📄</span> הפק דוח PDF
+                    </button>
+                    <button id="export-excel" class="export-button export-excel">
+                      <span class="export-icon">📊</span> ייצא לאקסל
+                    </button>
+                  </div>
 
                 </div>
               

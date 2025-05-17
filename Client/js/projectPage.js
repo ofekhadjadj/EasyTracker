@@ -485,6 +485,270 @@ $(document).ready(function () {
     info: false,
   });
 
+  // Export functionality
+  document.getElementById("export-pdf").addEventListener("click", exportToPdf);
+  document
+    .getElementById("export-excel")
+    .addEventListener("click", exportToExcel);
+
+  function exportToPdf() {
+    const currentDate = new Date().toLocaleDateString("he-IL");
+    const projectName = document.getElementById("ProjectTitle").innerText;
+    const clientName = document.getElementById("ProjectClient").innerText;
+    const fileName = `${projectName} - סשנים - ${currentDate}.pdf`;
+
+    // Get data from table
+    const tableData = getTableData();
+
+    // Create a window object for the PDF
+    const pdfWindow = window.open("", "_blank");
+
+    // Build HTML content for PDF
+    let pdfContent = `
+      <html dir="rtl">
+      <head>
+        <title>${fileName}</title>
+        <style>
+          body {
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            direction: rtl;
+          }
+          h1, h2 {
+            text-align: center;
+            color: #0072ff;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+          th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: right;
+          }
+          th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+          }
+          .report-header {
+            margin-bottom: 30px;
+            text-align: center;
+          }
+          .report-date {
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 14px;
+          }
+          .total-row {
+            font-weight: bold;
+            background-color: #f2f2f2;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="report-header">
+          <h1>דוח סשנים: ${projectName}</h1>
+          <h2>לקוח: ${clientName}</h2>
+        </div>
+        <div class="report-date">
+          <p>הופק בתאריך: ${currentDate}</p>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>תווית</th>
+              <th>תאריך</th>
+              <th>שעת התחלה</th>
+              <th>שעת סיום</th>
+              <th>משך זמן</th>
+              <th>תעריף</th>
+              <th>שכר</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
+    // Calculate totals
+    let totalDuration = 0;
+    let totalEarnings = 0;
+
+    // Add rows to PDF content
+    tableData.forEach((row) => {
+      pdfContent += `<tr>
+        <td>${row.label}</td>
+        <td>${row.date}</td>
+        <td>${row.startTime}</td>
+        <td>${row.endTime}</td>
+        <td>${row.duration}</td>
+        <td>${row.rate} ₪</td>
+        <td>${row.earnings} ₪</td>
+      </tr>`;
+
+      // Add to totals if possible
+      if (row.durationSeconds) {
+        totalDuration += row.durationSeconds;
+      }
+
+      if (row.earningsValue) {
+        totalEarnings += row.earningsValue;
+      }
+    });
+
+    // Add totals row
+    pdfContent += `
+          <tr class="total-row">
+            <td colspan="4">סה"כ</td>
+            <td>${formatSecondsToHHMMSS(totalDuration)}</td>
+            <td></td>
+            <td>${totalEarnings.toFixed(2)} ₪</td>
+          </tr>
+        </tbody>
+      </table>
+    </body>
+    </html>
+    `;
+
+    // Write to the new window
+    pdfWindow.document.open();
+    pdfWindow.document.write(pdfContent);
+    pdfWindow.document.close();
+
+    // Use window.print() to open the print dialog
+    setTimeout(() => {
+      pdfWindow.print();
+    }, 500);
+
+    // Show success notification
+    showExportNotification("PDF");
+  }
+
+  function exportToExcel() {
+    const currentDate = new Date().toLocaleDateString("he-IL");
+    const projectName = document.getElementById("ProjectTitle").innerText;
+    const fileName = `${projectName} - סשנים - ${currentDate}.xlsx`;
+
+    // Get data from table
+    const tableData = getTableData();
+
+    // Create worksheet and workbook
+    const ws = XLSX.utils.json_to_sheet(
+      tableData.map((row) => ({
+        תווית: row.label,
+        תאריך: row.date,
+        "שעת התחלה": row.startTime,
+        "שעת סיום": row.endTime,
+        "משך זמן": row.duration,
+        "תעריף (₪)": row.rate,
+        "שכר (₪)": row.earnings,
+      }))
+    );
+
+    // Set column widths for better appearance
+    ws["!cols"] = [
+      { wch: 15 }, // תווית
+      { wch: 12 }, // תאריך
+      { wch: 12 }, // שעת התחלה
+      { wch: 12 }, // שעת סיום
+      { wch: 12 }, // משך זמן
+      { wch: 12 }, // תעריף
+      { wch: 12 }, // שכר
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "סשנים");
+
+    // Create and download excel file
+    XLSX.writeFile(wb, fileName);
+
+    // Show success notification
+    showExportNotification("Excel");
+  }
+
+  function getTableData() {
+    const data = [];
+    const rows = document.querySelectorAll("#sessionsTable tbody tr");
+
+    rows.forEach((row) => {
+      const cells = row.querySelectorAll("td");
+      if (cells.length >= 7) {
+        // Ensure it's a data row
+        const label = cells[0].textContent.trim();
+        const date = cells[1].textContent.trim();
+        const startTime = cells[2].textContent.trim();
+        const endTime = cells[3].textContent.trim();
+        const duration = cells[4].textContent.trim();
+        const rate = parseFloat(cells[5].textContent.trim()) || 0;
+        const earnings = cells[6].textContent.trim();
+
+        // Get session data if available for additional calculations
+        const sessionData = $(row).data("session");
+        const durationSeconds = sessionData ? sessionData.DurationSeconds : 0;
+        const earningsValue = parseFloat(earnings) || 0;
+
+        data.push({
+          label,
+          date,
+          startTime,
+          endTime,
+          duration,
+          rate,
+          earnings,
+          durationSeconds,
+          earningsValue,
+        });
+      }
+    });
+
+    return data;
+  }
+
+  function showExportNotification(type) {
+    // Create notification element
+    const notification = document.createElement("div");
+    notification.className = "export-notification";
+    notification.innerHTML = `
+      <div class="notification-icon">✓</div>
+      <div class="notification-message">הקובץ יוצא ל${type} בהצלחה!</div>
+    `;
+
+    // Style the notification
+    notification.style.position = "fixed";
+    notification.style.top = "20px";
+    notification.style.left = "50%";
+    notification.style.transform = "translateX(-50%)";
+    notification.style.backgroundColor = "#4CAF50";
+    notification.style.color = "white";
+    notification.style.padding = "15px 25px";
+    notification.style.borderRadius = "8px";
+    notification.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
+    notification.style.zIndex = "9999";
+    notification.style.display = "flex";
+    notification.style.alignItems = "center";
+    notification.style.gap = "10px";
+    notification.style.opacity = "0";
+    notification.style.transition = "opacity 0.3s, transform 0.3s";
+
+    // Add to body
+    document.body.appendChild(notification);
+
+    // Fade in
+    setTimeout(() => {
+      notification.style.opacity = "1";
+    }, 10);
+
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+      notification.style.opacity = "0";
+      setTimeout(() => {
+        if (notification.parentNode) {
+          document.body.removeChild(notification);
+        }
+      }, 300);
+    }, 3000);
+  }
+
   function format(session) {
     const desc = session.Description || "אין תיאור זמין לסשן זה.";
     return `<div class="details-row">תיאור הסשן: ${desc}</div>`;
