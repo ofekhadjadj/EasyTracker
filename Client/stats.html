@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Easy Tracker - ניתוחים ודוחות</title>
     <link rel="icon" href="/images/fav-icon.png" type="images/png" />
+
     <link rel="stylesheet" href="stats.css" />
+
     <link rel="stylesheet" href="animate.css" />
     <link
       rel="stylesheet"
@@ -102,36 +104,82 @@
       <!-- תוכן ראשי -->
       <div class="content">
         <div class="inner-content">
-          <div class="header-projects">
-            <div class="title-and-btn">
+          <!-- חלק עליון - כותרת, עיגולים וכפתורים -->
+          <div class="stats-header">
+            <!-- כותרת מצד ימין -->
+            <div class="stats-title">
               <h1>ניתוחים ודוחות</h1>
             </div>
 
-            <!-- 🔵 עיגולי סיכום -->
+            <!-- עיגולי סיכום -->
             <div class="dashboard-circles" id="dashboard-circles"></div>
-            <div class="3-btn">
-              <!-- 🟨 כפתורים לפופ-אפ -->
-              <div class="popup-btns">
-                <button class="btn" id="go-to-team-tracking">
-                  👥 מעקב עבודת צוות
-                </button>
-                <button class="btn btn-popup" id="open-client-summary">
-                  📊 סיכום לפי לקוחות
-                </button>
-                <button class="btn btn-popup" id="open-project-summary">
-                  📊 סיכום לפי פרויקטים
-                </button>
+
+            <!-- כפתורים מצד שמאל -->
+            <div class="stats-actions">
+              <button class="action-btn" id="go-to-team-tracking">
+                👥 מעקב עבודת צוות
+              </button>
+              <button class="action-btn" id="open-client-summary">
+                📊 סיכום לפי לקוחות
+              </button>
+              <button class="action-btn" id="open-project-summary">
+                📊 סיכום לפי פרויקטים
+              </button>
+            </div>
+          </div>
+
+          <!-- מלבני TOP 5 -->
+          <div class="summary-tables">
+            <div class="summary-table" id="top-clients"></div>
+            <div class="summary-table" id="top-projects"></div>
+          </div>
+
+          <!-- פאנל סינון לגרפים -->
+          <div class="filter-panel">
+            <h3>סינון נתונים</h3>
+            <div class="filter-controls">
+              <div class="filter-group">
+                <label for="groupBy">פילוח זמן:</label>
+                <select id="groupBy" class="filter-select">
+                  <option value="DAY">יום</option>
+                  <option value="WEEK">שבוע</option>
+                  <option value="MONTH">חודש</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label for="fromDate">מתאריך:</label>
+                <input type="date" id="fromDate" class="filter-date" />
+              </div>
+
+              <div class="filter-group">
+                <label for="toDate">עד תאריך:</label>
+                <input type="date" id="toDate" class="filter-date" />
+              </div>
+
+              <div class="filter-group">
+                <label for="clientID">לקוח:</label>
+                <select id="clientID" class="filter-select">
+                  <option value="">כל הלקוחות</option>
+                  <!-- אפשרויות יתווספו דינמית -->
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label for="projectID">פרויקט:</label>
+                <select id="projectID" class="filter-select">
+                  <option value="">כל הפרויקטים</option>
+                  <!-- אפשרויות יתווספו דינמית -->
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <button id="apply-filters" class="filter-button">🔄 הצג</button>
               </div>
             </div>
           </div>
 
-          <!-- 🟦 מלבני TOP 5 -->
-          <div class="top5-container">
-            <div class="top5-card" id="top-clients"></div>
-            <div class="top5-card" id="top-projects"></div>
-          </div>
-
-          <!-- 📊 גרפים עם סינון -->
+          <!-- גרפים עם סינון -->
           <div class="charts-section">
             <div class="chart-box">
               <h3>התפלגות זמן לפי תקופה</h3>
@@ -150,9 +198,85 @@
       </div>
     </div>
 
-    <!-- 🟦 פופאפים ללקוחות ופרויקטים -->
+    <!-- פופאפים ללקוחות ופרויקטים -->
     <div id="client-summary-popup" style="display: none"></div>
     <div id="project-summary-popup" style="display: none"></div>
+
+    <!-- 🟦 פופאפ עריכת פרטי משתמש -->
+    <div id="edit-user-form" class="popup-form" style="display: none">
+      <h2>✏️ עריכת פרטי משתמש</h2>
+
+      <form id="user-details-form">
+        <label>תמונה נוכחית:</label>
+        <div id="user-image-preview" style="margin-bottom: 10px">
+          <img
+            id="user-image-thumb"
+            src=""
+            alt="תמונה נוכחית"
+            style="
+              max-width: 120px;
+              max-height: 80px;
+              border-radius: 8px;
+              display: none;
+              box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+            "
+          />
+        </div>
+
+        <label for="userImageFile">בחר תמונה חדשה:</label>
+        <input
+          type="file"
+          id="userImageFile"
+          name="userImageFile"
+          accept="image/*"
+        />
+
+        <label>שם פרטי:</label>
+        <input type="text" id="user-firstname" required />
+
+        <label>שם משפחה:</label>
+        <input type="text" id="user-lastname" required />
+
+        <label>אימייל:</label>
+        <input
+          type="email"
+          id="user-email"
+          required
+          pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+          placeholder="example@example.com"
+        />
+
+        <label>סיסמה נוכחית:</label>
+        <input type="password" id="user-current-password" required />
+
+        <button type="submit" class="btn-submit">📤 שמור פרטים</button>
+        <button type="button" id="open-password-popup" class="btn-submit">
+          🔒 החלפת סיסמה
+        </button>
+      </form>
+    </div>
+
+    <!-- 🟨 פופאפ שינוי סיסמה -->
+    <div id="change-password-form" class="popup-form" style="display: none">
+      <h2>🔒 שינוי סיסמה</h2>
+      <form id="user-password-form">
+        <label>סיסמה נוכחית:</label>
+        <input type="password" id="old-password" required />
+
+        <label>סיסמה חדשה:</label>
+        <input
+          type="password"
+          id="new-password"
+          required
+          minlength="8"
+          maxlength="30"
+          pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$"
+          placeholder="לפחות 8 תווים – אותיות ומספרים"
+        />
+
+        <button type="submit" class="btn-submit">🔁 שנה סיסמה</button>
+      </form>
+    </div>
 
     <script src="js/wow.min.js"></script>
     <script>

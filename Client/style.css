@@ -1147,12 +1147,15 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
   font-family: Assistant, sans-serif;
   direction: rtl;
   text-align: right;
+  max-width: 400px; /* הגבלת רוחב מקסימלי */
 }
 
 .popup-form h2 {
   color: #007bff;
   text-align: center;
   margin-bottom: 20px;
+  font-size: 20px; /* גודל כותרת אחיד */
+  margin-top: 0;
 }
 
 .popup-form label {
@@ -1162,9 +1165,13 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
   color: #333;
   direction: rtl;
   text-align: right;
+  font-size: 14px; /* גודל טקסט אחיד */
+  margin-bottom: 5px;
 }
 
-.popup-form input {
+.popup-form input,
+.popup-form textarea,
+.popup-form select {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
@@ -1172,6 +1179,10 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
   border: 1px solid #ccc;
   font-size: 14px;
   font-family: Assistant;
+}
+
+.popup-form input[type="file"] {
+  margin: 10px 0;
 }
 
 .popup-form .btn-submit {
@@ -1184,11 +1195,13 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
   width: 100%;
   font-size: 16px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .popup-form .btn-submit:hover {
   background: #0054ff;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 114, 255, 0.3);
 }
 
 .no-results {
