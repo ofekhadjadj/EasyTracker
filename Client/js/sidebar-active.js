@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const pageMap = {
     "projectpage.html": "projects.html",
     "clientpage.html": "clients.html",
+    "TeamWorkTracking.html": "stats.html",
     // אפשר להוסיף גם future pages פה...
   };
 
