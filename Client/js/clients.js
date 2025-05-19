@@ -1,3 +1,6 @@
+// clients.js - קובץ JavaScript לניהול לקוחות במערכת Easy Tracker
+// כולל פונקציונליות להוספה, עדכון ומחיקה של לקוחות
+
 const ClientsDiv = document.getElementById("clients");
 let allClients = [];
 let allProjects = [];
@@ -6,7 +9,9 @@ let projectSummaries = [];
 let initialLoadComplete = false;
 let CurrentUser = null;
 
+// בעת עליית הדף
 $(document).ready(function () {
+  // שליפת המשתמש הנוכחי
   CurrentUser = JSON.parse(localStorage.getItem("user"));
 
   if (!CurrentUser || !CurrentUser.id) {
@@ -14,71 +19,133 @@ $(document).ready(function () {
     return;
   }
 
+  // הגדרת תמונת משתמש ושם בתפריט הצדדי
   const avatarImg = document.querySelector(".avatar-img");
   if (CurrentUser.image && avatarImg) avatarImg.src = CurrentUser.image;
-
   const ProfName = document.getElementById("menu-prof-name");
   if (ProfName) ProfName.innerText = CurrentUser.firstName;
 
+  // הגדרת פתיחת טופס הוספת/עדכון לקוח
+  $('a[href="#new-client-form"]').on("click", function () {
+    // איפוס הערכים בטופס
+    $("#client-form")[0].reset();
+    $("#client-image-thumb").hide();
+    // כותרת וכפתור שמירה לטופס חדש
+    $("#new-client-form h2").text("➕ לקוח חדש");
+    $("#client-form .btn-submit").text("📤 שמור לקוח");
+    // טיפול בהגשת הטופס ליצירת לקוח
+    $("#client-form").off("submit").on("submit", handleCreateClient);
+  });
+
+  // שליפת כל הנתונים
   fetchAllData();
 
-  // ✅ חיפוש דינמי לפי שם החברה
+  // חיפוש דינמי לפי שם החברה
   $("#search-client").on("input", function () {
     const term = $(this).val().toLowerCase().trim();
-    if (term === "") {
-      renderClients(allClients, false);
-      return;
-    }
-
-    const filtered = allClients.filter((client) =>
-      client.companyName?.toLowerCase().includes(term)
+    renderClients(
+      term === ""
+        ? allClients
+        : allClients.filter((c) => c.companyName?.toLowerCase().includes(term)),
+      false
     );
-
-    renderClients(filtered, false);
   });
 });
 
-function fetchAllData() {
-  const userID = CurrentUser?.id;
-  const urlClients = `https://localhost:7198/api/Client/GetAllClientsByUserID?userID=${userID}`;
-  const urlSummaries = `https://localhost:7198/api/Client/GetClientSummariesByUserID?userID=${userID}`;
-  const urlProjects = `https://localhost:7198/api/Projects/GetProjectByUserId/${userID}`;
+// טיפול ביצירת לקוח חדש
+function handleCreateClient(e) {
+  e.preventDefault();
+  const files = $("#clientImageFile")[0].files;
+  if (files.length > 0) {
+    const formData = new FormData();
+    formData.append("files", files[0]);
+    $.ajax({
+      url: "https://localhost:7198/api/Upload",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (paths) {
+        createClient(paths[0]);
+      },
+      error: function () {
+        alert("שגיאה בהעלאת התמונה.");
+      },
+    });
+  } else {
+    createClient(null);
+  }
+}
 
-  Promise.all([$.get(urlClients), $.get(urlSummaries), $.get(urlProjects)])
+// קריאה להוספת לקוח חדש לשרת
+function createClient(imagePath) {
+  const newClient = {
+    userID: CurrentUser.id,
+    companyName: $("#companyName").val().trim(),
+    contactPerson: $("#contactPerson").val().trim(),
+    email: $("#email").val().trim(),
+    contactPersonPhone: $("#contactPersonPhone").val().trim(),
+    officePhone: $("#officePhone").val().trim(),
+    image: imagePath,
+  };
+  $.ajax({
+    url: "https://localhost:7198/api/Client/Add%20Client",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify(newClient),
+    success: function () {
+      alert("הלקוח נוסף בהצלחה.");
+      $.fancybox.close();
+      fetchAllData();
+    },
+    error: function (xhr, status, errorThrown) {
+      console.error("Add Client error:", status, errorThrown, xhr.responseText);
+      alert("אירעה שגיאה בהוספת הלקוח:\n" + xhr.responseText);
+    },
+  });
+}
+
+// שליפת נתונים: לקוחות, תקצירים, פרויקטים
+function fetchAllData() {
+  const userID = CurrentUser.id;
+  const urls = [
+    $.get(
+      `https://localhost:7198/api/Client/GetAllClientsByUserID?userID=${userID}`
+    ),
+    $.get(
+      `https://localhost:7198/api/Client/GetClientSummariesByUserID?userID=${userID}`
+    ),
+    $.get(`https://localhost:7198/api/Projects/GetProjectByUserId/${userID}`),
+  ];
+  Promise.all(urls)
     .then(([clientsRes, summaryRes, projectsRes]) => {
       allClients = clientsRes;
       clientSummaries = summaryRes.clients;
       projectSummaries = summaryRes.projects;
       allProjects = projectsRes.slice(0, -1);
-
       renderClients(allClients, true);
       initialLoadComplete = true;
     })
-    .catch((err) => {
-      console.error("שגיאה בטעינת נתונים:", err);
-    });
+    .catch((err) => console.error("שגיאה בטעינת נתונים:", err));
 }
 
+// יצירת קלפי לקוחות ודומיהם
 function renderClients(clients, withAnimation = false) {
   ClientsDiv.innerHTML = "";
-
   clients.forEach((client) => {
     const summary = clientSummaries.find(
       (s) => Number(s.clientID) === Number(client.clientID)
     );
     const projectCount = summary?.projectCount || 0;
     const income = summary?.totalClientIncome || 0;
-
     const clientProjects = allProjects.filter(
       (p) => Number(p.ClientID) === Number(client.clientID)
     );
 
     const card = document.createElement("div");
     card.className = "project-card client-card";
-    if (withAnimation && !initialLoadComplete) {
+    if (withAnimation && !initialLoadComplete && typeof WOW === "function")
       card.classList.add("wow", "bounceInUp");
-    }
-
     card.setAttribute("data-client-id", client.clientID);
     card.style.backgroundImage = `url('${
       client.image || "./images/client-avatar.png"
@@ -99,23 +166,19 @@ function renderClients(clients, withAnimation = false) {
       <i class="fas fa-trash delete-icon" title="מחק לקוח"></i>
     `;
 
-    const editBtn = actions.querySelector(".edit-icon");
-    const deleteBtn = actions.querySelector(".delete-icon");
-
-    editBtn.addEventListener("click", (e) => {
+    actions.querySelector(".edit-icon").addEventListener("click", (e) => {
       e.stopPropagation();
       openEditPopup(client);
     });
-
-    deleteBtn.addEventListener("click", (e) => {
+    actions.querySelector(".delete-icon").addEventListener("click", (e) => {
       e.stopPropagation();
       openDeletePopup(client);
     });
 
-    card.appendChild(content);
-    card.appendChild(actions);
+    card.append(content, actions);
     ClientsDiv.appendChild(card);
 
+    // מעבר לדף פרטי הלקוח
     card.addEventListener("click", () => {
       localStorage.setItem("SelectedClientID", client.clientID);
       localStorage.setItem(
@@ -130,78 +193,53 @@ function renderClients(clients, withAnimation = false) {
       window.location.href = "clientPage.html";
     });
   });
-
-  if (withAnimation && !initialLoadComplete && typeof WOW === "function") {
-    new WOW().init();
-  }
-
   const doneText = document.getElementById("doneText");
-  if (doneText) {
-    doneText.innerText = `יש לך ${clients.length} לקוחות`;
-  }
+  if (doneText) doneText.innerText = `יש לך ${clients.length} לקוחות`;
 }
 
+// פתיחת פופאפ עריכת לקוח
 function openEditPopup(client) {
   $("#companyName").val(client.companyName);
   $("#contactPerson").val(client.contactPerson);
   $("#email").val(client.email);
   $("#contactPersonPhone").val(client.contactPersonPhone);
   $("#officePhone").val(client.officePhone);
-
   $("#new-client-form h2").text("✏️ עדכון פרטי לקוח");
   $("#client-form .btn-submit").text("עדכן");
 
   const fileInput = document.getElementById("clientImageFile");
   fileInput.value = "";
+  if (client.image) $("#client-image-thumb").attr("src", client.image).show();
+  else $("#client-image-thumb").hide();
 
-  // ✅ הצגת התמונה הממוזערת (אם קיימת)
-  if (client.image) {
-    $("#client-image-thumb").attr("src", client.image).show();
-  } else {
-    $("#client-image-thumb").hide();
-  }
-
-  // 🧾 שליחת טופס
   $("#client-form")
     .off("submit")
     .on("submit", function (e) {
       e.preventDefault();
       const files = fileInput.files;
-
       if (files.length > 0) {
         const formData = new FormData();
         formData.append("files", files[0]);
-
         $.ajax({
           url: "https://localhost:7198/api/Upload",
           type: "POST",
           data: formData,
           processData: false,
           contentType: false,
-          success: function (uploadedImagePaths) {
-            const uploadedImage = uploadedImagePaths[0];
-            updateClient(client.clientID, uploadedImage);
-          },
-          error: function () {
-            alert("שגיאה בהעלאת תמונת הלקוח.");
-          },
+          success: (paths) => updateClient(client.clientID, paths[0]),
+          error: () => alert("שגיאה בהעלאת התמונה."),
         });
-      } else {
-        updateClient(client.clientID, client.image);
-      }
+      } else updateClient(client.clientID, client.image);
     });
 
-  // ✅ פתיחת הפופ-אפ
-  $.fancybox.open({
-    src: "#new-client-form",
-    type: "inline",
-  });
+  $.fancybox.open({ src: "#new-client-form", type: "inline" });
 }
 
-function updateClient(clientID, imagePath = null) {
+// קריאה לעדכון לקוח
+function updateClient(clientID, imagePath) {
   const updatedClient = {
     clientID: clientID,
-    userID: CurrentUser?.id,
+    userID: CurrentUser.id,
     companyName: $("#companyName").val(),
     contactPerson: $("#contactPerson").val(),
     email: $("#email").val(),
@@ -209,9 +247,8 @@ function updateClient(clientID, imagePath = null) {
     officePhone: $("#officePhone").val(),
     image: imagePath,
   };
-
   $.ajax({
-    url: "https://localhost:7198/api/Client/Update Client",
+    url: "https://localhost:7198/api/Client/Update%20Client",
     type: "PUT",
     contentType: "application/json",
     data: JSON.stringify(updatedClient),
@@ -220,30 +257,31 @@ function updateClient(clientID, imagePath = null) {
       $.fancybox.close();
       fetchAllData();
     },
-    error: function () {
-      alert("אירעה שגיאה בעדכון הלקוח.");
+    error: function (xhr, status, errorThrown) {
+      console.error(
+        "Update Client error:",
+        status,
+        errorThrown,
+        xhr.responseText
+      );
+      alert("אירעה שגיאה בעדכון הלקוח:\n" + xhr.responseText);
     },
   });
 }
 
+// פתיחת פופאפ המחיקה
 function openDeletePopup(client) {
   const popupHtml = `
-    <div style="max-width: 400px; text-align: center; font-family: Assistant; padding: 20px;">
+    <div style="max-width:400px;text-align:center;font-family:Assistant;padding:20px;">
       <h3>מחיקת לקוח</h3>
       <p>האם אתה בטוח שברצונך למחוק את הלקוח <strong>"${client.companyName}"</strong>?</p>
-      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+      <div style="margin-top:20px;display:flex;justify-content:center;gap:10px;">
         <button class="gradient-button" id="confirmDeleteBtn">כן, מחק</button>
         <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
       </div>
     </div>
   `;
-
-  $.fancybox.open({
-    src: popupHtml,
-    type: "html",
-    smallBtn: false,
-  });
-
+  $.fancybox.open({ src: popupHtml, type: "html", smallBtn: false });
   $(document)
     .off("click", "#confirmDeleteBtn")
     .on("click", "#confirmDeleteBtn", function () {
@@ -252,16 +290,23 @@ function openDeletePopup(client) {
     });
 }
 
+// קריאה למחיקת לקוח (ארכיון)
 function archiveClient(clientID) {
   $.ajax({
-    url: `https://localhost:7198/api/Client/Delete client/${clientID}`,
+    url: `https://localhost:7198/api/Client/Delete%20Client/${clientID}`,
     type: "PUT",
     success: function () {
       alert("הלקוח הועבר לארכיון בהצלחה.");
       fetchAllData();
     },
-    error: function () {
-      alert("אירעה שגיאה במחיקת הלקוח.");
+    error: function (xhr, status, errorThrown) {
+      console.error(
+        "Delete Client error:",
+        status,
+        errorThrown,
+        xhr.responseText
+      );
+      alert("אירעה שגיאה במחיקת הלקוח:\n" + xhr.responseText);
     },
   });
 }

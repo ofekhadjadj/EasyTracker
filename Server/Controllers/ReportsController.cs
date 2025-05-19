@@ -114,13 +114,13 @@ namespace EasyTracker.Controllers
             }
         }
 
-        [HttpGet("GetMonthlyWorkAndEarnings")]
-        public IActionResult GetMonthlyWorkAndEarnings(int userID, string groupBy = null, DateTime? fromDate = null, DateTime? toDate = null, int? clientID = null, int? projectID = null)
+        [HttpGet("GetWorkAndEarningsByPeriod")]
+        public IActionResult GetWorkAndEarningsByPeriod(int userID, string groupBy = null, DateTime? fromDate = null, DateTime? toDate = null, int? clientID = null, int? projectID = null)
         {
             try
             {
                 DBservices dbs = new DBservices();
-                var data = dbs.GetMonthlyWorkAndEarnings(userID, groupBy, fromDate, toDate, clientID, projectID);
+                var data = dbs.GetWorkAndEarningsByPeriod(userID, groupBy, fromDate, toDate, clientID, projectID);
                 return Ok(data);
             }
             catch (Exception ex)

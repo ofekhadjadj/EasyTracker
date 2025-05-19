@@ -102,11 +102,43 @@
       <!-- תוכן ראשי -->
       <div class="content">
         <div class="inner-content">
+          <!-- פירורי לחם -->
+          <nav class="breadcrumbs">
+            <a href="stats.html">ניתוחים ודוחות</a>
+            <span class="separator">›</span>
+            <span>מעקב עבודת צוות</span>
+          </nav>
+
           <!-- כותרת עמוד -->
           <div class="stats-title">
             <h1>מעקב עבודת צוות</h1>
           </div>
 
+          <!-- 🟦 פאנל סינון למעקב עבודת צוות -->
+          <div class="filter-panel">
+            <h3>סינון נתונים</h3>
+            <div class="filter-controls">
+              <div class="filter-group">
+                <label for="projectFilter">פרויקט:</label>
+                <select id="projectFilter" class="filter-select">
+                  <option value="">כל הפרויקטים</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label for="userFilter">איש צוות:</label>
+                <select id="userFilter" class="filter-select">
+                  <option value="">כל אנשי הצוות</option>
+                </select>
+              </div>
+
+              <!-- <div class="filter-group">
+                <button id="apply-team-filter" class="filter-button">
+                  🔄 סנן
+                </button>
+              </div> -->
+            </div>
+          </div>
           <!-- תצוגת עבודת צוות -->
           <div id="team-monitoring-container"></div>
         </div>

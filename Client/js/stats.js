@@ -129,7 +129,7 @@ function loadTopClients(userID) {
     clients.forEach((c) => {
       html += `<tr>
                 <td>${c.CompanyName.trim()}</td>
-                <td>₪${c.TotalEarnings.toFixed(2)}</td>
+<td>₪${c.TotalEarnings.toLocaleString("he-IL")}</td>
               </tr>`;
     });
 
@@ -165,7 +165,7 @@ function loadTopProjects(userID) {
     projects.forEach((p) => {
       html += `<tr>
                 <td>${p.ProjectName.trim()}</td>
-                <td>₪${p.TotalEarnings.toFixed(2)}</td>
+<td>₪${p.TotalEarnings.toLocaleString("he-IL")}</td>
               </tr>`;
     });
 
@@ -215,9 +215,13 @@ function showSummaryPopup(type, userID) {
         if (key !== "ClientID" && key !== "ProjectID") {
           const val = row[key];
           const isNumber = !isNaN(parseFloat(val)) && isFinite(val);
-          html += `<td>${
-            isNumber ? parseFloat(val).toLocaleString("he-IL") : val
-          }</td>`;
+          if (key === "TotalMinutes" && isNumber) {
+            html += `<td>${formatMinutesToHHMM(val)}</td>`;
+          } else {
+            html += `<td>${
+              isNumber ? parseFloat(val).toLocaleString("he-IL") : val
+            }</td>`;
+          }
         }
       });
       html += `</tr>`;
@@ -250,7 +254,7 @@ function translateHeader(key) {
     ProjectID: "מזהה פרויקט",
     ProjectName: "שם פרויקט",
     DurationGoal: "יעד (שעות)",
-    TotalMinutes: 'סה"כ דקות עבודה',
+    TotalMinutes: 'סה"כ זמן עבודה',
     TotalHours: 'סה"כ שעות עבודה',
     TotalProjects: 'סה"כ פרויקטים',
     AverageHourlyRate: "תעריף שעתי ממוצע",
@@ -334,7 +338,7 @@ function loadWorkSummaryOverTime(userID, filters = {}) {
     $("#workTimeChart").parent().find(".no-data-message").remove();
 
     const labels = data.map((d) =>
-      formatPeriodLabel(d.Period, filters.groupBy || "week")
+      formatPeriodLabel(d.Period, (filters.groupBy || "WEEK").toUpperCase())
     );
     const values = data.map((d) => d.TotalMinutes);
 
@@ -359,8 +363,27 @@ function loadWorkSummaryOverTime(userID, filters = {}) {
       },
       options: {
         responsive: true,
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true } },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const value = context.raw;
+                return `סה"כ זמן: ${formatMinutesToHHMM(value)}`;
+              },
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function (value) {
+                return formatMinutesToHHMM(value);
+              },
+            },
+          },
+        },
       },
     });
   });
@@ -372,68 +395,99 @@ function loadWorkByLabel(userID, filters = {}) {
   // Add filters to URL
   url = appendFiltersToUrl(url, filters);
 
-  ajaxCall("GET", url, null, (data) => {
-    if (!data || !data.length) {
-      console.error("No label data received");
-      // הצג הודעה שאין נתונים
-      $("#labelChart")
-        .parent()
-        .append(
-          '<p class="no-data-message">אין נתוני תיוגים להצגה בטווח הזמן שנבחר</p>'
-        );
-      return;
-    }
+  // First get all labels to get their colors
+  const labelsUrl = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${userID}`;
 
-    // הסר הודעות קודמות אם קיימות
-    $("#labelChart").parent().find(".no-data-message").remove();
+  ajaxCall("GET", labelsUrl, null, (labelsData) => {
+    // Create a map of label names to their colors
+    const labelColors = {};
+    labelsData.forEach((label) => {
+      labelColors[label.labelName] = label.labelColor;
+    });
 
-    const labels = data.map((d) => d.LabelName);
-    const values = data.map((d) => d.TotalMinutes);
+    // Now get the work data
+    ajaxCall("GET", url, null, (data) => {
+      if (!data || !data.length) {
+        console.error("No label data received");
+        // הצג הודעה שאין נתונים
+        $("#labelChart")
+          .parent()
+          .append(
+            '<p class="no-data-message">אין נתוני תיוגים להצגה בטווח הזמן שנבחר</p>'
+          );
+        return;
+      }
 
-    // Clear previous chart if exists
-    const chartElement = document.getElementById("labelChart");
-    if (chartElement.chart) {
-      chartElement.chart.destroy();
-    }
+      // הסר הודעות קודמות אם קיימות
+      $("#labelChart").parent().find(".no-data-message").remove();
 
-    chartElement.chart = new Chart(chartElement, {
-      type: "doughnut",
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: "דקות",
-            data: values,
-            backgroundColor: [
-              "#00c6ff",
-              "#0072ff",
-              "#0051cc",
-              "#66CC99",
-              "#9966CC",
-              "#FFB347",
-              "#FFD700",
-              "#90EE90",
-              "#DC143C",
-              "#8A2BE2",
-              "#FF6347",
-              "#4682B4",
-              "#008B8B",
-              "#556B2F",
-              "#FF69B4",
-            ],
+      const labels = data.map((d) => d.LabelName);
+      const values = data.map((d) => d.TotalMinutes);
+
+      // Get colors for each label, fallback to default colors if not found
+      const defaultColors = [
+        "#00c6ff",
+        "#0072ff",
+        "#0051cc",
+        "#66CC99",
+        "#9966CC",
+        "#FFB347",
+        "#FFD700",
+        "#90EE90",
+        "#DC143C",
+        "#8A2BE2",
+        "#FF6347",
+        "#4682B4",
+        "#008B8B",
+        "#556B2F",
+        "#FF69B4",
+      ];
+
+      const colors = labels.map(
+        (label, index) =>
+          labelColors[label] || defaultColors[index % defaultColors.length]
+      );
+
+      // Clear previous chart if exists
+      const chartElement = document.getElementById("labelChart");
+      if (chartElement.chart) {
+        chartElement.chart.destroy();
+      }
+
+      chartElement.chart = new Chart(chartElement, {
+        type: "doughnut",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "דקות",
+              data: values,
+              backgroundColor: colors,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: "bottom" },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  const label = context.label || "";
+                  const value = context.raw;
+                  return `${label}: ${formatMinutesToHHMM(value)}`;
+                },
+              },
+            },
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { position: "bottom" } },
-      },
+        },
+      });
     });
   });
 }
 
 function loadMonthlyWorkAndEarnings(userID, filters = {}) {
-  let url = `https://localhost:7198/api/Reports/GetMonthlyWorkAndEarnings?userID=${userID}`;
+  let url = `https://localhost:7198/api/Reports/GetWorkAndEarningsByPeriod?userID=${userID}`;
 
   // Add filters to URL
   url = appendFiltersToUrl(url, filters);
@@ -454,7 +508,7 @@ function loadMonthlyWorkAndEarnings(userID, filters = {}) {
     $("#monthlyChart").parent().find(".no-data-message").remove();
 
     const labels = data.map((d) =>
-      formatPeriodLabel(d.Period, filters.groupBy || "week")
+      formatPeriodLabel(d.Period, (filters.groupBy || "WEEK").toUpperCase())
     );
     const minutes = data.map((d) => d.TotalMinutes);
     const earnings = data.map((d) => d.TotalEarnings);
@@ -471,7 +525,7 @@ function loadMonthlyWorkAndEarnings(userID, filters = {}) {
         labels: labels,
         datasets: [
           {
-            label: "דקות",
+            label: "שעות",
             data: minutes,
             backgroundColor: "#0072ff",
             borderRadius: 6,
@@ -486,7 +540,22 @@ function loadMonthlyWorkAndEarnings(userID, filters = {}) {
       },
       options: {
         responsive: true,
-        plugins: { legend: { position: "top" } },
+        plugins: {
+          legend: { position: "top" },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const label = context.dataset.label;
+                const value = context.raw;
+                if (label === "שעות") {
+                  return `זמן עבודה: ${formatMinutesToHHMM(value)}`;
+                } else {
+                  return `הכנסה: ₪${parseFloat(value).toLocaleString("he-IL")}`;
+                }
+              },
+            },
+          },
+        },
         scales: {
           x: { stacked: false },
           y: { beginAtZero: true },
@@ -523,15 +592,17 @@ function appendFiltersToUrl(url, filters) {
 
 // Format period labels based on groupBy
 function formatPeriodLabel(period, groupBy) {
+  if (typeof period !== "string" || typeof groupBy !== "string") return "";
+
+  groupBy = groupBy.toUpperCase();
+
   if (groupBy === "DAY") {
-    // Format: YYYY-MM-DD to DD/MM
     const dateParts = period.split("-");
-    return `${dateParts[2]}/${dateParts[1]}`;
+    return dateParts.length === 3 ? `${dateParts[2]}/${dateParts[1]}` : period;
   } else if (groupBy === "WEEK") {
-    // Format: YYYY-Www to שבוע WW
-    return `שבוע ${period.split("-W")[1]}`;
+    const parts = period.split("-W");
+    return parts.length === 2 && parts[1] ? `שבוע ${parts[1]}` : period;
   } else if (groupBy === "MONTH") {
-    // Format: YYYY-MM to MM/YYYY
     const dateParts = period.split("-");
     const monthNames = [
       "ינואר",
@@ -548,10 +619,19 @@ function formatPeriodLabel(period, groupBy) {
       "דצמבר",
     ];
     const monthIndex = parseInt(dateParts[1]) - 1;
-    return `${monthNames[monthIndex]} ${dateParts[0]}`;
+    return dateParts.length === 2 && monthIndex >= 0 && monthIndex < 12
+      ? `${monthNames[monthIndex]} ${dateParts[0]}`
+      : period;
   }
 
   return period;
+}
+function formatMinutesToHHMM(minutes) {
+  const hrs = Math.floor(minutes / 60);
+  const mins = Math.round(minutes % 60);
+  return `${hrs.toString().padStart(2, "0")}:${mins
+    .toString()
+    .padStart(2, "0")}`;
 }
 
 // Load clients for the filter dropdown

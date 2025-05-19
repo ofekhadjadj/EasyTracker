@@ -2168,7 +2168,9 @@ finally
                 var item = new Dictionary<string, object>();
                 item["ClientID"] = dataReader["ClientID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["ClientID"]);
                 item["CompanyName"] = dataReader["CompanyName"] == DBNull.Value ? null : dataReader["CompanyName"].ToString().Trim();
-                item["TotalEarnings"] = dataReader["TotalEarnings"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalEarnings"]);
+                //item["TotalEarnings"] = dataReader["TotalEarnings"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalEarnings"]);
+                item["TotalEarnings"] = dataReader["TotalEarnings"] == DBNull.Value ? 0 :Convert.ToInt32(dataReader["TotalEarnings"]);
+
                 result.Add(item);
             }
 
@@ -2202,7 +2204,7 @@ finally
                 item["ProjectID"] = dataReader["ProjectID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["ProjectID"]);
                 item["ProjectName"] = dataReader["ProjectName"] == DBNull.Value ? null : dataReader["ProjectName"].ToString().Trim();
                 item["ClientName"] = dataReader["ClientName"] == DBNull.Value ? null : dataReader["ClientName"].ToString().Trim();
-                item["TotalEarnings"] = dataReader["TotalEarnings"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["TotalEarnings"]);
+                item["TotalEarnings"] = dataReader["TotalEarnings"] == DBNull.Value ? 0m : Convert.ToInt32(dataReader["TotalEarnings"]);
                 result.Add(item);
             }
 
@@ -2358,7 +2360,7 @@ finally
         finally { { if (con != null) con.Close(); } }
     }
 
-    public List<Dictionary<string, object>> GetMonthlyWorkAndEarnings(int userID, string groupBy = null, DateTime? fromDate = null, DateTime? toDate = null, int? clientID = null, int? projectID = null)
+    public List<Dictionary<string, object>> GetWorkAndEarningsByPeriod(int userID, string groupBy = null, DateTime? fromDate = null, DateTime? toDate = null, int? clientID = null, int? projectID = null)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -2369,12 +2371,14 @@ finally
         List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@UserID", userID);
+        if (!string.IsNullOrEmpty(groupBy)) paramDic.Add("@GroupBy", groupBy); // 🟢 הוספה חשובה!
         if (fromDate.HasValue) paramDic.Add("@FromDate", fromDate.Value);
         if (toDate.HasValue) paramDic.Add("@ToDate", toDate.Value);
         if (clientID.HasValue) paramDic.Add("@ClientID", clientID.Value);
         if (projectID.HasValue) paramDic.Add("@ProjectID", projectID.Value);
 
-        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetMonthlyWorkAndEarnings", con, paramDic);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetWorkAndEarningsByPeriod", con, paramDic);
 
         try
         {

@@ -753,3 +753,86 @@ li a.active span {
     font-size: 1.3em;
   }
 }
+
+.chart-box h3 {
+  text-align: center;
+}
+
+.chart-subtitle {
+  font-size: 14px;
+  color: #555;
+  margin-top: -8px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.filter-panel {
+  background: #f1f5f9;
+  padding: 16px;
+  border-radius: 12px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.filter-panel h3 {
+  margin-bottom: 12px;
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+}
+
+.filter-select,
+.filter-button {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.filter-button {
+  background-color: #0072ff;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.filter-button:hover {
+  background-color: #005acc;
+}
+
+/* הורס את ה-font-weight ב-h3 בתוך פרופיל */
+.sidbar .profile h3 {
+  font-weight: normal !important;
+}
+
+/* ===== פירורי לחם ===== */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
+
+.breadcrumbs a {
+  color: #0072ff;
+  text-decoration: none;
+}
+
+.breadcrumbs .separator {
+  margin: 0 8px;
+  color: #888;
+}
+
+.breadcrumbs span:last-child {
+  color: #555;
+  font-weight: bold;
+}
