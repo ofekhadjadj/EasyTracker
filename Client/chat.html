@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Easy Tracker - מרכז תקשורת</title>
+    <link rel="icon" href="/images/fav-icon.png" type="image/png" />
+
+    <link rel="stylesheet" href="chat.css" />
+    <link rel="stylesheet" href="animate.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
+    />
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  </head>
+
+  <body>
+    <div class="projects-continer">
+      <!-- סרגל צד -->
+      <div class="sidbar wow fadeInRightBig">
+        <div class="inner-sidbar">
+          <div class="profile">
+            <img src="#" class="avatar-img" alt="" />
+            <h3>הי, <span id="menu-prof-name">משתמש</span> 👋</h3>
+          </div>
+          <img src="./images/logo.png" class="logo-sidebar" alt="לוגו" />
+          <div class="nav-continer">
+            <div class="main-nav">
+              <ul>
+                <li>
+                  <a href="projects.html"
+                    ><img
+                      src="./images/project icon.png"
+                      class="nav-icon"
+                    /><span>פרויקטים</span></a
+                  >
+                </li>
+                <li>
+                  <a href="clients.html"
+                    ><img
+                      src="./images/customers icon.png"
+                      class="nav-icon"
+                    /><span>לקוחות</span></a
+                  >
+                </li>
+                <li>
+                  <a href="stats.html"
+                    ><img src="./images/reports.png" class="nav-icon" /><span
+                      >ניתוחים ודוחות</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a href="labels.html"
+                    ><img src="./images/tags.png" class="nav-icon" /><span
+                      >תיוגים</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a href="reminders.html"
+                    ><img src="./images/reminders.png" class="nav-icon" /><span
+                      >תזכורות</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a href="Chat.html" class="active"
+                    ><img src="./images/chat.png" class="nav-icon" /><span
+                      >מרכז תקשורת</span
+                    ></a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="help-nav">
+              <ul>
+                <li>
+                  <a href="settings.html"
+                    ><img
+                      src="./images/settings-icon.png"
+                      class="nav-icon"
+                    /><span>הגדרות</span></a
+                  >
+                </li>
+                <li>
+                  <a href="help.html"
+                    ><img src="./images/help-icon.png" class="nav-icon" /><span
+                      >עזרה</span
+                    ></a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- תוכן ראשי -->
+      <div class="content">
+        <div class="inner-content">
+          <!-- כותרת ועיגולים -->
+          <div class="chat-header">
+            <h1>מרכז תקשורת</h1>
+            <div id="chat-avatars" class="chat-avatars"></div>
+          </div>
+
+          <!-- אזור הצ'אט -->
+          <div id="chat-container" class="chat-container">
+            <h2 class="chat-title">בחר שיחה כדי להתחיל</h2>
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="chat-input">
+              <input type="text" id="chatText" placeholder="הקלד הודעה..." />
+              <button id="sendMessageBtn">שלח</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- סקריפטים -->
+    <script src="js/chat.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script>
+      new WOW().init();
+    </script>
+  </body>
+</html>

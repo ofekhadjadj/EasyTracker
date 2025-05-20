@@ -2441,6 +2441,166 @@ finally
         finally { if (con != null) con.Close(); }
     }
 
+    //**** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ****
+
+    public int InsertChatMessage(ChatMessage message)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // יצירת חיבור
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@SenderUserID", message.SenderUserID);
+        paramDic.Add("@ReceiverUserID", message.ReceiverUserID);
+        paramDic.Add("@ProjectID", message.ProjectID);
+        paramDic.Add("@MessageText", message.MessageText);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_SendMessage", con, paramDic);
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery();
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+
+    public List<ChatMessage> GetPrivateChat(int userID1, int userID2, int projectID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB");
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID1", userID1);
+        paramDic.Add("@UserID2", userID2);
+        paramDic.Add("@ProjectID", projectID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetPrivateChat", con, paramDic);
+
+        List<ChatMessage> messages = new List<ChatMessage>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                ChatMessage msg = new ChatMessage();
+                msg.MessageID = Convert.ToInt32(dataReader["MessageID"]);
+                msg.SenderUserID = Convert.ToInt32(dataReader["SenderUserID"]);
+                msg.ReceiverUserID = Convert.ToInt32(dataReader["ReceiverUserID"]);
+                msg.ProjectID = projectID;
+                msg.MessageText = dataReader["MessageText"].ToString();
+                msg.SentAt = Convert.ToDateTime(dataReader["SentAt"]);
+                msg.SenderName = dataReader["SenderName"].ToString();
+
+                messages.Add(msg);
+            }
+
+            return messages;
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+
+    public List<ChatMessage> GetGroupChat(int projectID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB");
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ProjectID", projectID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetGroupChat", con, paramDic);
+
+        List<ChatMessage> messages = new List<ChatMessage>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                ChatMessage msg = new ChatMessage();
+                msg.MessageID = Convert.ToInt32(dataReader["MessageID"]);
+                msg.SenderUserID = Convert.ToInt32(dataReader["SenderUserID"]);
+                msg.ReceiverUserID = null;
+                msg.ProjectID = projectID;
+                msg.MessageText = dataReader["MessageText"].ToString();
+                msg.SentAt = Convert.ToDateTime(dataReader["SentAt"]);
+                msg.SenderName = dataReader["SenderName"].ToString();
+
+                messages.Add(msg);
+            }
+
+            return messages;
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+
+
+
+
+
+
 
     //---------------------------------------------------------------------------------
     // Create the SqlCommand
