@@ -1,0 +1,1096 @@
+let CurrentProject = JSON.parse(localStorage.getItem("CurrentProject"));
+let CurrentUser = JSON.parse(localStorage.getItem("user"));
+console.log("CurrentProject", CurrentProject);
+console.log("User", CurrentUser);
+let table;
+const avatarImg = document.querySelector(".avatar-img");
+
+function loadTeamPreview() {
+  const teamContainer = document.getElementById("project-team-preview");
+
+  // שמור את כפתור הפתיחה בצד (נוסיף אותו מחדש אחר כך)
+  // const openPopupBtn = document.getElementById("open-team-popup");
+  // const arrowImg = document.getElementById("open-team-popup");
+
+  // ננקה את התוכן הקיים
+  teamContainer.innerHTML = "";
+
+  const url = `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${CurrentProject.ProjectID}`;
+
+  ajaxCall(
+    "GET",
+    url,
+    "",
+    (members) => {
+      members.forEach((member) => {
+        const img = document.createElement("img");
+        img.src = member.Image ? member.Image : "./images/default-avatar.png"; // 🔁 ברירת מחדל אם אין תמונה
+        img.alt = member.FullName;
+        img.title = member.FullName;
+        img.style.width = "40px";
+        img.style.height = "40px";
+        img.style.borderRadius = "50%";
+        img.style.objectFit = "cover";
+        img.style.marginLeft = "4px";
+
+        teamContainer.appendChild(img);
+      });
+
+      // הוסף את החץ לפתיחת פופאפ
+      // teamContainer.appendChild(arrowImg);
+    },
+    (err) => {
+      console.error("❌ שגיאה בשליפת חברי הצוות:", err);
+    }
+  );
+}
+
+//תיקון  לזמנים של UTC עבור עריכה של סשן
+function toLocalDateObject(dateStr, timeStr) {
+  return new Date(`${dateStr}T${timeStr}`);
+}
+
+//טעינת לייבלים לעריכת סשן
+function loadEditLabelsDropdown() {
+  const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
+  const labelSelect = document.getElementById("edit-label-id");
+  labelSelect.innerHTML = '<option value="">בחר תווית</option>';
+
+  ajaxCall(
+    "GET",
+    labelApi,
+    "",
+    (labels) => {
+      labels.forEach((label) => {
+        const option = document.createElement("option");
+        option.value = label.labelID;
+        option.textContent = label.labelName;
+        labelSelect.appendChild(option);
+      });
+    },
+    (err) => {
+      console.error("❌ שגיאה בשליפת תוויות לעריכה:", err);
+    }
+  );
+}
+
+document
+  .getElementById("open-description-editor")
+  .addEventListener("click", function () {
+    // 🟢 שלוף מה-LocalStorage את הגרסה הכי עדכנית
+    const freshProject =
+      JSON.parse(localStorage.getItem("CurrentProject")) || {};
+    const description = freshProject.Description || "";
+
+    document.getElementById("description-textarea").value = description;
+
+    $.fancybox.open({
+      src: "#description-editor-popup",
+      type: "inline",
+      touch: false,
+      animationEffect: "fade",
+      animationDuration: 300,
+      closeExisting: true,
+    });
+  });
+
+function toIsoLocalFormat(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
+
+//שליחה לשרת של התיאור פרויקט מהכפתור שמירת פרטים
+document.getElementById("desc-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const newDescription = document.getElementById("description-textarea").value;
+
+  const updatedProject = {
+    projectid: CurrentProject.ProjectID,
+    description: newDescription,
+  };
+
+  ajaxCall(
+    "PUT",
+    "https://localhost:7198/api/Projects/update_project",
+    JSON.stringify(updatedProject),
+    () => {
+      // Create and show success notification
+      const notification = document.createElement("div");
+      notification.className = "save-notification";
+      notification.innerHTML = `
+        <div class="notification-icon">✓</div>
+        <div class="notification-message">תיאור הפרויקט נשמר בהצלחה!</div>
+      `;
+      document.body.appendChild(notification);
+
+      // Close the popup
+      $.fancybox.close();
+
+      // Animate notification
+      setTimeout(() => {
+        notification.classList.add("show");
+      }, 10);
+
+      // Remove notification after delay
+      setTimeout(() => {
+        notification.classList.remove("show");
+        setTimeout(() => {
+          if (notification.parentNode) {
+            document.body.removeChild(notification);
+          }
+        }, 500);
+      }, 3000);
+
+      // רענון localStorage מהשרת
+      const refreshedApiUrl = `https://localhost:7198/api/Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`;
+      ajaxCall("GET", refreshedApiUrl, "", (updated) => {
+        CurrentProject = updated;
+        localStorage.setItem("CurrentProject", JSON.stringify(CurrentProject));
+      });
+    },
+    () => {
+      // Show error notification
+      const notification = document.createElement("div");
+      notification.className = "save-notification error";
+      notification.innerHTML = `
+        <div class="notification-icon">✕</div>
+        <div class="notification-message">שגיאה בשמירת התיאור</div>
+      `;
+      document.body.appendChild(notification);
+
+      // Animate notification
+      setTimeout(() => {
+        notification.classList.add("show");
+      }, 10);
+
+      // Remove notification after delay
+      setTimeout(() => {
+        notification.classList.remove("show");
+        setTimeout(() => {
+          if (notification.parentNode) {
+            document.body.removeChild(notification);
+          }
+        }, 500);
+      }, 3000);
+    }
+  );
+});
+
+function openEndSessionPopup() {
+  const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
+
+  ajaxCall("GET", labelApi, "", (labels) => {
+    const labelSelect = document.getElementById("session-label");
+    labelSelect.innerHTML = '<option value="">בחר תווית</option>';
+
+    labels.forEach((label) => {
+      const option = document.createElement("option");
+      option.value = label.labelID;
+      option.textContent = label.labelName;
+      labelSelect.appendChild(option);
+    });
+
+    // פתיחת הפופאפ
+    $.fancybox.open({
+      src: "#end-session-popup",
+      type: "inline",
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", renderTableFromDB);
+document.addEventListener("DOMContentLoaded", FillDeatils);
+document.addEventListener("DOMContentLoaded", loadTeamPreview);
+document.addEventListener("DOMContentLoaded", setupTeamManagementButton);
+
+function FillDeatils() {
+  const ProfName = document.getElementById("menu-prof-name");
+
+  const projectName = document.getElementById("ProjectTitle");
+  const ProjectClient = document.getElementById("ProjectClient");
+  const breadcrumbsProjName = document.getElementById("breadcrumbsProjName");
+  ProfName.innerText = CurrentUser.firstName;
+  let breadcrumbsText = `${CurrentProject.ProjectName} - ${CurrentProject.CompanyName}`;
+  breadcrumbsProjName.innerText = breadcrumbsText;
+  projectName.innerText = CurrentProject.ProjectName;
+  ProjectClient.innerText = CurrentProject.CompanyName;
+  if (CurrentUser?.image && avatarImg) {
+    avatarImg.src = CurrentUser.image;
+  }
+}
+
+let interval = null;
+let seconds = 0;
+let totalPastSeconds = 0;
+
+let isRunning = false;
+
+const timeDisplay = document.getElementById("time");
+const toggleBtn = document.getElementById("toggle-btn");
+const toggleText = document.getElementById("toggle-text");
+const toggleIcon = document.getElementById("toggle-icon");
+const stopBtn = document.getElementById("stop-btn");
+const circle = document.querySelector(".circle-progress");
+const circumference = 2 * Math.PI * 100; //היקף המעגל
+
+// 🟦 בר התקדמות
+const progressFill = document.getElementById("progress-fill");
+const progressText = document.getElementById("progress-text");
+
+// הגדרת יעד משך הפרויקט בשעות ביחס לבר ההתקדמות
+
+const goalInSeconds = CurrentProject.DurationGoal * 3600 || 3600; // ברירת מחדל לשעה אם לא קיים
+
+circle.style.strokeDasharray = circumference;
+circle.style.strokeDashoffset = circumference;
+
+function updateTime() {
+  seconds++;
+
+  const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
+  const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+  const s = String(seconds % 60).padStart(2, "0");
+  timeDisplay.textContent = `${h}:${m}:${s}`;
+
+  // 🟦 עדכון עיגול
+  const progress = (seconds % 3600) / 3600;
+  circle.style.strokeDashoffset = circumference * (1 - progress);
+
+  // 🟦 עדכון בר התקדמות
+  const progressPercent = Math.min((seconds / goalInSeconds) * 100, 100);
+  progressFill.style.width = `${progressPercent}%`;
+  progressText.textContent = `${Math.floor(progressPercent)}%`;
+
+  // שינוי צבע הרקע לפי אחוז ההתקדמות
+  if (progressPercent >= 90) {
+    progressFill.style.background =
+      "linear-gradient(to right, #ff4e50, #f00000)"; // אדום
+  } else if (progressPercent >= 80) {
+    progressFill.style.background =
+      "linear-gradient(to right, #ff9900, #ff6600)"; // כתום
+  } else {
+    progressFill.style.background =
+      "linear-gradient(to right, #00c6ff, #0072ff)"; // כחול רגיל
+  }
+
+  // שינוי צבע הטקסט לפי אחוזים
+  if (progressPercent <= 10) {
+    progressText.style.color = "#000"; // שחור
+  } else {
+    progressText.style.color = "#fff"; // לבן
+  }
+  updateOverallProgress();
+}
+
+function updateOverallProgress() {
+  const totalSeconds = totalPastSeconds + seconds; // כולל מה שרץ עכשיו
+  const progressPercent = Math.min((totalSeconds / goalInSeconds) * 100, 100);
+
+  progressFill.style.width = `${progressPercent}%`;
+  progressText.textContent = `${Math.floor(progressPercent)}%`;
+
+  // צבע רקע
+  if (progressPercent >= 90) {
+    progressFill.style.background =
+      "linear-gradient(to right, #ff4e50, #f00000)";
+  } else if (progressPercent >= 80) {
+    progressFill.style.background =
+      "linear-gradient(to right, #ff9900, #ff6600)";
+  } else {
+    progressFill.style.background =
+      "linear-gradient(to right, #00c6ff, #0072ff)";
+  }
+
+  progressText.style.color = progressPercent <= 10 ? "#000" : "#fff";
+}
+
+// 🟦 המרת זמן לשעון ישראל
+function getLocalISOString() {
+  const tzOffset = new Date().getTimezoneOffset() * 60000; // זמן מקומי מול UTC
+  return new Date(Date.now() - tzOffset).toISOString();
+}
+
+// 🟦 כפתור הפעלה
+function getLocalISOStringWithoutZ() {
+  const now = new Date();
+
+  // מחשב את ההפרש בין הזמן המקומי ל־UTC
+  const localOffsetMs = now.getTimezoneOffset() * -60000;
+
+  // מוסיף את ההפרש כדי להגיע לזמן מקומי אמיתי
+  const localDate = new Date(now.getTime() + localOffsetMs);
+
+  return localDate.toISOString().replace("Z", "");
+}
+
+toggleBtn.addEventListener("click", () => {
+  // כפתור השהייה תוספת
+  if (isRunning) {
+    clearInterval(interval);
+    isRunning = false;
+    toggleText.textContent = "המשך";
+    toggleIcon.src = "./images/play-icon.png";
+
+    const durationSeconds = seconds;
+
+    const lastSessionRow = $("#sessionsTable tbody tr").first();
+    const sessionData = lastSessionRow.data("session");
+
+    if (!sessionData) {
+      console.error("❌ לא נמצא סשן פעיל לעדכון (Pause).");
+      return;
+    }
+
+    const pausedSession = {
+      sessionID: sessionData.SessionID,
+      projectID: sessionData.ProjectID,
+      durationSeconds: durationSeconds,
+      status: "Paused",
+    };
+
+    console.log("⏸️ השהיית סשן | נשלח לשרת:", pausedSession);
+
+    ajaxCall(
+      "PUT",
+      "https://localhost:7198/api/Session/update_session",
+      JSON.stringify(pausedSession),
+      () => {
+        console.log("✅ סשן הושהה בהצלחה!");
+      },
+      () => {
+        console.error("❌ שגיאה בהשהיית סשן.");
+      }
+    );
+  } else {
+    // קריאה לשרת לפני שמתחיל הסטופר
+    const sessionStart = getLocalISOStringWithoutZ();
+
+    const apiUrl = `https://localhost:7198/api/Session/start_auto_session?userID=${
+      CurrentUser.id
+    }&projectID=${CurrentProject.ProjectID}&startDate=${encodeURIComponent(
+      sessionStart
+    )}`;
+
+    ajaxCall(
+      "POST",
+      apiUrl,
+      "",
+      (response) => {
+        console.log("✅ סשן התחיל בהצלחה:", response);
+        table.clear().draw(); // מנקה את כל השורות לפני הרנדר
+        renderTableFromDB(); // רענן את הטבלה עם הסשן החדש
+      },
+      (xhr) => {
+        console.error("❌ שגיאה בהתחלת סשן:", xhr);
+      }
+    );
+
+    // רק אחרי השליחה מתחיל הסטופר
+    interval = setInterval(updateTime, 1000);
+    isRunning = true;
+    toggleText.textContent = "השהה";
+    toggleIcon.src = "./images/puse icon.png";
+  }
+});
+
+//סיום סשן
+stopBtn.addEventListener("click", () => {
+  if (!isRunning) {
+    alert("לא ניתן לסיים סשן לפני שהתחלת אחד.");
+    return;
+  }
+  clearInterval(interval);
+  isRunning = false;
+  toggleText.textContent = "התחל";
+  toggleIcon.src = "./images/play-icon.png";
+
+  const endDate = getLocalISOStringWithoutZ();
+  const durationSeconds = seconds;
+
+  const lastSessionRow = $("#sessionsTable tbody tr").first();
+  const sessionData = lastSessionRow.data("session");
+
+  if (!sessionData) {
+    console.error("❌ לא נמצא סשן פעיל לעדכון.");
+    return;
+  }
+
+  // שמור משתנים זמניים לצורך השליחה בסיום הפופאפ
+  window.sessionToClose = {
+    sessionID: sessionData.SessionID,
+    projectID: sessionData.ProjectID,
+    startDate: sessionData.StartDate,
+    endDate,
+    durationSeconds,
+    hourlyRate: sessionData.HourlyRate,
+    userID: sessionData.UserID,
+  };
+
+  // אפס סטופר
+  seconds = 0;
+  timeDisplay.textContent = "00:00:00";
+  circle.style.strokeDashoffset = circumference;
+  progressFill.style.width = `0%`;
+  progressText.textContent = `0%`;
+
+  // פתח פופאפ לסיום סשן
+  openEndSessionPopup();
+});
+
+document.getElementById("submit-end-session").addEventListener("click", () => {
+  const description = document.getElementById("session-description").value;
+  const labelID = document.getElementById("session-label").value;
+
+  const data = {
+    ...window.sessionToClose,
+    description,
+    labelID: labelID ? parseInt(labelID) : null,
+    isArchived: false,
+    status: "Ended",
+  };
+
+  console.log("📤 סיום סשן נשלח:", data);
+
+  ajaxCall(
+    "PUT",
+    "https://localhost:7198/api/Session/update_session",
+    JSON.stringify(data),
+    () => {
+      alert("✅ הסשן הסתיים בהצלחה!");
+      $.fancybox.close();
+      table.clear().draw();
+      renderTableFromDB();
+    },
+    () => {
+      alert("❌ שגיאה בסיום הסשן");
+    }
+  );
+});
+
+$(document).ready(function () {
+  table = $("#sessionsTable").DataTable({
+    responsive: true,
+    language: {
+      url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/he.json",
+    },
+    paging: false,
+    searching: false,
+    info: false,
+  });
+
+  // Export functionality
+  document.getElementById("export-pdf").addEventListener("click", exportToPdf);
+  document
+    .getElementById("export-excel")
+    .addEventListener("click", exportToExcel);
+  document
+    .getElementById("create-invoice")
+    .addEventListener("click", createGreenInvoice);
+
+  function exportToPdf() {
+    const currentDate = new Date().toLocaleDateString("he-IL");
+    const projectName = document.getElementById("ProjectTitle").innerText;
+    const clientName = document.getElementById("ProjectClient").innerText;
+    const fileName = `${projectName} - סשנים - ${currentDate}.pdf`;
+
+    // Get data from table
+    const tableData = getTableData();
+
+    // Create a window object for the PDF
+    const pdfWindow = window.open("", "_blank");
+
+    // Build HTML content for PDF
+    let pdfContent = `
+      <html dir="rtl">
+      <head>
+        <title>${fileName}</title>
+        <style>
+          body {
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            direction: rtl;
+          }
+          h1, h2 {
+            text-align: center;
+            color: #0072ff;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+          th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: right;
+          }
+          th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+          }
+          .report-header {
+            margin-bottom: 30px;
+            text-align: center;
+          }
+          .report-date {
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 14px;
+          }
+          .total-row {
+            font-weight: bold;
+            background-color: #f2f2f2;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="report-header">
+          <h1>דוח סשנים: ${projectName}</h1>
+          <h2>לקוח: ${clientName}</h2>
+        </div>
+        <div class="report-date">
+          <p>הופק בתאריך: ${currentDate}</p>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>תווית</th>
+              <th>תאריך</th>
+              <th>שעת התחלה</th>
+              <th>שעת סיום</th>
+              <th>משך זמן</th>
+              <th>תעריף</th>
+              <th>שכר</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
+    // Calculate totals
+    let totalDuration = 0;
+    let totalEarnings = 0;
+
+    // Add rows to PDF content
+    tableData.forEach((row) => {
+      pdfContent += `<tr>
+        <td>${row.label}</td>
+        <td>${row.date}</td>
+        <td>${row.startTime}</td>
+        <td>${row.endTime}</td>
+        <td>${row.duration}</td>
+        <td>${row.rate} ₪</td>
+        <td>${row.earnings} ₪</td>
+      </tr>`;
+
+      // Add to totals if possible
+      if (row.durationSeconds) {
+        totalDuration += row.durationSeconds;
+      }
+
+      if (row.earningsValue) {
+        totalEarnings += row.earningsValue;
+      }
+    });
+
+    // Add totals row
+    pdfContent += `
+          <tr class="total-row">
+            <td colspan="4">סה"כ</td>
+            <td>${formatSecondsToHHMMSS(totalDuration)}</td>
+            <td></td>
+            <td>${totalEarnings.toFixed(2)} ₪</td>
+          </tr>
+        </tbody>
+      </table>
+    </body>
+    </html>
+    `;
+
+    // Write to the new window
+    pdfWindow.document.open();
+    pdfWindow.document.write(pdfContent);
+    pdfWindow.document.close();
+
+    // Use window.print() to open the print dialog
+    setTimeout(() => {
+      pdfWindow.print();
+    }, 500);
+
+    // Show success notification
+    showExportNotification("PDF");
+  }
+
+  function exportToExcel() {
+    const currentDate = new Date().toLocaleDateString("he-IL");
+    const projectName = document.getElementById("ProjectTitle").innerText;
+    const fileName = `${projectName} - סשנים - ${currentDate}.xlsx`;
+
+    // Get data from table
+    const tableData = getTableData();
+
+    // Create worksheet and workbook
+    const ws = XLSX.utils.json_to_sheet(
+      tableData.map((row) => ({
+        תווית: row.label,
+        תאריך: row.date,
+        "שעת התחלה": row.startTime,
+        "שעת סיום": row.endTime,
+        "משך זמן": row.duration,
+        "תעריף (₪)": row.rate,
+        "שכר (₪)": row.earnings,
+      }))
+    );
+
+    // Set column widths for better appearance
+    ws["!cols"] = [
+      { wch: 15 }, // תווית
+      { wch: 12 }, // תאריך
+      { wch: 12 }, // שעת התחלה
+      { wch: 12 }, // שעת סיום
+      { wch: 12 }, // משך זמן
+      { wch: 12 }, // תעריף
+      { wch: 12 }, // שכר
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "סשנים");
+
+    // Create and download excel file
+    XLSX.writeFile(wb, fileName);
+
+    // Show success notification
+    showExportNotification("Excel");
+  }
+
+  // Function to create a Green Invoice
+  function createGreenInvoice() {
+    // Show loading spinner
+    showLoadingPopup("מכין נתונים לחשבונית...");
+
+    // Get data from the sessions table
+    const tableData = getTableData();
+
+    // Calculate totals
+    let totalAmount = 0;
+    let totalDuration = 0;
+    let hoursWorked = 0;
+
+    tableData.forEach((session) => {
+      totalAmount += session.earningsValue || 0;
+      totalDuration += session.durationSeconds || 0;
+    });
+
+    hoursWorked = (totalDuration / 3600).toFixed(2); // Convert seconds to hours with 2 decimal places
+
+    // Prepare invoice data
+    const invoiceDetails = {
+      client: CurrentProject.CompanyName,
+      description: `עבודה על פרויקט: ${CurrentProject.ProjectName}`,
+      amount: totalAmount.toFixed(2),
+      hours: hoursWorked,
+    };
+
+    // Connect to Green Invoice API
+    connectToGreenInvoice(invoiceDetails);
+  }
+
+  function connectToGreenInvoice(invoiceDetails) {
+    // 1. Check if user has Green Invoice credentials stored
+    const greenInvoiceToken = localStorage.getItem("greenInvoiceToken");
+
+    if (greenInvoiceToken) {
+      // If token exists, try to create invoice with existing token
+      createInvoiceWithToken(greenInvoiceToken, invoiceDetails);
+    } else {
+      // If not, show popup for credentials
+      hideLoadingPopup();
+      showGreenInvoiceAuthPopup(invoiceDetails);
+    }
+  }
+
+  function createInvoiceWithToken(token, invoiceDetails) {
+    // Format the current date as DD/MM/YYYY
+    const today = new Date();
+    const formattedDate = `${today.getDate().toString().padStart(2, "0")}/${(
+      today.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}/${today.getFullYear()}`;
+
+    // Create the invoice request data for Green Invoice API
+    const invoiceData = {
+      type: 320, // Invoice type for "חשבונית עסקה"
+      lang: "he",
+      date: formattedDate,
+      currency: "ILS",
+      vatType: 0, // 0 for no VAT
+      remarks: `הופק באמצעות EasyTracker`,
+      client: {
+        name: invoiceDetails.client,
+      },
+      income: [
+        {
+          catalogNum: "",
+          description: invoiceDetails.description,
+          quantity: invoiceDetails.hours,
+          price: (invoiceDetails.amount / invoiceDetails.hours).toFixed(2),
+          currency: "ILS",
+          vatType: 0,
+        },
+      ],
+    };
+
+    // Make API call to Green Invoice
+    $.ajax({
+      url: "https://api.greeninvoice.co.il/api/v1/documents",
+      type: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify(invoiceData),
+      success: function (response) {
+        hideLoadingPopup();
+
+        // Open the generated invoice in a new tab
+        if (response && response.id) {
+          const viewUrl = `https://greeninvoice.co.il/view/payment/${response.id}`;
+          window.open(viewUrl, "_blank");
+
+          // Show success notification
+          showInvoiceNotification("success", "החשבונית נוצרה בהצלחה!");
+        } else {
+          showInvoiceNotification("error", "נוצרה חשבונית אך לא התקבל מזהה");
+        }
+      },
+      error: function (xhr) {
+        hideLoadingPopup();
+
+        // If authorization failed, clear token and ask user to login again
+        if (xhr.status === 401) {
+          localStorage.removeItem("greenInvoiceToken");
+          showGreenInvoiceAuthPopup(invoiceDetails);
+        } else {
+          showInvoiceNotification("error", "שגיאה ביצירת החשבונית");
+          console.error("Green Invoice API error:", xhr);
+        }
+      },
+    });
+  }
+
+  function showGreenInvoiceAuthPopup(invoiceDetails) {
+    // Create popup HTML
+    const popupHtml = `
+      <div class="popup-form" style="width: 400px; padding: 20px;">
+        <h2 style="text-align: center; margin-bottom: 20px;">🔑 התחברות לחשבונית ירוקה</h2>
+        <p style="margin-bottom: 15px; text-align: right;">יש להזין את פרטי הכניסה שלך לחשבונית ירוקה כדי להפיק חשבונית</p>
+        
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; text-align: right;">אימייל:</label>
+          <input type="email" id="green-invoice-email" style="width: 100%; padding: 8px; direction: ltr; text-align: left;" />
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 5px; text-align: right;">סיסמה:</label>
+          <input type="password" id="green-invoice-password" style="width: 100%; padding: 8px;" />
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; gap: 10px;">
+          <button id="green-invoice-cancel" style="padding: 10px; border: 1px solid #ccc; background: #f5f5f5; border-radius: 4px; cursor: pointer; flex: 1;">ביטול</button>
+          <button id="green-invoice-login" style="padding: 10px; background: linear-gradient(to right, #8e44ad, #6c3483); color: white; border: none; border-radius: 4px; cursor: pointer; flex: 1;">התחבר</button>
+        </div>
+      </div>
+    `;
+
+    // Show the popup
+    $.fancybox.open({
+      src: popupHtml,
+      type: "html",
+      opts: {
+        animationEffect: "fade",
+        animationDuration: 250,
+        touch: false,
+      },
+    });
+
+    // Handle login button click
+    $(document).on("click", "#green-invoice-login", function () {
+      const email = $("#green-invoice-email").val();
+      const password = $("#green-invoice-password").val();
+
+      if (!email || !password) {
+        alert("יש למלא את כל השדות");
+        return;
+      }
+
+      // Close the auth popup
+      $.fancybox.close();
+
+      // Show loading
+      showLoadingPopup("מתחבר לחשבונית ירוקה...");
+
+      // Authenticate with Green Invoice
+      $.ajax({
+        url: "https://api.greeninvoice.co.il/api/v1/account/token",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+        success: function (response) {
+          if (response && response.token) {
+            // Save token for future use (1 hour validity typically)
+            localStorage.setItem("greenInvoiceToken", response.token);
+
+            // Create invoice with the token
+            createInvoiceWithToken(response.token, invoiceDetails);
+          } else {
+            hideLoadingPopup();
+            showInvoiceNotification("error", "לא התקבל טוקן חיבור תקין");
+          }
+        },
+        error: function (xhr) {
+          hideLoadingPopup();
+          showInvoiceNotification("error", "שגיאה בהתחברות לחשבונית ירוקה");
+          console.error("Green Invoice auth error:", xhr);
+        },
+      });
+    });
+
+    // Handle cancel button
+    $(document).on("click", "#green-invoice-cancel", function () {
+      $.fancybox.close();
+    });
+  }
+
+  function showLoadingPopup(message) {
+    // Create and show loading popup
+    const loadingHtml = `
+      <div class="loading-popup">
+        <div class="spinner"></div>
+        <div class="loading-message">${message}</div>
+      </div>
+    `;
+
+    // Add spinner styles if not already present
+    if (!$("#spinner-styles").length) {
+      $("head").append(`
+        <style id="spinner-styles">
+          .loading-popup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-align: center;
+          }
+          .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #8e44ad;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+          }
+          .loading-message {
+            font-size: 16px;
+            font-weight: bold;
+          }
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        </style>
+      `);
+    }
+
+    // Show the loading popup
+    $.fancybox.open({
+      src: loadingHtml,
+      type: "html",
+      opts: {
+        animationEffect: "fade",
+        animationDuration: 250,
+        touch: false,
+        closeBtn: false,
+        clickSlide: false,
+        clickOutside: false,
+      },
+    });
+  }
+
+  function hideLoadingPopup() {
+    $.fancybox.close();
+  }
+
+  function showInvoiceNotification(type, message) {
+    // Create notification element
+    const notification = document.createElement("div");
+    notification.className = `invoice-notification ${type}`;
+
+    // Add icon based on type
+    let icon = type === "success" ? "✅" : "❌";
+
+    notification.innerHTML = `
+      <div class="notification-content">
+        <span class="notification-icon">${icon}</span>
+        <span class="notification-message">${message}</span>
+      </div>
+      <button class="notification-close">&times;</button>
+    `;
+
+    // Add styles if not already present
+    if (!$("#notification-styles").length) {
+      $("head").append(`
+        <style id="notification-styles">
+          .invoice-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: 300px;
+            max-width: 500px;
+            z-index: 9999;
+            animation: slideIn 0.3s forwards;
+          }
+          .invoice-notification.success {
+            border-right: 5px solid #4CAF50;
+          }
+          .invoice-notification.error {
+            border-right: 5px solid #F44336;
+          }
+          .notification-content {
+            display: flex;
+            align-items: center;
+          }
+          .notification-icon {
+            margin-left: 15px;
+            font-size: 20px;
+          }
+          .notification-message {
+            font-size: 16px;
+          }
+          .notification-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #999;
+          }
+          @keyframes slideIn {
+            0% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+            100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+          }
+        </style>
+      `);
+    }
+
+    // Add to document
+    document.body.appendChild(notification);
+
+    // Set auto-remove timer
+    setTimeout(() => {
+      notification.style.animation = "0.3s slideOut forwards";
+
+      setTimeout(() => {
+        if (notification.parentNode) {
+          document.body.removeChild(notification);
+        }
+      }, 300);
+    }, 4000);
+
+    // Handle close button
+    notification
+      .querySelector(".notification-close")
+      .addEventListener("click", () => {
+        if (notification.parentNode) {
+          document.body.removeChild(notification);
+        }
+      });
+  }
+
+  function format(session) {
+    const desc = session.Description || "אין תיאור זמין לסשן זה.";
+    return `<div class="details-row">תיאור הסשן: ${desc}</div>`;
+  }
+
+  $("#sessionsTable tbody").on("click", "td .details-control", function () {
+    const tr = $(this).closest("tr");
+    const row = table.row(tr);
+    const session = $(tr).data("session"); // שליפת הסשן מהשורה
+
+    if (row.child.isShown()) {
+      row.child.hide();
+      $(this).text("\u25BC");
+    } else {
+      row.child(format(session)).show();
+      $(this).text("\u25B2");
+    }
+  });
+
+  function showExportNotification(type) {
+    // Create notification element
+    const notification = document.createElement("div");
+    notification.className = "export-notification";
+    notification.innerHTML = `
+      <div class="notification-icon">✓</div>
+      <div class="notification-message">הקובץ יוצא ל${type} בהצלחה!</div>
+    `;
+
+    // Style the notification
+    notification.style.position = "fixed";
+    notification.style.top = "20px";
+    notification.style.left = "50%";
+    notification.style.transform = "translateX(-50%)";
+    notification.style.backgroundColor = "#4CAF50";
+    notification.style.color = "white";
+    notification.style.padding = "15px 25px";
+    notification.style.borderRadius = "8px";
+    notification.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
+    notification.style.zIndex = "9999";
+    notification.style.display = "flex";
+    notification.style.alignItems = "center";
+    notification.style.gap = "10px";
+    notification.style.opacity = "0";
+    notification.style.transition = "opacity 0.3s, transform 0.3s";
+
+    // Add to body
+    document.body.appendChild(notification);
+
+    // Fade in
+    setTimeout(() => {
+      notification.style.opacity = "1";
+    }, 10);
+
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+      notification.style.opacity = "0";
+      setTimeout(() => {
+        if (notification.parentNode) {
+          document.body.removeChild(notification);
+        }
+      }, 300);
+    }, 3000);
+  }
+
+  function getTableData() {    const data = [];    const rows = document.querySelectorAll("#sessionsTable tbody tr");        rows.forEach((row) => {      const cells = row.querySelectorAll("td");      if (cells.length >= 7) {        // Ensure it's a data row        const label = cells[0].textContent.trim();        const date = cells[1].textContent.trim();        const startTime = cells[2].textContent.trim();        const endTime = cells[3].textContent.trim();        const duration = cells[4].textContent.trim();        const rate = parseFloat(cells[5].textContent.trim()) || 0;        const earnings = cells[6].textContent.trim();                // Get session data if available for additional calculations        const sessionData = $(row).data("session");        const durationSeconds = sessionData ? sessionData.DurationSeconds : 0;        const earningsValue = parseFloat(earnings) || 0;                data.push({          label,          date,          startTime,          endTime,          duration,          rate,          earnings,          durationSeconds,          earningsValue,        });      }    });        return data;  }
+});

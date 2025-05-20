@@ -209,6 +209,7 @@ document.addEventListener("DOMContentLoaded", renderTableFromDB);
 document.addEventListener("DOMContentLoaded", FillDeatils);
 document.addEventListener("DOMContentLoaded", loadTeamPreview);
 document.addEventListener("DOMContentLoaded", setupTeamManagementButton);
+document.addEventListener("DOMContentLoaded", setupChatButton);
 
 function FillDeatils() {
   const ProfName = document.getElementById("menu-prof-name");
@@ -526,7 +527,7 @@ $(document).ready(function () {
           th, td {
             border: 1px solid #ddd;
             padding: 8px;
-            text-align: right;
+            text-align: center;
           }
           th {
             background-color: #f2f2f2;
@@ -545,6 +546,9 @@ $(document).ready(function () {
             font-weight: bold;
             background-color: #f2f2f2;
           }
+          .total-row td {
+            text-align: center;
+          }
         </style>
       </head>
       <body>
@@ -562,8 +566,8 @@ $(document).ready(function () {
               <th>תאריך</th>
               <th>שעת התחלה</th>
               <th>שעת סיום</th>
-              <th>משך זמן</th>
               <th>תעריף</th>
+              <th>משך זמן</th>
               <th>שכר</th>
             </tr>
           </thead>
@@ -581,8 +585,8 @@ $(document).ready(function () {
         <td>${row.date}</td>
         <td>${row.startTime}</td>
         <td>${row.endTime}</td>
-        <td>${row.duration}</td>
         <td>${row.rate} ₪</td>
+        <td>${row.duration}</td>
         <td>${row.earnings} ₪</td>
       </tr>`;
 
@@ -599,10 +603,14 @@ $(document).ready(function () {
     // Add totals row
     pdfContent += `
           <tr class="total-row">
-            <td colspan="4">סה"כ</td>
-            <td>${formatSecondsToHHMMSS(totalDuration)}</td>
-            <td></td>
-            <td>${totalEarnings.toFixed(2)} ₪</td>
+            <td colspan="4" style="text-align: right; font-weight: bold;">סה"כ:</td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center; font-weight: bold;">${formatSecondsToHHMMSS(
+              totalDuration
+            )}</td>
+            <td style="text-align: center; font-weight: bold;">${totalEarnings.toFixed(
+              2
+            )} ₪</td>
           </tr>
         </tbody>
       </table>
@@ -639,8 +647,8 @@ $(document).ready(function () {
         תאריך: row.date,
         "שעת התחלה": row.startTime,
         "שעת סיום": row.endTime,
-        "משך זמן": row.duration,
         "תעריף (₪)": row.rate,
+        "משך זמן": row.duration,
         "שכר (₪)": row.earnings,
       }))
     );
@@ -651,8 +659,8 @@ $(document).ready(function () {
       { wch: 12 }, // תאריך
       { wch: 12 }, // שעת התחלה
       { wch: 12 }, // שעת סיום
-      { wch: 12 }, // משך זמן
       { wch: 12 }, // תעריף
+      { wch: 12 }, // משך זמן
       { wch: 12 }, // שכר
     ];
 
@@ -678,8 +686,8 @@ $(document).ready(function () {
         const date = cells[1].textContent.trim();
         const startTime = cells[2].textContent.trim();
         const endTime = cells[3].textContent.trim();
-        const duration = cells[4].textContent.trim();
-        const rate = parseFloat(cells[5].textContent.trim()) || 0;
+        const rate = parseFloat(cells[4].textContent.trim()) || 0;
+        const duration = cells[5].textContent.trim();
         const earnings = cells[6].textContent.trim();
 
         // Get session data if available for additional calculations
@@ -692,8 +700,8 @@ $(document).ready(function () {
           date,
           startTime,
           endTime,
-          duration,
           rate,
+          duration,
           earnings,
           durationSeconds,
           earningsValue,
@@ -797,11 +805,12 @@ function formatSecondsToHHMMSS(seconds) {
   return `${hours}:${minutes}:${secs}`;
 }
 
-function calculateEarnings(durationSeconds, hourlyRate) {
+function calculateEarnings(hourlyRate, durationSeconds) {
   const hours = durationSeconds / 3600;
   const earnings = hours * hourlyRate;
   return earnings.toFixed(2); // נחזיר עם 2 ספרות אחרי הנקודה
 }
+
 function renderTableFromDB() {
   //bring sessions from db
   const apiUrl = `https://localhost:7198/api/Session/GetAllSessionsByUserAndProject?userID=${CurrentUser.id}&projectID=${CurrentProject.ProjectID}`;
@@ -814,6 +823,9 @@ function renderTableFromDB() {
     console.log(response);
     console.log(table);
 
+    let totalDurationSeconds = 0;
+    let totalEarningsValue = 0;
+
     response.forEach((session) => {
       const rawDate = session.StartDate;
       const { time, formattedDate } = formatDateTime(rawDate);
@@ -824,6 +836,15 @@ function renderTableFromDB() {
         ? formatDateTime(session.EndDate).time
         : "--:--:--";
 
+      // Calculate earnings for this session
+      const earnings = calculateEarnings(
+        session.HourlyRate,
+        session.DurationSeconds
+      );
+      // Add to totals
+      totalDurationSeconds += session.DurationSeconds;
+      totalEarningsValue += parseFloat(earnings);
+
       const newRow = [
         `<span style="width: 80%; height: 15px; background-color: ${
           session.LabelColor ?? "#RRGGBBAA"
@@ -833,9 +854,9 @@ function renderTableFromDB() {
         formattedDate, // תאריך
         time, // שעת התחלה
         endTimeDisplay, // שעת סיום
-        formatSecondsToHHMMSS(session.DurationSeconds), // משך זמן
         session.HourlyRate, // תעריף
-        calculateEarnings(session.HourlyRate, session.DurationSeconds), // שכר
+        formatSecondsToHHMMSS(session.DurationSeconds), // משך זמן
+        earnings, // שכר
         '<button class="edit-btn">✏️</button><button id="dlt-btn-session" class="delete-btn">🗑️</button>', // כפתורים
         '<button class="details-control">▼</button>', // פרטים נוספים
       ];
@@ -847,6 +868,18 @@ function renderTableFromDB() {
       $(rowNode).data("session", session); // שמירת הסשן כולו
       $(rowNode).attr("data-session-id", session.SessionID); // שמירת ה-ID כשדה data
     });
+
+    // Update table footer with totals
+    document.getElementById(
+      "total-worktime"
+    ).innerHTML = `<strong style="display: block; text-align: center">${formatSecondsToHHMMSS(
+      totalDurationSeconds
+    )}</strong>`;
+    document.getElementById(
+      "total-earnings"
+    ).innerHTML = `<strong style="display: block; text-align: center">${totalEarningsValue.toFixed(
+      2
+    )}</strong>`;
 
     totalPastSeconds = response.reduce(
       (sum, session) => sum + session.DurationSeconds,
@@ -1014,7 +1047,34 @@ document.addEventListener("DOMContentLoaded", function () {
     projects.forEach((project) => {
       const slide = document.createElement("div");
       slide.className = "swiper-slide";
-      slide.style.backgroundImage = `url(${project.Image})`;
+
+      // Check if image exists and format URL properly
+      if (project.Image && project.Image.trim() !== "") {
+        try {
+          // Sanitize URL to prevent issues with special characters
+          const imageUrl = project.Image.trim().replace(/\\/g, "/");
+          slide.style.backgroundImage = `url("${imageUrl}")`;
+          slide.style.backgroundSize = "cover";
+          slide.style.backgroundPosition = "center";
+          // Add error handling for images
+          const img = new Image();
+          img.onerror = function () {
+            // Fallback to default if image fails to load
+            slide.style.backgroundColor = "#f0f0f0";
+            slide.style.backgroundImage = `url("./images/default-project.png")`;
+          };
+          img.src = imageUrl;
+        } catch (e) {
+          // Use default if any error occurs
+          slide.style.backgroundColor = "#f0f0f0";
+          slide.style.backgroundImage = `url("./images/default-project.png")`;
+          console.error("Error loading project image:", e);
+        }
+      } else {
+        // Set default background if no image
+        slide.style.backgroundColor = "#f0f0f0";
+        slide.style.backgroundImage = `url("./images/default-project.png")`;
+      }
 
       slide.innerHTML = `
           <div class="slide-content">
@@ -1032,9 +1092,15 @@ document.addEventListener("DOMContentLoaded", function () {
       wrapper.appendChild(slide);
     });
 
+    // Initialize Swiper with additional options
     new Swiper(".recent-projects-swiper", {
       slidesPerView: 2,
       spaceBetween: 20,
+      loop: true, // Enable loop
+      autoplay: {
+        delay: 3000, // Auto-advance every 3 seconds
+        disableOnInteraction: false,
+      },
       navigation: {
         nextEl: ".swiper-button-next",
         prevEl: ".swiper-button-prev",
@@ -2412,7 +2478,6 @@ function showCustomConfirm(message, onConfirm) {
       }
     }, 300);
   });
-
   // Assemble the confirm dialog
   confirmContainer.appendChild(icon);
   confirmContainer.appendChild(content);
@@ -2426,4 +2491,14 @@ function showCustomConfirm(message, onConfirm) {
   setTimeout(() => {
     confirmContainer.classList.add("show");
   }, 10);
+}
+
+// Function to handle the chat button
+function setupChatButton() {
+  const chatBtn = document.getElementById("btn-header-chat");
+
+  // No functionality for now, just a placeholder button
+  chatBtn.addEventListener("click", () => {
+    console.log("Chat button clicked - functionality not yet implemented");
+  });
 }

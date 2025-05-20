@@ -194,6 +194,7 @@
                   <div class="half-box">
                     <div class="header-Of-Team"><h3 class="team-title">צוות הפרויקט:</h3>
                       <button class="gradient-button-header-team" id="btn-header-team">ניהול צוות</button>
+                      <button class="gradient-button-header-chat" id="btn-header-chat">צ'אט</button>
                       <div id="team-dropdown-menu" style="display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 1000;">
                           <button class="team-menu-btn">➕ הוסף איש צוות</button>
                           <button class="team-menu-btn">➖ הסר איש צוות</button>
@@ -233,8 +234,8 @@
                         <th>תאריך</th>
                         <th>שעת התחלה</th>
                         <th>שעת סיום</th>
-                        <th>זמן עבודה</th>
                         <th>תעריף</th>
+                        <th>זמן עבודה</th>
                         <th>שכר</th>
                         <th></th>
                         <th></th>
@@ -244,6 +245,15 @@
                       
                       <!--כאן נכנסים הסשנים  מה-JS.. -->
                     </tbody>
+                    <tfoot>
+                      <tr>
+                        <th colspan="5" style="text-align:right">סה"כ:</th>
+                        <th id="total-worktime" style="text-align:center"></th>
+                        <th id="total-earnings" style="text-align:center"></th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </tfoot>
                   </table>
 
                   <div id="export-buttons" class="export-buttons-container">

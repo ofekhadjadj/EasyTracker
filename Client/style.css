@@ -308,7 +308,7 @@ div.profile {
 }
 
 div.profile h3 {
-  font-size: 22px;
+  font-size: 1em;
   padding: 11px;
 }
 
@@ -1030,11 +1030,13 @@ th.sorting {
 .recent-projects-swiper {
   width: 100%;
   height: 200px;
+  padding: 10px 0;
+  overflow: visible;
 }
 
 .swiper-slide {
-  background-size: cover;
-  background-position: center;
+  background-size: cover !important;
+  background-position: center !important;
   position: relative;
   border-radius: 15px;
   overflow: hidden;
@@ -1042,6 +1044,14 @@ th.sorting {
   align-items: flex-end;
   padding: 15px;
   color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  transform: scale(0.95);
+}
+
+.swiper-slide-active {
+  transform: scale(1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .swiper-slide::before {
@@ -1050,10 +1060,15 @@ th.sorting {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(0, 114, 255, 0.7),
-    rgba(0, 114, 255, 0.2)
+    rgba(0, 114, 255, 0.8),
+    rgba(0, 114, 255, 0.1)
   );
   z-index: 0;
+  transition: opacity 0.3s ease;
+}
+
+.swiper-slide:hover::before {
+  opacity: 0.9;
 }
 
 .slide-content {
@@ -1365,11 +1380,31 @@ li a.active span {
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 114, 255, 0.15);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-left: 5px;
 }
 
 .gradient-button-header-team:hover {
   transform: scale(1.03);
   box-shadow: 0 6px 14px rgba(0, 114, 255, 0.2);
+}
+
+/* Styling for the chat button */
+.gradient-button-header-chat {
+  background: linear-gradient(to right, #ff9966, #ff5e62);
+  color: white;
+  font-size: 15px;
+  font-family: "Assistant", sans-serif;
+  padding: 2px 4px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(255, 94, 98, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gradient-button-header-chat:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 14px rgba(255, 94, 98, 0.2);
 }
 
 /* Styling for the team dropdown menu */
