@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // מיפוי של דפים ייחודיים אל העמוד הראשי שיש לסמן בו 'active'
   const pageMap = {
     "projectpage.html": "projects.html",
+    "chat.html": "projects.html",
     "clientpage.html": "clients.html",
     "teamworktracking.html": "stats.html",
     // בעתיד: הוסף כאן עוד מיפויים במידת הצורך

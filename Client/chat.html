@@ -6,7 +6,7 @@
     <title>Easy Tracker - מרכז תקשורת</title>
     <link rel="icon" href="/images/fav-icon.png" type="image/png" />
 
-    <link rel="stylesheet" href="chat.css" />
+    <!-- External Styles -->
     <link rel="stylesheet" href="animate.css" />
     <link
       rel="stylesheet"
@@ -17,84 +17,78 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
     />
 
+    <!-- Page Styles -->
+    <link rel="stylesheet" href="chat.css" />
+
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   </head>
-
   <body>
     <div class="projects-continer">
-      <!-- סרגל צד -->
+      <!-- Sidebar -->
       <div class="sidbar wow fadeInRightBig">
         <div class="inner-sidbar">
           <div class="profile">
             <img src="#" class="avatar-img" alt="" />
-            <h3>הי, <span id="menu-prof-name">משתמש</span> 👋</h3>
+            <h3>
+              הי, <span id="menu-prof-name">משתמש</span> 👋
+              <span
+                id="edit-user-btn"
+                style="cursor: pointer; font-size: 20px"
+                title="עריכת פרטי משתמש"
+                >✏️</span
+              >
+            </h3>
           </div>
           <img src="./images/logo.png" class="logo-sidebar" alt="לוגו" />
           <div class="nav-continer">
             <div class="main-nav">
               <ul>
                 <li>
-                  <a href="projects.html"
-                    ><img
-                      src="./images/project icon.png"
-                      class="nav-icon"
-                    /><span>פרויקטים</span></a
-                  >
+                  <a href="projects.html">
+                    <img src="./images/project icon.png" class="nav-icon" />
+                    <span>פרויקטים</span>
+                  </a>
                 </li>
                 <li>
-                  <a href="clients.html"
-                    ><img
-                      src="./images/customers icon.png"
-                      class="nav-icon"
-                    /><span>לקוחות</span></a
-                  >
+                  <a href="clients.html">
+                    <img src="./images/customers icon.png" class="nav-icon" />
+                    <span>לקוחות</span>
+                  </a>
                 </li>
                 <li>
-                  <a href="stats.html"
-                    ><img src="./images/reports.png" class="nav-icon" /><span
-                      >ניתוחים ודוחות</span
-                    ></a
-                  >
+                  <a href="stats.html">
+                    <img src="./images/reports.png" class="nav-icon" />
+                    <span>ניתוחים ודוחות</span>
+                  </a>
                 </li>
                 <li>
-                  <a href="labels.html"
-                    ><img src="./images/tags.png" class="nav-icon" /><span
-                      >תיוגים</span
-                    ></a
-                  >
+                  <a href="labels.html">
+                    <img src="./images/tags.png" class="nav-icon" />
+                    <span>תיוגים</span>
+                  </a>
                 </li>
                 <li>
-                  <a href="reminders.html"
-                    ><img src="./images/reminders.png" class="nav-icon" /><span
-                      >תזכורות</span
-                    ></a
-                  >
-                </li>
-                <li>
-                  <a href="Chat.html" class="active"
-                    ><img src="./images/chat.png" class="nav-icon" /><span
-                      >מרכז תקשורת</span
-                    ></a
-                  >
+                  <a href="reminders.html">
+                    <img src="./images/reminders.png" class="nav-icon" />
+                    <span>תזכורות</span>
+                  </a>
                 </li>
               </ul>
             </div>
             <div class="help-nav">
               <ul>
                 <li>
-                  <a href="settings.html"
-                    ><img
-                      src="./images/settings-icon.png"
-                      class="nav-icon"
-                    /><span>הגדרות</span></a
-                  >
+                  <a href="settings.html">
+                    <img src="./images/settings-icon.png" class="nav-icon" />
+                    <span>הגדרות</span>
+                  </a>
                 </li>
                 <li>
-                  <a href="help.html"
-                    ><img src="./images/help-icon.png" class="nav-icon" /><span
-                      >עזרה</span
-                    ></a
-                  >
+                  <a href="help.html">
+                    <img src="./images/help-icon.png" class="nav-icon" />
+                    <span>עזרה</span>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -102,16 +96,16 @@
         </div>
       </div>
 
-      <!-- תוכן ראשי -->
+      <!-- Main Content -->
       <div class="content">
         <div class="inner-content">
-          <!-- כותרת ועיגולים -->
+          <!-- Header with Title & Avatars -->
           <div class="chat-header">
             <h1>מרכז תקשורת</h1>
             <div id="chat-avatars" class="chat-avatars"></div>
           </div>
 
-          <!-- אזור הצ'אט -->
+          <!-- Chat Area -->
           <div id="chat-container" class="chat-container">
             <h2 class="chat-title">בחר שיחה כדי להתחיל</h2>
             <div id="chat-messages" class="chat-messages"></div>
@@ -124,11 +118,83 @@
       </div>
     </div>
 
-    <!-- סקריפטים -->
-    <script src="js/chat.js"></script>
+    <!-- Edit User Popup -->
+    <div id="edit-user-form" class="popup-form" style="display: none">
+      <h2>✏️ עריכת פרטי משתמש</h2>
+      <form id="user-details-form">
+        <label>תמונה נוכחית:</label>
+        <div id="user-image-preview" style="margin-bottom: 10px">
+          <img
+            id="user-image-thumb"
+            src=""
+            alt="תמונה נוכחית"
+            style="
+              max-width: 120px;
+              max-height: 80px;
+              border-radius: 8px;
+              display: none;
+              box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+            "
+          />
+        </div>
+        <label for="userImageFile">בחר תמונה חדשה:</label>
+        <input
+          type="file"
+          id="userImageFile"
+          name="userImageFile"
+          accept="image/*"
+        />
+        <label>שם פרטי:</label>
+        <input type="text" id="user-firstname" required />
+        <label>שם משפחה:</label>
+        <input type="text" id="user-lastname" required />
+        <label>אימייל:</label>
+        <input
+          type="email"
+          id="user-email"
+          required
+          pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+          placeholder="example@example.com"
+        />
+        <label>סיסמה נוכחית:</label>
+        <input type="password" id="user-current-password" required />
+        <button type="submit" class="btn-submit">📤 שמור פרטים</button>
+        <button type="button" id="open-password-popup" class="btn-submit">
+          🔒 החלפת סיסמה
+        </button>
+      </form>
+    </div>
+
+    <!-- Change Password Popup -->
+    <div id="change-password-form" class="popup-form" style="display: none">
+      <h2>🔒 שינוי סיסמה</h2>
+      <form id="user-password-form">
+        <label>סיסמה נוכחית:</label>
+        <input type="password" id="old-password" required />
+        <label>סיסמה חדשה:</label>
+        <input
+          type="password"
+          id="new-password"
+          required
+          minlength="8"
+          maxlength="30"
+          pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$"
+          placeholder="לפחות 8 תווים – אותיות ומספרים"
+        />
+        <button type="submit" class="btn-submit">🔁 שנה סיסמה</button>
+      </form>
+    </div>
+
+    <!-- External Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
     <script src="js/wow.min.js"></script>
     <script>
       new WOW().init();
     </script>
+
+    <!-- Chat Logic -->
+    <script src="js/chat.js"></script>
+    <script src="js/edit-user.js"></script>
+    <script src="js/sidebar-active.js"></script>
   </body>
 </html>
