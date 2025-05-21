@@ -50,29 +50,7 @@ function toLocalDateObject(dateStr, timeStr) {
   return new Date(`${dateStr}T${timeStr}`);
 }
 
-//טעינת לייבלים לעריכת סשן
-function loadEditLabelsDropdown() {
-  const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
-  const labelSelect = document.getElementById("edit-label-id");
-  labelSelect.innerHTML = '<option value="">בחר תווית</option>';
-
-  ajaxCall(
-    "GET",
-    labelApi,
-    "",
-    (labels) => {
-      labels.forEach((label) => {
-        const option = document.createElement("option");
-        option.value = label.labelID;
-        option.textContent = label.labelName;
-        labelSelect.appendChild(option);
-      });
-    },
-    (err) => {
-      console.error("❌ שגיאה בשליפת תוויות לעריכה:", err);
-    }
-  );
-}
+// [Function loadEditLabelsDropdown removed - now handled directly in popup code]
 
 document
   .getElementById("open-description-editor")
@@ -156,14 +134,7 @@ document.getElementById("desc-form").addEventListener("submit", function (e) {
       });
     },
     () => {
-      // Show error notification
-      const notification = document.createElement("div");
-      notification.className = "save-notification error";
-      notification.innerHTML = `
-        <div class="notification-icon">✕</div>
-        <div class="notification-message">שגיאה בשמירת התיאור</div>
-      `;
-      document.body.appendChild(notification);
+      // Show error notification      const notification = document.createElement("div");      notification.className = "save-notification";      notification.innerHTML = `        <div class="notification-icon">✕</div>        <div class="notification-message">שגיאה בשמירת התיאור</div>      `;      document.body.appendChild(notification);
 
       // Animate notification
       setTimeout(() => {
@@ -186,30 +157,298 @@ document.getElementById("desc-form").addEventListener("submit", function (e) {
 function openEndSessionPopup() {
   const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
 
+  // Clear any previous session description
+  document.getElementById("session-description").value = "";
+
   ajaxCall("GET", labelApi, "", (labels) => {
     const labelSelect = document.getElementById("session-label");
     labelSelect.innerHTML = '<option value="">בחר תווית</option>';
 
+    // Set explicit size to force dropdown direction
+    labelSelect.setAttribute("size", "1");
+
+    // Add existing labels with colors
     labels.forEach((label) => {
       const option = document.createElement("option");
       option.value = label.labelID;
       option.textContent = label.labelName;
+      // Add data attributes for color
+      if (label.labelColor) {
+        option.setAttribute("data-color", label.labelColor);
+      }
       labelSelect.appendChild(option);
+    });
+
+    // Add "Add new label" option
+    const addNewOption = document.createElement("option");
+    addNewOption.value = "add_new";
+    addNewOption.textContent = "➕ הוסף תווית חדשה";
+    addNewOption.style.fontWeight = "bold";
+    addNewOption.style.borderTop = "1px solid #ddd";
+    addNewOption.style.marginTop = "5px";
+    addNewOption.style.paddingTop = "5px";
+    labelSelect.appendChild(addNewOption);
+
+    // Add event listener for "Add new label" option
+    labelSelect.addEventListener("change", function () {
+      if (this.value === "add_new") {
+        // Store the current session data
+        const description = document.getElementById(
+          "session-description"
+        ).value;
+        localStorage.setItem("pendingSessionDescription", description);
+
+        // Open the add label popup
+        openAddLabelPopup();
+
+        // Reset selection
+        this.value = "";
+      }
+    });
+
+    // Apply custom styling to select options on focus
+    labelSelect.addEventListener("focus", function () {
+      this.style.borderColor = "#0072ff";
+      this.style.boxShadow = "0 0 0 3px rgba(0, 114, 255, 0.1)";
+    });
+
+    labelSelect.addEventListener("blur", function () {
+      this.style.borderColor = "#ddd";
+      this.style.boxShadow = "none";
     });
 
     // פתיחת הפופאפ
     $.fancybox.open({
       src: "#end-session-popup",
       type: "inline",
+      touch: false, // Disable touch events to avoid interference
+      afterShow: function () {
+        // Apply dropdown fix
+        const selectElement = document.getElementById("session-label");
+
+        // Force reset any previous state
+        selectElement.blur();
+        selectElement.size = 1;
+
+        // Temporarily disable and re-enable to force refresh
+        setTimeout(() => {
+          selectElement.disabled = true;
+
+          setTimeout(() => {
+            selectElement.disabled = false;
+
+            // Make sure dropdown behavior is initialized
+            selectElement.style.display = "block";
+
+            // Manually initialize this specific dropdown
+            selectElement.addEventListener("mousedown", function (e) {
+              if (this.size > 1) {
+                setTimeout(() => {
+                  this.size = 1;
+                  this.blur();
+                }, 0);
+              } else {
+                // Only stop propagation when opening to avoid issues with fancybox
+                e.stopPropagation();
+              }
+            });
+
+            selectElement.addEventListener("blur", function () {
+              this.size = 1;
+            });
+
+            selectElement.addEventListener("change", function () {
+              this.size = 1;
+              this.blur();
+            });
+          }, 50);
+        }, 50);
+      },
     });
   });
 }
 
-document.addEventListener("DOMContentLoaded", renderTableFromDB);
-document.addEventListener("DOMContentLoaded", FillDeatils);
-document.addEventListener("DOMContentLoaded", loadTeamPreview);
-document.addEventListener("DOMContentLoaded", setupTeamManagementButton);
-document.addEventListener("DOMContentLoaded", setupChatButton);
+// Function to open add label popup
+function openAddLabelPopup(fromEditSession = false) {
+  // Create popup for adding a new label
+  const popupHtml = `
+    <div id="add-label-popup" style="width: 400px; padding: 25px; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+      <h2 style="text-align: center; margin-bottom: 20px; color: #0072ff;">הוספת תווית חדשה</h2>
+      
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 500;">שם התווית:</label>
+        <input type="text" id="new-label-name" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 15px; box-sizing: border-box;">
+      </div>
+      
+      <div style="margin-bottom: 25px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 500;">צבע:</label>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+          <div class="color-option" data-color="#FF5252" style="background-color: #FF5252; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;"></div>
+          <div class="color-option" data-color="#FF4081" style="background-color: #FF4081; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;"></div>
+          <div class="color-option" data-color="#7C4DFF" style="background-color: #7C4DFF; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;"></div>
+          <div class="color-option" data-color="#536DFE" style="background-color: #536DFE; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;"></div>
+          <div class="color-option" data-color="#448AFF" style="background-color: #448AFF; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;"></div>
+          <div class="color-option" data-color="#64FFDA" style="background-color: #64FFDA; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;"></div>
+          <div class="color-option" data-color="#4CAF50" style="background-color: #4CAF50; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;"></div>
+          <div class="color-option" data-color="#CDDC39" style="background-color: #CDDC39; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;"></div>
+          <div class="color-option" data-color="#FFC107" style="background-color: #FFC107; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;"></div>
+          <div class="color-option" data-color="#FF9800" style="background-color: #FF9800; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;"></div>
+        </div>
+        <input type="hidden" id="new-label-color" value="#FF5252">
+      </div>
+      
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <button id="save-new-label" style="padding: 12px 20px; background: linear-gradient(135deg, #0072ff, #00c6ff); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; flex: 1;">שמור</button>
+        <button onclick="$.fancybox.close()" style="padding: 12px 20px; background: #f0f0f0; color: #333; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; flex: 1;">ביטול</button>
+      </div>
+    </div>
+  `;
+
+  $.fancybox.open({
+    src: popupHtml,
+    type: "html",
+    autoFocus: false,
+    afterShow: function () {
+      // Set initial selected color
+      document.querySelector(".color-option").classList.add("selected");
+
+      // Add click handlers to color options
+      document.querySelectorAll(".color-option").forEach((element) => {
+        element.addEventListener("click", function () {
+          // Remove previous selection
+          document.querySelectorAll(".color-option").forEach((el) => {
+            el.style.boxShadow = "none";
+            el.classList.remove("selected");
+          });
+
+          // Add selection to clicked color
+          this.style.boxShadow =
+            "0 0 0 3px white, 0 0 0 5px " + this.dataset.color;
+          this.classList.add("selected");
+
+          // Update hidden input
+          document.getElementById("new-label-color").value = this.dataset.color;
+        });
+
+        // Add hover effect
+        element.addEventListener("mouseenter", function () {
+          if (!this.classList.contains("selected")) {
+            this.style.transform = "scale(1.1)";
+          }
+        });
+
+        element.addEventListener("mouseleave", function () {
+          if (!this.classList.contains("selected")) {
+            this.style.transform = "scale(1)";
+          }
+        });
+      });
+
+      // Handle save button click
+      document
+        .getElementById("save-new-label")
+        .addEventListener("click", function () {
+          const labelName = document
+            .getElementById("new-label-name")
+            .value.trim();
+          const labelColor = document.getElementById("new-label-color").value;
+
+          if (!labelName) {
+            alert("אנא הכנס שם לתווית");
+            return;
+          }
+
+          // Create new label object
+          const newLabel = {
+            labelName: labelName,
+            labelColor: labelColor,
+            userID: CurrentUser.id,
+          };
+
+          // Using the correct endpoint and method from labels.js
+          $.ajax({
+            url: "https://localhost:7198/api/Label/addNewLabel",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(newLabel),
+            success: (response) => {
+              console.log("✅ התווית נוספה בהצלחה:", response);
+
+              // Close current popup
+              $.fancybox.close();
+
+              // החזרה לפופאפ המתאים על פי המקור
+              if (fromEditSession) {
+                // שחזור נתוני העריכה
+                const pendingData = JSON.parse(
+                  localStorage.getItem("pendingEditSession") || "{}"
+                );
+
+                // פתיחת פופאפ העריכה מחדש
+                // פתח את פופאפ העריכה מחדש עם הנתונים הקודמים
+                $(document).trigger("reopenEditSessionPopup", [
+                  response.labelID,
+                ]);
+
+                // מחיקת הנתונים השמורים
+                localStorage.removeItem("pendingEditSession");
+              } else {
+                // Immediately reopen the end session popup
+                openEndSessionPopup();
+
+                // Restore the description if available
+                const savedDescription = localStorage.getItem(
+                  "pendingSessionDescription"
+                );
+                if (savedDescription) {
+                  document.getElementById("session-description").value =
+                    savedDescription;
+                  localStorage.removeItem("pendingSessionDescription");
+                }
+              }
+
+              // Show success notification
+              showLabelAddedNotification();
+            },
+            error: (error) => {
+              console.error("❌ שגיאה בהוספת התווית:", error);
+              alert("שגיאה בהוספת התווית");
+            },
+          });
+        });
+    },
+  });
+}
+
+// Function to show notification that label was added successfully
+function showLabelAddedNotification() {
+  const notification = document.createElement("div");
+  notification.className = "save-notification";
+  notification.style.zIndex = "99999"; // Ensure it appears over the fancybox
+  notification.innerHTML = `
+    <div class="notification-icon">✓</div>
+    <div class="notification-message">התווית נוספה בהצלחה!</div>
+  `;
+
+  document.body.appendChild(notification);
+
+  // Animate notification
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 10);
+
+  // Remove notification after delay
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => {
+      if (notification.parentNode) {
+        document.body.removeChild(notification);
+      }
+    }, 500);
+  }, 3000);
+}
+
+// הגדרות אלו הועברו לאירוע DOMContentLoaded אחד כולל בקוד בהמשך הקובץ
 
 function FillDeatils() {
   const ProfName = document.getElementById("menu-prof-name");
@@ -385,8 +624,9 @@ toggleBtn.addEventListener("click", () => {
       "",
       (response) => {
         console.log("✅ סשן התחיל בהצלחה:", response);
-        table.clear().draw(); // מנקה את כל השורות לפני הרנדר
-        renderTableFromDB(); // רענן את הטבלה עם הסשן החדש
+        // Clear and completely refresh the table with newest sessions at top
+        table.clear();
+        renderTableFromDB();
       },
       (xhr) => {
         console.error("❌ שגיאה בהתחלת סשן:", xhr);
@@ -464,13 +704,62 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
     "https://localhost:7198/api/Session/update_session",
     JSON.stringify(data),
     () => {
-      alert("✅ הסשן הסתיים בהצלחה!");
-      $.fancybox.close();
-      table.clear().draw();
+      // Close the popup completely including overlay
+      $.fancybox.close(true);
+
+      // Reset any pending session data
+      if (localStorage.getItem("pendingSessionDescription")) {
+        localStorage.removeItem("pendingSessionDescription");
+      }
+
+      // Replace alert with elegant notification
+      const notification = document.createElement("div");
+      notification.className = "save-notification";
+      notification.innerHTML = `
+        <div class="notification-icon">✓</div>
+        <div class="notification-message">הסשן הסתיים בהצלחה!</div>
+      `;
+      document.body.appendChild(notification);
+
+      // Animate notification
+      setTimeout(() => {
+        notification.classList.add("show");
+      }, 10);
+
+      // Remove notification after delay
+      setTimeout(() => {
+        notification.classList.remove("show");
+        setTimeout(() => {
+          if (notification.parentNode) {
+            document.body.removeChild(notification);
+          }
+        }, 500);
+      }, 3000);
+
+      // Clear and refresh the table completely to ensure newest sessions are at the top
+      table.clear();
       renderTableFromDB();
     },
     () => {
-      alert("❌ שגיאה בסיום הסשן");
+      // Close the popup to avoid UI issues
+      $.fancybox.close(true);
+
+      // Show error notification instead of alert      const notification = document.createElement("div");      notification.className = "save-notification";      notification.innerHTML = `        <div class="notification-icon">✕</div>        <div class="notification-message">שגיאה בסיום הסשן</div>      `;      document.body.appendChild(notification);
+
+      // Animate notification
+      setTimeout(() => {
+        notification.classList.add("show");
+      }, 10);
+
+      // Remove notification after delay
+      setTimeout(() => {
+        notification.classList.remove("show");
+        setTimeout(() => {
+          if (notification.parentNode) {
+            document.body.removeChild(notification);
+          }
+        }, 500);
+      }, 3000);
     }
   );
 });
@@ -484,6 +773,7 @@ $(document).ready(function () {
     paging: false,
     searching: false,
     info: false,
+    ordering: false, // Disable DataTables' built-in ordering to use our custom sort
   });
 
   // Export functionality
@@ -759,7 +1049,20 @@ $(document).ready(function () {
 
   function format(session) {
     const desc = session.Description || "אין תיאור זמין לסשן זה.";
-    return `<div class="details-row">תיאור הסשן: ${desc}</div>`;
+
+    // Enhanced details format with better styling
+    return `
+      <div class="details-row">
+        <div style="display: flex; align-items: flex-start;">
+          <div style="flex: 1;">
+            <strong style="color: #0072ff; display: block; margin-bottom: 10px; font-size: 15px;">תיאור הסשן:</strong>
+            <div style="padding: 12px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+              ${desc}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   $("#sessionsTable tbody").on("click", "td .details-control", function () {
@@ -769,10 +1072,10 @@ $(document).ready(function () {
 
     if (row.child.isShown()) {
       row.child.hide();
-      $(this).text("\u25BC");
+      $(this).html('<i class="fas fa-chevron-down"></i>');
     } else {
       row.child(format(session)).show();
-      $(this).text("\u25B2");
+      $(this).html('<i class="fas fa-chevron-up"></i>');
     }
   });
 });
@@ -823,8 +1126,14 @@ function renderTableFromDB() {
     console.log(response);
     console.log(table);
 
+    // First clear the table to avoid duplication issues
+    table.clear();
+
     let totalDurationSeconds = 0;
     let totalEarningsValue = 0;
+
+    // Sort sessions by StartDate in descending order (newest first)
+    response.sort((a, b) => new Date(b.StartDate) - new Date(a.StartDate));
 
     response.forEach((session) => {
       const rawDate = session.StartDate;
@@ -845,29 +1154,35 @@ function renderTableFromDB() {
       totalDurationSeconds += session.DurationSeconds;
       totalEarningsValue += parseFloat(earnings);
 
+      // Enhanced label style with better visual presentation
+      const labelHtml = `<span style="width: auto; height: auto; background-color: ${
+        session.LabelColor ?? "#RRGGBBAA"
+      }; color: black; display: inline-block; padding: 6px 12px; border-radius: 20px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">${
+        session.LabelName ?? "-"
+      }</span>`;
+
       const newRow = [
-        `<span style="width: 80%; height: 15px; background-color: ${
-          session.LabelColor ?? "#RRGGBBAA"
-        }; color: black; display: inline-block; padding: 4px 10px; border-radius: 6px;">${
-          session.LabelName ?? "-"
-        }</span>`, // עמודה ריקה
+        labelHtml, // תווית
         formattedDate, // תאריך
         time, // שעת התחלה
         endTimeDisplay, // שעת סיום
         session.HourlyRate, // תעריף
         formatSecondsToHHMMSS(session.DurationSeconds), // משך זמן
         earnings, // שכר
-        '<button class="edit-btn">✏️</button><button id="dlt-btn-session" class="delete-btn">🗑️</button>', // כפתורים
-        '<button class="details-control">▼</button>', // פרטים נוספים
+        '<button class="edit-btn"><i class="fas fa-edit"></i></button><button id="dlt-btn-session" class="delete-btn"><i class="fas fa-trash-alt"></i></button>', // כפתורים
+        '<button class="details-control"><i class="fas fa-chevron-down"></i></button>', // פרטים נוספים
       ];
-      // הוספה ורינדור:
 
-      const rowNode = table.row.add(newRow).draw(false).node();
-      $(rowNode).prependTo("#sessionsTable tbody");
+      // Add row to table (already in sorted order)
+      const rowNode = table.row.add(newRow).node();
 
+      // Store session data in the row
       $(rowNode).data("session", session); // שמירת הסשן כולו
       $(rowNode).attr("data-session-id", session.SessionID); // שמירת ה-ID כשדה data
     });
+
+    // Draw the table with our pre-sorted data
+    table.draw();
 
     // Update table footer with totals
     document.getElementById(
@@ -891,7 +1206,11 @@ function renderTableFromDB() {
     document
       .getElementById("sessionsTable")
       .addEventListener("click", function (e) {
-        if (e.target.classList.contains("delete-btn")) {
+        // Check if the clicked element is the button or the icon inside it
+        if (
+          e.target.classList.contains("delete-btn") ||
+          (e.target.tagName === "I" && e.target.closest(".delete-btn"))
+        ) {
           const row = e.target.closest("tr");
           const sessionId = row.getAttribute("data-session-id");
           const session = $(row).data("session"); // ✅ שליפה מהשורה
@@ -910,8 +1229,8 @@ function renderTableFromDB() {
           <h3>מחיקת סשן</h3>
           <p>${message}</p>
           <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
-            <button class="gradient-button" id="confirmDeleteSessionBtn">כן, מחק</button>
-            <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
+            <button class="gradient-button" id="confirmDeleteSessionBtn" style="background: linear-gradient(135deg, #d50000, #ff4e50); color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(255, 78, 80, 0.3);">כן, מחק</button>
+            <button class="gradient-button" onclick="$.fancybox.close()" style="background: #f0f0f0; color: #333; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold;">ביטול</button>
           </div>
         </div>
       `;
@@ -941,6 +1260,30 @@ function renderTableFromDB() {
         () => {
           console.log("✅ הסשן נמחק מהשרת");
 
+          // Show success notification
+          const notification = document.createElement("div");
+          notification.className = "save-notification";
+          notification.innerHTML = `
+            <div class="notification-icon">✓</div>
+            <div class="notification-message">הסשן נמחק בהצלחה!</div>
+          `;
+          document.body.appendChild(notification);
+
+          // Animate notification
+          setTimeout(() => {
+            notification.classList.add("show");
+          }, 10);
+
+          // Remove notification after delay
+          setTimeout(() => {
+            notification.classList.remove("show");
+            setTimeout(() => {
+              if (notification.parentNode) {
+                document.body.removeChild(notification);
+              }
+            }, 500);
+          }, 3000);
+
           // עדכון זמן כולל (בר)
           if (durationSeconds) {
             totalPastSeconds -= durationSeconds;
@@ -950,7 +1293,33 @@ function renderTableFromDB() {
           // הסרת השורה מהטבלה
           table.row(row).remove().draw(false);
         },
-        () => console.error("❌ שגיאה במחיקת הסשן מהשרת")
+        () => {
+          console.error("❌ שגיאה במחיקת הסשן מהשרת");
+
+          // Show error notification
+          const notification = document.createElement("div");
+          notification.className = "save-notification error";
+          notification.innerHTML = `
+            <div class="notification-icon">✕</div>
+            <div class="notification-message">שגיאה במחיקת הסשן</div>
+          `;
+          document.body.appendChild(notification);
+
+          // Animate notification
+          setTimeout(() => {
+            notification.classList.add("show");
+          }, 10);
+
+          // Remove notification after delay
+          setTimeout(() => {
+            notification.classList.remove("show");
+            setTimeout(() => {
+              if (notification.parentNode) {
+                document.body.removeChild(notification);
+              }
+            }, 500);
+          }, 3000);
+        }
       );
     }
   }
@@ -961,14 +1330,17 @@ function renderTableFromDB() {
 }
 
 // פתיחת פופאפ עריכת סשן
-$(document).on("click", ".edit-btn", function () {
+$(document).on("click", ".edit-btn, .edit-btn i", function () {
   const row = $(this).closest("tr");
   const session = row.data("session");
   if (!session) return;
 
   const start = new Date(session.StartDate);
-
   const end = new Date(session.EndDate);
+
+  // Set max date attribute to today's date
+  const today = new Date().toISOString().split("T")[0];
+  $("#edit-date").attr("max", today);
 
   $("#edit-session-id").val(session.SessionID);
   $("#edit-date").val(start.toISOString().split("T")[0]);
@@ -976,14 +1348,126 @@ $(document).on("click", ".edit-btn", function () {
   $("#edit-end-time").val(end.toTimeString().slice(0, 5));
   $("#edit-rate").val(session.HourlyRate || 0);
   $("#edit-description").val(session.Description || "");
-  $("#edit-label-id").val(session.LabelID ?? "");
-  $("#edit-status").val(session.SessionStatus || "");
 
+  // פתח את הפופאפ עם fancybox
   $.fancybox.open({
     src: "#edit-session-modal",
     type: "inline",
+    touch: false,
+    width: 600,
+    maxWidth: "90%",
+    autoSize: false,
+    padding: 0,
+    margin: 20,
+    afterShow: function () {
+      // Get references to form elements
+      const labelSelect = document.getElementById("edit-label-id");
+
+      // Clear any existing options and event listeners to prevent duplicates
+      labelSelect.innerHTML = '<option value="">בחר תווית</option>';
+      $(labelSelect).off("change");
+
+      // Set dropdown properties
+      labelSelect.setAttribute("size", "1");
+      labelSelect.classList.add("force-dropdown-down");
+      labelSelect.style.display = "block";
+
+      // Add dropdown event listeners
+      labelSelect.addEventListener("mousedown", function (e) {
+        if (this.size > 1) {
+          setTimeout(() => {
+            this.size = 1;
+            this.blur();
+          }, 0);
+        }
+      });
+
+      labelSelect.addEventListener("blur", function () {
+        this.size = 1;
+      });
+
+      labelSelect.addEventListener("change", function () {
+        this.size = 1;
+        this.blur();
+
+        // Handle "Add new label" option
+        if (this.value === "add_new") {
+          // Save form data to localStorage
+          const sessionId = document.getElementById("edit-session-id").value;
+          const date = document.getElementById("edit-date").value;
+          const startTime = document.getElementById("edit-start-time").value;
+          const endTime = document.getElementById("edit-end-time").value;
+          const rate = document.getElementById("edit-rate").value;
+          const description = document.getElementById("edit-description").value;
+
+          localStorage.setItem(
+            "pendingEditSession",
+            JSON.stringify({
+              sessionId,
+              date,
+              startTime,
+              endTime,
+              rate,
+              description,
+            })
+          );
+
+          // Close current popup and open add label popup
+          $.fancybox.close();
+          openAddLabelPopup(true);
+
+          // Reset selection
+          this.value = "";
+        }
+      });
+
+      // Fetch and add labels
+      const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
+
+      ajaxCall(
+        "GET",
+        labelApi,
+        "",
+        (labels) => {
+          // Add label options
+          labels.forEach((label) => {
+            const option = document.createElement("option");
+            option.value = label.labelID;
+            option.textContent = label.labelName;
+
+            // Add color styling
+            if (label.labelColor) {
+              option.setAttribute("data-color", label.labelColor);
+              option.style.backgroundColor = label.labelColor + "20"; // צבע שקוף של התווית
+            }
+
+            labelSelect.appendChild(option);
+          });
+
+          // Add the "Add new label" option
+          const addNewOption = document.createElement("option");
+          addNewOption.value = "add_new";
+          addNewOption.textContent = "➕ הוסף תווית חדשה";
+          addNewOption.style.fontWeight = "bold";
+          addNewOption.style.borderTop = "1px solid #ddd";
+          addNewOption.style.marginTop = "5px";
+          addNewOption.style.paddingTop = "5px";
+          labelSelect.appendChild(addNewOption);
+
+          // Set the selected value based on session's label
+          if (session.LabelID) {
+            labelSelect.value = session.LabelID;
+          }
+        },
+        (err) => {
+          console.error("❌ שגיאה בשליפת תוויות לעריכה:", err);
+        }
+      );
+
+      // התמקד בשדה הראשון
+      $("#edit-date").focus();
+    },
   });
-  loadEditLabelsDropdown();
 });
 
 // פופאפ עריכת סשן שליחה לשרת
@@ -1027,12 +1511,21 @@ $(document).on("submit", "#edit-session-form", function (e) {
     apiUrl,
     JSON.stringify(updatedSession),
     () => {
-      alert("✅ הסשן עודכן בהצלחה!");
+      // סגירת הפופאפ
       $.fancybox.close();
-      location.reload();
+
+      // הצגת הודעת הצלחה מעוצבת
+      showCustomAlert("הסשן עודכן בהצלחה", "success");
+
+      // רענון הטבלה לאחר קצת זמן
+      setTimeout(() => {
+        table.clear();
+        renderTableFromDB();
+      }, 1000);
     },
     () => {
-      alert("❌ שגיאה בעדכון הסשן");
+      // הצגת הודעת שגיאה מעוצבת
+      showCustomAlert("שגיאה בעדכון הסשן", "error", false);
     }
   );
 });
@@ -2502,3 +2995,196 @@ function setupChatButton() {
     console.log("Chat button clicked - functionality not yet implemented");
   });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Existing event listeners...
+  renderTableFromDB();
+  FillDeatils();
+  loadTeamPreview();
+  setupTeamManagementButton();
+  setupChatButton();
+
+  // Initialize all force-dropdown-down elements
+  initializeDropdowns();
+});
+
+// Initialize dropdowns to open downward
+function initializeDropdowns() {
+  const dropdowns = document.querySelectorAll("select.force-dropdown-down");
+
+  dropdowns.forEach((dropdown) => {
+    // Ensure size is set
+    dropdown.setAttribute("size", "1");
+
+    // Force display block styling
+    dropdown.style.display = "block";
+
+    // Add click listener to handle dropdown behavior
+    dropdown.addEventListener("mousedown", function (e) {
+      // If the dropdown is already open when clicking, make sure it closes
+      if (this.size > 1) {
+        setTimeout(() => {
+          this.size = 1;
+          this.blur();
+        }, 0);
+      } else {
+        // Only stop propagation when opening to avoid issues with fancybox
+        e.stopPropagation();
+      }
+    });
+
+    // Reset on blur
+    dropdown.addEventListener("blur", function () {
+      this.size = 1;
+    });
+
+    // Handle change event
+    dropdown.addEventListener("change", function () {
+      this.size = 1;
+      this.blur();
+    });
+  });
+}
+
+// האזנה לאירוע החזרה מהוספת תווית חדשה בזמן עריכה
+$(document).on("reopenEditSessionPopup", function (event, newLabelID) {
+  // שחזור נתוני העריכה
+  const pendingData = JSON.parse(
+    localStorage.getItem("pendingEditSession") || "{}"
+  );
+
+  // פתיחת פופאפ העריכה מחדש
+  const row = $(`tr[data-session-id="${pendingData.sessionId}"]`);
+  const session = row.data("session");
+
+  if (!session) return;
+
+  // Set max date attribute to today's date
+  const today = new Date().toISOString().split("T")[0];
+  $("#edit-date").attr("max", today);
+
+  // הגדרת הערכים בפופאפ
+  $("#edit-session-id").val(pendingData.sessionId);
+  $("#edit-date").val(pendingData.date);
+  $("#edit-start-time").val(pendingData.startTime);
+  $("#edit-end-time").val(pendingData.endTime);
+  $("#edit-rate").val(pendingData.rate);
+  $("#edit-description").val(pendingData.description);
+
+  // פתיחת הפופאפ
+  $.fancybox.open({
+    src: "#edit-session-modal",
+    type: "inline",
+    touch: false,
+    width: 600,
+    maxWidth: "90%",
+    autoSize: false,
+    padding: 0,
+    margin: 20,
+    afterShow: function () {
+      // Get references to form elements
+      const labelSelect = document.getElementById("edit-label-id");
+
+      // Clear any existing options and event listeners to prevent duplicates
+      labelSelect.innerHTML = '<option value="">בחר תווית</option>';
+      $(labelSelect).off("change");
+
+      // Set dropdown properties
+      labelSelect.setAttribute("size", "1");
+      labelSelect.classList.add("force-dropdown-down");
+      labelSelect.style.display = "block";
+
+      // Add dropdown event listeners
+      labelSelect.addEventListener("mousedown", function (e) {
+        if (this.size > 1) {
+          setTimeout(() => {
+            this.size = 1;
+            this.blur();
+          }, 0);
+        }
+      });
+
+      labelSelect.addEventListener("blur", function () {
+        this.size = 1;
+      });
+
+      labelSelect.addEventListener("change", function () {
+        this.size = 1;
+        this.blur();
+
+        // Handle "Add new label" option
+        if (this.value === "add_new") {
+          // Save form data to localStorage
+          const sessionId = document.getElementById("edit-session-id").value;
+          const date = document.getElementById("edit-date").value;
+          const startTime = document.getElementById("edit-start-time").value;
+          const endTime = document.getElementById("edit-end-time").value;
+          const rate = document.getElementById("edit-rate").value;
+          const description = document.getElementById("edit-description").value;
+
+          localStorage.setItem(
+            "pendingEditSession",
+            JSON.stringify({
+              sessionId,
+              date,
+              startTime,
+              endTime,
+              rate,
+              description,
+            })
+          );
+
+          // Close current popup and open add label popup
+          $.fancybox.close();
+          openAddLabelPopup(true);
+
+          // Reset selection
+          this.value = "";
+        }
+      });
+
+      // Fetch and add labels
+      const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
+
+      ajaxCall(
+        "GET",
+        labelApi,
+        "",
+        (labels) => {
+          // Add label options
+          labels.forEach((label) => {
+            const option = document.createElement("option");
+            option.value = label.labelID;
+            option.textContent = label.labelName;
+
+            // Add color styling
+            if (label.labelColor) {
+              option.setAttribute("data-color", label.labelColor);
+              option.style.backgroundColor = label.labelColor + "20"; // צבע שקוף של התווית
+            }
+
+            labelSelect.appendChild(option);
+          });
+
+          // Add the "Add new label" option
+          const addNewOption = document.createElement("option");
+          addNewOption.value = "add_new";
+          addNewOption.textContent = "➕ הוסף תווית חדשה";
+          addNewOption.style.fontWeight = "bold";
+          addNewOption.style.borderTop = "1px solid #ddd";
+          addNewOption.style.marginTop = "5px";
+          addNewOption.style.paddingTop = "5px";
+          labelSelect.appendChild(addNewOption);
+
+          // Set the selected value to the new label ID
+          if (newLabelID) {
+            labelSelect.value = newLabelID;
+          }
+        },
+        (err) => {
+          console.error("❌ שגיאה בשליפת תוויות לעריכה:", err);
+        }
+      );
+    },
+  });
+});
