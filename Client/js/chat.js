@@ -26,32 +26,7 @@ $(document).ready(function () {
     if (e.which === 13) sendMessage();
   });
 
-  // Pop-up handlers for editing user
-  $("#edit-user-btn").on("click", function () {
-    $.fancybox.open({
-      src: "#edit-user-form",
-      type: "inline",
-      opts: {
-        touch: false,
-        autoFocus: false,
-        closeExisting: true,
-        animationEffect: "fade",
-      },
-    });
-  });
-
-  $("#open-password-popup").on("click", function () {
-    $.fancybox.open({
-      src: "#change-password-form",
-      type: "inline",
-      opts: {
-        touch: false,
-        autoFocus: false,
-        closeExisting: true,
-        animationEffect: "fade",
-      },
-    });
-  });
+  // Note: The edit-user-btn handler has been removed as it's now handled in edit-user.js
 });
 
 // Load project team avatars based on role

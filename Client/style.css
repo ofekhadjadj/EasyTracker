@@ -440,7 +440,8 @@ img.logo-sidebar {
 }
 
 .project-card {
-  min-width: 23%;
+  width: calc(25% - 15px);
+  min-width: unset;
   height: 200px;
   background-image: url("/images/project-image-demo.jpg");
   background-size: cover;
@@ -450,6 +451,7 @@ img.logo-sidebar {
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   transition: background 0.3s ease-in-out;
+  box-sizing: border-box;
 }
 
 .project-content {
@@ -1096,7 +1098,8 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
 
 /* כרטיס לקוח */
 .client-card {
-  min-width: 23%;
+  width: calc(25% - 15px);
+  min-width: unset;
   height: 200px;
   background-size: cover;
   background-position: center;
@@ -1106,6 +1109,7 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: background 0.3s ease-in-out;
+  box-sizing: border-box;
 }
 
 /* תוכן הכרטיס */
@@ -1276,7 +1280,8 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
 }
 
 .label-card {
-  width: 23%;
+  width: calc(25% - 15px);
+  min-width: unset;
   height: 200px;
   background-image: none !important;
   background-color: var(--label-color, #cccccc);
@@ -1288,6 +1293,8 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .label-card:hover {
@@ -1706,4 +1713,56 @@ li a.active span {
 
 .export-icon {
   font-size: 18px;
+}
+
+/* User Profile Dropdown Styling */
+.profile {
+  position: relative;
+}
+
+.profile-arrow {
+  margin-right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.profile-arrow.active {
+  transform: rotate(180deg);
+}
+
+#user-dropdown-menu {
+  min-width: 160px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  overflow: hidden;
+  z-index: 1000;
+  position: absolute;
+  left: 10px;
+  top: calc(100% + 5px);
+}
+
+.user-menu-btn {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  text-align: right;
+  background: none;
+  border: none;
+  font-family: "Assistant", sans-serif;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.user-menu-btn:hover {
+  background-color: #e8f4ff;
+}
+
+/* Add a subtle separator between menu items */
+.user-menu-btn:not(:last-child) {
+  border-bottom: 1px solid #f0f0f0;
 }

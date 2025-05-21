@@ -2,8 +2,29 @@ $(document).ready(function () {
   const currentUser = JSON.parse(localStorage.getItem("user"));
   if (!currentUser) return;
 
-  // פתיחת פופאפ פרטי משתמש
-  $("#edit-user-btn").on("click", function () {
+  // Add dropdown toggle functionality
+  $(".profile-arrow").on("click", function (e) {
+    e.stopPropagation();
+    $(this).toggleClass("active");
+    $("#user-dropdown-menu").fadeToggle(200);
+  });
+
+  // Close dropdown when clicking anywhere else
+  $(document).on("click", function (e) {
+    if (
+      !$(e.target).closest("#user-dropdown-menu").length &&
+      !$(e.target).is(".profile-arrow")
+    ) {
+      $(".profile-arrow").removeClass("active");
+      $("#user-dropdown-menu").fadeOut(200);
+    }
+  });
+
+  // Handle edit profile button click
+  $("#edit-profile-btn").on("click", function () {
+    $("#user-dropdown-menu").fadeOut(200);
+    $(".profile-arrow").removeClass("active");
+
     $("#user-firstname").val(currentUser.firstName);
     $("#user-lastname").val(currentUser.lastName);
     $("#user-email").val(currentUser.email);
@@ -19,6 +40,16 @@ $(document).ready(function () {
     }
 
     $.fancybox.open({ src: "#edit-user-form", type: "inline" });
+  });
+
+  // Handle logout button click
+  $("#logout-btn").on("click", function () {
+    // Clear user data from localStorage
+    localStorage.removeItem("user");
+    localStorage.removeItem("CurrentProject");
+
+    // Redirect to login page
+    window.location.href = "login.html";
   });
 
   // מעבר לפופאפ סיסמה
