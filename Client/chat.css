@@ -170,7 +170,8 @@ body {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
-  justify-content: center; /* כבר בגירסה הקודמת */
+  justify-content: flex-start;
+  align-items: flex-start;
   margin-top: 10px; /* קצת ריווח מלמטה של הכותרת */
 }
 
@@ -441,4 +442,96 @@ body {
   gap: 20px;
   box-shadow: 0px 0px 14.4px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
+}
+
+.chat-avatar {
+  position: relative;
+}
+
+.chat-avatar.unread::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 10px;
+  height: 10px;
+  background-color: #28a745;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* 1. עיצוב עיגול שיחה קבוצתית */
+.chat-avatar.group-avatar {
+  width: 80px;
+  height: auto;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.chat-avatar.group-avatar .group-label {
+  width: 60px;
+  height: 60px;
+  background-color: #4abaff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  line-height: 1.2;
+  padding: 5px;
+  border: 3px solid transparent;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.chat-avatar.group-avatar span {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.chat-avatar:hover .group-label,
+.chat-avatar.active .group-label {
+  border-color: #0072ff;
+  transform: scale(1.05);
+}
+
+.chat-avatar.group-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 80px;
+  transition: transform 0.3s;
+}
+
+.chat-avatar.group-avatar .circle-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid transparent;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.chat-avatar.group-avatar span {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.chat-avatar:hover .circle-wrapper,
+.chat-avatar.active .circle-wrapper {
+  border-color: #0072ff;
+  transform: scale(1.05);
 }

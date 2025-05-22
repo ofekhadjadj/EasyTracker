@@ -1,4 +1,6 @@
-﻿namespace EasyTracker.BL
+﻿using System;
+using System.Collections.Generic;
+namespace EasyTracker.BL
 {
     public class ChatMessage
     {
@@ -56,5 +58,17 @@
 
     }
 
+    // DTOs
+    public class UnreadPrivate
+    {
+        public int OtherUserID { get; set; }
+        public int UnreadCount { get; set; }
+    }
+
+    public class UnreadStatus
+    {
+        public int GroupUnreadCount { get; set; }
+        public List<UnreadPrivate> Private { get; set; }
+    }
 
 }

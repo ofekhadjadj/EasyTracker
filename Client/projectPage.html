@@ -583,7 +583,7 @@
                   </nav>
 
                     <h1 class="project-title" id="ProjectTitle">פיתוח אתר אינטרנט</h1>
-                    <h4 class="project-client" id="ProjectClient">מכללת רופין</h1>
+                    <h4 class="project-client" id="ProjectClient">מכללת רופין</h4>
                       <hr class="line" />
                       <h5 class="info-save">
                         כאן אנחנו שומרים לך על כל הפרטים וחומרי העזר החשובים שלך!
@@ -620,7 +620,11 @@
                   <div class="half-box">
                     <div class="header-Of-Team"><h3 class="team-title">צוות הפרויקט:</h3>
                       <button class="gradient-button-header-team" id="btn-header-team">ניהול צוות</button>
-                      <a href="chat.html"><button class="gradient-button-header-chat" id="btn-header-chat">צ'אט</button></a>
+                      <a href="chat.html" id="btn-header-chat" class="gradient-button-header-chat chat-button-wrapper">
+  צ'אט
+  <span id="chat-unread-dot" class="unread-dot" style="display: none;"></span>
+</a>
+
                       <div id="team-dropdown-menu" style="display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 1000;">
                           <button class="team-menu-btn">➕ הוסף איש צוות</button>
                           <button class="team-menu-btn">➖ הסר איש צוות</button>
@@ -1171,7 +1175,7 @@
         </table>
       </div>
     </div>
-
+<script src="js/chat-badge.js"></script>
   </body>
 </html>
 

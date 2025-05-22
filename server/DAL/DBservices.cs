@@ -2596,6 +2596,148 @@ finally
     }
 
 
+    // DBservices.cs
+
+    public int MarkPrivateAsRead(int userID, int otherUserID, int projectID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        var paramDic = new Dictionary<string, object>
+    {
+        { "@UserID",      userID      },
+        { "@OtherUserID", otherUserID },
+        { "@ProjectID",   projectID   }
+    };
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_MarkPrivateAsRead", con, paramDic);
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery();
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null) con.Close();
+        }
+    }
+
+    public int MarkGroupAsRead(int userID, int projectID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        var paramDic = new Dictionary<string, object>
+    {
+        { "@UserID",    userID    },
+        { "@ProjectID", projectID }
+    };
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_MarkGroupAsRead", con, paramDic);
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery();
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null) con.Close();
+        }
+    }
+
+    public UnreadStatus GetUnreadStatus(int userID, int projectID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        var paramDic = new Dictionary<string, object>
+    {
+        { "@UserID",    userID    },
+        { "@ProjectID", projectID }
+    };
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetUnreadStatus", con, paramDic);
+
+        try
+        {
+            var status = new UnreadStatus { Private = new List<UnreadPrivate>() };
+            using (var reader = cmd.ExecuteReader())
+            {
+                // First result set: group unread count
+                if (reader.Read())
+                {
+                    status.GroupUnreadCount = Convert.ToInt32(reader["GroupUnreadCount"]);
+                }
+
+                // Second result set: private unread counts
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        status.Private.Add(new UnreadPrivate
+                        {
+                            OtherUserID = Convert.ToInt32(reader["OtherUserID"]),
+                            UnreadCount = Convert.ToInt32(reader["UnreadCount"])
+                        });
+                    }
+                }
+            }
+            return status;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null) con.Close();
+        }
+    }
+
+    
 
 
 

@@ -1397,6 +1397,7 @@ li a.active span {
 
 /* Styling for the chat button */
 .gradient-button-header-chat {
+  display: inline-block;
   background: linear-gradient(to right, #ff9966, #ff5e62);
   color: white;
   font-size: 15px;
@@ -1407,13 +1408,26 @@ li a.active span {
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(255, 94, 98, 0.15);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  position: relative; /* נוספה כדי למקם את הנקודה הירוקה */
 }
 
 .gradient-button-header-chat:hover {
   transform: scale(1.03);
   box-shadow: 0 6px 14px rgba(255, 94, 98, 0.2);
 }
-
+/*הנקודה הירוקה כשיש הודעה שלא נקראה באחד מהצאטים*/
+.unread-dot {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 10px;
+  height: 10px;
+  background-color: #28a745;
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
 /* Styling for the team dropdown menu */
 #team-dropdown-menu {
   min-width: 180px;

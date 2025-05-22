@@ -1,9 +1,15 @@
-﻿using EasyTracker.BL;
+﻿using System;
+using System.Collections.Generic;
+using EasyTracker.BL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace EasyTracker.Controllers
 {
+    
+
+
     [Route("api/[controller]")]
     [ApiController]
     public class ChatController : ControllerBase
@@ -53,6 +59,57 @@ namespace EasyTracker.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
+
+        // סימון הודעות פרטיות כנקראו
+        // POST api/Chat/MarkPrivateAsRead?userID=...&otherUserID=...&projectID=...
+        [HttpPost("MarkPrivateAsRead")]
+        public IActionResult MarkPrivateAsRead(int userID, int otherUserID, int projectID)
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                int rows = dbs.MarkPrivateAsRead(userID, otherUserID, projectID);
+                return Ok(rows);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        // סימון הודעות קבוצתיות כנקראו
+        // POST api/Chat/MarkGroupAsRead?userID=...&projectID=...
+        [HttpPost("MarkGroupAsRead")]
+        public IActionResult MarkGroupAsRead(int userID, int projectID)
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                int rows = dbs.MarkGroupAsRead(userID, projectID);
+                return Ok(rows);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        // שליפת מצב unread לבאנדגים
+        // GET api/Chat/GetUnreadStatus?userID=...&projectID=...
+        [HttpGet("GetUnreadStatus")]
+        public IActionResult GetUnreadStatus(int userID, int projectID)
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                UnreadStatus status = dbs.GetUnreadStatus(userID, projectID);
+                return Ok(status);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
         }
 
