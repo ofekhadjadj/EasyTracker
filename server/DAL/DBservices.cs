@@ -435,6 +435,9 @@ finally
                 item["CreatedByUserID"] = dataReader["CreatedByUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["CreatedByUserID"]);
                 item["isDone"] = dataReader["isDone"] == DBNull.Value ? false : Convert.ToBoolean(dataReader["isDone"]);
                 item["CompanyName"] = dataReader["CompanyName"] == DBNull.Value ? null : dataReader["CompanyName"].ToString();
+                item["Email"] = dataReader["Email"] == DBNull.Value ? null : dataReader["Email"].ToString();
+                item["ContactPersonPhone"] = dataReader["ContactPersonPhone"] == DBNull.Value ? null : dataReader["ContactPersonPhone"].ToString();
+                item["OfficePhone"] = dataReader["OfficePhone"] == DBNull.Value ? null : dataReader["OfficePhone"].ToString();
                 item["DurationGoal"] = dataReader["DurationGoal"] == DBNull.Value ? 0m : Convert.ToDecimal(dataReader["DurationGoal"]);
                 item["Role"] = dataReader["Role"] == DBNull.Value ? null : dataReader["Role"].ToString();
                 item["isDisable"] = dataReader["isDisable"] == DBNull.Value ? null : dataReader["isDisable"].ToString();
