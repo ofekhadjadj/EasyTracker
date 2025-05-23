@@ -1825,3 +1825,34 @@ li a.active span {
 .user-menu-btn:not(:last-child) {
   border-bottom: 1px solid #f0f0f0;
 }
+
+/* Green Invoice button styling */
+.create-invoice {
+  background: linear-gradient(135deg, #0b7b3d, #129c4a);
+  border: none;
+  color: white;
+}
+
+.create-invoice:hover {
+  background: linear-gradient(135deg, #0f9249, #15b757);
+  transform: translateY(-1px);
+}
+
+/* Loading spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

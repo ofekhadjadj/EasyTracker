@@ -782,6 +782,60 @@ $(document).ready(function () {
     .getElementById("export-excel")
     .addEventListener("click", exportToExcel);
 
+  // חשבונית עסקה
+  document
+    .getElementById("create-invoice")
+    .addEventListener("click", getGreenInvoiceToken);
+
+  // פונקציה לקבלת טוקן מחשבונית ירוקה דרך השרת
+  function getGreenInvoiceToken() {
+    console.log("שולח בקשה לקבלת טוקן מחשבונית ירוקה דרך השרת...");
+
+    // הצגת מצב טעינה בכפתור
+    const invoiceButton = document.getElementById("create-invoice");
+    const originalButtonContent = invoiceButton.innerHTML;
+    invoiceButton.innerHTML = '<span class="loading-spinner"></span> מעבד...';
+    invoiceButton.disabled = true;
+
+    // נתוני הבקשה
+    const tokenData = {
+      id: "8fd5bc07-bed0-42bf-b842-acf985a55392",
+      secret: "K-9U54djBYtdjnkeX-Xkbg",
+    };
+
+    // שליחת בקשה לשרת שלנו
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7198/api/GreenInvoice/GetToken",
+      data: JSON.stringify(tokenData),
+      contentType: "application/json",
+      success: function (response) {
+        console.log("תוצאת הבקשה מהשרת:", response);
+
+        // הצגת הטוקן בקונסול
+        if (response && response.token) {
+          console.log("הטוקן שהתקבל:", response.token);
+        }
+
+        // החזרת הכפתור למצב הרגיל
+        setTimeout(() => {
+          invoiceButton.innerHTML = originalButtonContent;
+          invoiceButton.disabled = false;
+        }, 1000);
+      },
+      error: function (xhr, status, error) {
+        console.error("שגיאה בקבלת הטוקן:", error);
+        console.error("פרטי השגיאה:", xhr.responseText);
+
+        // החזרת הכפתור למצב הרגיל
+        setTimeout(() => {
+          invoiceButton.innerHTML = originalButtonContent;
+          invoiceButton.disabled = false;
+        }, 1000);
+      },
+    });
+  }
+
   function exportToPdf() {
     const currentDate = new Date().toLocaleDateString("he-IL");
     const projectName = document.getElementById("ProjectTitle").innerText;
