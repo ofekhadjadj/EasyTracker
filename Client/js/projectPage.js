@@ -372,6 +372,7 @@ function openAddLabelPopup(fromEditSession = false) {
             contentType: "application/json",
             data: JSON.stringify(newLabel),
             success: (response) => {
+              alert("הקוד החדש רץ!"); // זמני לבדיקה
               console.log("✅ התווית נוספה בהצלחה:", response);
 
               // Close current popup
@@ -810,12 +811,28 @@ $(document).ready(function () {
       data: JSON.stringify(tokenData),
       contentType: "application/json",
       success: function (response) {
-        console.log("תוצאת הבקשה מהשרת:", response);
+        console.log("=== תשובת Green Invoice הגולמית ===");
+        console.log(response);
+        console.log("=== סוג התשובה ===");
+        console.log(typeof response);
+        console.log("=== JSON מפורמט ===");
+        console.log(JSON.stringify(response, null, 2));
+        console.log("===============================");
 
-        // הצגת הטוקן בקונסול
+        // אם קיבלנו טוקן, נמשיך ליצירת החשבונית
         if (response && response.token) {
-          console.log("הטוקן שהתקבל:", response.token);
+          createInvoice(response.token, invoiceButton, originalButtonContent);
+        } else {
+          showCustomAlert("לא התקבל טוקן מהשרת", "error");
+          setTimeout(() => {
+            invoiceButton.innerHTML = originalButtonContent;
+            invoiceButton.disabled = false;
+          }, 1000);
         }
+      },
+      error: function (xhr, status, error) {
+        console.error("שגיאה בקבלת הטוקן:", error);
+        console.error("פרטי השגיאה:", xhr.responseText);
 
         // החזרת הכפתור למצב הרגיל
         setTimeout(() => {
@@ -823,9 +840,183 @@ $(document).ready(function () {
           invoiceButton.disabled = false;
         }, 1000);
       },
+    });
+  }
+
+  function createInvoice(token, invoiceButton, originalButtonContent) {
+    console.log("יוצר חשבונית עסקה עם הטוקן שהתקבל...");
+
+    // קבלת פרטי הפרויקט מ-localStorage
+    const currentProject = JSON.parse(localStorage.getItem("CurrentProject"));
+
+    if (!currentProject) {
+      console.error("לא נמצאו פרטי פרויקט ב-localStorage");
+      setTimeout(() => {
+        invoiceButton.innerHTML = originalButtonContent;
+        invoiceButton.disabled = false;
+      }, 1000);
+      return;
+    }
+
+    // קבלת נתוני הסשנים מהטבלה
+    const tableData = getTableData();
+
+    // חישוב סה"כ שעות עבודה
+    let totalHours = 0;
+    tableData.forEach((row) => {
+      if (row.durationSeconds) {
+        totalHours += row.durationSeconds / 3600; // המרה לשעות
+      }
+    });
+
+    // יצירת נתוני החשבונית
+    const invoiceData = {
+      type: 300, // סוג חשבונית עסקה
+      lang: "he",
+      currency: "ILS",
+      vatType: 0,
+      add: true, // חשוב! שדה נדרש ליצירת החשבונית
+      client: {
+        name: currentProject.CompanyName || "לקוח",
+        emails: [currentProject.Email || ""],
+        taxId: currentProject.ClientTaxId || "",
+        address: currentProject.ClientAddress || "",
+        city: currentProject.ClientCity || "",
+        zip: currentProject.ClientZip || "",
+        phone: currentProject.OfficePhone || "",
+        mobile: currentProject.ContactPersonPhone || "",
+      },
+      income: [
+        {
+          catalogNum: "001",
+          description: `עבודה על פרויקט: ${currentProject.ProjectName}`,
+          quantity: totalHours.toFixed(2),
+          price: currentProject.HourlyRate || 0,
+          currency: "ILS",
+          currencyRate: 1,
+          vatType: 0,
+        },
+      ],
+      remarks: `דוח עבודה לפרויקט: ${currentProject.ProjectName}\nלקוח: ${
+        currentProject.CompanyName
+      }\nסה"כ שעות: ${totalHours.toFixed(2)}`,
+      date: new Date().toISOString().split("T")[0],
+      dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0], // 30 יום מהיום
+    };
+
+    console.log("נתוני החשבונית שנשלחים:", invoiceData);
+
+    // שליחת בקשה ליצירת החשבונית
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7198/api/GreenInvoice/CreateInvoice",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify(invoiceData),
+      success: function (response) {
+        console.log("=== תשובת יצירת חשבונית מ-Green Invoice ===");
+        console.log(response);
+        console.log("=== סוג התשובה ===");
+        console.log(typeof response);
+        console.log("=== JSON מפורמט ===");
+        console.log(JSON.stringify(response, null, 2));
+        console.log("=======================================");
+
+        // החזרת הכפתור למצב הרגיל
+        setTimeout(() => {
+          invoiceButton.innerHTML = originalButtonContent;
+          invoiceButton.disabled = false;
+        }, 1000);
+
+        // יצירת פופאפ עם פרטי החשבונית
+        const invoiceNumber = response.number || "לא זמין";
+        const downloadUrl = response.url?.origin || "";
+
+        // חישוב הסכום לפני מע"מ
+        const totalAmount = (
+          totalHours * (currentProject.HourlyRate || 0)
+        ).toFixed(2);
+
+        const invoicePopupHtml = `
+          <div style="width: 500px; padding: 30px; background: white; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); font-family: Assistant; direction: rtl;">
+            <div style="text-align: center; margin-bottom: 25px;">
+              <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 15px;">
+                <img src="./images/logo.png" alt="EasyTracker" style="width: 80px; height: 80px; object-fit: contain; margin-left: 15px;" onerror="this.style.display='none';">
+                <!-- הוסף כאן את לוגו חשבונית ירוקה -->
+                <img src="./images/מורנינג-שירות-לקוחות-לוגו.png" alt="חשבונית ירוקה" style="width: 120px; height: 40px; object-fit: contain; border-radius: 8px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="width: 120px; height: 40px; background: #4CAF50; border-radius: 8px; display: none; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: bold;">
+                  חשבונית ירוקה
+                </div>
+              </div>
+              <h2 style="color: #4CAF50; margin: 0; font-size: 24px; font-weight: bold;">חשבונית מספר ${invoiceNumber} מוכנה!</h2>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px; direction: rtl;">
+                <span style="color: #666; font-weight: 500;">מספר חשבונית:</span>
+                <span style="font-weight: bold; color: #333;">${invoiceNumber}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px; direction: rtl;">
+                <span style="color: #666; font-weight: 500;">פרויקט:</span>
+                <span style="font-weight: bold; color: #333;">${
+                  currentProject.ProjectName
+                }</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px; direction: rtl;">
+                <span style="color: #666; font-weight: 500;">לקוח:</span>
+                <span style="font-weight: bold; color: #333;">${
+                  currentProject.CompanyName
+                }</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; direction: rtl; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 15px;">
+                <span style="color: #666; font-weight: 500;">סכום לפני מע״מ:</span>
+                <span style="font-weight: bold; color: #0072ff; font-size: 16px;">₪${totalAmount}</span>
+              </div>
+            </div>
+            
+            <div style="text-align: center;">
+              ${
+                downloadUrl
+                  ? `
+                <a href="${downloadUrl}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #0072ff, #00c6ff); color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; transition: transform 0.2s; margin-bottom: 15px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                  📄 לחץ כאן להורדת החשבונית
+                </a>
+              `
+                  : `
+                <div style="background: #ffebee; color: #c62828; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                  לא ניתן היה לקבל קישור הורדה
+                </div>
+              `
+              }
+              
+              <div>
+                <button onclick="$.fancybox.close()" style="background: #f0f0f0; color: #333; padding: 12px 25px; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer;">סגור</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // פתיחת הפופאפ
+        $.fancybox.open({
+          src: invoicePopupHtml,
+          type: "html",
+          smallBtn: false,
+          toolbar: false,
+          touch: false,
+          animationEffect: "fade",
+          animationDuration: 300,
+        });
+      },
       error: function (xhr, status, error) {
-        console.error("שגיאה בקבלת הטוקן:", error);
+        console.error("שגיאה ביצירת החשבונית:", error);
         console.error("פרטי השגיאה:", xhr.responseText);
+
+        // הצגת הודעת שגיאה
+        showCustomAlert("שגיאה ביצירת החשבונית: " + error, "error");
 
         // החזרת הכפתור למצב הרגיל
         setTimeout(() => {
