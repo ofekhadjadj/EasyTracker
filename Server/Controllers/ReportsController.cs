@@ -143,5 +143,22 @@ namespace EasyTracker.Controllers
                 return BadRequest("Error: " + ex.Message);
             }
         }
+
+        [HttpGet("GetFullAssistantData")]
+        public IActionResult GetFullAssistantData(int userId, DateTime? fromDate = null, DateTime? toDate = null)
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                var data = dbs.GetFullDataForAssistant(userId, fromDate, toDate);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "שגיאה בעת שליפת הנתונים: " + ex.Message);
+            }
+        }
+
+
     }
 }
