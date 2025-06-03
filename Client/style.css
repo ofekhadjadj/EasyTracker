@@ -1952,12 +1952,59 @@ li a.active span {
 }
 
 @keyframes tooltipFadeIn {
-  from {
+  0% {
     opacity: 0;
-    transform: translateX(-50%) translateY(5px);
+    transform: translateY(10px);
   }
-  to {
+  100% {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
+  }
+}
+
+/* כפתור צף לעוזר האישי */
+.floating-assistant-btn {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 5px 25px rgba(0, 123, 255, 0.4);
+  z-index: 1000;
+  transition: all 0.3s;
+  animation: float 3s ease-in-out infinite;
+  font-family: "Assistant", sans-serif;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.floating-assistant-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  transform: scale(1.1);
+  box-shadow: 0 8px 30px rgba(0, 123, 255, 0.5);
+}
+
+/* רספונסיבי למובייל */
+@media (max-width: 768px) {
+  .floating-assistant-btn {
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
   }
 }

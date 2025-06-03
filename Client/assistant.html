@@ -1,1 +1,173 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Easy Tracker - העוזר האישי</title>
+    <link rel="icon" href="/images/fav-icon.png" type="images/png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="assistant.css" />
+    <link rel="stylesheet" href="animate.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/AjaxCall.js"></script>
+    <script src="js/assistant.js"></script>
+  </head>
+  <body>
+    <div class="projects-continer">
+      <div class="sidbar wow fadeInRightBig">
+        <div class="inner-sidbar">
+          <div class="profile">
+            <img src="#" class="avatar-img" alt="" />
+            <h3>הי, <span id="menu-prof-name">משתמש</span> 👋</h3>
+            <span class="profile-arrow">
+              <i class="fas fa-chevron-down"></i>
+            </span>
+            <div id="user-dropdown-menu" style="display: none">
+              <button id="edit-profile-btn" class="user-menu-btn">
+                ✏️ עריכת פרופיל
+              </button>
+              <button id="logout-btn" class="user-menu-btn">🚪 התנתק</button>
+            </div>
+          </div>
+          <img src="./images/logo.png" class="logo-sidebar" alt="" />
+          <div class="nav-continer">
+            <div class="main-nav">
+              <ul>
+                <li>
+                  <a href="projects.html" class="">
+                    <img
+                      src="./images/project icon.png"
+                      alt="פרויקטים"
+                      class="nav-icon"
+                    />
+                    <span>פרויקטים</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="clients.html" class="">
+                    <img
+                      src="./images/customers icon.png"
+                      alt="לקוחות"
+                      class="nav-icon"
+                    />
+                    <span>לקוחות</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="stats.html" class="">
+                    <img
+                      src="./images/reports.png"
+                      alt="דוחות"
+                      class="nav-icon"
+                    />
+                    <span>ניתוח ודוחות</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="labels.html" class="">
+                    <img
+                      src="./images/tags.png"
+                      alt="תיוגים"
+                      class="nav-icon"
+                    />
+                    <span>תיוגים</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="assistant.html" class="active">
+                    <span class="nav-icon">🤖</span>
+                    <span>העוזר האישי</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="reminders.html" class="">
+                    <img
+                      src="./images/reminders.png"
+                      alt="תזכורות"
+                      class="nav-icon"
+                    />
+                    <span>תזכורות</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="help-nav">
+              <ul>
+                <li>
+                  <a href="settings.html">
+                    <img
+                      src="./images/settings-icon.png"
+                      alt="הגדרות"
+                      class="nav-icon"
+                    />
+                    <span>הגדרות</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="help.html">
+                    <img
+                      src="./images/help-icon.png"
+                      alt="עזרה"
+                      class="nav-icon"
+                    />
+                    <span>עזרה</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="content">
+        <div class="inner-content">
+          <div class="stats-title">
+            <h1>🤖 העוזר האישי שלך</h1>
+            <p>שאל אותי כל שאלה על הנתונים שלך - אני כאן לעזור!</p>
+          </div>
+
+          <div class="chat-container">
+            <div class="privacy-warning">
+              <i class="fas fa-shield-alt"></i>
+              נתוניך מאובטחים ואינם נשמרים אצל ספקי חוץ
+            </div>
+
+            <div class="chat-messages" id="chat-messages">
+              <div class="message assistant">
+                שלום! 👋 אני העוזר האישי שלך. תוכל לשאול אותי שאלות כגון:
+                <br />• כמה פרויקטים יש לי? <br />• כמה עבדתי החודש? <br />• מה
+                הפרויקט הכי רווחי שלי? <br />• איך הולכים העסקים עם לקוח X?
+              </div>
+            </div>
+
+            <div class="chat-input-container">
+              <input
+                type="text"
+                id="chat-input"
+                class="chat-input"
+                placeholder="שאל אותי כל שאלה על הנתונים שלך..."
+                disabled
+              />
+              <button id="send-button" class="send-button" disabled>
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div id="loading-indicator" style="display: none">
+      <div class="loading-spinner"></div>
+      <span>טוען נתונים...</span>
+    </div>
+  </body>
+</html>
