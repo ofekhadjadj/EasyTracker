@@ -513,17 +513,38 @@ function checkActiveSessionOnPageLoad() {
 
       if (response.hasActiveSession && response.sessionData) {
         const sessionData = response.sessionData;
-        const startTime = new Date(sessionData.StartDate);
-        const currentTime = new Date();
-
-        // חישוב כמה זמן עבר מתחילת הסשן
-        const elapsedMs = currentTime.getTime() - startTime.getTime();
-        const elapsedSeconds = Math.floor(elapsedMs / 1000);
-
-        console.log(`⏰ נמצא סשן פעיל! עברו ${elapsedSeconds} שניות מההתחלה`);
+        let elapsedSeconds;
 
         // שמירת מזהה הסשן הפעיל
         currentActiveSessionID = sessionData.SessionID;
+
+        if (sessionData.SessionStatus === "Active") {
+          // סשן פעיל - חישוב זמן לפי StartDate
+          const startTime = new Date(sessionData.StartDate);
+          const currentTime = new Date();
+          const elapsedMs = currentTime.getTime() - startTime.getTime();
+          elapsedSeconds = Math.floor(elapsedMs / 1000);
+
+          console.log(`⏰ סשן פעיל! עברו ${elapsedSeconds} שניות מההתחלה`);
+
+          // התחל את הסטופר
+          interval = setInterval(updateTime, 1000);
+          isRunning = true;
+          toggleText.textContent = "השהה";
+          toggleIcon.src = "./images/puse icon.png";
+          console.log("▶️ הסטופר התחיל אוטומטית - סשן פעיל");
+        } else if (sessionData.SessionStatus === "Paused") {
+          // סשן מושהה - השתמש ב-DurationSeconds שנשמר
+          elapsedSeconds = sessionData.DurationSeconds || 0;
+
+          console.log(`⏸️ סשן מושהה! זמן שנשמר: ${elapsedSeconds} שניות`);
+
+          // אל תתחיל את הסטופר
+          isRunning = false;
+          toggleText.textContent = "המשך";
+          toggleIcon.src = "./images/play-icon.png";
+          console.log("⏸️ סשן מושהה - הסטופר לא פועל");
+        }
 
         // עדכון הסטופר להתחיל מהזמן הנכון
         seconds = elapsedSeconds;
@@ -533,30 +554,6 @@ function checkActiveSessionOnPageLoad() {
         const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
         const s = String(seconds % 60).padStart(2, "0");
         timeDisplay.textContent = `${h}:${m}:${s}`;
-
-        // עדכון הכפתור למצב "השהה" או "המשך" בהתאם לסטטוס
-        if (sessionData.SessionStatus === "Active") {
-          // סשן פעיל - התחל את הסטופר והצג "השהה"
-          interval = setInterval(updateTime, 1000);
-          isRunning = true;
-          toggleText.textContent = "השהה";
-          toggleIcon.src = "./images/puse icon.png";
-          console.log("▶️ הסטופר התחיל אוטומטית - סשן פעיל");
-        } else if (sessionData.SessionStatus === "Paused") {
-          // סשן מושהה - הצג "המשך" אבל אל תתחיל את הסטופר
-          isRunning = false;
-          toggleText.textContent = "המשך";
-          toggleIcon.src = "./images/play-icon.png";
-          console.log("⏸️ סשן מושהה - הסטופר לא פועל");
-        } else {
-          console.log("ℹ️ אין סשן פעיל - הכפתור יישאר במצב 'התחל'");
-          // וידוא שהמשתנים מתאפסים
-          currentActiveSessionID = null;
-          seconds = 0;
-          isRunning = false;
-          toggleText.textContent = "התחל";
-          toggleIcon.src = "./images/play-icon.png";
-        }
 
         // עדכון בר ההתקדמות
         updateOverallProgress();
@@ -734,7 +731,7 @@ toggleBtn.addEventListener("click", () => {
 
 //סיום סשן
 stopBtn.addEventListener("click", () => {
-  if (!isRunning) {
+  if (!currentActiveSessionID) {
     alert("לא ניתן לסיים סשן לפני שהתחלת אחד.");
     return;
   }
