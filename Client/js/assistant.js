@@ -1,5 +1,6 @@
 let assistantData = null;
 let isLoading = false;
+let justOpenedMenu = false;
 
 function getCurrentUser() {
   const userStr = localStorage.getItem("user");
@@ -27,23 +28,47 @@ function initializeAssistant() {
 }
 
 function setupEventListeners() {
-  $("#send-button").click(sendMessage);
-  $("#chat-input").keypress(function (e) {
-    if (e.which === 13 && !isLoading) {
-      sendMessage();
+  // לחיצה על החץ פותחת את התפריט ומונעת סגירה מיידית
+  $(".profile-arrow").on("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const menu = $("#user-dropdown-menu");
+    const isVisible = menu.is(":visible");
+    if (!isVisible) {
+      justOpenedMenu = true;
+      menu.show();
+    } else {
+      menu.hide();
     }
   });
-  $(".profile-arrow").click(function () {
-    $("#user-dropdown-menu").toggle();
+
+  // סגירה בלחיצה מחוץ לאזור התפריט, למעט רגע אחרי פתיחה
+  $(document).on("click", function (e) {
+    if (justOpenedMenu) {
+      justOpenedMenu = false;
+      return;
+    }
+    if (!$(e.target).closest(".profile").length) {
+      $("#user-dropdown-menu").hide();
+    }
   });
+
+  // סגירה גם בלחיצה על כפתורים פנימיים
+  $(".user-menu-btn").on("click", function () {
+    $("#user-dropdown-menu").hide();
+  });
+
   $("#logout-btn").click(function () {
     localStorage.removeItem("user");
     sessionStorage.clear();
     window.location.href = "login.html";
   });
-  $(document).click(function (e) {
-    if (!$(e.target).closest(".profile").length) {
-      $("#user-dropdown-menu").hide();
+
+  // שליחת שאלה
+  $("#send-button").click(sendMessage);
+  $("#chat-input").keypress(function (e) {
+    if (e.which === 13 && !isLoading) {
+      sendMessage();
     }
   });
 }
@@ -135,7 +160,8 @@ function updateWelcomeMessage() {
   $(".message.assistant").last().remove();
   const projectsCount = assistantData?.Projects?.length || 0;
   const clientsCount = assistantData?.Clients?.length || 0;
-  const welcomeMsg = `מעולה! הנתונים שלך נטענו בהצלחה 🎉\n\nאני רואה שיש לך ${projectsCount} פרויקטים ו-${clientsCount} לקוחות.\nמה תרצה לדעת?`;
+  //
+  const welcomeMsg = `מעולה! הנתונים שלך נטענו בהצלחה 🎉\nמה תרצה לדעת?`;
   addMessage("assistant", welcomeMsg);
 }
 
