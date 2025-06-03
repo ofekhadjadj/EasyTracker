@@ -58,5 +58,26 @@ namespace EasyTracker.Controllers
             return Ok(sessions);
         }
 
+        [HttpGet("CheckActiveSession")]
+        public IActionResult CheckActiveSession([FromQuery] int userID, int projectID)
+        {
+            Session sessionLogic = new Session();
+            var activeSession = sessionLogic.GetActiveSession(userID, projectID);
+            
+            if (activeSession != null)
+            {
+                return Ok(new { 
+                    hasActiveSession = true,
+                    sessionData = activeSession
+                });
+            }
+            else
+            {
+                return Ok(new { 
+                    hasActiveSession = false
+                });
+            }
+        }
+
     }
 }

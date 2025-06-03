@@ -76,5 +76,11 @@ namespace SteamApp.BL
             return dbs.DeleteSession(SessionID);
         }
 
+        public Dictionary<string, object> GetActiveSession(int userID, int projectID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetActiveSession(userID, projectID);
+        }
+
     }
 }

@@ -470,6 +470,7 @@ function FillDeatils() {
 let interval = null;
 let seconds = 0;
 let totalPastSeconds = 0;
+let currentActiveSessionID = null; // משתנה לאחסון מזהה הסשן הפעיל
 
 let isRunning = false;
 
@@ -491,6 +492,91 @@ const goalInSeconds = CurrentProject.DurationGoal * 3600 || 3600; // ברירת 
 
 circle.style.strokeDasharray = circumference;
 circle.style.strokeDashoffset = circumference;
+
+// פונקציה לבדיקת סשן פעיל בעת טעינת הדף
+function checkActiveSessionOnPageLoad() {
+  if (!CurrentUser || !CurrentProject) {
+    console.log("🔍 אין משתמש או פרויקט נוכחי - לא בודק סשן פעיל");
+    return;
+  }
+
+  const checkActiveSessionUrl = `https://localhost:7198/api/Session/CheckActiveSession?userID=${CurrentUser.id}&projectID=${CurrentProject.ProjectID}`;
+
+  console.log("🔍 בודק אם יש סשן פעיל בעת טעינת הדף...");
+
+  ajaxCall(
+    "GET",
+    checkActiveSessionUrl,
+    "",
+    (response) => {
+      console.log("📊 תשובה מבדיקת סשן פעיל:", response);
+
+      if (response.hasActiveSession && response.sessionData) {
+        const sessionData = response.sessionData;
+        const startTime = new Date(sessionData.StartDate);
+        const currentTime = new Date();
+
+        // חישוב כמה זמן עבר מתחילת הסשן
+        const elapsedMs = currentTime.getTime() - startTime.getTime();
+        const elapsedSeconds = Math.floor(elapsedMs / 1000);
+
+        console.log(`⏰ נמצא סשן פעיל! עברו ${elapsedSeconds} שניות מההתחלה`);
+
+        // שמירת מזהה הסשן הפעיל
+        currentActiveSessionID = sessionData.SessionID;
+
+        // עדכון הסטופר להתחיל מהזמן הנכון
+        seconds = elapsedSeconds;
+
+        // עדכון התצוגה
+        const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
+        const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+        const s = String(seconds % 60).padStart(2, "0");
+        timeDisplay.textContent = `${h}:${m}:${s}`;
+
+        // עדכון הכפתור למצב "השהה" או "המשך" בהתאם לסטטוס
+        if (sessionData.SessionStatus === "Active") {
+          // סשן פעיל - התחל את הסטופר והצג "השהה"
+          interval = setInterval(updateTime, 1000);
+          isRunning = true;
+          toggleText.textContent = "השהה";
+          toggleIcon.src = "./images/puse icon.png";
+          console.log("▶️ הסטופר התחיל אוטומטית - סשן פעיל");
+        } else if (sessionData.SessionStatus === "Paused") {
+          // סשן מושהה - הצג "המשך" אבל אל תתחיל את הסטופר
+          isRunning = false;
+          toggleText.textContent = "המשך";
+          toggleIcon.src = "./images/play-icon.png";
+          console.log("⏸️ סשן מושהה - הסטופר לא פועל");
+        } else {
+          console.log("ℹ️ אין סשן פעיל - הכפתור יישאר במצב 'התחל'");
+          // וידוא שהמשתנים מתאפסים
+          currentActiveSessionID = null;
+          seconds = 0;
+          isRunning = false;
+          toggleText.textContent = "התחל";
+          toggleIcon.src = "./images/play-icon.png";
+        }
+
+        // עדכון בר ההתקדמות
+        updateOverallProgress();
+
+        console.log("✅ סטטוס הסשן הפעיל שוחזר בהצלחה!");
+      } else {
+        console.log("ℹ️ אין סשן פעיל - הכפתור יישאר במצב 'התחל'");
+        // וידוא שהמשתנים מתאפסים
+        currentActiveSessionID = null;
+        seconds = 0;
+        isRunning = false;
+        toggleText.textContent = "התחל";
+        toggleIcon.src = "./images/play-icon.png";
+      }
+    },
+    (xhr) => {
+      console.error("❌ שגיאה בבדיקת סשן פעיל:", xhr);
+    }
+  );
+}
 
 function updateTime() {
   seconds++;
@@ -625,6 +711,10 @@ toggleBtn.addEventListener("click", () => {
       "",
       (response) => {
         console.log("✅ סשן התחיל בהצלחה:", response);
+
+        // שמירת מזהה הסשן החדש
+        currentActiveSessionID = response.sessionID;
+
         // Clear and completely refresh the table with newest sessions at top
         table.clear();
         renderTableFromDB();
@@ -677,6 +767,7 @@ stopBtn.addEventListener("click", () => {
 
   // אפס סטופר
   seconds = 0;
+  currentActiveSessionID = null; // ניקוי מזהה הסשן הפעיל
   timeDisplay.textContent = "00:00:00";
   circle.style.strokeDashoffset = circumference;
   progressFill.style.width = `0%`;
@@ -3251,6 +3342,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize all force-dropdown-down elements
   initializeDropdowns();
+
+  // בדיקת סשן פעיל בעת טעינת הדף - אחרי שהטבלה נטענה
+  setTimeout(() => {
+    checkActiveSessionOnPageLoad();
+  }, 1000);
 });
 
 // Initialize dropdowns to open downward
