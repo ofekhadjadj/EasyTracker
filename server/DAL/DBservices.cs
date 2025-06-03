@@ -2444,6 +2444,39 @@ finally
         finally { if (con != null) con.Close(); }
     }
 
+    public List<Dictionary<string, object>> GetFullDataForAssistant(int userId, DateTime? fromDate = null, DateTime? toDate = null)
+    {
+        SqlConnection con = connect("myProjDB");
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>()
+    {
+        { "@UserID", userId },
+        { "@FromDate", (object?)fromDate ?? DBNull.Value },
+        { "@ToDate", (object?)toDate ?? DBNull.Value }
+    };
+
+        SqlCommand cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetFullDataForAssistant", con, paramDic);
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            Dictionary<string, object> row = new Dictionary<string, object>();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                row[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+            }
+            result.Add(row);
+        }
+
+        reader.Close();
+        con.Close();
+        return result;
+    }
+
+
+
     //**** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ****
 
     public int InsertChatMessage(ChatMessage message)
