@@ -2930,7 +2930,67 @@ finally
 
     }*/
 
-    
+    //--------------------------------------------------------------------------------------------------
+    // This method checks if there's an active session for user and project
+    //--------------------------------------------------------------------------------------------------
+    public Dictionary<string, object> GetActiveSession(int userID, int projectID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB");
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@UserID", userID);
+        paramDic.Add("@ProjectID", projectID);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetActiveSession", con, paramDic);
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            if (dataReader.Read())
+            {
+                var result = new Dictionary<string, object>();
+                result["SessionID"] = Convert.ToInt32(dataReader["SessionID"]);
+                result["ProjectID"] = Convert.ToInt32(dataReader["ProjectID"]);
+                result["StartDate"] = Convert.ToDateTime(dataReader["StartDate"]);
+                result["EndDate"] = dataReader["EndDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(dataReader["EndDate"]);
+                result["DurationSeconds"] = dataReader["DurationSeconds"] == DBNull.Value ? (int?)null : Convert.ToInt32(dataReader["DurationSeconds"]);
+                result["HourlyRate"] = dataReader["HourlyRate"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(dataReader["HourlyRate"]);
+                result["Description"] = dataReader["Description"] == DBNull.Value ? null : dataReader["Description"].ToString();
+                result["LabelID"] = dataReader["LabelID"] == DBNull.Value ? (int?)null : Convert.ToInt32(dataReader["LabelID"]);
+                result["IsArchived"] = Convert.ToBoolean(dataReader["isArchived"]);
+                result["UserID"] = dataReader["UserID"] == DBNull.Value ? (int?)null : Convert.ToInt32(dataReader["UserID"]);
+                result["SessionStatus"] = dataReader["SessionStatus"] == DBNull.Value ? null : dataReader["SessionStatus"].ToString();
+
+                return result;
+            }
+            else
+            {
+                return null; // No active session found
+            }
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
 
 }
 
