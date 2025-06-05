@@ -69,34 +69,39 @@ $(document).ready(function () {
   let showCompleted = false;
   $(document).on("change", "#show-completed-projects", function () {
     showCompleted = this.checked;
-    applyProjectFilters();
+
+    if (showCompleted) {
+      // אם תיבת הסימון מסומנת, הצג את כל הפרויקטים
+      renderProjects(allProjects.slice(0, -1));
+    } else {
+      // אחרת, הצג רק פרויקטים פעילים
+      filterAndRenderActiveProjects();
+    }
   });
 
   // חיפוש דינמי לפי שם פרויקט
   $(".search-input").on("input", function () {
-    applyProjectFilters();
-  });
-
-  function applyProjectFilters() {
-    const searchTerm = $(".search-input").val()?.trim().toLowerCase() || "";
+    const searchTerm = $(this).val().trim().toLowerCase();
     let filtered = allProjects.slice(0, -1);
+
+    // אם תיבת הסימון לא מסומנת, סנן רק פרויקטים פעילים
     if (!showCompleted) {
       filtered = filtered.filter((p) => !p.isDone && !p.IsDone);
     }
+
+    // סנן לפי מה שהמשתמש מחפש
     if (searchTerm) {
       filtered = filtered.filter((p) =>
         p.ProjectName.toLowerCase().includes(searchTerm)
       );
     }
+
     renderProjects(filtered);
-  }
+  });
 
   // ברירת מחדל: הצג רק לא מושלמים
-  setTimeout(() => {
-    $("#show-completed-projects").prop("checked", false);
-    showCompleted = false;
-    applyProjectFilters();
-  }, 0);
+  $("#show-completed-projects").prop("checked", false);
+  // שאר הסינון יבוצע ב-successCB כשהנתונים יגיעו מהשרת
 
   // פתיחת טופס יצירה
   $('a[href="#new-project-form"]').on("click", function () {
@@ -129,13 +134,10 @@ function LoadProject() {
 
 function successCB(response) {
   allProjects = response;
-  // במקום renderProjects(response.slice(0, -1));
-  // נפעיל את applyProjectFilters כדי שהסינון יתבצע תמיד
-  if (typeof applyProjectFilters === "function") {
-    applyProjectFilters();
-  } else {
-    renderProjects(response.slice(0, -1));
-  }
+
+  // נפעיל את הפונקציה שמסננת רק פרויקטים שלא הושלמו
+  filterAndRenderActiveProjects();
+
   PushInfoToProjectDone(response);
 }
 
@@ -341,3 +343,11 @@ CardsDiv.addEventListener("click", function (event) {
   localStorage.setItem("CurrentProject", JSON.stringify(selectedProject));
   window.location.href = "./projectPage.html";
 });
+
+// פונקציה שמסננת ומציגה רק פרויקטים פעילים (שלא הושלמו)
+function filterAndRenderActiveProjects() {
+  const filtered = allProjects
+    .slice(0, -1)
+    .filter((p) => !p.isDone && !p.IsDone);
+  renderProjects(filtered);
+}

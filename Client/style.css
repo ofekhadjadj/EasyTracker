@@ -424,13 +424,14 @@ img.logo-sidebar {
   height: 30px;
 }
 
-#search-project {
+/* מחיקת הסגנון הייחודי לשדה החיפוש בעמוד הפרויקטים כדי שישתמש בסגנון הכללי */
+/* #search-project {
   width: 20%;
   padding: 8px;
   margin: 5px;
   border-radius: 10px;
   border: #c9c9c999 1px solid;
-}
+} */
 
 .box-project {
   width: 330px;

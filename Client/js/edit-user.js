@@ -151,7 +151,7 @@ $(document).ready(function () {
   });
 });
 
-// תצוגה מוגדלת של התמונה בריחוף
+// תצוגה מוגדלת של התמונה בלחיצה
 $(document).ready(function () {
   const avatarImg = document.querySelector(".avatar-img");
   if (!avatarImg) return;
@@ -188,7 +188,7 @@ $(document).ready(function () {
     });
     popup.innerHTML = `
       <img id="avatar-preview-img" src="" alt="תמונה מוגדלת"
-        style="max-width: 80000px; max-height: 80000px; border-radius: 12px;" />
+        style="max-width: 300px; max-height: 300px; border-radius: 12px;" />
     `;
     document.body.appendChild(popup);
   }
@@ -197,52 +197,31 @@ $(document).ready(function () {
   const overlay = document.getElementById("avatar-overlay");
   const previewImg = document.getElementById("avatar-preview-img");
 
-  let isPopupVisible = false;
-
   function showPopup() {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user?.image) {
       previewImg.src = user.image;
       $(overlay).fadeIn(150);
       $(popup).fadeIn(150);
-      isPopupVisible = true;
     }
   }
 
   function hidePopup() {
     $(popup).fadeOut(150);
     $(overlay).fadeOut(150);
-    isPopupVisible = false;
   }
 
-  avatarImg.addEventListener("mouseenter", showPopup);
+  // שינוי מריחוף ללחיצה
+  avatarImg.addEventListener("click", function (e) {
+    e.stopPropagation();
+    showPopup();
+  });
 
-  document.addEventListener("mousemove", function (e) {
-    if (!isPopupVisible) return;
-
-    const x = e.clientX;
-    const y = e.clientY;
-
-    const imgRect = avatarImg.getBoundingClientRect();
-    const popupRect = popup.getBoundingClientRect();
-
-    const insideAvatar =
-      x >= imgRect.left &&
-      x <= imgRect.right &&
-      y >= imgRect.top &&
-      y <= imgRect.bottom;
-
-    const insidePopup =
-      x >= popupRect.left &&
-      x <= popupRect.right &&
-      y >= popupRect.top &&
-      y <= popupRect.bottom;
-
-    if (!insideAvatar && !insidePopup) {
+  // לחיצה על הרקע או בכל מקום אחר תסגור את התמונה המוגדלת
+  overlay.addEventListener("click", hidePopup);
+  document.addEventListener("click", function (e) {
+    if (e.target !== avatarImg && $(popup).is(":visible")) {
       hidePopup();
     }
   });
-
-  // לחיצה על הרקע תסגור מיד
-  overlay.addEventListener("click", hidePopup);
 });

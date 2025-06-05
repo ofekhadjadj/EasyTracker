@@ -126,34 +126,7 @@
                 <img src="./images/plus-btn.png" alt="הוסף פרויקט" />
               </a>
             </div>
-            <!-- תיבת סימון הצגת פרויקטים שהושלמו -->
-            <div
-              id="show-completed-wrapper"
-              style="margin-top: 6px; margin-bottom: 10px"
-            >
-              <label
-                style="
-                  font-size: 0.98em;
-                  color: #555;
-                  display: flex;
-                  align-items: center;
-                  gap: 6px;
-                  cursor: pointer;
-                "
-              >
-                <input
-                  type="checkbox"
-                  id="show-completed-projects"
-                  style="
-                    accent-color: #0072ff;
-                    width: 16px;
-                    height: 16px;
-                    margin-left: 6px;
-                  "
-                />
-                הצג גם פרויקטים שהושלמו
-              </label>
-            </div>
+
             <span id="doneText">
               סיימת - פרויקטים, ועוד - מחכים לכישרון שלך!
             </span>
@@ -170,6 +143,35 @@
                 class="search-icon"
               />
             </div>
+          </div>
+
+          <!-- תיבת סימון הצגת פרויקטים שהושלמו -->
+          <div
+            id="show-completed-wrapper"
+            style="margin-top: 10px; margin-bottom: 20px"
+          >
+            <label
+              style="
+                font-size: 0.98em;
+                color: #555;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                cursor: pointer;
+              "
+            >
+              <input
+                type="checkbox"
+                id="show-completed-projects"
+                style="
+                  accent-color: #0072ff;
+                  width: 16px;
+                  height: 16px;
+                  margin-left: 6px;
+                "
+              />
+              הצג גם פרויקטים שהושלמו
+            </label>
           </div>
 
           <div class="body-projects wow bounceInUp" id="projects"></div>
