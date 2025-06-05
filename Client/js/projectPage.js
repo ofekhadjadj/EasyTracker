@@ -1127,61 +1127,100 @@ $(document).ready(function () {
     // Create a window object for the PDF
     const pdfWindow = window.open("", "_blank");
 
-    // Build HTML content for PDF
+    // Build HTML content for PDF (עיצוב משודרג)
     let pdfContent = `
       <html dir="rtl">
       <head>
         <title>${fileName}</title>
         <style>
           body {
-            font-family: 'Arial', sans-serif;
-            padding: 20px;
+            font-family: 'Assistant', Arial, sans-serif;
+            background: #f7faff;
+            padding: 30px;
             direction: rtl;
           }
-          h1, h2 {
-            text-align: center;
+          .pdf-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            gap: 18px;
+          }
+          .pdf-header img {
+            height: 60px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px #0072ff22;
+          }
+          .pdf-title {
+            font-size: 2.1em;
             color: #0072ff;
+            font-weight: bold;
+            margin: 0;
+            letter-spacing: 1px;
+          }
+          .pdf-subtitle {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 500;
+          }
+          .pdf-date {
+            color: #888;
+            font-size: 0.95em;
+            margin-bottom: 18px;
+            text-align: left;
           }
           table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px #0072ff11;
           }
           th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            padding: 12px 8px;
             text-align: center;
+            font-size: 1em;
           }
           th {
-            background-color: #f2f2f2;
+            background: linear-gradient(90deg, #e3f0ff 60%, #f7faff 100%);
+            color: #0072ff;
             font-weight: bold;
+            border-bottom: 2px solid #b3d1ff;
           }
-          .report-header {
-            margin-bottom: 30px;
-            text-align: center;
+          tr:nth-child(even) td {
+            background: #f7faff;
           }
-          .report-date {
+          tr:last-child td {
+            font-weight: bold;
+            background: #e3f0ff;
+            color: #0072ff;
+            border-top: 2px solid #b3d1ff;
+          }
+          .total-label {
+            text-align: right;
+            color: #0072ff;
+            font-size: 1.1em;
+          }
+          .footer-note {
+            margin-top: 30px;
+            color: #aaa;
+            font-size: 0.95em;
             text-align: left;
-            margin-bottom: 20px;
-            font-size: 14px;
-          }
-          .total-row {
-            font-weight: bold;
-            background-color: #f2f2f2;
-          }
-          .total-row td {
-            text-align: center;
           }
         </style>
       </head>
       <body>
-        <div class="report-header">
-          <h1>דוח סשנים: ${projectName}</h1>
-          <h2>לקוח: ${clientName}</h2>
+        <div class="pdf-header">
+          <img src="./images/logo.png" alt="לוגו" />
+          <div>
+            <div class="pdf-title">דוח סשנים: ${projectName}</div>
+            <div class="pdf-subtitle">לקוח: ${clientName}</div>
+          </div>
         </div>
-        <div class="report-date">
-          <p>הופק בתאריך: ${currentDate}</p>
-        </div>
+        <div class="pdf-date">הופק בתאריך: ${currentDate}</div>
         <table>
           <thead>
             <tr>
@@ -1225,20 +1264,22 @@ $(document).ready(function () {
 
     // Add totals row
     pdfContent += `
-          <tr class="total-row">
-            <td colspan="4" style="text-align: right; font-weight: bold;">סה"כ:</td>
-            <td style="text-align: center;"></td>
-            <td style="text-align: center; font-weight: bold;">${formatSecondsToHHMMSS(
-              totalDuration
-            )}</td>
-            <td style="text-align: center; font-weight: bold;">${totalEarnings.toFixed(
-              2
-            )} ₪</td>
-          </tr>
-        </tbody>
-      </table>
-    </body>
-    </html>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5" class="total-label">סה"כ:</td>
+              <td style="font-weight:bold;">${formatSecondsToHHMMSS(
+                totalDuration
+              )}</td>
+              <td style="font-weight:bold;">₪ ${totalEarnings.toFixed(2)}</td>
+            </tr>
+          </tfoot>
+        </table>
+        <div class="footer-note">
+          דוח זה הופק אוטומטית על ידי מערכת EasyTracker. כל הזכויות שמורות.
+        </div>
+      </body>
+      </html>
     `;
 
     // Write to the new window
