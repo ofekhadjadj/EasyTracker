@@ -2020,3 +2020,11 @@ li a.active span {
 .export-button.mark-done:active {
   background: linear-gradient(135deg, #43e97b, #38f9d7);
 }
+
+.disabled-btn {
+  background: #e0e0e0 !important;
+  color: #aaa !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+  border: none;
+}

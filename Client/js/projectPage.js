@@ -3289,7 +3289,7 @@ function updateTaskStatus(taskId, isDone) {
 }
 
 // Function to show custom confirmation dialog
-function showCustomConfirm(message, onConfirm) {
+function showCustomConfirm(message, onConfirm, confirmBtnText = "כן, הסר") {
   // Remove any existing confirmation dialogs
   const existingConfirms = document.querySelectorAll(".custom-confirm");
   existingConfirms.forEach((confirm) => {
@@ -3335,7 +3335,7 @@ function showCustomConfirm(message, onConfirm) {
   // Create confirm button
   const confirmBtn = document.createElement("button");
   confirmBtn.className = "confirm-btn confirm-yes";
-  confirmBtn.textContent = "כן, הסר";
+  confirmBtn.textContent = confirmBtnText;
   confirmBtn.addEventListener("click", () => {
     confirmContainer.classList.add("closing");
     setTimeout(() => {
@@ -3608,55 +3608,109 @@ $(document).on("reopenEditSessionPopup", function (event, newLabelID) {
   });
 });
 
-// --- התחלה: עדכון כפתור סימון פרויקט כהושלם ---
+function setPlayStopDisabled(disabled) {
+  const playBtn = document.getElementById("toggle-btn");
+  const stopBtn = document.getElementById("stop-btn");
+  if (playBtn && stopBtn) {
+    playBtn.disabled = disabled;
+    stopBtn.disabled = disabled;
+    if (disabled) {
+      playBtn.classList.add("disabled-btn");
+      stopBtn.classList.add("disabled-btn");
+    } else {
+      playBtn.classList.remove("disabled-btn");
+      stopBtn.classList.remove("disabled-btn");
+    }
+  }
+}
+
 function setupMarkProjectDoneButton() {
   const btn = document.getElementById("mark-project-done");
   if (!btn) return;
 
-  // בדוק גם IsDone וגם isDone (לפי מה שמגיע מהשרת)
+  // אם הושלם
   if (CurrentProject.IsDone || CurrentProject.isDone) {
-    btn.innerHTML = '<span class="export-icon">✔️</span> פרויקט הושלם';
-    btn.disabled = true;
-    btn.classList.add("mark-done");
-    btn.style.background = "linear-gradient(135deg, #43e97b, #38f9d7)";
+    btn.innerHTML = '<span class="export-icon">↩️</span> החזר פרויקט לעבודה';
+    btn.disabled = false;
+    btn.classList.remove("mark-done");
+    btn.style.background = "linear-gradient(135deg, #6a11cb, #2575fc)";
+    setPlayStopDisabled(true);
+
+    btn.onclick = function () {
+      showCustomConfirm(
+        "האם להחזיר את הפרויקט למצב פעיל?",
+        () => {
+          btn.innerHTML = '<span class="export-icon">⏳</span> מחזיר...';
+          btn.disabled = true;
+          $.ajax({
+            url: `https://localhost:7198/api/Projects/MarkProjectAsDone?projectID=${CurrentProject.ProjectID}`,
+            type: "PUT",
+            success: function () {
+              // שלוף מהשרת את הפרויקט המעודכן
+              $.ajax({
+                url: `https://localhost:7198/api/Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`,
+                type: "GET",
+                success: function (updatedProject) {
+                  CurrentProject = updatedProject;
+                  localStorage.setItem(
+                    "CurrentProject",
+                    JSON.stringify(CurrentProject)
+                  );
+                  setupMarkProjectDoneButton();
+                  FillDeatils(); // עדכון כותרות/סטטוס
+                },
+              });
+            },
+            error: function () {
+              btn.innerHTML =
+                '<span class="export-icon">↩️</span> החזר פרויקט לעבודה';
+              btn.disabled = false;
+              alert("אירעה שגיאה בהחזרת הפרויקט לעבודה.");
+            },
+          });
+        },
+        "כן, החזר"
+      );
+    };
     return;
   }
 
+  // אם לא הושלם
   btn.disabled = false;
   btn.innerHTML = '<span class="export-icon">✔️</span> סמן פרויקט כהושלם';
   btn.classList.remove("mark-done");
-  btn.style.background = "linear-gradient(135deg, #6a11cb, #2575fc)";
+  btn.style.background = "linear-gradient(135deg, #43e97b, #38f9d7)";
+  setPlayStopDisabled(false);
 
   btn.onclick = function () {
-    if (btn.disabled) return;
-    if (confirm("האם לסמן את הפרויקט כהושלם?")) {
-      btn.innerHTML = '<span class="export-icon">⏳</span> מסמן...';
-      btn.disabled = true;
-      $.ajax({
-        url: `https://localhost:7198/api/Projects/MarkProjectAsDone?projectID=${CurrentProject.ProjectID}`,
-        type: "PUT",
-        success: function () {
-          btn.innerHTML = '<span class="export-icon">✔️</span> פרויקט הושלם';
-          btn.style.background = "linear-gradient(135deg, #43e97b, #38f9d7)";
-          btn.disabled = true;
-          // עדכן את CurrentProject ב-localStorage
-          CurrentProject.IsDone = true;
-          localStorage.setItem(
-            "CurrentProject",
-            JSON.stringify(CurrentProject)
-          );
-        },
-        error: function () {
-          btn.innerHTML =
-            '<span class="export-icon">✔️</span> סמן פרויקט כהושלם';
-          btn.disabled = false;
-          alert("אירעה שגיאה בסימון הפרויקט כהושלם.");
-        },
-      });
-    }
+    showCustomConfirm(
+      "האם לסמן את הפרויקט כהושלם?",
+      () => {
+        btn.innerHTML = '<span class="export-icon">⏳</span> מסמן...';
+        btn.disabled = true;
+        $.ajax({
+          url: `https://localhost:7198/api/Projects/MarkProjectAsDone?projectID=${CurrentProject.ProjectID}`,
+          type: "PUT",
+          success: function () {
+            CurrentProject.IsDone = true;
+            localStorage.setItem(
+              "CurrentProject",
+              JSON.stringify(CurrentProject)
+            );
+            setupMarkProjectDoneButton();
+          },
+          error: function () {
+            btn.innerHTML =
+              '<span class="export-icon">✔️</span> סמן פרויקט כהושלם';
+            btn.disabled = false;
+            alert("אירעה שגיאה בסימון הפרויקט כהושלם.");
+          },
+        });
+      },
+      "כן, סמן"
+    );
   };
 }
-// --- סוף: עדכון כפתור סימון פרויקט כהושלם ---
 
 // --- סוף: עדכון כפתור סימון פרויקט כהושלם ---
 $(document).ready(function () {

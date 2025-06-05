@@ -65,14 +65,38 @@ $(document).ready(function () {
   const ProfName = document.getElementById("menu-prof-name");
   ProfName.innerText = CurrentUser.firstName;
 
+  // --- סינון פרויקטים שהושלמו ---
+  let showCompleted = false;
+  $(document).on("change", "#show-completed-projects", function () {
+    showCompleted = this.checked;
+    applyProjectFilters();
+  });
+
   // חיפוש דינמי לפי שם פרויקט
   $(".search-input").on("input", function () {
-    const searchTerm = $(this).val().trim().toLowerCase();
-    const filtered = allProjects
-      .slice(0, -1)
-      .filter((p) => p.ProjectName.toLowerCase().includes(searchTerm));
-    renderProjects(filtered);
+    applyProjectFilters();
   });
+
+  function applyProjectFilters() {
+    const searchTerm = $(".search-input").val()?.trim().toLowerCase() || "";
+    let filtered = allProjects.slice(0, -1);
+    if (!showCompleted) {
+      filtered = filtered.filter((p) => !p.isDone && !p.IsDone);
+    }
+    if (searchTerm) {
+      filtered = filtered.filter((p) =>
+        p.ProjectName.toLowerCase().includes(searchTerm)
+      );
+    }
+    renderProjects(filtered);
+  }
+
+  // ברירת מחדל: הצג רק לא מושלמים
+  setTimeout(() => {
+    $("#show-completed-projects").prop("checked", false);
+    showCompleted = false;
+    applyProjectFilters();
+  }, 0);
 
   // פתיחת טופס יצירה
   $('a[href="#new-project-form"]').on("click", function () {
@@ -105,7 +129,13 @@ function LoadProject() {
 
 function successCB(response) {
   allProjects = response;
-  renderProjects(response.slice(0, -1));
+  // במקום renderProjects(response.slice(0, -1));
+  // נפעיל את applyProjectFilters כדי שהסינון יתבצע תמיד
+  if (typeof applyProjectFilters === "function") {
+    applyProjectFilters();
+  } else {
+    renderProjects(response.slice(0, -1));
+  }
   PushInfoToProjectDone(response);
 }
 
