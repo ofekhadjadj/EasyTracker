@@ -390,6 +390,8 @@ finally
 
     }
 
+
+
     //--------------------------------------------------------------------------------------------------
     // This method get user projects by ID
     //--------------------------------------------------------------------------------------------------
@@ -941,6 +943,47 @@ finally
         }
 
     }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method mark a project is done 
+    //--------------------------------------------------------------------------------------------------
+    public int MarkProjectAsDone(int projectId)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // יצירת חיבור למסד הנתונים
+        }
+        catch (Exception ex)
+        {
+            throw (ex); // תיעוד ביומן או טיפול בשגיאה
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@ProjectID", projectId);
+
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_ProjectIsDone", con, paramDic); // קריאה לפרוצדורה
+
+        try
+        {
+            int rowsAffected = cmd.ExecuteNonQuery();
+            return rowsAffected;
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close(); // סגירת חיבור
+            }
+        }
+    }
+
 
     //**** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ******** SESSION TABLE ****
 

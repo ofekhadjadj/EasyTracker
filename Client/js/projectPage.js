@@ -1411,6 +1411,36 @@ $(document).ready(function () {
       $(this).html('<i class="fas fa-chevron-up"></i>');
     }
   });
+
+  // כפתור סימון פרויקט כהושלם
+  $("#mark-project-done").on("click", function () {
+    if (!CurrentProject || !CurrentProject.ProjectID) {
+      alert("לא נמצא מזהה פרויקט.");
+      return;
+    }
+    const btn = this;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="export-icon">⏳</span> מסמן...';
+    btn.disabled = true;
+    $.ajax({
+      url: `https://localhost:7198/api/Projects/MarkProjectAsDone?projectID=${CurrentProject.ProjectID}`,
+      type: "PUT",
+      success: function () {
+        btn.innerHTML = '<span class="export-icon">✔️</span> סומן כהושלם!';
+        btn.style.background = "linear-gradient(135deg, #43e97b, #38f9d7)";
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }, 2000);
+        // אפשרות לרענן את הדף או לעדכן סטטוס בפרונט
+      },
+      error: function () {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        alert("אירעה שגיאה בסימון הפרויקט כהושלם.");
+      },
+    });
+  });
 });
 
 function formatDateTime(isoString) {
@@ -3344,6 +3374,16 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(() => {
     checkActiveSessionOnPageLoad();
   }, 1000);
+
+  // --- התחלה: עדכון כפתור סימון פרויקט כהושלם ---
+  setupMarkProjectDoneButton();
+  // --- סוף: עדכון כפתור סימון פרויקט כהושלם ---
+
+  // --- התחלה: שליפת מצב הפרויקט מהשרת לפני עדכון כפתור סימון כהושלם ---
+  refreshProjectFromServer().then(() => {
+    setupMarkProjectDoneButton();
+  });
+  // --- סוף: שליפת מצב הפרויקט מהשרת ---
 });
 
 // Initialize dropdowns to open downward
@@ -3526,3 +3566,85 @@ $(document).on("reopenEditSessionPopup", function (event, newLabelID) {
     },
   });
 });
+
+// --- התחלה: עדכון כפתור סימון פרויקט כהושלם ---
+function setupMarkProjectDoneButton() {
+  const btn = document.getElementById("mark-project-done");
+  if (!btn) return;
+
+  // בדוק גם IsDone וגם isDone (לפי מה שמגיע מהשרת)
+  if (CurrentProject.IsDone || CurrentProject.isDone) {
+    btn.innerHTML = '<span class="export-icon">✔️</span> פרויקט הושלם';
+    btn.disabled = true;
+    btn.classList.add("mark-done");
+    btn.style.background = "linear-gradient(135deg, #43e97b, #38f9d7)";
+    return;
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<span class="export-icon">✔️</span> סמן פרויקט כהושלם';
+  btn.classList.remove("mark-done");
+  btn.style.background = "linear-gradient(135deg, #6a11cb, #2575fc)";
+
+  btn.onclick = function () {
+    if (btn.disabled) return;
+    if (confirm("האם לסמן את הפרויקט כהושלם?")) {
+      btn.innerHTML = '<span class="export-icon">⏳</span> מסמן...';
+      btn.disabled = true;
+      $.ajax({
+        url: `https://localhost:7198/api/Projects/MarkProjectAsDone?projectID=${CurrentProject.ProjectID}`,
+        type: "PUT",
+        success: function () {
+          btn.innerHTML = '<span class="export-icon">✔️</span> פרויקט הושלם';
+          btn.style.background = "linear-gradient(135deg, #43e97b, #38f9d7)";
+          btn.disabled = true;
+          // עדכן את CurrentProject ב-localStorage
+          CurrentProject.IsDone = true;
+          localStorage.setItem(
+            "CurrentProject",
+            JSON.stringify(CurrentProject)
+          );
+        },
+        error: function () {
+          btn.innerHTML =
+            '<span class="export-icon">✔️</span> סמן פרויקט כהושלם';
+          btn.disabled = false;
+          alert("אירעה שגיאה בסימון הפרויקט כהושלם.");
+        },
+      });
+    }
+  };
+}
+// --- סוף: עדכון כפתור סימון פרויקט כהושלם ---
+
+// --- סוף: עדכון כפתור סימון פרויקט כהושלם ---
+$(document).ready(function () {
+  // ... existing code ...
+  $("#mark-project-done").off();
+  // ... existing code ...
+});
+// --- סוף: עדכון כפתור סימון פרויקט כהושלם ---
+
+// --- התחלה: שליפת מצב הפרויקט מהשרת ---
+function refreshProjectFromServer() {
+  return new Promise((resolve, reject) => {
+    if (!CurrentProject || !CurrentProject.ProjectID || !CurrentUser?.id) {
+      resolve();
+      return;
+    }
+    const url = `https://localhost:7198/api/Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`;
+    $.ajax({
+      url: url,
+      type: "GET",
+      success: function (updatedProject) {
+        CurrentProject = updatedProject;
+        localStorage.setItem("CurrentProject", JSON.stringify(CurrentProject));
+        resolve();
+      },
+      error: function () {
+        resolve(); // גם אם נכשל, נמשיך הלאה
+      },
+    });
+  });
+}
+// --- סוף: שליפת מצב הפרויקט מהשרת ---

@@ -97,5 +97,15 @@ namespace EasyTracker.Controllers
 
             return Ok(project.GetThisProject(ProjectID, UserID));
         }
+
+        [HttpPut("MarkProjectAsDone")]
+        public IActionResult MarkProjectAsDone([FromQuery] int projectID)
+        {
+            Project p = new Project();
+            int numEffected = p.MarkProjectAsDone(projectID);
+
+            return Ok(numEffected);
+
+        }
     }
 }

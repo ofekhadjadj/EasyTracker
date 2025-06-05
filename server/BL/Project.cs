@@ -42,7 +42,7 @@ namespace EasyTracker.BL
             this.clientid = clientid;
             this.isarchived = isarchived;
             this.createdbyuserid = createdbyuserid;
-            this.isDone = isDone; 
+            this.isDone = isDone;
             this.DurationGoal = durationGoal;
         }
 
@@ -113,6 +113,10 @@ namespace EasyTracker.BL
             return dbs.GetThisProject(ProjectID, UserID);
         }
 
-
+        public int MarkProjectAsDone(int projectId)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.MarkProjectAsDone(projectId);
+        }
     }
 }
