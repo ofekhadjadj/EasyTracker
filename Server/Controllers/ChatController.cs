@@ -13,7 +13,7 @@ namespace EasyTracker.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ChatController : ControllerBase
-    {
+    {/*
         // שליחת הודעה חדשה
         [HttpPost("SendMessage")]
         public IActionResult SendMessage([FromBody] ChatMessage message)
@@ -111,7 +111,7 @@ namespace EasyTracker.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
-        }
+        }*/
 
     }
 }
