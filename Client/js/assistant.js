@@ -149,54 +149,39 @@ function sendToGemini(userQuestion) {
   isLoading = true;
   showTypingIndicator();
 
-  // יצירת תיאור הנתונים בצורה מסודרת
-  let dataDescription = "פרויקטים:\n";
-  assistantData.Projects.forEach((project) => {
-    const client = assistantData.Clients.find(
-      (c) => c.ClientID === project.ClientID
-    );
-    dataDescription += `- ${project.ProjectName} (${
-      project.ProjectDescription
-    }) - ${project.ProjectHourlyRate}₪ לשעה - לקוח: ${
-      client?.CompanyName || "לא ידוע"
-    }\n`;
-  });
+  // קבלת נתוני המשתמש המחובר
+  const user = getCurrentUser();
+  const userId = user?.id || "לא ידוע";
+  const userName = user?.firstName
+    ? `${user.firstName} ${user.lastName || ""}`
+    : "משתמש לא מזוהה";
 
-  dataDescription += "\nלקוחות:\n";
-  assistantData.Clients.forEach((client) => {
-    dataDescription += `- ${client.CompanyName} (${client.ContactPerson}, ${client.ClientEmail})\n`;
-  });
-
-  dataDescription += "\nסשני עבודה:\n";
-  assistantData.Sessions.forEach((session) => {
-    const startDate = new Date(session.StartDate).toLocaleDateString("he-IL");
-    const duration = calculateDuration(session.StartDate, session.EndDate);
-    dataDescription += `- ${session.ProjectName} (${
-      session.CompanyName
-    }): ${duration} ב-${startDate} - ${
-      session.SessionDescription || "ללא תיאור"
-    }\n`;
-  });
-
+  // שליחת הנתונים הגולמיים ללא עיבוד
   const prompt = `
-הנתונים של המשתמש הם:
-${dataDescription}
+פרטי המשתמש:
+מזהה: ${userId}
+שם: ${userName}
+
+הנתונים של המשתמש (JSON גולמי):
+${JSON.stringify(assistantData)}
 
 השאלה שלי היא:
 ${userQuestion}
 
-ענה בעברית בצורה ברורה ותמציתית. השתמש באימוג'ים כדי להפוך את התשובה לידידותית יותר.
-אם השאלה לא קשורה לנתונים, הסבר בנימוס שאתה יכול לעזור רק עם מידע הקשור לפרויקטים, לקוחות ושעות עבודה.
+ענה בעברית בצורה ברורה ותמציתית. השתמש באימוג'ים כדי להפוך את התשובה לידידותית יותר. אם השאלה לא קשורה לנתונים (כגון שאלה כללית או לא עסקית), הסבר בנימוס שאתה מספק מענה רק על שאלות הקשורות לפרויקטים, לקוחות, שעות עבודה, הכנסות וסטטיסטיקות מהמערכת. במקרה של ספק, נתח את השאלה ונסה להבין את כוונת המשתמש בהתבסס על הדאטה הנתון.
 `.trim();
 
   console.log("שולח לגמיני:", prompt);
 
   const requestData = JSON.stringify({ prompt: prompt });
+  console.log("JSON שנשלח לגמיני:", requestData);
+
   ajaxCall(
     "POST",
     "https://localhost:7198/api/Gemini/ask",
     requestData,
     function (response) {
+      console.log("תשובה גולמית מהשרת:", response);
       hideTypingIndicator();
       isLoading = false;
       if (response) {
