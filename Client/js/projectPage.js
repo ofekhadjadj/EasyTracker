@@ -157,8 +157,21 @@ document.getElementById("desc-form").addEventListener("submit", function (e) {
 function openEndSessionPopup() {
   const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
 
-  // Clear any previous session description
+  // Clear any previous session description and AI states
   document.getElementById("session-description").value = "";
+
+  // Reset AI helper states
+  originalSessionText = "";
+  isAiProcessing = false;
+
+  // Hide any existing tooltips
+  const aiHelperTooltip = document.getElementById("ai-helper-tooltip");
+  const aiResultTooltip = document.getElementById("ai-result-tooltip");
+  const aiLoading = document.getElementById("ai-loading");
+
+  if (aiHelperTooltip) aiHelperTooltip.style.display = "none";
+  if (aiResultTooltip) aiResultTooltip.style.display = "none";
+  if (aiLoading) aiLoading.style.display = "none";
 
   ajaxCall("GET", labelApi, "", (labels) => {
     const labelSelect = document.getElementById("session-label");
@@ -223,6 +236,9 @@ function openEndSessionPopup() {
       type: "inline",
       touch: false, // Disable touch events to avoid interference
       afterShow: function () {
+        // Initialize AI helper for session description
+        setupAiHelperForSessionDescription();
+
         // Apply dropdown fix
         const selectElement = document.getElementById("session-label");
 
@@ -801,6 +817,10 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
         localStorage.removeItem("pendingSessionDescription");
       }
 
+      // Reset AI helper states
+      originalSessionText = "";
+      isAiProcessing = false;
+
       // Replace alert with elegant notification
       const notification = document.createElement("div");
       notification.className = "save-notification";
@@ -833,7 +853,14 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
       // Close the popup to avoid UI issues
       $.fancybox.close(true);
 
-      // Show error notification instead of alert      const notification = document.createElement("div");      notification.className = "save-notification";      notification.innerHTML = `        <div class="notification-icon">✕</div>        <div class="notification-message">שגיאה בסיום הסשן</div>      `;      document.body.appendChild(notification);
+      // Show error notification instead of alert
+      const notification = document.createElement("div");
+      notification.className = "save-notification";
+      notification.innerHTML = `
+        <div class="notification-icon">✕</div>
+        <div class="notification-message">שגיאה בסיום הסשן</div>
+      `;
+      document.body.appendChild(notification);
 
       // Animate notification
       setTimeout(() => {
@@ -3704,3 +3731,213 @@ function refreshProjectFromServer() {
   });
 }
 // --- סוף: שליפת מצב הפרויקט מהשרת ---
+
+// AI Helper Functions for Session Description
+let originalSessionText = "";
+let isAiProcessing = false;
+
+function setupAiHelperForSessionDescription() {
+  const sessionDescInput = document.getElementById("session-description");
+  const aiHelperTooltip = document.getElementById("ai-helper-tooltip");
+  const aiResultTooltip = document.getElementById("ai-result-tooltip");
+  const aiLoading = document.getElementById("ai-loading");
+
+  if (!sessionDescInput) return;
+
+  let typingTimer;
+  let hasShownTooltip = false;
+
+  // Listen for typing in the description field
+  sessionDescInput.addEventListener("input", function () {
+    clearTimeout(typingTimer);
+
+    if (this.value.trim().length > 3 && !hasShownTooltip && !isAiProcessing) {
+      showAiHelperTooltip();
+      hasShownTooltip = true;
+    }
+  });
+
+  // Hide tooltip when clicking elsewhere
+  document.addEventListener("click", function (e) {
+    if (
+      !e.target.closest("#ai-helper-tooltip") &&
+      !e.target.closest("#session-description")
+    ) {
+      hideAiHelperTooltip();
+    }
+  });
+
+  // AI Helper Yes button
+  document
+    .getElementById("ai-helper-yes-btn")
+    .addEventListener("click", function () {
+      const currentText = sessionDescInput.value.trim();
+      if (currentText.length < 3) {
+        alert("יש להזין לפחות כמה מילים כדי שהבינה המלאכותית תוכל לעזור");
+        return;
+      }
+
+      originalSessionText = currentText;
+      hideAiHelperTooltip();
+      showAiLoading();
+      callGeminiAPI(currentText);
+    });
+
+  // AI Result buttons
+  document
+    .getElementById("ai-approve-btn")
+    .addEventListener("click", function () {
+      hideAiResultTooltip();
+      hasShownTooltip = false; // Reset flag to allow tooltip to show again for new text
+    });
+
+  document
+    .getElementById("ai-reject-btn")
+    .addEventListener("click", function () {
+      sessionDescInput.value = originalSessionText;
+      hideAiResultTooltip();
+      hasShownTooltip = false; // Reset flag
+    });
+}
+
+function showAiHelperTooltip() {
+  const tooltip = document.getElementById("ai-helper-tooltip");
+  if (tooltip) {
+    tooltip.style.display = "block";
+  }
+}
+
+function hideAiHelperTooltip() {
+  const tooltip = document.getElementById("ai-helper-tooltip");
+  if (tooltip) {
+    tooltip.style.display = "none";
+  }
+}
+
+function showAiLoading() {
+  const loading = document.getElementById("ai-loading");
+  if (loading) {
+    loading.style.display = "block";
+    isAiProcessing = true;
+  }
+}
+
+function hideAiLoading() {
+  const loading = document.getElementById("ai-loading");
+  if (loading) {
+    loading.style.display = "none";
+    isAiProcessing = false;
+  }
+}
+
+function showAiResultTooltip() {
+  const tooltip = document.getElementById("ai-result-tooltip");
+  if (tooltip) {
+    tooltip.style.display = "block";
+  }
+}
+
+function hideAiResultTooltip() {
+  const tooltip = document.getElementById("ai-result-tooltip");
+  if (tooltip) {
+    tooltip.style.display = "none";
+  }
+}
+
+function callGeminiAPI(text) {
+  const prompt = `נסח בצורה מקצועית ועניינית את התיאור הבא של סשן עבודה. 
+שמור על הדברים ממוקדים, מובנים ומדויקים מבלי לנפח יותר מידי.
+השב בסגנון פסקה רציפה ולא בבולטים או רשימות.
+השב רק עם הטקסט המנוסח מחדש ללא הסברים או הוספות:
+
+"${text}"`;
+
+  const requestData = {
+    prompt: prompt,
+  };
+
+  ajaxCall(
+    "POST",
+    "https://localhost:7198/api/Gemini/ask",
+    JSON.stringify(requestData),
+    (response) => {
+      console.log("תשובה גולמית מהבינה המלאכותית:", response);
+      console.log("סוג התשובה:", typeof response);
+
+      hideAiLoading();
+
+      // Update the textarea with the improved text
+      const sessionDescInput = document.getElementById("session-description");
+
+      // Try different response formats
+      let aiResponse = null;
+
+      if (typeof response === "string") {
+        aiResponse = response;
+      } else if (
+        response &&
+        response.candidates &&
+        response.candidates.length > 0 &&
+        response.candidates[0].content &&
+        response.candidates[0].content.parts &&
+        response.candidates[0].content.parts.length > 0 &&
+        response.candidates[0].content.parts[0].text
+      ) {
+        // Gemini API format: response.candidates[0].content.parts[0].text
+        aiResponse = response.candidates[0].content.parts[0].text;
+      } else if (response && response.response) {
+        aiResponse = response.response;
+      } else if (response && response.result) {
+        aiResponse = response.result;
+      } else if (response && response.data) {
+        aiResponse = response.data;
+      } else if (response && response.text) {
+        aiResponse = response.text;
+      } else if (response && response.content) {
+        aiResponse = response.content;
+      } else if (response && response.message) {
+        aiResponse = response.message;
+      }
+
+      console.log("התגובה שנמצאה:", aiResponse);
+
+      if (sessionDescInput && aiResponse && aiResponse.trim()) {
+        sessionDescInput.value = aiResponse.trim();
+        showAiResultTooltip();
+      } else {
+        console.error("לא נמצאה תגובה תקינה:", response);
+        alert(
+          "לא התקבלה תשובה תקינה מהבינה המלאכותית. נא לבדוק את החיבור לשרת."
+        );
+        if (sessionDescInput) {
+          sessionDescInput.value = originalSessionText;
+        }
+      }
+    },
+    (xhr, status, error) => {
+      console.error("שגיאה בקריאה לבינה מלאכותית:", error);
+      console.error("פרטי השגיאה:", xhr.responseText);
+      console.error("סטטוס:", status);
+      hideAiLoading();
+
+      const sessionDescInput = document.getElementById("session-description");
+      if (sessionDescInput) {
+        sessionDescInput.value = originalSessionText;
+      }
+
+      let errorMessage = "אירעה שגיאה בהתקשרות עם הבינה המלאכותית.";
+
+      if (xhr.status === 0) {
+        errorMessage += " בדוק את החיבור לאינטרנט ולשרת.";
+      } else if (xhr.status >= 500) {
+        errorMessage += " שגיאה בשרת. נסה שוב מאוחר יותר.";
+      } else if (xhr.status === 404) {
+        errorMessage += " API לא נמצא.";
+      } else {
+        errorMessage += ` (קוד שגיאה: ${xhr.status})`;
+      }
+
+      alert(errorMessage);
+    }
+  );
+}

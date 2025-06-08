@@ -198,6 +198,139 @@
     justify-content: space-between;
     align-items: center;
     gap: 15px;
+  }
+
+  /* AI Helper Tooltips Styling */
+  .ai-tooltip {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    z-index: 1000;
+    min-width: 300px;
+    max-width: 400px;
+    animation: fadeInScale 0.3s ease-out;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .ai-tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 20px;
+    border: 8px solid transparent;
+    border-bottom-color: #667eea;
+  }
+
+  .ai-tooltip-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-tooltip-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .ai-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .ai-tooltip-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    align-self: flex-end;
+  }
+
+  .ai-yes-btn {
+    background: rgba(255, 255, 255, 0.9);
+    color: #667eea;
+  }
+
+  .ai-yes-btn:hover {
+    background: white;
+    transform: translateY(-1px);
+  }
+
+  .ai-no-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .ai-no-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .ai-tooltip-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  /* AI Loading Styling */
+  .ai-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    backdrop-filter: blur(5px);
+  }
+
+  .ai-loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: #667eea;
+    font-weight: 500;
+  }
+
+  .ai-spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(102, 126, 234, 0.2);
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .export-buttons-container {
     margin-top: 25px;
   }
   
@@ -326,6 +459,15 @@
     font-weight: 600;
     color: #0072ff;
     font-size: 14.5px;
+  }
+
+  /* Text wrapping only for description column */
+  #sessionsTable tbody td:nth-child(5) {
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    max-width: 250px;
+    min-width: 150px;
   }
   
   /* Empty table message styling */
@@ -963,9 +1105,43 @@
     <i class="fas fa-check-circle" style="margin-right: 10px;"></i>סיום סשן
   </h2>
 
-  <div class="form-group" style="margin-bottom: 20px;">
+  <div class="form-group" style="margin-bottom: 20px; position: relative;">
     <label for="session-description" style="font-size: 16px; display: block; margin-bottom: 8px; font-weight: 500; color: #333;">תיאור:</label>
-    <textarea id="session-description" rows="4" style="width: 100%; font-size: 15px; padding: 12px; border-radius: 8px; border: 1px solid #ddd; resize: vertical; transition: border-color 0.3s; box-sizing: border-box;"></textarea>
+    <div style="position: relative;">
+      <textarea id="session-description" rows="4" style="width: 100%; font-size: 15px; padding: 12px; border-radius: 8px; border: 1px solid #ddd; resize: vertical; transition: border-color 0.3s; box-sizing: border-box;"></textarea>
+      
+      <!-- AI Helper Tooltips -->
+      <div id="ai-helper-tooltip" class="ai-tooltip" style="display: none;">
+        <div class="ai-tooltip-content">
+          <div class="ai-tooltip-text">
+            <span class="ai-icon">🤖</span>
+            <span>האם תרצה שבינה מלאכותית תעזור לך לנסח ולהעשיר את התיאור שלך?</span>
+          </div>
+          <button id="ai-helper-yes-btn" class="ai-tooltip-btn ai-yes-btn">כן בכיף!</button>
+        </div>
+      </div>
+
+      <div id="ai-result-tooltip" class="ai-tooltip" style="display: none;">
+        <div class="ai-tooltip-content">
+          <div class="ai-tooltip-text">
+            <span class="ai-icon">✨</span>
+            <span>האם הטקסט לשביעות רצונך?</span>
+          </div>
+          <div class="ai-tooltip-buttons">
+            <button id="ai-approve-btn" class="ai-tooltip-btn ai-yes-btn">כן</button>
+            <button id="ai-reject-btn" class="ai-tooltip-btn ai-no-btn">לא</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Loading indicator -->
+      <div id="ai-loading" class="ai-loading" style="display: none;">
+        <div class="ai-loading-content">
+          <div class="ai-spinner"></div>
+          <span>הבינה המלאכותית מעבדת את הטקסט שלך...</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="form-group" style="margin-bottom: 25px;">
