@@ -1453,35 +1453,7 @@ $(document).ready(function () {
     }
   });
 
-  // כפתור סימון פרויקט כהושלם
-  $("#mark-project-done").on("click", function () {
-    if (!CurrentProject || !CurrentProject.ProjectID) {
-      alert("לא נמצא מזהה פרויקט.");
-      return;
-    }
-    const btn = this;
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '<span class="export-icon">⏳</span> מסמן...';
-    btn.disabled = true;
-    $.ajax({
-      url: `https://localhost:7198/api/Projects/MarkProjectAsDone?projectID=${CurrentProject.ProjectID}`,
-      type: "PUT",
-      success: function () {
-        btn.innerHTML = '<span class="export-icon">✔️</span> סומן כהושלם!';
-        btn.style.background = "linear-gradient(135deg, #43e97b, #38f9d7)";
-        setTimeout(() => {
-          btn.innerHTML = originalText;
-          btn.disabled = false;
-        }, 2000);
-        // אפשרות לרענן את הדף או לעדכן סטטוס בפרונט
-      },
-      error: function () {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        alert("אירעה שגיאה בסימון הפרויקט כהושלם.");
-      },
-    });
-  });
+  // הקוד הישן של הכפתור הוסר - עכשיו משתמשים בטוגל
 });
 
 function formatDateTime(isoString) {
@@ -3416,13 +3388,13 @@ document.addEventListener("DOMContentLoaded", function () {
     checkActiveSessionOnPageLoad();
   }, 1000);
 
-  // --- התחלה: עדכון כפתור סימון פרויקט כהושלם ---
-  setupMarkProjectDoneButton();
-  // --- סוף: עדכון כפתור סימון פרויקט כהושלם ---
+  // --- התחלה: עדכון טוגל סטטוס פרויקט ---
+  setupProjectStatusToggle();
+  // --- סוף: עדכון טוגל סטטוס פרויקט ---
 
-  // --- התחלה: שליפת מצב הפרויקט מהשרת לפני עדכון כפתור סימון כהושלם ---
+  // --- התחלה: שליפת מצב הפרויקט מהשרת לפני עדכון טוגל סטטוס ---
   refreshProjectFromServer().then(() => {
-    setupMarkProjectDoneButton();
+    setupProjectStatusToggle();
   });
   // --- סוף: שליפת מצב הפרויקט מהשרת ---
 });
@@ -3624,29 +3596,50 @@ function setPlayStopDisabled(disabled) {
   }
 }
 
-function setupMarkProjectDoneButton() {
-  const btn = document.getElementById("mark-project-done");
-  if (!btn) return;
+function setupProjectStatusToggle() {
+  const toggle = document.getElementById("project-status-toggle");
+  if (!toggle) return;
 
-  // אם הושלם
+  // עדכון מצב הטוגל בהתאם לסטטוס הפרויקט
   if (CurrentProject.IsDone || CurrentProject.isDone) {
-    btn.innerHTML = '<span class="export-icon">↩️</span> החזר פרויקט לעבודה';
-    btn.disabled = false;
-    btn.classList.remove("mark-done");
-    btn.style.background = "linear-gradient(135deg, #6a11cb, #2575fc)";
+    toggle.classList.add("active");
     setPlayStopDisabled(true);
+  } else {
+    toggle.classList.remove("active");
+    setPlayStopDisabled(false);
+  }
 
-    btn.onclick = function () {
-      showCustomConfirm(
-        "האם להחזיר את הפרויקט למצב פעיל?",
-        () => {
-          btn.innerHTML = '<span class="export-icon">⏳</span> מחזיר...';
-          btn.disabled = true;
-          $.ajax({
-            url: `https://localhost:7198/api/Projects/MarkProjectAsDone?projectID=${CurrentProject.ProjectID}`,
-            type: "PUT",
-            success: function () {
-              // שלוף מהשרת את הפרויקט המעודכן
+  // הוסף event listener לטוגל
+  toggle.onclick = function () {
+    const isCurrentlyDone = toggle.classList.contains("active");
+    const newStatus = !isCurrentlyDone;
+
+    const confirmMessage = newStatus
+      ? "האם לסמן את הפרויקט כהושלם?"
+      : "האם להחזיר את הפרויקט למצב פעיל?";
+
+    const confirmText = newStatus ? "כן, סמן" : "כן, החזר";
+
+    showCustomConfirm(
+      confirmMessage,
+      () => {
+        // החלפת מצב הטוגל מיידית למשוב חזותי
+        if (newStatus) {
+          toggle.classList.add("active");
+          setPlayStopDisabled(true);
+        } else {
+          toggle.classList.remove("active");
+          setPlayStopDisabled(false);
+        }
+
+        $.ajax({
+          url: `https://localhost:7198/api/Projects/MarkProjectAsDone?projectID=${CurrentProject.ProjectID}`,
+          type: "PUT",
+          success: function () {
+            if (newStatus) {
+              CurrentProject.IsDone = true;
+            } else {
+              // שלוף מהשרת את הפרויקט המעודכן אחרי החזרה לפעיל
               $.ajax({
                 url: `https://localhost:7198/api/Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`,
                 type: "GET",
@@ -3656,69 +3649,37 @@ function setupMarkProjectDoneButton() {
                     "CurrentProject",
                     JSON.stringify(CurrentProject)
                   );
-                  setupMarkProjectDoneButton();
+                  setupProjectStatusToggle();
                   FillDeatils(); // עדכון כותרות/סטטוס
                 },
               });
-            },
-            error: function () {
-              btn.innerHTML =
-                '<span class="export-icon">↩️</span> החזר פרויקט לעבודה';
-              btn.disabled = false;
-              alert("אירעה שגיאה בהחזרת הפרויקט לעבודה.");
-            },
-          });
-        },
-        "כן, החזר"
-      );
-    };
-    return;
-  }
+              return;
+            }
 
-  // אם לא הושלם
-  btn.disabled = false;
-  btn.innerHTML = '<span class="export-icon">✔️</span> סמן פרויקט כהושלם';
-  btn.classList.remove("mark-done");
-  btn.style.background = "linear-gradient(135deg, #43e97b, #38f9d7)";
-  setPlayStopDisabled(false);
-
-  btn.onclick = function () {
-    showCustomConfirm(
-      "האם לסמן את הפרויקט כהושלם?",
-      () => {
-        btn.innerHTML = '<span class="export-icon">⏳</span> מסמן...';
-        btn.disabled = true;
-        $.ajax({
-          url: `https://localhost:7198/api/Projects/MarkProjectAsDone?projectID=${CurrentProject.ProjectID}`,
-          type: "PUT",
-          success: function () {
-            CurrentProject.IsDone = true;
             localStorage.setItem(
               "CurrentProject",
               JSON.stringify(CurrentProject)
             );
-            setupMarkProjectDoneButton();
           },
           error: function () {
-            btn.innerHTML =
-              '<span class="export-icon">✔️</span> סמן פרויקט כהושלם';
-            btn.disabled = false;
-            alert("אירעה שגיאה בסימון הפרויקט כהושלם.");
+            // החזר לסטטוס הקודם במקרה של שגיאה
+            if (newStatus) {
+              toggle.classList.remove("active");
+              setPlayStopDisabled(false);
+            } else {
+              toggle.classList.add("active");
+              setPlayStopDisabled(true);
+            }
+            alert("אירעה שגיאה בעדכון סטטוס הפרויקט.");
           },
         });
       },
-      "כן, סמן"
+      confirmText
     );
   };
 }
 
-// --- סוף: עדכון כפתור סימון פרויקט כהושלם ---
-$(document).ready(function () {
-  // ... existing code ...
-  $("#mark-project-done").off();
-  // ... existing code ...
-});
-// --- סוף: עדכון כפתור סימון פרויקט כהושלם ---
+// --- סוף: עדכון טוגל סטטוס פרויקט ---
 
 // --- התחלה: שליפת מצב הפרויקט מהשרת ---
 function refreshProjectFromServer() {
