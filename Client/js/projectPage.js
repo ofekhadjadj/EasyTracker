@@ -748,7 +748,7 @@ toggleBtn.addEventListener("click", () => {
 //סיום סשן
 stopBtn.addEventListener("click", () => {
   if (!currentActiveSessionID) {
-    alert("לא ניתן לסיים סשן לפני שהתחלת אחד.");
+    showCustomAlert("לא ניתן לסיים סשן לפני שהתחלת אחד", "error");
     return;
   }
   clearInterval(interval);
