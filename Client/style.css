@@ -1985,6 +1985,51 @@ li a.active span {
   transition: all 0.3s;
   animation: float 3s ease-in-out infinite;
   font-family: "Assistant", sans-serif;
+  position: relative;
+}
+
+/* אנימציית pulsing מגניבה */
+.floating-assistant-btn.pulse-animation::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border-radius: 50%;
+  z-index: -1;
+  animation: pulse-ring 2s infinite ease-out;
+  opacity: 0;
+}
+
+.floating-assistant-btn.pulse-animation::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border-radius: 50%;
+  z-index: -2;
+  animation: pulse-ring 2s infinite ease-out 0.5s;
+  opacity: 0;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }
 
 @keyframes float {
@@ -2001,6 +2046,59 @@ li a.active span {
   background: linear-gradient(135deg, #0056b3, #004085);
   transform: scale(1.1);
   box-shadow: 0 8px 30px rgba(0, 123, 255, 0.5);
+}
+
+/* Tooltip מותאם אישית */
+.floating-assistant-btn[data-tooltip] {
+  position: relative;
+}
+
+.floating-assistant-btn[data-tooltip]:hover::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 10000;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  animation: tooltipFadeInUp 0.3s ease-out;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  max-width: 250px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.4;
+  font-family: "Assistant", sans-serif;
+}
+
+.floating-assistant-btn[data-tooltip]:hover::after {
+  content: "";
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top: 8px solid #2c3e50;
+  z-index: 10001;
+  animation: tooltipFadeInUp 0.3s ease-out 0.1s both;
+}
+
+@keyframes tooltipFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 /* רספונסיבי למובייל */

@@ -19,6 +19,27 @@
       referrerpolicy="no-referrer"
     />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- תיקון מיקום כפתור צף - כפייה לצד שמאל -->
+    <style>
+      .floating-assistant-btn {
+        position: fixed !important;
+        bottom: 30px !important;
+        left: 30px !important;
+        right: auto !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        transform: none !important;
+      }
+
+      @media (max-width: 768px) {
+        .floating-assistant-btn {
+          bottom: 20px !important;
+          left: 20px !important;
+          right: auto !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="projects-continer">
@@ -42,9 +63,9 @@
             <div class="main-nav">
               <ul>
                 <li>
-                  <a href="projects.html" class="">
+                  <a href="projects.html" class="active">
                     <img
-                      src="./images/project icon.png"
+                      src="./images/icons/proj-white.png"
                       alt="פרויקטים"
                       class="nav-icon"
                     />
@@ -54,7 +75,7 @@
                 <li>
                   <a href="clients.html" class="">
                     <img
-                      src="./images/customers icon.png"
+                      src="./images/icons/customer-black.png"
                       alt="לקוחות"
                       class="nav-icon"
                     />
@@ -64,7 +85,7 @@
                 <li>
                   <a href="stats.html" class="">
                     <img
-                      src="./images/reports.png"
+                      src="./images/icons/statistics and analytics-black.png"
                       alt="דוחות"
                       class="nav-icon"
                     />
@@ -74,7 +95,7 @@
                 <li>
                   <a href="labels.html" class="">
                     <img
-                      src="./images/tags.png"
+                      src="./images/icons/lablels-black.png"
                       alt="תיוגים"
                       class="nav-icon"
                     />
@@ -83,7 +104,11 @@
                 </li>
                 <li>
                   <a href="assistant.html" class="">
-                    <span class="nav-icon">🤖</span>
+                    <img
+                      src="./images/icons/aiassistant-black.png"
+                      alt="העוזר האישי"
+                      class="nav-icon"
+                    />
                     <span>העוזר האישי</span>
                   </a>
                 </li>
@@ -94,7 +119,7 @@
                 <li>
                   <a href="settings.html">
                     <img
-                      src="./images/settings-icon.png"
+                      src="./images/icons/settings-black.png"
                       alt="הגדרות"
                       class="nav-icon"
                     />
@@ -104,7 +129,7 @@
                 <li>
                   <a href="help.html">
                     <img
-                      src="./images/help-icon.png"
+                      src="./images/icons/help-black.png"
                       alt="עזרה"
                       class="nav-icon"
                     />
@@ -338,7 +363,11 @@
       onclick="window.location.href='assistant.html'"
       title="העוזר האישי שלך"
     >
-      🤖
+      <img
+        src="./images/icons/aiassistant-white.png"
+        alt="העוזר האישי"
+        style="width: 24px; height: 24px"
+      />
     </button>
   </body>
 </html>
