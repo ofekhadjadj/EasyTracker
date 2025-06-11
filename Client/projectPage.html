@@ -48,6 +48,27 @@
 <!-- Font Awesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<!-- תיקון מיקום כפתור צף - כפייה לצד שמאל -->
+<style>
+  .floating-assistant-btn {
+    position: fixed !important;
+    bottom: 30px !important;
+    left: 30px !important;
+    right: auto !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    transform: none !important;
+  }
+
+  @media (max-width: 768px) {
+    .floating-assistant-btn {
+      bottom: 20px !important;
+      left: 20px !important;
+      right: auto !important;
+    }
+  }
+</style>
+
 <style>
   /* Modern Sessions Table Styling */
   #sessionsTable {
@@ -649,6 +670,179 @@
     }
   }
 
+  /* כפתור הוספת סשן - אפקטי hover מעניינים */
+  .add-session-hover-btn {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .add-session-hover-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .add-session-hover-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 114, 255, 0.4), 0 0 20px rgba(0, 114, 255, 0.2);
+    background: linear-gradient(135deg, #0080ff, #00d4ff);
+  }
+
+  .add-session-hover-btn:hover::before {
+    left: 100%;
+  }
+
+  .add-session-hover-btn:hover i {
+    animation: pulseIcon 0.6s ease;
+  }
+
+  .add-session-hover-btn:active {
+    transform: translateY(-1px) scale(1.01);
+    transition: all 0.1s ease;
+  }
+
+  @keyframes pulseIcon {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2) rotate(90deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  /* אפקט גלים בלחיצה */
+  .add-session-hover-btn {
+    position: relative;
+  }
+
+  .add-session-hover-btn:active::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    animation: ripple 0.4s ease-out;
+  }
+
+  @keyframes ripple {
+    to {
+      width: 300px;
+      height: 300px;
+      opacity: 0;
+    }
+  }
+
+  /* אפקט קונפטי להתחלת סשן */
+  .confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10000;
+    overflow: hidden;
+  }
+
+  .confetti-piece {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #0072ff;
+    animation: confetti-fall 3s linear forwards;
+  }
+
+  .confetti-piece:nth-child(odd) {
+    background: #00c6ff;
+    animation-duration: 2.5s;
+  }
+
+  .confetti-piece:nth-child(3n) {
+    background: #28a745;
+    animation-duration: 3.2s;
+    width: 6px;
+    height: 6px;
+  }
+
+  .confetti-piece:nth-child(4n) {
+    background: #ffc107;
+    animation-duration: 2.8s;
+    border-radius: 50%;
+  }
+
+  .confetti-piece:nth-child(5n) {
+    background: #ff6b6b;
+    animation-duration: 3.5s;
+    width: 10px;
+    height: 4px;
+  }
+
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(-100vh) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  /* הודעת התחלה מעוצבת */
+  .start-session-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #0072ff, #00c6ff);
+    color: white;
+    padding: 20px 40px;
+    border-radius: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 10px 30px rgba(0, 114, 255, 0.3);
+    z-index: 10001;
+    pointer-events: none;
+    opacity: 0;
+    animation: showStartMessage 3s ease;
+    text-align: center;
+    direction: rtl;
+  }
+
+  @keyframes showStartMessage {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+    15% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    25% {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    85% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.9);
+    }
+  }
+
+  /* אנימציית ספינר טעינה */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
   /* Additional fix for dropdown direction */
   .custom-select-wrapper {
     position: relative;
@@ -864,6 +1058,16 @@
                 <!-- קופסה גדולה במרכז -->
                 <div class="changes-box box">
                   
+                  <!-- כפתור הוספת סשן ידנית -->
+                  <div style="margin-bottom: 20px; display: flex; justify-content: flex-start; align-items: center; gap: 10px;">
+                    <button id="add-manual-session-btn" class="btn-submit add-session-hover-btn" style="padding: 12px 20px; background: linear-gradient(135deg, #0072ff, #00c6ff); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 8px; box-shadow: 0 3px 10px rgba(0, 114, 255, 0.3); transition: all 0.3s ease, transform 0.2s ease;">
+                      <i class="fas fa-plus-circle" style="font-size: 16px;"></i>
+                      <span>הוסף סשן ידנית</span>
+                    </button>
+                    <div style="font-size: 14px; color: #666; font-style: italic;">
+                      צור רישום סשן באופן ידני עבור עבודה קודמת
+                    </div>
+                  </div>
 
                   <table id="sessionsTable" class="display responsive nowrap">
                     <thead>
@@ -1074,6 +1278,57 @@
           
               <button type="submit" class="btn-submit" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #0072ff, #00c6ff); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0, 114, 255, 0.2);">
                 💾 שמור שינויים
+              </button>
+            </form>
+          </div>
+
+          <!-- פופאפ הוספת סשן ידנית -->
+          <div style="display:none;" id="add-manual-session-modal" class="popup-form">
+            <h2 style="text-align: center; margin-bottom: 25px; color: #0072ff; font-size: 24px;">
+              <i class="fas fa-plus-circle" style="margin-right: 10px;"></i>הוספת סשן ידנית
+            </h2>
+            <form id="add-manual-session-form">
+              
+              <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+                <div style="flex: 1;">
+                  <label style="font-size: 16px; display: block; margin-bottom: 8px; font-weight: 500; color: #333;">📅 תאריך</label>
+                  <input type="date" id="manual-date" required max="" style="width: 100%; padding: 12px; font-size: 15px; border-radius: 8px; border: 1px solid #ddd; background-color: white; box-sizing: border-box; transition: border-color 0.3s;" />
+                </div>
+                
+                <div style="flex: 1;">
+                  <label style="font-size: 16px; display: block; margin-bottom: 8px; font-weight: 500; color: #333;">💰 תעריף שעתי</label>
+                  <input type="number" id="manual-rate" required min="0" step="0.01" style="width: 100%; padding: 12px; font-size: 15px; border-radius: 8px; border: 1px solid #ddd; background-color: white; box-sizing: border-box; transition: border-color 0.3s;" />
+                </div>
+              </div>
+              
+              <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+                <div style="flex: 1;">
+                  <label style="font-size: 16px; display: block; margin-bottom: 8px; font-weight: 500; color: #333;">⏰ שעת התחלה</label>
+                  <input type="time" id="manual-start-time" required style="width: 100%; padding: 12px; font-size: 15px; border-radius: 8px; border: 1px solid #ddd; background-color: white; box-sizing: border-box; transition: border-color 0.3s;" />
+                </div>
+                
+                <div style="flex: 1;">
+                  <label style="font-size: 16px; display: block; margin-bottom: 8px; font-weight: 500; color: #333;">⏰ שעת סיום</label>
+                  <input type="time" id="manual-end-time" required style="width: 100%; padding: 12px; font-size: 15px; border-radius: 8px; border: 1px solid #ddd; background-color: white; box-sizing: border-box; transition: border-color 0.3s;" />
+                </div>
+              </div>
+              
+              <div style="margin-bottom: 20px;">
+                <label style="font-size: 16px; display: block; margin-bottom: 8px; font-weight: 500; color: #333;">🏷️ בחר תווית:</label>
+                <div class="custom-select-wrapper">
+                  <select id="manual-label-id" class="force-dropdown-down" size="1" style="width: 100%; padding: 12px; font-size: 15px; border-radius: 8px; border: 1px solid #ddd; background-color: white; cursor: pointer; box-sizing: border-box; transition: border-color 0.3s; display: block;">
+                    <option value="">בחר תווית</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div style="margin-bottom: 25px;">
+                <label style="font-size: 16px; display: block; margin-bottom: 8px; font-weight: 500; color: #333;">📝 תיאור</label>
+                <textarea id="manual-description" rows="4" required style="width: 100%; font-size: 15px; padding: 12px; border-radius: 8px; border: 1px solid #ddd; resize: vertical; transition: border-color 0.3s; box-sizing: border-box;" placeholder="תאר את העבודה שבוצעה בסשן זה..."></textarea>
+              </div>
+          
+              <button type="submit" class="btn-submit" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #0072ff, #00c6ff); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0, 114, 255, 0.2);">
+                <i class="fas fa-save" style="margin-left: 8px;"></i>הוסף סשן
               </button>
             </form>
           </div>
@@ -1296,6 +1551,8 @@
     <script src="js/edit-user.js"></script>
     <script src="js/project-unread-checker.js"></script>
 
+
+
     <!-- Add the new popup for adding team members -->
     <div id="add-team-member-popup" class="popup-form" style="display: none;">
       <h2 style="text-align: center; margin-bottom: 12px; font-size: 18px;">➕ הוספת משתמש לפרויקט</h2>
@@ -1431,16 +1688,72 @@
         </table>
       </div>
     </div>
-<script src="js/chat-badge.js"></script>
 
-    <!-- כפתור צף לעוזר האישי -->
-    <button class="floating-assistant-btn" onclick="window.location.href='assistant.html'" title="העוזר האישי שלך">
-      <img
-        src="./images/icons/aiassistant-white.png"
-        alt="העוזר האישי"
-        style="width: 24px; height: 24px"
-      />
-    </button>
+    <script src="js/chat-badge.js"></script>
+
+    <!-- כפתור צף לעוזר האישי - גרסה מחוזקת -->
+    <div id="assistant-button-container" style="position: fixed; bottom: 30px; left: 30px; z-index: 99999;">
+      <button id="floating-assistant-btn" onclick="window.location.href='assistant.html'" title="העוזר האישי שלך" style="width: 60px; height: 60px; background: linear-gradient(135deg, #007bff, #0056b3); border: none; border-radius: 50%; color: white; cursor: pointer; box-shadow: 0 5px 25px rgba(0, 123, 255, 0.4); transition: all 0.3s; display: flex; align-items: center; justify-content: center;">
+        <img src="./images/icons/aiassistant-white.png" alt="העוזר האישי" style="width: 24px; height: 24px;" onerror="this.style.display='none'; this.parentElement.innerHTML='🤖';">
+      </button>
+    </div>
+
+    <script>
+    // וידוא שהכפתור נראה - גרסה מחוזקת
+    document.addEventListener('DOMContentLoaded', function() {
+      const assistantBtn = document.getElementById('floating-assistant-btn');
+      const container = document.getElementById('assistant-button-container');
+      
+      if (assistantBtn && container) {
+        console.log('כפתור העוזר האישי נטען בהצלחה');
+        
+        // כפיית עיצוב חזק
+        container.style.cssText = 'position: fixed !important; bottom: 30px !important; left: 30px !important; z-index: 999999 !important; width: 60px !important; height: 60px !important; pointer-events: auto !important;';
+        assistantBtn.style.cssText = 'width: 60px !important; height: 60px !important; background: linear-gradient(135deg, #007bff, #0056b3) !important; border: none !important; border-radius: 50% !important; color: white !important; cursor: pointer !important; box-shadow: 0 5px 25px rgba(0, 123, 255, 0.4) !important; transition: all 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; visibility: visible !important; opacity: 1 !important; transform: none !important; margin: 0 !important; padding: 0 !important;';
+        
+        // בדיקת מיקום
+        const rect = assistantBtn.getBoundingClientRect();
+        console.log('מיקום הכפתור:', {
+          top: rect.top,
+          left: rect.left,
+          width: rect.width,
+          height: rect.height,
+          visible: rect.width > 0 && rect.height > 0
+        });
+        
+        // אם הכפתור עדיין לא נראה, ניצור אחד חדש
+        setTimeout(() => {
+          const testRect = assistantBtn.getBoundingClientRect();
+          if (testRect.width === 0 || testRect.height === 0) {
+            console.log('יוצר כפתור חדש כי הקיים לא נראה');
+            createForceButton();
+          }
+        }, 1000);
+        
+      } else {
+        console.error('כפתור העוזר האישי לא נמצא');
+        createForceButton();
+      }
+    });
+    
+    // פונקציה ליצירת כפתור בכח
+    function createForceButton() {
+      // הסרת כפתורים קיימים
+      const existing = document.querySelectorAll('#floating-assistant-btn, #assistant-button-container');
+      existing.forEach(el => el.remove());
+      
+      // יצירת כפתור חדש
+      const btn = document.createElement('div');
+      btn.innerHTML = `
+        <button onclick="window.location.href='assistant.html'" title="העוזר האישי שלך" style="width: 60px; height: 60px; background: linear-gradient(135deg, #007bff, #0056b3); border: none; border-radius: 50%; color: white; cursor: pointer; box-shadow: 0 5px 25px rgba(0, 123, 255, 0.4); display: flex; align-items: center; justify-content: center; padding: 12px;">
+          <img src="./images/icons/aiassistant-white.png" alt="העוזר האישי" style="width: 24px; height: 24px;" onerror="this.style.display='none'; this.parentNode.innerHTML='🤖';">
+        </button>
+      `;
+      btn.style.cssText = 'position: fixed; bottom: 30px; left: 30px; z-index: 999999; width: 60px; height: 60px;';
+      document.body.appendChild(btn);
+      console.log('כפתור חדש נוצר בכח עם תמונה');
+    }
+    </script>
   </body>
 </html>
 

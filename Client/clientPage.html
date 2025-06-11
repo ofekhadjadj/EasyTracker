@@ -16,6 +16,27 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
     />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- תיקון מיקום כפתור צף - כפייה לצד שמאל -->
+    <style>
+      .floating-assistant-btn {
+        position: fixed !important;
+        bottom: 30px !important;
+        left: 30px !important;
+        right: auto !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        transform: none !important;
+      }
+
+      @media (max-width: 768px) {
+        .floating-assistant-btn {
+          bottom: 20px !important;
+          left: 20px !important;
+          right: auto !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="projects-continer">
@@ -314,7 +335,11 @@
       onclick="window.location.href='assistant.html'"
       title="העוזר האישי שלך"
     >
-      🤖
+      <img
+        src="./images/icons/aiassistant-white.png"
+        alt="העוזר האישי"
+        style="width: 24px; height: 24px"
+      />
     </button>
   </body>
 </html>

@@ -17,6 +17,27 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
     />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- תיקון מיקום כפתור צף - כפייה לצד שמאל -->
+    <style>
+      .floating-assistant-btn {
+        position: fixed !important;
+        bottom: 30px !important;
+        left: 30px !important;
+        right: auto !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        transform: none !important;
+      }
+
+      @media (max-width: 768px) {
+        .floating-assistant-btn {
+          bottom: 20px !important;
+          left: 20px !important;
+          right: auto !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="projects-continer">
@@ -41,38 +62,52 @@
             <div class="main-nav">
               <ul>
                 <li>
-                  <a href="projects.html"
-                    ><img
-                      src="./images/project icon.png"
+                  <a href="projects.html" class="">
+                    <img
+                      src="./images/icons/proj-black.png"
+                      alt="פרויקטים"
                       class="nav-icon"
-                    /><span>פרויקטים</span></a
-                  >
+                    />
+                    <span>פרויקטים</span>
+                  </a>
                 </li>
                 <li>
-                  <a href="clients.html"
-                    ><img
-                      src="./images/customers icon.png"
+                  <a href="clients.html" class="">
+                    <img
+                      src="./images/icons/customer-black.png"
+                      alt="לקוחות"
                       class="nav-icon"
-                    /><span>לקוחות</span></a
-                  >
+                    />
+                    <span>לקוחות</span>
+                  </a>
                 </li>
                 <li>
-                  <a href="stats.html"
-                    ><img src="./images/reports.png" class="nav-icon" /><span
-                      >ניתוחים ודוחות</span
-                    ></a
-                  >
+                  <a href="stats.html" class="active">
+                    <img
+                      src="./images/icons/statistics and analytics-white.png"
+                      alt="דוחות"
+                      class="nav-icon"
+                    />
+                    <span>ניתוח ודוחות</span>
+                  </a>
                 </li>
                 <li>
-                  <a href="labels.html"
-                    ><img src="./images/tags.png" class="nav-icon" /><span
-                      >תיוגים</span
-                    ></a
-                  >
+                  <a href="labels.html" class="">
+                    <img
+                      src="./images/icons/lablels-black.png"
+                      alt="תיוגים"
+                      class="nav-icon"
+                    />
+                    <span>תיוגים</span>
+                  </a>
                 </li>
                 <li>
-                  <a href="assistant.html">
-                    <span class="nav-icon">🤖</span>
+                  <a href="assistant.html" class="">
+                    <img
+                      src="./images/icons/aiassistant-black.png"
+                      alt="העוזר האישי"
+                      class="nav-icon"
+                    />
                     <span>העוזר האישי</span>
                   </a>
                 </li>
@@ -81,19 +116,24 @@
             <div class="help-nav">
               <ul>
                 <li>
-                  <a href="settings.html"
-                    ><img
-                      src="./images/settings-icon.png"
+                  <a href="settings.html">
+                    <img
+                      src="./images/icons/settings-black.png"
+                      alt="הגדרות"
                       class="nav-icon"
-                    /><span>הגדרות</span></a
-                  >
+                    />
+                    <span>הגדרות</span>
+                  </a>
                 </li>
                 <li>
-                  <a href="help.html"
-                    ><img src="./images/help-icon.png" class="nav-icon" /><span
-                      >עזרה</span
-                    ></a
-                  >
+                  <a href="help.html">
+                    <img
+                      src="./images/icons/help-black.png"
+                      alt="עזרה"
+                      class="nav-icon"
+                    />
+                    <span>עזרה</span>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -237,7 +277,11 @@
       onclick="window.location.href='assistant.html'"
       title="העוזר האישי שלך"
     >
-      🤖
+      <img
+        src="./images/icons/aiassistant-white.png"
+        alt="העוזר האישי"
+        style="width: 24px; height: 24px"
+      />
     </button>
   </body>
 </html>

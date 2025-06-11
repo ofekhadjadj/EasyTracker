@@ -409,6 +409,11 @@ function openAddLabelPopup(fromEditSession = false) {
 
                 // מחיקת הנתונים השמורים
                 localStorage.removeItem("pendingEditSession");
+              } else if (localStorage.getItem("pendingManualSession")) {
+                // חזרה לפופאפ הוספת סשן ידנית
+                $(document).trigger("reopenManualSessionPopup", [
+                  response.labelID,
+                ]);
               } else {
                 // Immediately reopen the end session popup
                 openEndSessionPopup();
@@ -709,39 +714,75 @@ toggleBtn.addEventListener("click", () => {
       }
     );
   } else {
-    // קריאה לשרת לפני שמתחיל הסטופר
-    const sessionStart = getLocalISOStringWithoutZ();
+    // בדיקה אם זה המשכת סשן קיים או התחלת סשן חדש
+    const isResuming =
+      currentActiveSessionID !== null && toggleText.textContent === "המשך";
 
-    const apiUrl = `https://localhost:7198/api/Session/start_auto_session?userID=${
-      CurrentUser.id
-    }&projectID=${CurrentProject.ProjectID}&startDate=${encodeURIComponent(
-      sessionStart
-    )}`;
+    if (isResuming) {
+      // 🔄 אפקט קונפטי להמשכת סשן
+      triggerStartSessionCelebration(true);
 
-    ajaxCall(
-      "POST",
-      apiUrl,
-      "",
-      (response) => {
-        console.log("✅ סשן התחיל בהצלחה:", response);
+      // המשכת סטופר של סשן מושהה
+      const pausedSession = {
+        sessionID: currentActiveSessionID,
+        status: "Active",
+      };
 
-        // שמירת מזהה הסשן החדש
-        currentActiveSessionID = response.sessionID;
+      ajaxCall(
+        "PUT",
+        "https://localhost:7198/api/Session/update_session",
+        JSON.stringify(pausedSession),
+        () => {
+          console.log("✅ סשן הומשך בהצלחה!");
+        },
+        () => {
+          console.error("❌ שגיאה בהמשכת סשן.");
+        }
+      );
 
-        // Clear and completely refresh the table with newest sessions at top
-        table.clear();
-        renderTableFromDB();
-      },
-      (xhr) => {
-        console.error("❌ שגיאה בהתחלת סשן:", xhr);
-      }
-    );
+      // המשכת הסטופר
+      interval = setInterval(updateTime, 1000);
+      isRunning = true;
+      toggleText.textContent = "השהה";
+      toggleIcon.src = "./images/puse icon.png";
+    } else {
+      // 🎉 אפקט קונפטי להתחלת סשן חדש
+      triggerStartSessionCelebration(false);
 
-    // רק אחרי השליחה מתחיל הסטופר
-    interval = setInterval(updateTime, 1000);
-    isRunning = true;
-    toggleText.textContent = "השהה";
-    toggleIcon.src = "./images/puse icon.png";
+      // קריאה לשרת לפני שמתחיל הסטופר
+      const sessionStart = getLocalISOStringWithoutZ();
+
+      const apiUrl = `https://localhost:7198/api/Session/start_auto_session?userID=${
+        CurrentUser.id
+      }&projectID=${CurrentProject.ProjectID}&startDate=${encodeURIComponent(
+        sessionStart
+      )}`;
+
+      ajaxCall(
+        "POST",
+        apiUrl,
+        "",
+        (response) => {
+          console.log("✅ סשן התחיל בהצלחה:", response);
+
+          // שמירת מזהה הסשן החדש
+          currentActiveSessionID = response.sessionID;
+
+          // Clear and completely refresh the table with newest sessions at top
+          table.clear();
+          renderTableFromDB();
+        },
+        (xhr) => {
+          console.error("❌ שגיאה בהתחלת סשן:", xhr);
+        }
+      );
+
+      // רק אחרי השליחה מתחיל הסטופר
+      interval = setInterval(updateTime, 1000);
+      isRunning = true;
+      toggleText.textContent = "השהה";
+      toggleIcon.src = "./images/puse icon.png";
+    }
   }
 });
 
@@ -821,29 +862,34 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
       originalSessionText = "";
       isAiProcessing = false;
 
-      // Replace alert with elegant notification
-      const notification = document.createElement("div");
-      notification.className = "save-notification";
-      notification.innerHTML = `
-        <div class="notification-icon">✓</div>
-        <div class="notification-message">הסשן הסתיים בהצלחה!</div>
-      `;
-      document.body.appendChild(notification);
+      // 🎉 הפעלת אפקט קונפטי לסיום סשן עם התיאור שהמשתמש מילא
+      const sessionDescription =
+        document.getElementById("session-description").value || "";
+      triggerEndSessionCelebration(sessionDescription);
+
+      // Replace alert with elegant notification (מוסתר כי יש לנו את ההודעה החדשה)
+      // const notification = document.createElement("div");
+      // notification.className = "save-notification";
+      // notification.innerHTML = `
+      //   <div class="notification-icon">✓</div>
+      //   <div class="notification-message">הסשן הסתיים בהצלחה!</div>
+      // `;
+      // document.body.appendChild(notification);
 
       // Animate notification
-      setTimeout(() => {
-        notification.classList.add("show");
-      }, 10);
+      // setTimeout(() => {
+      //   notification.classList.add("show");
+      // }, 10);
 
       // Remove notification after delay
-      setTimeout(() => {
-        notification.classList.remove("show");
-        setTimeout(() => {
-          if (notification.parentNode) {
-            document.body.removeChild(notification);
-          }
-        }, 500);
-      }, 3000);
+      // setTimeout(() => {
+      //   notification.classList.remove("show");
+      //   setTimeout(() => {
+      //     if (notification.parentNode) {
+      //       document.body.removeChild(notification);
+      //     }
+      //   }, 500);
+      // }, 3000);
 
       // Clear and refresh the table completely to ensure newest sessions are at the top
       table.clear();
@@ -3941,3 +3987,496 @@ function callGeminiAPI(text) {
     }
   );
 }
+
+// --- התחלה: הוספת סשן ידנית ---
+
+// פתיחת פופאפ הוספת סשן ידנית
+document.addEventListener("DOMContentLoaded", function () {
+  const addManualSessionBtn = document.getElementById("add-manual-session-btn");
+  if (addManualSessionBtn) {
+    addManualSessionBtn.addEventListener("click", openAddManualSessionPopup);
+  }
+});
+
+function openAddManualSessionPopup() {
+  console.log("🔄 פותח פופאפ הוספת סשן ידנית");
+
+  // איפוס שדות הטופס
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("manual-date").value = today;
+  document.getElementById("manual-date").max = today;
+  document.getElementById("manual-rate").value =
+    CurrentProject.HourlyRate || "";
+  document.getElementById("manual-start-time").value = "";
+  document.getElementById("manual-end-time").value = "";
+  document.getElementById("manual-description").value = "";
+
+  // טעינת תוויות
+  const labelSelect = document.getElementById("manual-label-id");
+  labelSelect.innerHTML = '<option value="">בחר תווית</option>';
+
+  const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
+
+  ajaxCall(
+    "GET",
+    labelApi,
+    "",
+    (labels) => {
+      // הוספת תוויות
+      labels.forEach((label) => {
+        const option = document.createElement("option");
+        option.value = label.labelID;
+        option.textContent = label.labelName;
+
+        if (label.labelColor) {
+          option.setAttribute("data-color", label.labelColor);
+          option.style.backgroundColor = label.labelColor + "20";
+        }
+
+        labelSelect.appendChild(option);
+      });
+
+      // הוספת אפשרות ליצירת תווית חדשה
+      const addNewOption = document.createElement("option");
+      addNewOption.value = "add_new";
+      addNewOption.textContent = "➕ הוסף תווית חדשה";
+      addNewOption.style.fontWeight = "bold";
+      addNewOption.style.borderTop = "1px solid #ddd";
+      addNewOption.style.marginTop = "5px";
+      addNewOption.style.paddingTop = "5px";
+      labelSelect.appendChild(addNewOption);
+
+      // טיפול בבחירת "הוסף תווית חדשה"
+      labelSelect.addEventListener("change", function () {
+        if (this.value === "add_new") {
+          // שמירת נתוני הטופס
+          const formData = {
+            date: document.getElementById("manual-date").value,
+            rate: document.getElementById("manual-rate").value,
+            startTime: document.getElementById("manual-start-time").value,
+            endTime: document.getElementById("manual-end-time").value,
+            description: document.getElementById("manual-description").value,
+          };
+          localStorage.setItem(
+            "pendingManualSession",
+            JSON.stringify(formData)
+          );
+
+          // פתיחת פופאפ הוספת תווית
+          openAddLabelPopup(false); // רק הפרמטר הראשון
+
+          // איפוס הבחירה
+          this.value = "";
+        }
+      });
+    },
+    (err) => {
+      console.error("❌ שגיאה בטעינת תוויות:", err);
+    }
+  );
+
+  // פתיחת הפופאפ
+  $.fancybox.open({
+    src: "#add-manual-session-modal",
+    type: "inline",
+    touch: false,
+    width: 450,
+    maxWidth: "75%",
+    autoSize: false,
+    padding: 0,
+    margin: 20,
+    afterShow: function () {
+      // התמקדות בשדה הראשון
+      document.getElementById("manual-date").focus();
+    },
+  });
+}
+
+// טיפול בשליחת טופס הוספת סשן ידנית
+$(document).on("submit", "#add-manual-session-form", function (e) {
+  e.preventDefault();
+
+  const date = document.getElementById("manual-date").value;
+  const startTime = document.getElementById("manual-start-time").value;
+  const endTime = document.getElementById("manual-end-time").value;
+  const hourlyRate = parseFloat(document.getElementById("manual-rate").value);
+  const description = document
+    .getElementById("manual-description")
+    .value.trim();
+  const labelID = document.getElementById("manual-label-id").value;
+
+  // בדיקות תקינות
+  if (!date || !startTime || !endTime || !description) {
+    showCustomAlert("יש למלא את כל השדות הנדרשים", "error", false);
+    return;
+  }
+
+  if (startTime >= endTime) {
+    showCustomAlert("שעת הסיום חייבת להיות אחרי שעת ההתחלה", "error", false);
+    return;
+  }
+
+  // חישוב זמנים
+  const startDateTime = toLocalDateObject(date, startTime);
+  const endDateTime = toLocalDateObject(date, endTime);
+  const durationSeconds = Math.floor((endDateTime - startDateTime) / 1000);
+
+  // יצירת אובייקט הסשן
+  const sessionData = {
+    sessionID: 0,
+    projectID: CurrentProject.ProjectID,
+    startDate: toIsoLocalFormat(startDateTime) + "Z",
+    endDate: toIsoLocalFormat(endDateTime) + "Z",
+    durationSeconds: durationSeconds,
+    hourlyRate: hourlyRate,
+    description: description,
+    labelID: labelID ? parseInt(labelID) : null,
+    isArchived: false,
+    userID: CurrentUser.id,
+    status: "Ended",
+  };
+
+  console.log("📤 שולח סשן ידני:", sessionData);
+
+  // שליחה לשרת
+  ajaxCall(
+    "POST",
+    "https://localhost:7198/api/Session/insert_session_Manually",
+    JSON.stringify(sessionData),
+    () => {
+      // סגירת הפופאפ
+      $.fancybox.close();
+
+      // הצגת הודעת הצלחה
+      showCustomAlert("הסשן נוסף בהצלחה!", "success");
+
+      // רענון הטבלה
+      setTimeout(() => {
+        table.clear();
+        renderTableFromDB();
+      }, 1000);
+    },
+    (xhr, status, error) => {
+      console.error("❌ שגיאה בהוספת הסשן:", error);
+      console.error("פרטי השגיאה:", xhr.responseText);
+      console.error("סטטוס:", xhr.status);
+
+      let errorMessage = "שגיאה בהוספת הסשן";
+
+      if (xhr.responseText) {
+        try {
+          const errorData = JSON.parse(xhr.responseText);
+          if (errorData.message) {
+            errorMessage += ": " + errorData.message;
+          }
+        } catch (e) {
+          errorMessage += ": " + xhr.responseText;
+        }
+      }
+
+      showCustomAlert(errorMessage, "error", false);
+    }
+  );
+});
+
+// טיפול בחזרה מהוספת תווית חדשה לפופאפ הוספת סשן ידנית
+$(document).on("reopenManualSessionPopup", function (event, newLabelID) {
+  // שחזור נתוני הטופס
+  const pendingData = JSON.parse(
+    localStorage.getItem("pendingManualSession") || "{}"
+  );
+
+  // פתיחת פופאפ הוספת סשן ידנית מחדש
+  openAddManualSessionPopup();
+
+  // מילוי השדות עם הנתונים השמורים
+  setTimeout(() => {
+    if (pendingData.date)
+      document.getElementById("manual-date").value = pendingData.date;
+    if (pendingData.rate)
+      document.getElementById("manual-rate").value = pendingData.rate;
+    if (pendingData.startTime)
+      document.getElementById("manual-start-time").value =
+        pendingData.startTime;
+    if (pendingData.endTime)
+      document.getElementById("manual-end-time").value = pendingData.endTime;
+    if (pendingData.description)
+      document.getElementById("manual-description").value =
+        pendingData.description;
+
+    // בחירת התווית החדשה
+    if (newLabelID) {
+      document.getElementById("manual-label-id").value = newLabelID;
+    }
+  }, 500);
+
+  // מחיקת הנתונים השמורים
+  localStorage.removeItem("pendingManualSession");
+});
+
+// --- סוף: הוספת סשן ידנית ---
+
+// --- התחלה: אפקט קונפטי להתחלת סשן ---
+
+function createConfettiEffect() {
+  // יצירת קונטיינר לקונפטי
+  const confettiContainer = document.createElement("div");
+  confettiContainer.className = "confetti-container";
+  document.body.appendChild(confettiContainer);
+
+  // יצירת חתיכות קונפטי
+  for (let i = 0; i < 50; i++) {
+    const confettiPiece = document.createElement("div");
+    confettiPiece.className = "confetti-piece";
+
+    // מיקום אקראי בחלק העליון של המסך
+    confettiPiece.style.left = Math.random() * 100 + "%";
+    confettiPiece.style.animationDelay = Math.random() * 0.3 + "s";
+
+    // צורות שונות
+    if (Math.random() > 0.7) {
+      confettiPiece.style.borderRadius = "50%";
+    }
+
+    confettiContainer.appendChild(confettiPiece);
+  }
+
+  // הסרת הקונפטי אחרי האנימציה
+  setTimeout(() => {
+    if (confettiContainer.parentNode) {
+      document.body.removeChild(confettiContainer);
+    }
+  }, 4000);
+}
+
+function showStartSessionMessage(isResume = false) {
+  // יצירת הודעת התחלה
+  const message = document.createElement("div");
+  message.className = "start-session-message";
+
+  if (isResume) {
+    message.innerHTML = `
+      <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+        <i class="fas fa-play" style="font-size: 30px;"></i>
+        <div>
+          <div style="font-size: 28px; margin-bottom: 5px;">🔄 ממשיכים לעבוד!</div>
+          <div style="font-size: 16px; font-weight: normal; opacity: 0.9;">בהצלחה המשך הפרויקט</div>
+        </div>
+      </div>
+    `;
+  } else {
+    message.innerHTML = `
+      <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+        <i class="fas fa-play-circle" style="font-size: 30px;"></i>
+        <div>
+          <div style="font-size: 28px; margin-bottom: 5px;">🎉 מתחילים לעבוד!</div>
+          <div style="font-size: 16px; font-weight: normal; opacity: 0.9;">בהצלחה בפרויקט שלך</div>
+        </div>
+      </div>
+    `;
+  }
+
+  document.body.appendChild(message);
+
+  // הסרת ההודעה אחרי האנימציה
+  setTimeout(() => {
+    if (message.parentNode) {
+      document.body.removeChild(message);
+    }
+  }, 3000);
+}
+
+function showEndSessionMessage(sessionDescription = "") {
+  // יצירת הודעת סיום עם טקסט טעינה תחילה
+  const message = document.createElement("div");
+  message.className = "start-session-message";
+
+  // הודעת טעינה תחילית
+  message.innerHTML = `
+    <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+      <div class="loading-spinner" style="width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+      <div>
+        <div style="font-size: 28px; margin-bottom: 5px;">🏁 סיימנו בהצלחה!</div>
+        <div style="font-size: 16px; font-weight: normal; opacity: 0.9;">מכין הודעת עידוד אישית...</div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(message);
+
+  // קבלת שם המשתמש
+  const userName = CurrentUser?.name || CurrentUser?.firstName || "מפתח מעולה";
+  console.log("👤 נתוני משתמש נוכחי:", CurrentUser);
+  console.log("👤 שם משתמש נבחר:", userName);
+
+  // יצירת הודעת עידוד דינמית
+  console.log("🔍 בודק תיאור סשן:", sessionDescription);
+  console.log(
+    "🔍 אורך התיאור:",
+    sessionDescription ? sessionDescription.trim().length : 0
+  );
+  console.log("🔍 שם משתמש:", userName);
+
+  if (sessionDescription && sessionDescription.trim().length > 5) {
+    // יש תיאור - נשתמש ב-Gemini להודעה אישית
+    console.log("✅ יש תיאור מספיק - קורא ל-Gemini API");
+    generatePersonalizedEndMessage(sessionDescription, userName, message);
+  } else {
+    // אין תיאור - הודעה מעודדת כללית
+    console.log("⚠️ אין תיאור או שהוא קצר מדי - משתמש בהודעה כללית");
+    showGeneralEndMessage(userName, message);
+  }
+}
+
+function generatePersonalizedEndMessage(description, userName, messageElement) {
+  console.log("🤖 מתחיל ליצור הודעה אישית...");
+  console.log("📝 תיאור:", description);
+  console.log("👤 שם משתמש:", userName);
+
+  const prompt = `כתב הודעת עידוד אישית בעברית עבור המפתח ${userName} שזה עתה סיים את העבודה הבאה: "${description}".
+
+חובה לכלול:
+✅ את השם "${userName}" בהודעה עצמה 
+✅ התייחסות ישירה וספציפית לתיאור העבודה שמולא
+✅ טון מעודד וחיובי
+
+דרישות נוספות:
+- אורך: 12-18 מילים בלבד
+- בעברית בלבד
+- טון חברותי ומקצועי
+- ללא הקדמות או הסברים, רק ההודעה עצמה
+
+דוגמאות לפורמט הרצוי:
+"כל הכבוד ${userName}! העבודה על הבאג יצאה מעולה - הקוד נראה נקי!"
+"מרשים ${userName}! הפיצ'ר החדש באמת משדרג את החוויה!"
+"יופי של עבודה ${userName}! התיקון שעשית חוסך הרבה זמן!"`;
+
+  console.log("📤 שולח פרומפט ל-Gemini...");
+
+  callGeminiAPIForEndMessage(
+    prompt,
+    (response) => {
+      console.log("✅ קיבלתי תשובה מ-Gemini:", response);
+      if (response && response.trim()) {
+        console.log("✅ מעדכן הודעה עם תשובת Gemini");
+        updateEndMessage(messageElement, userName, response.trim());
+      } else {
+        console.log("⚠️ תשובה ריקה מ-Gemini - עובר להודעה כללית");
+        showGeneralEndMessage(userName, messageElement);
+      }
+    },
+    () => {
+      // בשגיאה - הצג הודעה כללית
+      console.log("❌ שגיאה ב-Gemini API - עובר להודעה כללית");
+      showGeneralEndMessage(userName, messageElement);
+    }
+  );
+}
+
+function showGeneralEndMessage(userName, messageElement) {
+  const encouragingMessages = [
+    `עבודה מצוינת ${userName}! אתה מפתח באמת מוכשר! 💪`,
+    `כל הכבוד ${userName}! עוד יום פרודוקטיבי נוסף בארגז! 🌟`,
+    `מרשים ${userName}! ההתקדמות שלך פשוט מדהימה! 🚀`,
+    `יופי של עבודה ${userName}! אתה באמת עושה הבדל! ✨`,
+    `מעולה ${userName}! עוד פיסת קוד מקצועית הושלמה! 🎯`,
+  ];
+
+  const randomMessage =
+    encouragingMessages[Math.floor(Math.random() * encouragingMessages.length)];
+  updateEndMessage(messageElement, userName, randomMessage);
+}
+
+function updateEndMessage(messageElement, userName, encouragementText) {
+  messageElement.innerHTML = `
+    <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+      <i class="fas fa-trophy" style="font-size: 30px; color: #ffd700;"></i>
+      <div>
+        <div style="font-size: 28px; margin-bottom: 5px;">🏁 סיימנו בהצלחה!</div>
+        <div style="font-size: 16px; font-weight: normal; opacity: 0.9; max-width: 400px; line-height: 1.4;">${encouragementText}</div>
+      </div>
+    </div>
+  `;
+
+  // הסרת ההודעה אחרי זמן ארוך יותר (8 שניות) כדי לקרוא את ההודעה האישית
+  setTimeout(() => {
+    if (messageElement.parentNode) {
+      document.body.removeChild(messageElement);
+    }
+  }, 8000);
+}
+
+function triggerStartSessionCelebration(isResume = false) {
+  createConfettiEffect();
+  showStartSessionMessage(isResume);
+}
+
+function callGeminiAPIForEndMessage(text, onSuccess, onError) {
+  console.log("🤖 שולח בקשה ל-Gemini API להודעת סיום דרך השרת...");
+
+  const requestData = {
+    prompt: text,
+  };
+
+  ajaxCall(
+    "POST",
+    "https://localhost:7198/api/Gemini/ask",
+    JSON.stringify(requestData),
+    (response) => {
+      console.log("✅ תשובה מ-Gemini API התקבלה!", response);
+      console.log("סוג התשובה:", typeof response);
+
+      // Try different response formats (same logic as existing function)
+      let aiResponse = null;
+
+      if (typeof response === "string") {
+        aiResponse = response;
+      } else if (
+        response &&
+        response.candidates &&
+        response.candidates.length > 0 &&
+        response.candidates[0].content &&
+        response.candidates[0].content.parts &&
+        response.candidates[0].content.parts.length > 0 &&
+        response.candidates[0].content.parts[0].text
+      ) {
+        // Gemini API format: response.candidates[0].content.parts[0].text
+        aiResponse = response.candidates[0].content.parts[0].text;
+      } else if (response && response.response) {
+        aiResponse = response.response;
+      } else if (response && response.result) {
+        aiResponse = response.result;
+      } else if (response && response.data) {
+        aiResponse = response.data;
+      } else if (response && response.text) {
+        aiResponse = response.text;
+      } else if (response && response.content) {
+        aiResponse = response.content;
+      } else if (response && response.message) {
+        aiResponse = response.message;
+      }
+
+      console.log("🤖 התגובה שנמצאה:", aiResponse);
+
+      if (aiResponse && aiResponse.trim()) {
+        onSuccess(aiResponse.trim());
+      } else {
+        console.warn("⚠️ תשובה ריקה מ-Gemini API");
+        onError();
+      }
+    },
+    (xhr, status, error) => {
+      console.error("❌ שגיאה ב-Gemini API:", error);
+      console.error("פרטי השגיאה:", xhr.responseText);
+      console.error("סטטוס:", status);
+      onError();
+    }
+  );
+}
+
+function triggerEndSessionCelebration(sessionDescription = "") {
+  createConfettiEffect();
+  showEndSessionMessage(sessionDescription);
+}
+
+// --- סוף: אפקט קונפטי להתחלת סשן ---

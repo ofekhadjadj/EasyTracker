@@ -934,3 +934,54 @@ li a.active span {
 .user-menu-btn:not(:last-child) {
   border-bottom: 1px solid #f0f0f0;
 }
+
+/* כפתור צף לעוזר האישי */
+.floating-assistant-btn {
+  position: fixed !important;
+  bottom: 30px !important;
+  left: 30px !important;
+  right: auto !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  transform: none !important;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 5px 25px rgba(0, 123, 255, 0.4);
+  z-index: 1000;
+  transition: all 0.3s;
+  animation: float 3s ease-in-out infinite;
+  font-family: "Assistant", sans-serif;
+}
+
+.floating-assistant-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  transform: scale(1.1);
+  box-shadow: 0 8px 30px rgba(0, 123, 255, 0.5);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-assistant-btn {
+    bottom: 20px !important;
+    left: 20px !important;
+    right: auto !important;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+}
