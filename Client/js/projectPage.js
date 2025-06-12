@@ -1660,6 +1660,10 @@ function renderTableFromDB() {
           e.target.classList.contains("delete-btn") ||
           (e.target.tagName === "I" && e.target.closest(".delete-btn"))
         ) {
+          // מניעת event propagation כדי למנוע כפילות
+          e.preventDefault();
+          e.stopPropagation();
+
           const row = e.target.closest("tr");
           const sessionId = row.getAttribute("data-session-id");
           const session = $(row).data("session"); // ✅ שליפה מהשורה
@@ -1690,11 +1694,29 @@ function renderTableFromDB() {
             smallBtn: false,
           });
 
+          // הסרת event listeners קיימים ויצירת חדש עם דגל למניעת כפילויות
           $(document)
             .off("click", "#confirmDeleteSessionBtn")
-            .on("click", "#confirmDeleteSessionBtn", function () {
+            .on("click", "#confirmDeleteSessionBtn", function (confirmEvent) {
+              confirmEvent.preventDefault();
+              confirmEvent.stopPropagation();
+
+              // מניעת קליקים מרובים
+              const button = $(this);
+              if (button.data("deleting")) {
+                return false;
+              }
+              button.data("deleting", true);
+
               deleteSession(sessionId, row, session.DurationSeconds);
               $.fancybox.close();
+
+              // איפוס הדגל אחרי זמן קצר
+              setTimeout(() => {
+                button.data("deleting", false);
+              }, 1000);
+
+              return false;
             });
         }
       });
@@ -4289,7 +4311,7 @@ function showStartSessionMessage(isResume = false) {
 function showEndSessionMessage(sessionDescription = "") {
   // יצירת הודעת סיום עם טקסט טעינה תחילה
   const message = document.createElement("div");
-  message.className = "start-session-message";
+  message.className = "end-session-message";
 
   // הודעת טעינה תחילית
   message.innerHTML = `
@@ -4388,22 +4410,91 @@ function showGeneralEndMessage(userName, messageElement) {
 }
 
 function updateEndMessage(messageElement, userName, encouragementText) {
+  // הפיכת ההודעה לאינטראקטיבית
+  messageElement.style.pointerEvents = "auto";
+
   messageElement.innerHTML = `
-    <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
-      <i class="fas fa-trophy" style="font-size: 30px; color: #ffd700;"></i>
-      <div>
-        <div style="font-size: 28px; margin-bottom: 5px;">🏁 סיימנו בהצלחה!</div>
-        <div style="font-size: 16px; font-weight: normal; opacity: 0.9; max-width: 400px; line-height: 1.4;">${encouragementText}</div>
+    <div style="position: relative;">
+      <!-- כפתור סגירה -->
+      <button id="close-end-message" style="
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        opacity: 0.7;
+        backdrop-filter: blur(5px);
+      " onmouseover="this.style.backgroundColor='rgba(255, 255, 255, 0.3)'; this.style.opacity='1'; this.style.transform='scale(1.1)';" onmouseout="this.style.backgroundColor='rgba(255, 255, 255, 0.2)'; this.style.opacity='0.7'; this.style.transform='scale(1)';">
+        ✕
+      </button>
+      
+      <!-- תוכן ההודעה -->
+      <div style="display: flex; align-items: center; justify-content: center; gap: 15px; padding: 5px;">
+        <i class="fas fa-trophy" style="font-size: 30px; color: #ffd700;"></i>
+        <div>
+          <div style="font-size: 28px; margin-bottom: 5px;">🏁 סיימנו בהצלחה!</div>
+          <div style="font-size: 16px; font-weight: normal; opacity: 0.9; max-width: 400px; line-height: 1.4;">${encouragementText}</div>
+        </div>
       </div>
     </div>
   `;
 
-  // הסרת ההודעה אחרי זמן ארוך יותר (8 שניות) כדי לקרוא את ההודעה האישית
+  // פונקציה לסגירת ההודעה
+  function closeMessage() {
+    // אנימציית יציאה
+    messageElement.style.animation = "fadeOut 0.3s ease forwards";
+    setTimeout(() => {
+      if (messageElement.parentNode) {
+        document.body.removeChild(messageElement);
+      }
+    }, 300);
+  }
+
+  // האזנה לקליק על כפתור הסגירה
+  const closeButton = messageElement.querySelector("#close-end-message");
+  if (closeButton) {
+    closeButton.addEventListener("click", function (e) {
+      e.stopPropagation();
+      closeMessage();
+    });
+  }
+
+  // הוספת אנימציית יציאה ל-CSS אם לא קיימת
+  if (!document.querySelector("#end-message-animations")) {
+    const style = document.createElement("style");
+    style.id = "end-message-animations";
+    style.textContent = `
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        to {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.9);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // הסרת ההודעה אחרי 6 שניות לפחות
   setTimeout(() => {
     if (messageElement.parentNode) {
-      document.body.removeChild(messageElement);
+      closeMessage();
     }
-  }, 8000);
+  }, 6000);
 }
 
 function triggerStartSessionCelebration(isResume = false) {
