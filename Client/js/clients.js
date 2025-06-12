@@ -276,7 +276,7 @@ function openDeletePopup(client) {
       <h3>מחיקת לקוח</h3>
       <p>האם אתה בטוח שברצונך למחוק את הלקוח <strong>"${client.companyName}"</strong>?</p>
       <div style="margin-top:20px;display:flex;justify-content:center;gap:10px;">
-        <button class="gradient-button" id="confirmDeleteBtn">כן, מחק</button>
+        <button class="gradient-button delete-confirm-btn" id="confirmDeleteBtn" style="background: linear-gradient(135deg, #d50000, #ff4e50); color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(255, 78, 80, 0.3);">כן, מחק</button>
         <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
       </div>
     </div>
@@ -290,13 +290,33 @@ function openDeletePopup(client) {
     });
 }
 
+// הודעת הצלחה מעוצבת
+function showSuccessNotification(message) {
+  const notification = document.createElement("div");
+  notification.className = "save-notification";
+  notification.innerHTML = `
+    <div class="notification-icon">✓</div>
+    <div class="notification-message">${message}</div>
+  `;
+  document.body.appendChild(notification);
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 10);
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => {
+      if (notification.parentNode) document.body.removeChild(notification);
+    }, 500);
+  }, 3000);
+}
+
 // קריאה למחיקת לקוח (ארכיון)
 function archiveClient(clientID) {
   $.ajax({
     url: `https://localhost:7198/api/Client/Delete%20Client/${clientID}`,
     type: "PUT",
     success: function () {
-      alert("הלקוח הועבר לארכיון בהצלחה.");
+      showSuccessNotification("הלקוח הועבר לארכיון בהצלחה.");
       fetchAllData();
     },
     error: function (xhr, status, errorThrown) {

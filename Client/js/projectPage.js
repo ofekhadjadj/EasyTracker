@@ -1660,18 +1660,22 @@ function renderTableFromDB() {
           e.target.classList.contains("delete-btn") ||
           (e.target.tagName === "I" && e.target.closest(".delete-btn"))
         ) {
-          // מניעת event propagation כדי למנוע כפילות
           e.preventDefault();
           e.stopPropagation();
 
           const row = e.target.closest("tr");
           const sessionId = row.getAttribute("data-session-id");
-          const session = $(row).data("session"); // ✅ שליפה מהשורה
+          const session = $(row).data("session");
 
           if (!session) {
             console.warn("⚠️ לא נמצא session לשורה הזו.");
             return;
           }
+
+          // שמור את הפרטים למחיקה גלובלית
+          window._deleteSessionId = sessionId;
+          window._deleteSessionRow = row;
+          window._deleteSessionDuration = session.DurationSeconds;
 
           const message = `האם למחוק את הסשן שנוצר בתאריך ${
             formatDateTime(session.StartDate).formattedDate
@@ -1693,32 +1697,44 @@ function renderTableFromDB() {
             type: "html",
             smallBtn: false,
           });
-
-          // הסרת event listeners קיימים ויצירת חדש עם דגל למניעת כפילויות
-          $(document)
-            .off("click", "#confirmDeleteSessionBtn")
-            .on("click", "#confirmDeleteSessionBtn", function (confirmEvent) {
-              confirmEvent.preventDefault();
-              confirmEvent.stopPropagation();
-
-              // מניעת קליקים מרובים
-              const button = $(this);
-              if (button.data("deleting")) {
-                return false;
-              }
-              button.data("deleting", true);
-
-              deleteSession(sessionId, row, session.DurationSeconds);
-              $.fancybox.close();
-
-              // איפוס הדגל אחרי זמן קצר
-              setTimeout(() => {
-                button.data("deleting", false);
-              }, 1000);
-
-              return false;
-            });
         }
+      });
+
+    // --- העבר את ה-event delegation החוצה ---
+    $(document)
+      .off("click", "#confirmDeleteSessionBtn")
+      .on("click", "#confirmDeleteSessionBtn", function (confirmEvent) {
+        confirmEvent.preventDefault();
+        confirmEvent.stopPropagation();
+
+        // מניעת קליקים מרובים
+        const button = $(this);
+        if (button.data("deleting")) {
+          return false;
+        }
+        button.data("deleting", true);
+
+        // קרא למחיקה עם הערכים הגלובליים
+        if (window._deleteSessionId && window._deleteSessionRow) {
+          deleteSession(
+            window._deleteSessionId,
+            window._deleteSessionRow,
+            window._deleteSessionDuration
+          );
+        }
+        $.fancybox.close();
+
+        // איפוס הדגל אחרי זמן קצר
+        setTimeout(() => {
+          button.data("deleting", false);
+        }, 1000);
+
+        // איפוס משתנים גלובליים
+        window._deleteSessionId = null;
+        window._deleteSessionRow = null;
+        window._deleteSessionDuration = null;
+
+        return false;
       });
 
     function deleteSession(sessionId, row, durationSeconds) {
