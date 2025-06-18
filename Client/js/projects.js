@@ -271,7 +271,7 @@ function confirmDeleteProject(message, projectId) {
       <h3>מחיקת פרויקט</h3>
       <p>${message}</p>
       <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
-        <button class="gradient-button" id="confirmDeleteBtn">כן, מחק</button>
+        <button class="gradient-button" id="confirmDeleteBtn" style="background: linear-gradient(135deg, #d50000, #ff4e50); color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(255, 78, 80, 0.3);">כן, מחק</button>
         <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
       </div>
     </div>

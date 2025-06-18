@@ -4118,11 +4118,6 @@ function openAddManualSessionPopup() {
     src: "#add-manual-session-modal",
     type: "inline",
     touch: false,
-    width: 450,
-    maxWidth: "75%",
-    autoSize: false,
-    padding: 0,
-    margin: 20,
     afterShow: function () {
       // התמקדות בשדה הראשון
       document.getElementById("manual-date").focus();
@@ -4144,8 +4139,8 @@ $(document).on("submit", "#add-manual-session-form", function (e) {
   const labelID = document.getElementById("manual-label-id").value;
 
   // בדיקות תקינות
-  if (!date || !startTime || !endTime || !description) {
-    showCustomAlert("יש למלא את כל השדות הנדרשים", "error", false);
+  if (!date || !startTime || !endTime) {
+    showCustomAlert("יש למלא את התאריך, שעת התחלה ושעת סיום", "error", false);
     return;
   }
 
