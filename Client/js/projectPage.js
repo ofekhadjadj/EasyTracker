@@ -5,6 +5,17 @@ console.log("User", CurrentUser);
 let table;
 const avatarImg = document.querySelector(".avatar-img");
 
+// משתנים גלובליים לניהול הצגה מדורגת של הטבלה
+let allSessionsData = []; // כל הסשנים המקוריים
+let displayedSessionsCount = 0; // כמה סשנים מוצגים כרגע
+const sessionsPerPage = 7; // כמה סשנים להציג בכל פעם
+
+// משתני זמן וסטופר
+let seconds = 0;
+let interval;
+let isRunning = false;
+let totalPastSeconds = 0; // זמן עבודה כולל מקודם
+
 function loadTeamPreview() {
   const teamContainer = document.getElementById("project-team-preview");
 
@@ -235,9 +246,18 @@ function openEndSessionPopup() {
       src: "#end-session-popup",
       type: "inline",
       touch: false, // Disable touch events to avoid interference
+      beforeClose: function () {
+        // נקה פונקציות קול לפני סגירה
+        stopVoiceRecording();
+        isVoiceRecording = false;
+        hasShownAiTooltip = false;
+      },
       afterShow: function () {
         // Initialize AI helper for session description
         setupAiHelperForSessionDescription();
+
+        // Initialize voice recording functionality
+        setupVoiceRecording();
 
         // Apply dropdown fix
         const selectElement = document.getElementById("session-label");
@@ -488,12 +508,7 @@ function FillDeatils() {
   }
 }
 
-let interval = null;
-let seconds = 0;
-let totalPastSeconds = 0;
 let currentActiveSessionID = null; // משתנה לאחסון מזהה הסשן הפעיל
-
-let isRunning = false;
 
 const timeDisplay = document.getElementById("time");
 const toggleBtn = document.getElementById("toggle-btn");
@@ -769,7 +784,6 @@ toggleBtn.addEventListener("click", () => {
           currentActiveSessionID = response.sessionID;
 
           // Clear and completely refresh the table with newest sessions at top
-          table.clear();
           renderTableFromDB();
         },
         (xhr) => {
@@ -861,6 +875,11 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
       // Reset AI helper states
       originalSessionText = "";
       isAiProcessing = false;
+      hasShownAiTooltip = false;
+
+      // Reset voice recording states
+      stopVoiceRecording();
+      isVoiceRecording = false;
 
       // 🎉 הפעלת אפקט קונפטי לסיום סשן עם התיאור שהמשתמש מילא
       const sessionDescription =
@@ -892,7 +911,6 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
       // }, 3000);
 
       // Clear and refresh the table completely to ensure newest sessions are at the top
-      table.clear();
       renderTableFromDB();
     },
     () => {
@@ -1578,62 +1596,27 @@ function renderTableFromDB() {
     // First clear the table to avoid duplication issues
     table.clear();
 
-    let totalDurationSeconds = 0;
-    let totalEarningsValue = 0;
-
     // Sort sessions by StartDate in descending order (newest first)
     response.sort((a, b) => new Date(b.StartDate) - new Date(a.StartDate));
 
-    response.forEach((session) => {
-      const rawDate = session.StartDate;
-      const { time, formattedDate } = formatDateTime(rawDate);
+    // שמירת כל הנתונים במשתנה גלובלי
+    allSessionsData = response;
+    displayedSessionsCount = 0;
 
-      const fDate = session.EndDate;
+    // חישוב סיכומים עבור כל הסשנים (לא משתנה)
+    let totalDurationSeconds = 0;
+    let totalEarningsValue = 0;
 
-      const endTimeDisplay = session.EndDate
-        ? formatDateTime(session.EndDate).time
-        : "--:--:--";
-
-      // Calculate earnings for this session
+    allSessionsData.forEach((session) => {
       const earnings = calculateEarnings(
         session.HourlyRate,
         session.DurationSeconds
       );
-      // Add to totals
       totalDurationSeconds += session.DurationSeconds;
       totalEarningsValue += parseFloat(earnings);
-
-      // Enhanced label style with better visual presentation
-      const labelHtml = `<span style="width: auto; height: auto; background-color: ${
-        session.LabelColor ?? "#RRGGBBAA"
-      }; color: black; display: inline-block; padding: 6px 12px; border-radius: 20px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">${
-        session.LabelName ?? "-"
-      }</span>`;
-
-      const newRow = [
-        labelHtml, // תווית
-        formattedDate, // תאריך
-        time, // שעת התחלה
-        endTimeDisplay, // שעת סיום
-        session.HourlyRate, // תעריף
-        formatSecondsToHHMMSS(session.DurationSeconds), // משך זמן
-        earnings, // שכר
-        '<button class="edit-btn"><i class="fas fa-edit"></i></button><button id="dlt-btn-session" class="delete-btn"><i class="fas fa-trash-alt"></i></button>', // כפתורים
-        '<button class="details-control"><i class="fas fa-chevron-down"></i></button>', // פרטים נוספים
-      ];
-
-      // Add row to table (already in sorted order)
-      const rowNode = table.row.add(newRow).node();
-
-      // Store session data in the row
-      $(rowNode).data("session", session); // שמירת הסשן כולו
-      $(rowNode).attr("data-session-id", session.SessionID); // שמירת ה-ID כשדה data
     });
 
-    // Draw the table with our pre-sorted data
-    table.draw();
-
-    // Update table footer with totals
+    // Update table footer with totals (מבוסס על כל הסשנים)
     document.getElementById(
       "total-worktime"
     ).innerHTML = `<strong style="display: block; text-align: center">${formatSecondsToHHMMSS(
@@ -1645,11 +1628,22 @@ function renderTableFromDB() {
       2
     )}</strong>`;
 
-    totalPastSeconds = response.reduce(
+    totalPastSeconds = allSessionsData.reduce(
       (sum, session) => sum + session.DurationSeconds,
       0
     );
-    updateOverallProgress(); // נעדכן את בר ההתקדמות הכללי
+    updateOverallProgress();
+
+    console.log(
+      "🎯 About to load first sessions - allSessionsData.length:",
+      allSessionsData.length
+    );
+
+    // הצגת הסשנים הראשונים
+    loadMoreSessions();
+
+    // הוספת או הסרת כפתור "טען עוד"
+    updateLoadMoreButton(); // נעדכן את בר ההתקדמות הכללי
 
     //הסרת סשן מהטבלה
     document
@@ -1779,6 +1773,17 @@ function renderTableFromDB() {
 
           // הסרת השורה מהטבלה
           table.row(row).remove().draw(false);
+
+          // עדכון הנתונים הגלובליים
+          const sessionIdToRemove = parseInt(sessionId);
+          allSessionsData = allSessionsData.filter(
+            (session) => session.SessionID !== sessionIdToRemove
+          );
+          displayedSessionsCount = Math.min(
+            displayedSessionsCount - 1,
+            allSessionsData.length
+          );
+          updateLoadMoreButton();
         },
         () => {
           console.error("❌ שגיאה במחיקת הסשן מהשרת");
@@ -1813,6 +1818,182 @@ function renderTableFromDB() {
 
   function ErrorCB(xhr, status, error) {
     console.error("שגיאה בטעינת הפרויקטים:", error);
+  }
+}
+
+// פונקציה להוספת עוד סשנים לטבלה
+function loadMoreSessions() {
+  console.log(
+    "📊 loadMoreSessions called - current displayed:",
+    displayedSessionsCount,
+    "total sessions:",
+    allSessionsData.length
+  );
+
+  const endIndex = Math.min(
+    displayedSessionsCount + sessionsPerPage,
+    allSessionsData.length
+  );
+
+  console.log(
+    "📊 Adding sessions from",
+    displayedSessionsCount,
+    "to",
+    endIndex
+  );
+
+  for (let i = displayedSessionsCount; i < endIndex; i++) {
+    const session = allSessionsData[i];
+    console.log(`➕ Adding session ${i + 1}:`, session.SessionID);
+    addSessionRowToTable(session);
+  }
+
+  displayedSessionsCount = endIndex;
+  console.log("📊 Updated displayedSessionsCount to:", displayedSessionsCount);
+
+  table.draw();
+  updateLoadMoreButton();
+}
+
+// פונקציה להוספת שורת סשן יחידה לטבלה
+function addSessionRowToTable(session) {
+  const rawDate = session.StartDate;
+  const { time, formattedDate } = formatDateTime(rawDate);
+
+  const endTimeDisplay = session.EndDate
+    ? formatDateTime(session.EndDate).time
+    : "--:--:--";
+
+  // Calculate earnings for this session
+  const earnings = calculateEarnings(
+    session.HourlyRate,
+    session.DurationSeconds
+  );
+
+  // Enhanced label style with better visual presentation
+  const labelHtml = `<span style="width: auto; height: auto; background-color: ${
+    session.LabelColor ?? "#RRGGBBAA"
+  }; color: black; display: inline-block; padding: 6px 12px; border-radius: 20px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">${
+    session.LabelName ?? "-"
+  }</span>`;
+
+  const newRow = [
+    labelHtml, // תווית
+    formattedDate, // תאריך
+    time, // שעת התחלה
+    endTimeDisplay, // שעת סיום
+    session.HourlyRate, // תעריף
+    formatSecondsToHHMMSS(session.DurationSeconds), // משך זמן
+    earnings, // שכר
+    '<button class="edit-btn"><i class="fas fa-edit"></i></button><button id="dlt-btn-session" class="delete-btn"><i class="fas fa-trash-alt"></i></button>', // כפתורים
+    '<button class="details-control"><i class="fas fa-chevron-down"></i></button>', // פרטים נוספים
+  ];
+
+  // Add row to table
+  const rowNode = table.row.add(newRow).node();
+
+  // Store session data in the row
+  $(rowNode).data("session", session); // שמירת הסשן כולו
+  $(rowNode).attr("data-session-id", session.SessionID); // שמירת ה-ID כשדה data
+}
+
+// פונקציה לעדכון כפתור "טען עוד"
+function updateLoadMoreButton() {
+  console.log(
+    "🔄 updateLoadMoreButton called - displayed:",
+    displayedSessionsCount,
+    "total:",
+    allSessionsData.length
+  );
+
+  let loadMoreBtn = document.getElementById("load-more-sessions-btn");
+
+  // אם יש עוד סשנים להציג
+  if (displayedSessionsCount < allSessionsData.length) {
+    console.log("✅ יש עוד סשנים להציג - יוצר/מציג כפתור");
+
+    if (!loadMoreBtn) {
+      console.log("🆕 יוצר כפתור חדש");
+      // יצירת הכפתור אם הוא לא קיים
+      loadMoreBtn = document.createElement("button");
+      loadMoreBtn.id = "load-more-sessions-btn";
+      loadMoreBtn.className = "export-button";
+      loadMoreBtn.style.cssText = `
+        background: linear-gradient(135deg, #0072ff, #00c6ff);
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 114, 255, 0.25);
+        display: inline-block;
+        white-space: nowrap;
+      `;
+
+      loadMoreBtn.addEventListener("click", function () {
+        console.log("🔥 כפתור טען עוד נלחץ!");
+        loadMoreSessions();
+      });
+      loadMoreBtn.addEventListener("mouseenter", function () {
+        this.style.transform = "translateY(-2px)";
+        this.style.boxShadow = "0 4px 15px rgba(0, 114, 255, 0.4)";
+      });
+      loadMoreBtn.addEventListener("mouseleave", function () {
+        this.style.transform = "translateY(0)";
+        this.style.boxShadow = "0 2px 10px rgba(0, 114, 255, 0.3)";
+      });
+
+      // הוספת הכפתור לשורת הסיכום של הטבלה, בתא השמאלי ביותר
+      const tableFooter = document.querySelector("#sessionsTable tfoot tr");
+      const lastCell = tableFooter
+        ? tableFooter.children[tableFooter.children.length - 1]
+        : null; // התא השמאלי ביותר
+
+      console.log("📍 tableFooter:", tableFooter);
+      console.log("📍 lastCell:", lastCell);
+      console.log(
+        "📍 tableFooter.children.length:",
+        tableFooter ? tableFooter.children.length : 0
+      );
+
+      if (lastCell) {
+        // הכנס את הכפתור לתוך התא השמאלי ביותר
+        lastCell.appendChild(loadMoreBtn);
+        lastCell.style.textAlign = "center";
+        lastCell.style.verticalAlign = "middle";
+        console.log("✅ כפתור נוסף בהצלחה לתא השמאלי של שורת הסיכום");
+      } else {
+        console.error("❌ לא מצאתי את התא השמאלי בטבלה");
+        // נסה לחפש מקום אחר
+        const tableElement = document.getElementById("sessionsTable");
+        if (tableElement) {
+          tableElement.insertAdjacentElement("afterend", loadMoreBtn);
+          console.log("🔄 כפתור נוסף אחרי הטבלה ישירות");
+        }
+      }
+    }
+
+    // עדכון הטקסט של הכפתור
+    const remainingSessions = allSessionsData.length - displayedSessionsCount;
+    const nextBatch = Math.min(sessionsPerPage, remainingSessions);
+    loadMoreBtn.innerHTML = `
+      <i class="fas fa-plus-circle" style="margin-left: 8px;"></i>
+      טען עוד ${nextBatch} סשנים (נותרו ${remainingSessions})
+    `;
+    loadMoreBtn.style.display = "block";
+    console.log(
+      "📝 עדכון טקסט הכפתור:",
+      `טען עוד ${nextBatch} סשנים (נותרו ${remainingSessions})`
+    );
+  } else {
+    console.log("❌ אין עוד סשנים להציג - מסתיר כפתור");
+    // הסתרת הכפתור אם אין עוד סשנים
+    if (loadMoreBtn) {
+      loadMoreBtn.style.display = "none";
+    }
   }
 }
 
@@ -2006,7 +2187,6 @@ $(document).on("submit", "#edit-session-form", function (e) {
 
       // רענון הטבלה לאחר קצת זמן
       setTimeout(() => {
-        table.clear();
         renderTableFromDB();
       }, 1000);
     },
@@ -3820,6 +4000,9 @@ function refreshProjectFromServer() {
 let originalSessionText = "";
 let isAiProcessing = false;
 
+// משתנה גלובלי למעקב אחר הצגת AI Helper
+let hasShownAiTooltip = false;
+
 function setupAiHelperForSessionDescription() {
   const sessionDescInput = document.getElementById("session-description");
   const aiHelperTooltip = document.getElementById("ai-helper-tooltip");
@@ -3829,15 +4012,20 @@ function setupAiHelperForSessionDescription() {
   if (!sessionDescInput) return;
 
   let typingTimer;
-  let hasShownTooltip = false;
 
   // Listen for typing in the description field
   sessionDescInput.addEventListener("input", function () {
     clearTimeout(typingTimer);
 
-    if (this.value.trim().length > 3 && !hasShownTooltip && !isAiProcessing) {
+    // רק אם לא בתהליך הקלטה קולית ולא הוצג כבר הטולטיפ
+    if (
+      this.value.trim().length > 3 &&
+      !hasShownAiTooltip &&
+      !isAiProcessing &&
+      !isVoiceRecording
+    ) {
       showAiHelperTooltip();
-      hasShownTooltip = true;
+      hasShownAiTooltip = true;
     }
   });
 
@@ -4185,7 +4373,6 @@ $(document).on("submit", "#add-manual-session-form", function (e) {
 
       // רענון הטבלה
       setTimeout(() => {
-        table.clear();
         renderTableFromDB();
       }, 1000);
     },
@@ -4582,3 +4769,246 @@ function triggerEndSessionCelebration(sessionDescription = "") {
 }
 
 // --- סוף: אפקט קונפטי להתחלת סשן ---
+
+// --- התחלה: Voice Recognition Functions ---
+let voiceRecognition = null;
+let isVoiceRecording = false;
+
+function initializeVoiceRecognition() {
+  // בדיקה אם הדפדפן תומך ב-Speech Recognition
+  if (
+    !("webkitSpeechRecognition" in window) &&
+    !("SpeechRecognition" in window)
+  ) {
+    console.warn("🎤 הדפדפן לא תומך בזיהוי קולי");
+    return false;
+  }
+
+  // יצירת אובייקט זיהוי קולי
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+  voiceRecognition = new SpeechRecognition();
+
+  // הגדרות זיהוי קולי
+  voiceRecognition.continuous = false; // הקלטה לא רציפה
+  voiceRecognition.interimResults = true; // תוצאות ביניים
+  voiceRecognition.lang = "he-IL"; // עברית
+
+  // אירועי זיהוי קולי
+  voiceRecognition.onstart = function () {
+    console.log("🎤 התחיל זיהוי קולי");
+    isVoiceRecording = true;
+    updateVoiceButton("recording");
+    setTimeout(() => {
+      showVoiceTooltip("🎙️ מקליט... דבר עכשיו");
+    }, 100);
+  };
+
+  voiceRecognition.onresult = function (event) {
+    let transcript = "";
+    let isFinal = false;
+
+    // איסוף כל התוצאות
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const result = event.results[i];
+      transcript += result[0].transcript;
+      if (result.isFinal) {
+        isFinal = true;
+      }
+    }
+
+    console.log("🎤 זיהוי קולי - טקסט:", transcript, "סופי:", isFinal);
+
+    // עדכון שדה התיאור
+    const sessionDescInput = document.getElementById("session-description");
+    if (sessionDescInput) {
+      if (isFinal) {
+        // תוצאה סופית - הוספה לטקסט הקיים
+        const currentText = sessionDescInput.value.trim();
+        const newText = currentText
+          ? currentText + " " + transcript.trim()
+          : transcript.trim();
+        sessionDescInput.value = newText;
+
+        // עדכון סטטוס
+        updateVoiceButton("processing");
+        showVoiceTooltip("מעבד את הטקסט...");
+
+        // החזרה למצב רגיל ואצעת AI Helper
+        setTimeout(() => {
+          stopVoiceRecording();
+
+          // הצעת שיפור הטקסט עם בינה מלאכותית
+          setTimeout(() => {
+            if (newText.trim().length > 3) {
+              // איפוס הסטטוס כדי לאפשר הצגה מחדש
+              hasShownAiTooltip = false;
+              showAiHelperTooltip();
+              hasShownAiTooltip = true;
+            }
+          }, 500);
+        }, 1000);
+      } else {
+        // תוצאה זמנית - הצגת מחוון
+        if (transcript.trim()) {
+          updateVoiceStatusText(`שומע: "${transcript}"`);
+        }
+      }
+    }
+  };
+
+  voiceRecognition.onerror = function (event) {
+    console.error("🎤 שגיאה בזיהוי קולי:", event.error);
+
+    let errorMessage = "שגיאה בזיהוי קולי";
+    switch (event.error) {
+      case "no-speech":
+        errorMessage = "לא זוהה דיבור. נסה שוב";
+        break;
+      case "audio-capture":
+        errorMessage = "לא ניתן לגשת למיקרופון";
+        break;
+      case "not-allowed":
+        errorMessage = "גישה למיקרופון נדחתה. אנא אפשר גישה במעלה הדפדפן";
+        break;
+      case "network":
+        errorMessage = "שגיאת רשת. בדוק את החיבור לאינטרנט";
+        break;
+      default:
+        errorMessage = `שגיאה: ${event.error}`;
+    }
+
+    showVoiceTooltip(errorMessage);
+    setTimeout(() => {
+      stopVoiceRecording();
+    }, 3000);
+  };
+
+  voiceRecognition.onend = function () {
+    console.log("🎤 זיהוי קולי הסתיים");
+    stopVoiceRecording();
+  };
+
+  return true;
+}
+
+function startVoiceRecording() {
+  if (!voiceRecognition) {
+    if (!initializeVoiceRecognition()) {
+      alert("הדפדפן שלך לא תומך בזיהוי קולי. אנא השתמש בדפדפן Chrome או Edge");
+      return;
+    }
+  }
+
+  if (isVoiceRecording) {
+    stopVoiceRecording();
+    return;
+  }
+
+  try {
+    // הצגת הודעה על בקשת הרשאה
+    showVoiceTooltip("בודק הרשאות מיקרופון...");
+    voiceRecognition.start();
+  } catch (error) {
+    console.error("🎤 שגיאה בהתחלת זיהוי קולי:", error);
+    hideVoiceTooltip();
+    alert("שגיאה בהפעלת זיהוי קולי. נסה שוב");
+  }
+}
+
+function stopVoiceRecording() {
+  if (voiceRecognition && isVoiceRecording) {
+    voiceRecognition.stop();
+  }
+
+  isVoiceRecording = false;
+  updateVoiceButton("idle");
+  hideVoiceTooltip();
+}
+
+function updateVoiceButton(state) {
+  const voiceBtn = document.getElementById("voice-record-btn");
+  if (!voiceBtn) return;
+
+  // הסרת כל הקלאסים הקודמים
+  voiceBtn.classList.remove("recording", "voice-listening", "voice-processing");
+
+  switch (state) {
+    case "recording":
+      voiceBtn.classList.add("recording");
+      voiceBtn.innerHTML = '<i class="fas fa-microphone-alt"></i>';
+      break;
+    case "listening":
+      voiceBtn.classList.add("voice-listening");
+      voiceBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+      break;
+    case "processing":
+      voiceBtn.classList.add("voice-processing");
+      voiceBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      break;
+    default: // idle
+      voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+      break;
+  }
+}
+
+function showVoiceTooltip(message) {
+  const tooltip = document.getElementById("voice-recording-tooltip");
+  const statusText = document.getElementById("voice-status-text");
+
+  if (tooltip && statusText) {
+    statusText.textContent = message;
+    tooltip.style.display = "block";
+    tooltip.style.position = "fixed";
+    tooltip.style.top = "50%";
+    tooltip.style.left = "50%";
+    tooltip.style.transform = "translate(-50%, -50%)";
+    tooltip.style.zIndex = "20000";
+  }
+}
+
+function hideVoiceTooltip() {
+  const tooltip = document.getElementById("voice-recording-tooltip");
+  if (tooltip) {
+    tooltip.style.display = "none";
+  }
+}
+
+function updateVoiceStatusText(message) {
+  const statusText = document.getElementById("voice-status-text");
+  if (statusText) {
+    statusText.textContent = message;
+  }
+}
+
+function setupVoiceRecording() {
+  const voiceBtn = document.getElementById("voice-record-btn");
+  const voiceStopBtn = document.getElementById("voice-stop-btn");
+
+  if (voiceBtn) {
+    voiceBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      startVoiceRecording();
+    });
+  }
+
+  if (voiceStopBtn) {
+    voiceStopBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      stopVoiceRecording();
+    });
+  }
+
+  // הסתרת הטולטיפ אם לוחצים במקום אחר
+  document.addEventListener("click", function (e) {
+    if (
+      !e.target.closest("#voice-recording-tooltip") &&
+      !e.target.closest("#voice-record-btn")
+    ) {
+      hideVoiceTooltip();
+    }
+  });
+}
+// --- סוף: Voice Recognition Functions ---

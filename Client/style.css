@@ -2199,3 +2199,149 @@ li a.active span {
     opacity: 1;
   }
 }
+
+/* כפתור טען עוד סשנים */
+#load-more-sessions-btn {
+  font-family: "Assistant", sans-serif;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+#load-more-sessions-btn:hover {
+  background: linear-gradient(135deg, #0060e0, #0095e0) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 114, 255, 0.35) !important;
+}
+
+#load-more-sessions-btn:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 6px rgba(0, 114, 255, 0.3) !important;
+}
+
+/* Voice Recording Button Styles */
+.voice-record-btn:hover {
+  background: linear-gradient(135deg, #495057, #343a40) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3) !important;
+}
+
+.voice-record-btn:active {
+  transform: translateY(0);
+}
+
+.voice-record-btn.recording {
+  background: linear-gradient(135deg, #28a745, #218838) !important;
+  animation: recordingPulse 2s infinite !important;
+  box-shadow: 0 2px 12px rgba(40, 167, 69, 0.4) !important;
+}
+
+@keyframes recordingPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 2px 12px rgba(40, 167, 69, 0.4);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 3px 15px rgba(40, 167, 69, 0.6);
+  }
+}
+
+/* Voice Recording Tooltip */
+.voice-tooltip {
+  position: fixed;
+  background: rgba(40, 167, 69, 0.95);
+  color: white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  white-space: nowrap;
+  z-index: 20000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(15px);
+  animation: voiceTooltipSlideIn 0.4s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 280px;
+  text-align: center;
+}
+
+.voice-tooltip::after {
+  display: none;
+}
+
+.voice-tooltip-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.voice-tooltip-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.voice-icon {
+  font-size: 16px;
+  animation: voiceIconPulse 1s infinite;
+}
+
+@keyframes voiceIconPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.voice-tooltip-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(5px);
+}
+
+.voice-tooltip-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+@keyframes voiceTooltipSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Voice Recognition Status */
+.voice-listening {
+  background: linear-gradient(135deg, #17a2b8, #138496) !important;
+}
+
+.voice-processing {
+  background: linear-gradient(135deg, #6f42c1, #563d7c) !important;
+  animation: processingPulse 1s infinite !important;
+}
+
+@keyframes processingPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}

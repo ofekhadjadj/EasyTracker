@@ -272,7 +272,7 @@ img.logo-sidebar {
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-  height: calc(100vh - 250px);
+  height: calc(100vh - 180px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -455,7 +455,7 @@ img.logo-sidebar {
   }
 
   .chat-container {
-    height: calc(100vh - 200px);
+    height: calc(100vh - 160px);
   }
 
   .message {
@@ -484,7 +484,7 @@ img.logo-sidebar {
   }
 
   .chat-container {
-    height: 60vh;
+    height: 70vh;
   }
 }
 
