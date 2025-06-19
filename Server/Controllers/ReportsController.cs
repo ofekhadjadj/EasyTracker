@@ -145,12 +145,12 @@ namespace EasyTracker.Controllers
         }
 
         [HttpGet("GetFullAssistantData")]
-        public IActionResult GetFullAssistantData(int userId, DateTime? fromDate = null, DateTime? toDate = null)
+        public IActionResult GetFullAssistantData(int userId)
         {
             try
             {
                 DBservices dbs = new DBservices();
-                var data = dbs.GetFullDataForAssistant(userId, fromDate, toDate);
+                var data = dbs.GetFullDataForAssistant(userId);
                 return Ok(data);
             }
             catch (Exception ex)

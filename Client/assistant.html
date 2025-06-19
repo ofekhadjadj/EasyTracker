@@ -20,9 +20,21 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
     />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="js/AjaxCall.js"></script>
     <script src="js/assistant.js"></script>
     <script src="js/wow.min.js"></script>
+
+    <script>
+      // בדיקה שChart.js נטען אחרי טעינת הדף
+      window.addEventListener("load", function () {
+        if (typeof Chart !== "undefined") {
+          console.log("✅ Chart.js נטען בהצלחה!", Chart.version);
+        } else {
+          console.error("❌ Chart.js לא נטען!");
+        }
+      });
+    </script>
 
     <!-- תיקון מיקום כפתור צף - כפייה לצד שמאל -->
     <style>
@@ -151,6 +163,9 @@
           <div class="stats-title">
             <h1>🤖 העוזר האישי שלך</h1>
             <p>שאל אותי כל שאלה על הנתונים שלך - אני כאן לעזור!</p>
+            <p style="font-size: 0.9em; color: #666; margin-top: 5px">
+              💡 הצ'אט שומר את 10 השאלות האחרונות שלך כדי לזכור הקשר
+            </p>
           </div>
 
           <div class="chat-container">
@@ -160,11 +175,7 @@
             </div>
 
             <div class="chat-messages" id="chat-messages">
-              <div class="message assistant">
-                שלום! 👋 אני העוזר האישי שלך. תוכל לשאול אותי שאלות כגון:
-                <br />• כמה פרויקטים יש לי? <br />• כמה עבדתי החודש? <br />• מה
-                הפרויקט הכי רווחי שלי? <br />• איך הולכים העסקים עם לקוח X?
-              </div>
+              <!-- ההודעה הזו תוחלף אוטומטית לאחר טעינת הנתונים -->
             </div>
 
             <div class="chat-input-container">

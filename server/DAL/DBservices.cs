@@ -2487,15 +2487,13 @@ finally
         finally { if (con != null) con.Close(); }
     }
 
-    public List<Dictionary<string, object>> GetFullDataForAssistant(int userId, DateTime? fromDate = null, DateTime? toDate = null)
+    public List<Dictionary<string, object>> GetFullDataForAssistant(int userId)
     {
         SqlConnection con = connect("myProjDB");
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>()
     {
-        { "@UserID", userId },
-        { "@FromDate", (object?)fromDate ?? DBNull.Value },
-        { "@ToDate", (object?)toDate ?? DBNull.Value }
+        { "@UserID", userId }
     };
 
         SqlCommand cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_GetFullDataForAssistant", con, paramDic);
