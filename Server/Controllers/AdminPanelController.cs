@@ -44,14 +44,21 @@ namespace EasyTracker.Controllers
             try
             {
                 DBservices dbs = new DBservices();
-                dbs.ToggleUserActiveStatus(userId);
-                return Ok("הסטטוס של המשתמש עודכן בהצלחה.");
+                int rowsAffected = dbs.ToggleUserActiveStatus(userId);
+
+                return Ok(new
+                {
+                    Message = "הסטטוס של המשתמש עודכן בהצלחה.",
+                    RowsAffected = rowsAffected
+                });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "שגיאה בעת עדכון סטטוס המשתמש: " + ex.Message);
             }
         }
+
+
 
         [HttpGet("GetTop5EarningUsers")]
         public IActionResult GetTop5EarningUsers()
@@ -84,23 +91,40 @@ namespace EasyTracker.Controllers
         }
 
         [HttpPut("ResetUserPassword")]
-        public IActionResult ResetUserPassword(int userId)
+        public IActionResult ResetUserPassword([FromQuery] int userId)
         {
             try
             {
                 DBservices dbs = new DBservices();
-                int result = dbs.ResetUserPassword(userId);
+                int rowsAffected = dbs.ResetUserPassword(userId);
 
-                if (result > 0)
-                    return Ok("✅ הסיסמה אופסה בהצלחה לסיסמה זמנית: EasyTrackerTempPass1234");
+                if (rowsAffected > 0)
+                {
+                    return Ok(new
+                    {
+                        Message = "✅ הסיסמה אופסה בהצלחה.",
+                        TemporaryPassword = "EasyTrackerTempPass1234",
+                        RowsAffected = rowsAffected
+                    });
+                }
                 else
-                    return NotFound("❌ לא נמצא משתמש עם מזהה זה.");
+                {
+                    return NotFound(new
+                    {
+                        Message = "❌ לא נמצא משתמש עם מזהה זה.",
+                        RowsAffected = 0
+                    });
+                }
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "שגיאה באיפוס הסיסמה: " + ex.Message);
+                return StatusCode(500, new
+                {
+                    Message = "שגיאה באיפוס הסיסמה: " + ex.Message
+                });
             }
         }
+
 
 
     }

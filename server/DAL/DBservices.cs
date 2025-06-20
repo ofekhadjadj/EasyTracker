@@ -2566,7 +2566,7 @@ finally
         return result;
     }
 
-    public void ToggleUserActiveStatus(int userId)
+    public int ToggleUserActiveStatus(int userId)
     {
         SqlConnection con = connect("myProjDB");
 
@@ -2576,10 +2576,12 @@ finally
     };
 
         SqlCommand cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_ToggleUserActivation", con, paramDic);
-        cmd.ExecuteNonQuery();
+        int affectedRows = cmd.ExecuteNonQuery();
 
         con.Close();
+        return affectedRows;
     }
+
 
     public List<Dictionary<string, object>> GetTop5EarningUsers()
     {
@@ -2644,6 +2646,7 @@ finally
         con.Close();
         return affectedRows;
     }
+
 
 
     //**** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ****

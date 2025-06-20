@@ -19,6 +19,7 @@
       referrerpolicy="no-referrer"
     />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/admin-mode.js"></script>
 
     <!-- תיקון מיקום כפתור צף - כפייה לצד שמאל -->
     <style>
@@ -37,6 +38,19 @@
           bottom: 20px !important;
           left: 20px !important;
           right: auto !important;
+        }
+      }
+
+      /* אנימציה למצב אדמין */
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        50% {
+          box-shadow: 0 4px 25px rgba(255, 107, 107, 0.5);
+        }
+        100% {
+          box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
         }
       }
     </style>

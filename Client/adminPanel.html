@@ -3,58 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Easy Tracker - לקוחות</title>
+    <title>Easy Tracker - פאנל ניהול</title>
     <link rel="icon" href="/images/fav-icon.png" type="images/png" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="adminPanel.css" />
     <link rel="stylesheet" href="animate.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
     />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/admin-mode.js"></script>
-    <!-- Font Awesome for icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-
-    <!-- תיקון מיקום כפתור צף - כפייה לצד שמאל -->
-    <style>
-      .floating-assistant-btn {
-        position: fixed !important;
-        bottom: 30px !important;
-        left: 30px !important;
-        right: auto !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        transform: none !important;
-      }
-
-      @media (max-width: 768px) {
-        .floating-assistant-btn {
-          bottom: 20px !important;
-          left: 20px !important;
-          right: auto !important;
-        }
-      }
-    </style>
   </head>
   <body>
     <div class="projects-continer">
+      <!-- Sidebar -->
       <div class="sidbar wow fadeInRightBig">
         <div class="inner-sidbar">
           <div class="profile">
             <img src="#" class="avatar-img" alt="" />
-            <h3>הי, <span id="menu-prof-name">משתמש</span> 👋</h3>
+            <h3>הי, <span id="menu-prof-name">אדמין</span> 👋</h3>
             <span class="profile-arrow"
               ><i class="fas fa-chevron-down"></i
             ></span>
@@ -69,7 +41,8 @@
           <div class="nav-continer">
             <div class="main-nav">
               <ul>
-                <li>
+                <!-- Future features - currently commented out -->
+                <!-- <li>
                   <a href="projects.html" class="">
                     <img
                       src="./images/icons/proj-black.png"
@@ -78,18 +51,18 @@
                     />
                     <span>פרויקטים</span>
                   </a>
-                </li>
-                <li>
-                  <a href="clients.html" class="active">
+                </li> -->
+                <!-- <li>
+                  <a href="clients.html" class="">
                     <img
-                      src="./images/icons/customer-whitek.png"
+                      src="./images/icons/customer-black.png"
                       alt="לקוחות"
                       class="nav-icon"
                     />
                     <span>לקוחות</span>
                   </a>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                   <a href="stats.html" class="">
                     <img
                       src="./images/icons/statistics and analytics-black.png"
@@ -98,8 +71,8 @@
                     />
                     <span>ניתוח ודוחות</span>
                   </a>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                   <a href="labels.html" class="">
                     <img
                       src="./images/icons/lablels-black.png"
@@ -108,8 +81,8 @@
                     />
                     <span>תיוגים</span>
                   </a>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                   <a href="assistant.html" class="">
                     <img
                       src="./images/icons/aiassistant-black.png"
@@ -117,6 +90,17 @@
                       class="nav-icon"
                     />
                     <span>העוזר האישי</span>
+                  </a>
+                </li> -->
+
+                <li>
+                  <a href="adminPanel.html" class="active">
+                    <img
+                      src="./images/icons/settings-white.png"
+                      alt="פאנל ניהול"
+                      class="nav-icon"
+                    />
+                    <span>פאנל ניהול</span>
                   </a>
                 </li>
               </ul>
@@ -149,86 +133,88 @@
         </div>
       </div>
 
+      <!-- תוכן ראשי -->
       <div class="content">
         <div class="inner-content">
-          <div class="header-projects">
-            <div class="title-and-btn">
-              <h1>לקוחות</h1>
-              <a href="#new-client-form" data-fancybox class="btn">
-                <img src="./images/plus-btn.png" alt="הוסף לקוח" />
-              </a>
-            </div>
-            <span id="doneText">הלקוחות שלך במערכת</span>
-            <div class="search-container">
-              <input
-                type="text"
-                class="search-input"
-                placeholder="חיפוש לקוח"
-                id="search-client"
-              />
-              <img
-                src="./images/search-icon.png"
-                alt="חיפוש"
-                class="search-icon"
-              />
+          <!-- כותרת עמוד -->
+          <div class="admin-header">
+            <h1>פאנל ניהול המערכת</h1>
+            <p>סקירה כללית של המשתמשים והפעילות במערכת</p>
+          </div>
+
+          <!-- סטטיסטיקות מערכת -->
+          <div class="stats-section">
+            <h2>סטטיסטיקות המערכת</h2>
+            <div class="stats-grid" id="stats-grid">
+              <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>טוען נתונים...</span>
+              </div>
             </div>
           </div>
 
-          <div class="body-projects wow bounceInUp" id="clients"></div>
+          <!-- משתמשים מובילים -->
+          <div class="top-users-section">
+            <h2>משתמשים מובילים</h2>
+            <div class="top-users-grid">
+              <div class="top-users-card">
+                <h3>5 המשתמשים הכי פעילים</h3>
+                <div class="top-users-list" id="top-active-users">
+                  <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="top-users-card">
+                <h3>5 המשתמשים הכי מרוויחים</h3>
+                <div class="top-users-list" id="top-earning-users">
+                  <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- טבלת משתמשים -->
+          <div class="users-section">
+            <h2>כל המשתמשים במערכת</h2>
+            <div class="users-table-container">
+              <div class="loading-overlay" id="users-loading">
+                <div class="loading-spinner">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <span>טוען משתמשים...</span>
+                </div>
+              </div>
+              <table class="users-table" id="users-table">
+                <thead>
+                  <tr>
+                    <th>שם פרטי</th>
+                    <th>שם משפחה</th>
+                    <th>אימייל</th>
+                    <th>תפקיד</th>
+                    <th>תאריך הרשמה</th>
+                    <th>מספר פרויקטים</th>
+                    <th>סך הכנסות</th>
+                    <th>מספר סשנים</th>
+                    <th>סשן אחרון</th>
+                    <th>פעיל</th>
+                    <th>פעולות</th>
+                  </tr>
+                </thead>
+                <tbody id="users-tbody">
+                  <!-- משתמשים יטענו כאן -->
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- פופ-אפ הוספת לקוח חדש -->
-    <div id="new-client-form" class="popup-form">
-      <h2>➕ לקוח חדש</h2>
-      <form id="client-form">
-        <label for="companyName">שם החברה:</label>
-        <input type="text" id="companyName" name="companyName" required />
-
-        <label for="contactPerson">איש קשר:</label>
-        <input type="text" id="contactPerson" name="contactPerson" />
-
-        <label for="email">אימייל:</label>
-        <input type="email" id="email" name="email" />
-
-        <label for="contactPersonPhone">נייד:</label>
-        <input type="text" id="contactPersonPhone" name="contactPersonPhone" />
-
-        <label for="officePhone">טלפון משרד:</label>
-        <input type="text" id="officePhone" name="officePhone" />
-
-        <!-- ✅ תצוגת תמונה ממוזערת -->
-        <div id="client-image-preview" style="margin-top: 10px">
-          <img
-            id="client-image-thumb"
-            src=""
-            alt="תמונה נוכחית"
-            style="
-              max-width: 120px;
-              max-height: 60px;
-              border-radius: 8px;
-              display: none;
-              box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-            "
-          />
-        </div>
-
-        <label for="clientImageFile">תמונה:</label>
-        <input
-          type="file"
-          id="clientImageFile"
-          name="clientImageFile"
-          accept="image/*"
-        />
-
-        <button type="submit" class="btn-submit">📤 שמור לקוח</button>
-      </form>
-    </div>
-    <!-- 🟦 פופאפ עריכת פרטי משתמש -->
+    <!-- פופאפ עריכת פרטי משתמש -->
     <div id="edit-user-form" class="popup-form" style="display: none">
       <h2>✏️ עריכת פרטי משתמש</h2>
-
       <form id="user-details-form">
         <label>תמונה נוכחית:</label>
         <div id="user-image-preview" style="margin-bottom: 10px">
@@ -245,7 +231,6 @@
             "
           />
         </div>
-
         <label for="userImageFile">בחר תמונה חדשה:</label>
         <input
           type="file"
@@ -265,23 +250,22 @@
           type="email"
           id="user-email"
           required
-          pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
           placeholder="example@example.com"
         />
 
         <label>סיסמה נוכחית:</label>
         <input type="password" id="user-current-password" required />
 
-        <button type="submit" class="btn-submit">📤 שמור פרטים</button>
+        <button type="submit" class="btn-submit">📄 שמור פרטים</button>
         <button type="button" id="open-password-popup" class="btn-submit">
-          🔒 החלפת סיסמה
+          🔐 החלפת סיסמה
         </button>
       </form>
     </div>
 
-    <!-- 🟨 פופאפ שינוי סיסמה -->
+    <!-- פופאפ שינוי סיסמה -->
     <div id="change-password-form" class="popup-form" style="display: none">
-      <h2>🔒 שינוי סיסמה</h2>
+      <h2>🔐 שינוי סיסמה</h2>
       <form id="user-password-form">
         <label>סיסמה נוכחית:</label>
         <input type="password" id="old-password" required />
@@ -301,15 +285,15 @@
       </form>
     </div>
 
-    <script src="js/AjaxCall.js"></script>
-    <script src="js/clients.js"></script>
     <script src="js/wow.min.js"></script>
     <script>
       new WOW().init();
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src="js/AjaxCall.js"></script>
     <script src="js/sidebar-active.js"></script>
     <script src="js/edit-user.js"></script>
+    <script src="js/adminPanel.js"></script>
 
     <!-- כפתור צף לעוזר האישי -->
     <button
