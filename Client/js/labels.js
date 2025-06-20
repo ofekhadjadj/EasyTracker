@@ -141,7 +141,7 @@ function deleteLabel(labelID) {
       <h3>מחיקת תגית</h3>
       <p>האם אתה בטוח שברצונך למחוק את התגית?</p>
       <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
-        <button class="gradient-button" id="confirmDeleteBtn">כן, מחק</button>
+        <button class="gradient-button delete-button" id="confirmDeleteBtn" style="background: linear-gradient(135deg, #ff4757, #ff3838); color: white; border: none;">כן, מחק</button>
         <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
       </div>
     </div>
@@ -161,6 +161,7 @@ function deleteLabel(labelID) {
         method: "PUT",
         success: () => {
           $.fancybox.close();
+          showSuccessNotification("התגית נמחקה בהצלחה!");
           fetchAllLabels();
         },
         error: () => alert("שגיאה במחיקת תגית."),
@@ -176,4 +177,26 @@ function openEditLabelPopup(label) {
   $(".btn-submit").text("עדכן תגית");
 
   $.fancybox.open({ src: "#new-label-form", type: "inline" });
+}
+
+// הודעת הצלחה מעוצבת
+function showSuccessNotification(message) {
+  const notification = document.createElement("div");
+  notification.className = "save-notification";
+  notification.innerHTML = `
+    <div class="notification-icon">✓</div>
+    <div class="notification-message">${message}</div>
+  `;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 10);
+
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => {
+      if (notification.parentNode) document.body.removeChild(notification);
+    }, 500);
+  }, 3000);
 }
