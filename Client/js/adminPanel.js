@@ -28,8 +28,8 @@ $(document).ready(function () {
 
   // Set user info in sidebar
   const avatarImg = document.querySelector(".avatar-img");
-  if (currentUser.image && avatarImg) {
-    avatarImg.src = currentUser.image;
+  if (avatarImg) {
+    avatarImg.src = currentUser.image || "./images/def/user-def.png";
   }
 
   const profName = document.getElementById("menu-prof-name");

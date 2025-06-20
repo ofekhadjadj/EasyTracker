@@ -603,40 +603,46 @@ li a.active span {
 /* פופאפ עריכת משתמש */
 .popup-form {
   width: 400px;
-  max-width: 90%;
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  max-width: 90vw;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  direction: rtl;
+  text-align: right;
 }
 
 .popup-form h2 {
   text-align: center;
-  margin-top: 0;
+  color: #333;
   margin-bottom: 20px;
-  color: #0072ff;
-  font-size: 24px;
+  font-size: 1.5rem;
+  direction: rtl;
 }
 
 .popup-form label {
   display: block;
   margin-bottom: 5px;
-  font-weight: 500;
-  color: #444;
-  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  direction: rtl;
+  text-align: right;
 }
 
 .popup-form input[type="text"],
 .popup-form input[type="email"],
-.popup-form input[type="password"] {
+.popup-form input[type="password"],
+.popup-form input[type="file"],
+.popup-form select,
+.popup-form textarea {
   width: 100%;
-  padding: 10px 12px;
+  padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 16px;
-  color: #333;
-  transition: border 0.3s;
+  border-radius: 5px;
+  font-size: 14px;
+  direction: rtl;
+  text-align: right;
 }
 
 .popup-form input[type="text"]:focus,
@@ -647,28 +653,138 @@ li a.active span {
 }
 
 .popup-form input[type="file"] {
-  margin-bottom: 15px;
+  padding: 8px;
 }
 
 .btn-submit {
-  background: linear-gradient(90deg, #0097ff 26%, #007eff 56%, #0054ff 100%);
+  background: linear-gradient(135deg, #0072ff, #00c6ff);
   color: white;
+  padding: 12px 25px;
   border: none;
-  border-radius: 6px;
-  padding: 10px 15px;
-  font-size: 16px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
   transition: all 0.3s ease;
-  display: block;
   width: 100%;
   margin-bottom: 10px;
+  direction: rtl;
 }
 
 .btn-submit:hover {
-  background: linear-gradient(90deg, #00a8ff 26%, #0088ff 56%, #0066ff 100%);
+  background: linear-gradient(135deg, #005acc, #0099cc);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 114, 255, 0.3);
 }
 
-/* רספונסיביות */
+/* Custom Alert and Confirmation Dialog Styles */
+.custom-alert {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  min-width: 300px;
+  max-width: 450px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  z-index: 9999999;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  font-family: "Assistant", sans-serif;
+}
+
+.custom-alert.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.custom-alert.closing {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-20px);
+}
+
+.alert-icon {
+  margin-left: 15px;
+}
+
+.alert-content {
+  flex-grow: 1;
+}
+
+.alert-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.alert-text {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #555;
+}
+
+.alert-close {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #999;
+}
+
+.success .alert-title {
+  color: #4caf50;
+}
+
+.error .alert-title {
+  color: #f44336;
+}
+
+/* Confirmation dialog specific styles */
+.custom-confirm {
+  flex-direction: column;
+}
+
+.confirm-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+  gap: 10px;
+}
+
+.confirm-btn {
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  font-family: "Assistant", sans-serif;
+  transition: background-color 0.2s;
+}
+
+.confirm-yes {
+  background-color: #dc3545;
+  color: white;
+}
+
+.confirm-yes:hover {
+  background-color: #c82333;
+}
+
+.confirm-no {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+}
+
+.confirm-no:hover {
+  background-color: #e2e6ea;
+}
+
 @media (max-width: 992px) {
   .stats-header {
     flex-direction: column;
@@ -676,30 +792,29 @@ li a.active span {
   }
 
   .stats-title {
-    margin-bottom: 15px;
     text-align: center;
+    margin-bottom: 20px;
   }
 
   .stats-actions {
-    margin-top: 15px;
     justify-content: center;
-    width: 100%;
+    margin-bottom: 20px;
   }
 
   .dashboard-circles {
-    margin: 20px 0;
+    justify-content: center;
   }
 
   .summary-table {
-    min-width: 100%;
+    margin-bottom: 20px;
   }
 
   .filter-group {
-    min-width: 100%;
+    min-width: 160px;
   }
 
   .filter-button {
-    width: 100%;
+    margin-top: 10px;
   }
 }
 

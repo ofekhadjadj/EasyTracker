@@ -35,7 +35,7 @@ function loadTeamPreview() {
     (members) => {
       members.forEach((member) => {
         const img = document.createElement("img");
-        img.src = member.Image ? member.Image : "./images/default-avatar.png"; // 🔁 ברירת מחדל אם אין תמונה
+        img.src = member.Image ? member.Image : "./images/def/user-def.png"; // 🔁 ברירת מחדל אם אין תמונה
         img.alt = member.FullName;
         img.title = member.FullName;
         img.style.width = "40px";
@@ -503,8 +503,8 @@ function FillDeatils() {
   breadcrumbsProjName.innerText = breadcrumbsText;
   projectName.innerText = CurrentProject.ProjectName;
   ProjectClient.innerText = CurrentProject.CompanyName;
-  if (CurrentUser?.image && avatarImg) {
-    avatarImg.src = CurrentUser.image;
+  if (avatarImg) {
+    avatarImg.src = CurrentUser?.image || "./images/def/user-def.png";
   }
 }
 

@@ -5,7 +5,10 @@ $(document).ready(function () {
   const userID = CurrentUser.id;
 
   $(`#menu-prof-name`).text(CurrentUser.firstName);
-  if (CurrentUser.image) $(".avatar-img").attr("src", CurrentUser.image);
+  $(".avatar-img").attr(
+    "src",
+    CurrentUser.image || "./images/def/user-def.png"
+  );
 
   loadDashboardSummary(userID);
   loadTopClients(userID);
@@ -741,4 +744,105 @@ function applyFilters(userID) {
   };
 
   loadCharts(userID, filters);
+}
+
+// Function to show custom styled alerts
+function showCustomAlert(message, type = "success", closePopup = true) {
+  // Only close fancybox popups if closePopup is true
+  if (closePopup && $.fancybox.getInstance()) {
+    $.fancybox.close();
+
+    // Small delay to ensure fancybox is closed before showing alert
+    setTimeout(() => {
+      displayAlert();
+    }, 300);
+  } else {
+    displayAlert();
+  }
+
+  function displayAlert() {
+    // Remove any existing alerts
+    const existingAlerts = document.querySelectorAll(".custom-alert");
+    existingAlerts.forEach((alert) => {
+      if (alert.parentNode) {
+        document.body.removeChild(alert);
+      }
+    });
+
+    // Create alert container
+    const alertContainer = document.createElement("div");
+    alertContainer.className = `custom-alert ${type}`;
+
+    // Create icon based on type
+    const icon = document.createElement("div");
+    icon.className = "alert-icon";
+
+    if (type === "success") {
+      icon.innerHTML = `
+        <svg viewBox="0 0 52 52" width="50" height="50">
+          <circle cx="26" cy="26" r="25" fill="none" stroke="#4CAF50" stroke-width="2"></circle>
+          <path fill="none" stroke="#4CAF50" stroke-width="3" d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
+        </svg>
+      `;
+    } else {
+      icon.innerHTML = `
+        <svg viewBox="0 0 52 52" width="50" height="50">
+          <circle cx="26" cy="26" r="25" fill="none" stroke="#F44336" stroke-width="2"></circle>
+          <line x1="18" y1="18" x2="34" y2="34" stroke="#F44336" stroke-width="3"></line>
+          <line x1="34" y1="18" x2="18" y2="34" stroke="#F44336" stroke-width="3"></line>
+        </svg>
+      `;
+    }
+
+    // Create content
+    const content = document.createElement("div");
+    content.className = "alert-content";
+
+    const title = document.createElement("h3");
+    title.className = "alert-title";
+    title.textContent = type === "success" ? "הצלחה!" : "שגיאה!";
+
+    const text = document.createElement("p");
+    text.className = "alert-text";
+    text.textContent = message;
+
+    content.appendChild(title);
+    content.appendChild(text);
+
+    // Create close button
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "alert-close";
+    closeBtn.innerHTML = "&times;";
+    closeBtn.addEventListener("click", () => {
+      alertContainer.classList.add("closing");
+      setTimeout(() => {
+        if (alertContainer.parentNode) {
+          document.body.removeChild(alertContainer);
+        }
+      }, 300);
+    });
+
+    // Assemble the alert
+    alertContainer.appendChild(icon);
+    alertContainer.appendChild(content);
+    alertContainer.appendChild(closeBtn);
+
+    // Add to document
+    document.body.appendChild(alertContainer);
+
+    // Animate in
+    setTimeout(() => {
+      alertContainer.classList.add("show");
+    }, 10);
+
+    // Auto close after 4 seconds
+    setTimeout(() => {
+      alertContainer.classList.add("closing");
+      setTimeout(() => {
+        if (alertContainer.parentNode) {
+          document.body.removeChild(alertContainer);
+        }
+      }, 300);
+    }, 4000);
+  }
 }

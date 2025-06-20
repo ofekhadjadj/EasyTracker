@@ -8,7 +8,8 @@ const ProjectSummaries =
 
 $(document).ready(() => {
   const avatarImg = document.querySelector(".avatar-img");
-  if (CurrentUser?.image && avatarImg) avatarImg.src = CurrentUser.image;
+  if (avatarImg)
+    avatarImg.src = CurrentUser?.image || "./images/def/user-def.png";
 
   const profName = document.getElementById("menu-prof-name");
   if (profName) profName.innerText = CurrentUser.firstName;
@@ -94,7 +95,7 @@ function renderProjects(projects, withAnimation = true) {
     const statusHtml = project.isDone
       ? '<span class="status">הושלם!</span>'
       : "";
-    const imageUrl = project.Image || "./images/project-image-demo.jpg";
+    const imageUrl = project.Image || "./images/def/proj-def.jpg";
     const income =
       ProjectSummaries.find((p) => p.projectID === project.ProjectID)
         ?.projectIncome || 0;
@@ -164,12 +165,10 @@ function openEditPopup(project) {
   $("#project-form").data("image", project.Image);
   $("#projectImageFile").val("");
 
-  // ✅ הצגת תמונה ממוזערת קיימת אם יש
-  if (project.Image) {
-    $("#project-image-thumb").attr("src", project.Image).show();
-  } else {
-    $("#project-image-thumb").hide();
-  }
+  // ✅ הצגת תמונה ממוזערת קיימת או דיפולטיבית
+  $("#project-image-thumb")
+    .attr("src", project.Image || "./images/def/proj-def.jpg")
+    .show();
 
   $.fancybox.open({
     src: "#new-project-form",

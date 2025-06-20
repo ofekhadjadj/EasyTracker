@@ -30,7 +30,7 @@ function createProject(imagePath) {
     ProjectName: $("#projectName").val().trim(),
     Description: $("#projectDesc").val().trim(),
     HourlyRate: Number($("#hourlyRate").val()),
-    Image: imagePath,
+    Image: imagePath || "./images/def/proj-def.jpg",
     ClientID: Number($("#clientId").val()),
     DurationGoal: Number($("#durationGoal").val()),
   };
@@ -61,7 +61,8 @@ $(document).ready(function () {
   loadClients();
 
   const avatarImg = document.querySelector(".avatar-img");
-  if (CurrentUser?.image && avatarImg) avatarImg.src = CurrentUser.image;
+  if (avatarImg)
+    avatarImg.src = CurrentUser?.image || "./images/def/user-def.png";
   const ProfName = document.getElementById("menu-prof-name");
   ProfName.innerText = CurrentUser.firstName;
 
@@ -163,7 +164,9 @@ function renderProjects(projects) {
     const card = document.createElement("div");
     card.className = "project-card wow bounceInUp";
     card.setAttribute("projectId", project.ProjectID);
-    card.style.backgroundImage = `url('${project.Image}')`;
+    card.style.backgroundImage = `url('${
+      project.Image || "./images/def/proj-def.jpg"
+    }')`;
     card.innerHTML = `
       <div class="project-content">
         ${statusHtml}
@@ -214,11 +217,9 @@ function openEditPopup(project) {
     .addClass("editing");
   $("#projectImageFile").val("");
 
-  if (project.Image) {
-    $("#project-image-thumb").attr("src", project.Image).show();
-  } else {
-    $("#project-image-thumb").hide();
-  }
+  $("#project-image-thumb")
+    .attr("src", project.Image || "./images/def/proj-def.jpg")
+    .show();
 
   $.fancybox.open({ src: "#new-project-form", type: "inline" });
 }

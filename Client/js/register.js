@@ -26,6 +26,7 @@ function handleRegister(firstName, lastName, email, password) {
     lastName: lastName,
     email: email,
     password: password,
+    image: "./images/def/user-def.png",
   });
 
   ajaxCall(

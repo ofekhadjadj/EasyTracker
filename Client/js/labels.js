@@ -11,7 +11,8 @@ $(document).ready(function () {
   }
 
   const avatarImg = document.querySelector(".avatar-img");
-  if (CurrentUser.image && avatarImg) avatarImg.src = CurrentUser.image;
+  if (avatarImg)
+    avatarImg.src = CurrentUser.image || "./images/def/user-def.png";
 
   const ProfName = document.getElementById("menu-prof-name");
   if (ProfName) ProfName.innerText = CurrentUser.firstName;

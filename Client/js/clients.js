@@ -21,7 +21,8 @@ $(document).ready(function () {
 
   // הגדרת תמונת משתמש ושם בתפריט הצדדי
   const avatarImg = document.querySelector(".avatar-img");
-  if (CurrentUser.image && avatarImg) avatarImg.src = CurrentUser.image;
+  if (avatarImg)
+    avatarImg.src = CurrentUser.image || "./images/def/user-def.png";
   const ProfName = document.getElementById("menu-prof-name");
   if (ProfName) ProfName.innerText = CurrentUser.firstName;
 
@@ -86,7 +87,7 @@ function createClient(imagePath) {
     email: $("#email").val().trim(),
     contactPersonPhone: $("#contactPersonPhone").val().trim(),
     officePhone: $("#officePhone").val().trim(),
-    image: imagePath,
+    image: imagePath || "./images/def/client-def.jpg",
   };
   $.ajax({
     url: "https://localhost:7198/api/Client/Add%20Client",
@@ -148,7 +149,7 @@ function renderClients(clients, withAnimation = false) {
       card.classList.add("wow", "bounceInUp");
     card.setAttribute("data-client-id", client.clientID);
     card.style.backgroundImage = `url('${
-      client.image || "./images/client-avatar.png"
+      client.image || "./images/def/client-def.jpg"
     }')`;
 
     const content = document.createElement("div");
@@ -209,8 +210,9 @@ function openEditPopup(client) {
 
   const fileInput = document.getElementById("clientImageFile");
   fileInput.value = "";
-  if (client.image) $("#client-image-thumb").attr("src", client.image).show();
-  else $("#client-image-thumb").hide();
+  $("#client-image-thumb")
+    .attr("src", client.image || "./images/def/client-def.jpg")
+    .show();
 
   $("#client-form")
     .off("submit")

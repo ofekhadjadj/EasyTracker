@@ -1159,9 +1159,7 @@ function setupEventListeners() {
 function loadUserProfile() {
   const user = getCurrentUser();
   $("#menu-prof-name").text(user?.firstName || "משתמש");
-  if (user?.image) {
-    $(".avatar-img").attr("src", user.image);
-  }
+  $(".avatar-img").attr("src", user?.image || "./images/def/user-def.png");
 }
 
 function loadTeamMonitoringData(userId) {

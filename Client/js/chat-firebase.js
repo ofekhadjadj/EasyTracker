@@ -70,7 +70,10 @@ $(document).ready(function () {
 
   // Initialize user interface
   $("#menu-prof-name").text(CurrentUser.firstName);
-  if (CurrentUser.image) $(".avatar-img").attr("src", CurrentUser.image);
+  $(".avatar-img").attr(
+    "src",
+    CurrentUser.image || "./images/def/user-def.png"
+  );
 
   // Load project team avatars
   loadProjectTeam(CurrentProject.ProjectID, CurrentUser.id);
@@ -151,7 +154,7 @@ function createAvatar(type, name, imageUrl, userId) {
     // Private chat avatar (regular circle with image and name)
     avatarHtml = `
       <div class="chat-avatar" data-userid="${userId}" title="${name}">
-        <img src="${imageUrl}" alt="${name}" />
+        <img src="${imageUrl || "./images/def/user-def.png"}" alt="${name}" />
         <span>${name.split(" ")[0]}</span>
       </div>
     `;
