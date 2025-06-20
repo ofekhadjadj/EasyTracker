@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Easy Tracker - סשנים של חברי הצוות</title>
+    <link rel="icon" href="/images/fav-icon.png" type="images/png" />
+
+    <link rel="stylesheet" href="stats.css" />
+    <link rel="stylesheet" href="animate.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
+    />
+    <link
+      href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+
+    <!-- תיקון מיקום כפתור צף - כפייה לצד שמאל -->
+    <style>
+      .floating-assistant-btn {
+        position: fixed !important;
+        bottom: 30px !important;
+        left: 30px !important;
+        right: auto !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        transform: none !important;
+      }
+
+      @media (max-width: 768px) {
+        .floating-assistant-btn {
+          bottom: 20px !important;
+          left: 20px !important;
+          right: auto !important;
+        }
+      }
+
+      /* טבלת סשנים מעוצבת */
+      #teamSessionsTable {
+        width: 100% !important;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+        font-family: "Assistant", sans-serif;
+        margin-bottom: 25px;
+        background: transparent;
+      }
+
+      #teamSessionsTable thead th {
+        background: linear-gradient(to right, #f0f4ff, #ffffff);
+        color: #555;
+        font-weight: 600;
+        text-align: center;
+        padding: 16px 12px;
+        border-bottom: 2px solid #eaeaea;
+        font-size: 13px;
+        transition: all 0.3s ease;
+        position: relative;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+
+      #teamSessionsTable thead th::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(to right, #0072ff, transparent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
+
+      #teamSessionsTable thead:hover th::after {
+        transform: scaleX(1);
+      }
+
+      #teamSessionsTable tbody tr {
+        background-color: white;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+        border-radius: 10px;
+        position: relative;
+        margin-bottom: 10px;
+      }
+
+      #teamSessionsTable tbody tr:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      #teamSessionsTable tbody td {
+        padding: 18px 12px;
+        text-align: center;
+        color: #444;
+        border: none;
+        font-size: 14px;
+        position: relative;
+      }
+
+      #teamSessionsTable tbody td:first-child {
+        border-radius: 10px 0 0 10px;
+      }
+
+      #teamSessionsTable tbody td:last-child {
+        border-radius: 0 10px 10px 0;
+      }
+
+      #teamSessionsTable tfoot {
+        background-color: transparent;
+        font-weight: bold;
+      }
+
+      #teamSessionsTable tfoot th {
+        padding: 18px 12px;
+        border-top: 2px solid #eaeaea;
+        color: #0072ff;
+        font-size: 15px;
+        background: linear-gradient(to right, #f7faff, #ffffff);
+      }
+
+      #teamSessionsTable tfoot #total-worktime,
+      #teamSessionsTable tfoot #total-earnings {
+        font-size: 16px;
+        color: #0072ff;
+        font-weight: 700;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+      }
+
+      .details-control {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        margin: 0 5px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        opacity: 0.85;
+        color: #0072ff;
+      }
+
+      .details-control:hover {
+        background-color: rgba(0, 114, 255, 0.1);
+        opacity: 1;
+        transform: scale(1.1);
+      }
+
+      .details-row {
+        padding: 20px;
+        margin: 10px 0 15px 0;
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        color: #555;
+        box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.03);
+        line-height: 1.5;
+        font-size: 14px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .details-row > div {
+        width: 100%;
+        max-width: 750px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .details-row > div > div {
+        width: 100%;
+        max-width: 750px;
+      }
+
+      .details-row > div > div > div:last-child {
+        word-wrap: break-word;
+        word-break: break-word;
+        white-space: normal;
+        overflow-wrap: break-word;
+        text-align: right;
+        direction: rtl;
+      }
+
+      #teamSessionsTable tbody td span {
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 20px;
+        display: inline-block;
+        min-width: 100px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      #teamSessionsTable tbody td:nth-child(6),
+      #teamSessionsTable tbody td:nth-child(8) {
+        font-weight: 600;
+        color: #0072ff;
+        font-size: 14.5px;
+      }
+
+      .sessions-container {
+        padding: 20px;
+        border-radius: 16px;
+        background: linear-gradient(145deg, #f9f9f9, #ffffff);
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+        margin-top: 20px;
+      }
+
+      #sessions-title {
+        text-align: right;
+        direction: rtl;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      #sessions-title span[dir="auto"] {
+        display: inline-block;
+        direction: ltr;
+        unicode-bidi: isolate;
+      }
+
+      .filter-panel {
+        padding: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+      }
+
+      .filter-panel h3 {
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 18px;
+      }
+
+      .filter-controls {
+        display: flex;
+        gap: 20px;
+        align-items: end;
+        flex-wrap: wrap;
+      }
+
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .filter-group label {
+        font-weight: 600;
+        color: #333;
+        font-size: 14px;
+      }
+
+      .filter-select {
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        min-width: 250px;
+        background: white;
+        transition: all 0.3s ease;
+      }
+
+      .filter-select:focus {
+        outline: none;
+        border-color: #0072ff;
+        box-shadow: 0 0 0 3px rgba(0, 114, 255, 0.1);
+      }
+
+      .filter-select:disabled {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        cursor: not-allowed;
+      }
+
+      .filter-button {
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #0072ff, #00c6ff);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 10px rgba(0, 114, 255, 0.3);
+      }
+
+      .filter-button:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 114, 255, 0.4);
+      }
+
+      .filter-button:disabled {
+        background: #6c757d;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      /* תיקון z-index לסיידבר */
+      .sidbar {
+        z-index: 1000 !important;
+        position: relative;
+      }
+
+      /* וידוא שהטקסט של התפריט הפעיל יהיה לבן */
+      .main-nav li.active span {
+        color: white !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="projects-continer">
+      <!-- Sidebar -->
+      <div class="sidbar wow fadeInRightBig">
+        <div class="inner-sidbar">
+          <div class="profile">
+            <img src="#" class="avatar-img" alt="" />
+            <h3>הי, <span id="menu-prof-name">משתמש</span> 👋</h3>
+            <span class="profile-arrow"
+              ><i class="fas fa-chevron-down"></i
+            ></span>
+            <div id="user-dropdown-menu" style="display: none">
+              <button id="edit-profile-btn" class="user-menu-btn">
+                ✏️ עריכת פרופיל
+              </button>
+              <button id="logout-btn" class="user-menu-btn">🚪 התנתק</button>
+            </div>
+          </div>
+          <img src="./images/logo.png" class="logo-sidebar" alt="" />
+          <div class="nav-continer">
+            <div class="main-nav">
+              <ul>
+                <li>
+                  <a href="projects.html" class="">
+                    <img
+                      src="./images/icons/proj-black.png"
+                      alt="פרויקטים"
+                      class="nav-icon"
+                    />
+                    <span>פרויקטים</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="clients.html" class="">
+                    <img
+                      src="./images/icons/customer-black.png"
+                      alt="לקוחות"
+                      class="nav-icon"
+                    />
+                    <span>לקוחות</span>
+                  </a>
+                </li>
+                <li class="active">
+                  <a href="stats.html">
+                    <img
+                      src="./images/icons/statistics and analytics-white.png"
+                      alt="דוחות"
+                      class="nav-icon"
+                    />
+                    <span>ניתוח ודוחות</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="labels.html" class="">
+                    <img
+                      src="./images/icons/lablels-black.png"
+                      alt="תיוגים"
+                      class="nav-icon"
+                    />
+                    <span>תיוגים</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="assistant.html" class="">
+                    <img
+                      src="./images/icons/aiassistant-black.png"
+                      alt="העוזר האישי"
+                      class="nav-icon"
+                    />
+                    <span>העוזר האישי</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="help-nav">
+              <ul>
+                <li>
+                  <a href="settings.html">
+                    <img
+                      src="./images/icons/settings-black.png"
+                      alt="הגדרות"
+                      class="nav-icon"
+                    />
+                    <span>הגדרות</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="help.html">
+                    <img
+                      src="./images/icons/help-black.png"
+                      alt="עזרה"
+                      class="nav-icon"
+                    />
+                    <span>עזרה</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- תוכן ראשי -->
+      <div class="content">
+        <div class="inner-content">
+          <!-- פירורי לחם -->
+          <nav class="breadcrumbs">
+            <a href="stats.html">ניתוח ודוחות</a>
+            <span class="separator">›</span>
+            <a href="TeamWorkTracking.html">מעקב עבודת צוות</a>
+            <span class="separator">›</span>
+            <span>סשנים של חברי הצוות</span>
+          </nav>
+
+          <!-- כותרת עמוד -->
+          <div class="stats-title">
+            <h1>סשנים של חברי הצוות</h1>
+            <p style="color: #666; margin-top: 10px">
+              צפיה בסשנים של איש צוות ספציפי בפרויקט נבחר
+            </p>
+          </div>
+
+          <!-- פאנל בחירת פרויקט ואיש צוות -->
+          <div class="filter-panel">
+            <h3>בחירת פרויקט ואיש צוות</h3>
+            <div class="filter-controls">
+              <div class="filter-group">
+                <label for="projectFilter"
+                  >פרויקט: <span style="color: red">*</span></label
+                >
+                <select id="projectFilter" class="filter-select" required>
+                  <option value="">בחר פרויקט</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label for="teamMemberFilter"
+                  >איש צוות: <span style="color: red">*</span></label
+                >
+                <select
+                  id="teamMemberFilter"
+                  class="filter-select"
+                  required
+                  disabled
+                >
+                  <option value="">בחר תחילה פרויקט</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <button id="load-sessions-btn" class="filter-button" disabled>
+                  <i class="fas fa-search" style="margin-left: 8px"></i>
+                  טען סשנים
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- תצוגת סשנים -->
+          <div
+            id="sessions-container"
+            class="sessions-container"
+            style="display: none"
+          >
+            <h3 id="sessions-title">סשנים</h3>
+            <table id="teamSessionsTable" class="display responsive nowrap">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>תאריך</th>
+                  <th>שעת התחלה</th>
+                  <th>שעת סיום</th>
+                  <th>תווית</th>
+                  <th>זמן עבודה</th>
+                  <th>תעריף</th>
+                  <th>שכר</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Rows will be populated by JavaScript -->
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th colspan="5" style="text-align: right">סה"כ:</th>
+                  <th id="total-worktime" style="text-align: center">
+                    00:00:00
+                  </th>
+                  <th></th>
+                  <th id="total-earnings" style="text-align: center">₪0.00</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- פופאפ עריכת פרטי משתמש -->
+    <div id="edit-user-form" class="popup-form" style="display: none">
+      <h2>✏️ עריכת פרטי משתמש</h2>
+      <form id="user-details-form">
+        <label>תמונה נוכחית:</label>
+        <div id="user-image-preview" style="margin-bottom: 10px">
+          <img
+            id="user-image-thumb"
+            src=""
+            alt="תמונה נוכחית"
+            style="
+              max-width: 120px;
+              max-height: 80px;
+              border-radius: 8px;
+              display: none;
+              box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+            "
+          />
+        </div>
+        <label for="userImageFile">בחר תמונה חדשה:</label>
+        <input
+          type="file"
+          id="userImageFile"
+          name="userImageFile"
+          accept="image/*"
+        />
+
+        <label>שם פרטי:</label>
+        <input type="text" id="user-firstname" required />
+
+        <label>שם משפחה:</label>
+        <input type="text" id="user-lastname" required />
+
+        <label>אימייל:</label>
+        <input
+          type="email"
+          id="user-email"
+          required
+          placeholder="example@example.com"
+        />
+
+        <label>סיסמה נוכחית:</label>
+        <input type="password" id="user-current-password" required />
+
+        <button type="submit" class="btn-submit">📄 שמור פרטים</button>
+        <button type="button" id="open-password-popup" class="btn-submit">
+          🔐 החלפת סיסמה
+        </button>
+      </form>
+    </div>
+
+    <!-- פופאפ שינוי סיסמה -->
+    <div id="change-password-form" class="popup-form" style="display: none">
+      <h2>🔐 שינוי סיסמה</h2>
+      <form id="user-password-form">
+        <label>סיסמה נוכחית:</label>
+        <input type="password" id="old-password" required />
+
+        <label>סיסמה חדשה:</label>
+        <input
+          type="password"
+          id="new-password"
+          required
+          minlength="8"
+          maxlength="30"
+          pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$"
+          placeholder="לפחות 8 תווים – אותיות ומספרים"
+        />
+
+        <button type="submit" class="btn-submit">🔁 שנה סיסמה</button>
+      </form>
+    </div>
+
+    <script src="js/wow.min.js"></script>
+    <script>
+      new WOW().init();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src="js/AjaxCall.js"></script>
+    <script src="js/sidebar-active.js"></script>
+    <script src="js/edit-user.js"></script>
+    <script src="js/project-unread-checker.js"></script>
+    <script src="js/TeamWorkSessions.js"></script>
+
+    <!-- כפתור צף לעוזר האישי -->
+    <button
+      class="floating-assistant-btn"
+      onclick="window.location.href='assistant.html'"
+      title="העוזר האישי שלך"
+    >
+      <img
+        src="./images/icons/aiassistant-white.png"
+        alt="העוזר האישי"
+        style="width: 24px; height: 24px"
+      />
+    </button>
+  </body>
+</html>
