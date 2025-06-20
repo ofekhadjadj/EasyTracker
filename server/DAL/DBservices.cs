@@ -2517,6 +2517,134 @@ finally
     }
 
 
+    //**** AdminPanel ******** AdminPanel ******** AdminPanel ******** AdminPanel ******** AdminPanel ******** AdminPanel ******** AdminPanel ****
+    public List<Dictionary<string, object>> GetAllUsersOverview()
+    {
+        SqlConnection con = connect("myProjDB");
+
+        SqlCommand cmd = CreateCommandWithStoredProcedureGeneral("sp_Admin_GetAllUsersOverview", con, new Dictionary<string, object>());
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            Dictionary<string, object> row = new Dictionary<string, object>();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                row[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+            }
+            result.Add(row);
+        }
+
+        reader.Close();
+        con.Close();
+        return result;
+    }
+
+    public List<Dictionary<string, object>> GetSystemSummary()
+    {
+        SqlConnection con = connect("myProjDB");
+
+        SqlCommand cmd = CreateCommandWithStoredProcedureGeneral("sp_Admin_GetSystemSummary", con, new Dictionary<string, object>());
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            Dictionary<string, object> row = new Dictionary<string, object>();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                row[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+            }
+            result.Add(row);
+        }
+
+        reader.Close();
+        con.Close();
+        return result;
+    }
+
+    public void ToggleUserActiveStatus(int userId)
+    {
+        SqlConnection con = connect("myProjDB");
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>()
+    {
+        { "@UserID", userId }
+    };
+
+        SqlCommand cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_ToggleUserActivation", con, paramDic);
+        cmd.ExecuteNonQuery();
+
+        con.Close();
+    }
+
+    public List<Dictionary<string, object>> GetTop5EarningUsers()
+    {
+        SqlConnection con = connect("myProjDB");
+
+        SqlCommand cmd = CreateCommandWithStoredProcedureGeneral("sp_Admin_GetTop5EarningUsers", con, new Dictionary<string, object>());
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            Dictionary<string, object> row = new Dictionary<string, object>();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                row[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+            }
+            result.Add(row);
+        }
+
+        reader.Close();
+        con.Close();
+        return result;
+    }
+
+    public List<Dictionary<string, object>> GetTop5ActiveUsers()
+    {
+        SqlConnection con = connect("myProjDB");
+
+        SqlCommand cmd = CreateCommandWithStoredProcedureGeneral("sp_Admin_GetTop5ActiveUsers", con, new Dictionary<string, object>());
+
+        List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            Dictionary<string, object> row = new Dictionary<string, object>();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                row[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+            }
+            result.Add(row);
+        }
+
+        reader.Close();
+        con.Close();
+        return result;
+    }
+
+    public int ResetUserPassword(int userId)
+    {
+        SqlConnection con = connect("myProjDB");
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>()
+    {
+        { "@UserID", userId }
+    };
+
+        SqlCommand cmd = CreateCommandWithStoredProcedureGeneral("sp_Admin_ResetPassword", con, paramDic);
+        int affectedRows = cmd.ExecuteNonQuery();
+
+        con.Close();
+        return affectedRows;
+    }
+
 
     //**** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ******** ChatMessage ****
 
