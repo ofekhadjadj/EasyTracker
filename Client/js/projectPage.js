@@ -5,10 +5,8 @@ console.log("User", CurrentUser);
 let table;
 const avatarImg = document.querySelector(".avatar-img");
 
-// משתנים גלובליים לניהול הצגה מדורגת של הטבלה
+// משתנים גלובליים לניהול נתוני סשנים
 let allSessionsData = []; // כל הסשנים המקוריים
-let displayedSessionsCount = 0; // כמה סשנים מוצגים כרגע
-const sessionsPerPage = 7; // כמה סשנים להציג בכל פעם
 
 // משתני זמן וסטופר
 let seconds = 0;
@@ -948,12 +946,62 @@ $(document).ready(function () {
   table = $("#sessionsTable").DataTable({
     responsive: true,
     language: {
-      url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/he.json",
+      searchPlaceholder: "חיפוש סשנים...",
+      search: "חיפוש:",
+      lengthMenu: "הצג _MENU_ סשנים",
+      info: "מציג _START_ עד _END_ מתוך _TOTAL_ סשנים",
+      infoEmpty: "מציג 0 עד 0 מתוך 0 סשנים",
+      infoFiltered: "(מסונן מתוך _MAX_ סשנים)",
+      paginate: {
+        first: "ראשון",
+        last: "אחרון",
+        next: "הבא",
+        previous: "קודם",
+      },
+      emptyTable: "אין סשנים זמינים בטבלה",
+      zeroRecords: "לא נמצאו רשומות תואמות",
     },
-    paging: false,
-    searching: false,
-    info: false,
-    ordering: false, // Disable DataTables' built-in ordering to use our custom sort
+    order: [[1, "desc"]], // Sort by date descending
+    columnDefs: [
+      {
+        targets: [2, 3], // Start time and end time columns
+        type: "time",
+      },
+      {
+        targets: [5, 6], // Work time and earnings columns
+        className: "text-center",
+      },
+      {
+        targets: [7, 8], // Buttons columns
+        orderable: false,
+      },
+      {
+        targets: 8, // Details control column
+        className: "details-control",
+        orderable: false,
+      },
+    ],
+    pageLength: 5,
+    lengthMenu: [5, 10, 25, 50, 100],
+  });
+
+  // Add event listener for details control (expanding/collapsing session details)
+  $("#sessionsTable tbody").on("click", "button.details-control", function () {
+    const tr = $(this).closest("tr");
+    const row = table.row(tr);
+
+    if (row.child.isShown()) {
+      row.child.hide();
+      tr.removeClass("shown");
+      $(this).html('<i class="fas fa-chevron-down"></i>');
+    } else {
+      const session = $(tr).data("session");
+      if (session) {
+        row.child(format(session)).show();
+        tr.addClass("shown");
+        $(this).html('<i class="fas fa-chevron-up"></i>');
+      }
+    }
   });
 
   // Export functionality
@@ -1530,21 +1578,7 @@ $(document).ready(function () {
     `;
   }
 
-  $("#sessionsTable tbody").on("click", "td .details-control", function () {
-    const tr = $(this).closest("tr");
-    const row = table.row(tr);
-    const session = $(tr).data("session"); // שליפת הסשן מהשורה
-
-    if (row.child.isShown()) {
-      row.child.hide();
-      $(this).html('<i class="fas fa-chevron-down"></i>');
-    } else {
-      row.child(format(session)).show();
-      $(this).html('<i class="fas fa-chevron-up"></i>');
-    }
-  });
-
-  // הקוד הישן של הכפתור הוסר - עכשיו משתמשים בטוגל
+  // הקוד הישן של האירועים הוסר - עכשיו משתמשים ב-DataTable events
 });
 
 function formatDateTime(isoString) {
@@ -1601,9 +1635,16 @@ function renderTableFromDB() {
 
     // שמירת כל הנתונים במשתנה גלובלי
     allSessionsData = response;
-    displayedSessionsCount = 0;
 
-    // חישוב סיכומים עבור כל הסשנים (לא משתנה)
+    // הוספת כל הסשנים לטבלה בבת אחת
+    allSessionsData.forEach((session) => {
+      addSessionRowToDataTable(session);
+    });
+
+    // Redraw the table
+    table.draw();
+
+    // חישוב סיכומים עבור כל הסשנים (מבוסס על כל הנתונים)
     let totalDurationSeconds = 0;
     let totalEarningsValue = 0;
 
@@ -1616,7 +1657,7 @@ function renderTableFromDB() {
       totalEarningsValue += parseFloat(earnings);
     });
 
-    // Update table footer with totals (מבוסס על כל הסשנים)
+    // Update table footer with totals (מבוסס על כל הסשנים - לא משנה כמה מוצגים)
     document.getElementById(
       "total-worktime"
     ).innerHTML = `<strong style="display: block; text-align: center">${formatSecondsToHHMMSS(
@@ -1635,15 +1676,9 @@ function renderTableFromDB() {
     updateOverallProgress();
 
     console.log(
-      "🎯 About to load first sessions - allSessionsData.length:",
+      "✅ All sessions loaded to DataTable - total sessions:",
       allSessionsData.length
     );
-
-    // הצגת הסשנים הראשונים
-    loadMoreSessions();
-
-    // הוספת או הסרת כפתור "טען עוד"
-    updateLoadMoreButton(); // נעדכן את בר ההתקדמות הכללי
 
     //הסרת סשן מהטבלה
     document
@@ -1779,11 +1814,11 @@ function renderTableFromDB() {
           allSessionsData = allSessionsData.filter(
             (session) => session.SessionID !== sessionIdToRemove
           );
-          displayedSessionsCount = Math.min(
-            displayedSessionsCount - 1,
-            allSessionsData.length
-          );
-          updateLoadMoreButton();
+          // displayedSessionsCount = Math.min(
+          //   displayedSessionsCount - 1,
+          //   allSessionsData.length
+          // );
+          // updateLoadMoreButton(); // הסרת הקריאה - עכשיו משתמשים ב-DataTable
         },
         () => {
           console.error("❌ שגיאה במחיקת הסשן מהשרת");
@@ -1821,42 +1856,10 @@ function renderTableFromDB() {
   }
 }
 
-// פונקציה להוספת עוד סשנים לטבלה
-function loadMoreSessions() {
-  console.log(
-    "📊 loadMoreSessions called - current displayed:",
-    displayedSessionsCount,
-    "total sessions:",
-    allSessionsData.length
-  );
+// פונקציה זו הוסרה - עכשיו משתמשים ב-DataTable pagination
 
-  const endIndex = Math.min(
-    displayedSessionsCount + sessionsPerPage,
-    allSessionsData.length
-  );
-
-  console.log(
-    "📊 Adding sessions from",
-    displayedSessionsCount,
-    "to",
-    endIndex
-  );
-
-  for (let i = displayedSessionsCount; i < endIndex; i++) {
-    const session = allSessionsData[i];
-    console.log(`➕ Adding session ${i + 1}:`, session.SessionID);
-    addSessionRowToTable(session);
-  }
-
-  displayedSessionsCount = endIndex;
-  console.log("📊 Updated displayedSessionsCount to:", displayedSessionsCount);
-
-  table.draw();
-  updateLoadMoreButton();
-}
-
-// פונקציה להוספת שורת סשן יחידה לטבלה
-function addSessionRowToTable(session) {
+// פונקציה להוספת שורת סשן יחידה לטבלת DataTable
+function addSessionRowToDataTable(session) {
   const rawDate = session.StartDate;
   const { time, formattedDate } = formatDateTime(rawDate);
 
@@ -1872,7 +1875,7 @@ function addSessionRowToTable(session) {
 
   // Enhanced label style with better visual presentation
   const labelHtml = `<span style="width: auto; height: auto; background-color: ${
-    session.LabelColor ?? "#RRGGBBAA"
+    session.LabelColor ?? "#e0e0e0"
   }; color: black; display: inline-block; padding: 6px 12px; border-radius: 20px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">${
     session.LabelName ?? "-"
   }</span>`;
@@ -1885,7 +1888,7 @@ function addSessionRowToTable(session) {
     session.HourlyRate, // תעריף
     formatSecondsToHHMMSS(session.DurationSeconds), // משך זמן
     earnings, // שכר
-    '<button class="edit-btn"><i class="fas fa-edit"></i></button><button id="dlt-btn-session" class="delete-btn"><i class="fas fa-trash-alt"></i></button>', // כפתורים
+    '<button class="edit-btn"><i class="fas fa-edit"></i></button><button class="delete-btn"><i class="fas fa-trash-alt"></i></button>', // כפתורים
     '<button class="details-control"><i class="fas fa-chevron-down"></i></button>', // פרטים נוספים
   ];
 
@@ -1897,105 +1900,7 @@ function addSessionRowToTable(session) {
   $(rowNode).attr("data-session-id", session.SessionID); // שמירת ה-ID כשדה data
 }
 
-// פונקציה לעדכון כפתור "טען עוד"
-function updateLoadMoreButton() {
-  console.log(
-    "🔄 updateLoadMoreButton called - displayed:",
-    displayedSessionsCount,
-    "total:",
-    allSessionsData.length
-  );
-
-  let loadMoreBtn = document.getElementById("load-more-sessions-btn");
-
-  // אם יש עוד סשנים להציג
-  if (displayedSessionsCount < allSessionsData.length) {
-    console.log("✅ יש עוד סשנים להציג - יוצר/מציג כפתור");
-
-    if (!loadMoreBtn) {
-      console.log("🆕 יוצר כפתור חדש");
-      // יצירת הכפתור אם הוא לא קיים
-      loadMoreBtn = document.createElement("button");
-      loadMoreBtn.id = "load-more-sessions-btn";
-      loadMoreBtn.className = "export-button";
-      loadMoreBtn.style.cssText = `
-        background: linear-gradient(135deg, #0072ff, #00c6ff);
-        color: white;
-        border: none;
-        padding: 8px 14px;
-        border-radius: 6px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0, 114, 255, 0.25);
-        display: inline-block;
-        white-space: nowrap;
-      `;
-
-      loadMoreBtn.addEventListener("click", function () {
-        console.log("🔥 כפתור טען עוד נלחץ!");
-        loadMoreSessions();
-      });
-      loadMoreBtn.addEventListener("mouseenter", function () {
-        this.style.transform = "translateY(-2px)";
-        this.style.boxShadow = "0 4px 15px rgba(0, 114, 255, 0.4)";
-      });
-      loadMoreBtn.addEventListener("mouseleave", function () {
-        this.style.transform = "translateY(0)";
-        this.style.boxShadow = "0 2px 10px rgba(0, 114, 255, 0.3)";
-      });
-
-      // הוספת הכפתור לשורת הסיכום של הטבלה, בתא השמאלי ביותר
-      const tableFooter = document.querySelector("#sessionsTable tfoot tr");
-      const lastCell = tableFooter
-        ? tableFooter.children[tableFooter.children.length - 1]
-        : null; // התא השמאלי ביותר
-
-      console.log("📍 tableFooter:", tableFooter);
-      console.log("📍 lastCell:", lastCell);
-      console.log(
-        "📍 tableFooter.children.length:",
-        tableFooter ? tableFooter.children.length : 0
-      );
-
-      if (lastCell) {
-        // הכנס את הכפתור לתוך התא השמאלי ביותר
-        lastCell.appendChild(loadMoreBtn);
-        lastCell.style.textAlign = "center";
-        lastCell.style.verticalAlign = "middle";
-        console.log("✅ כפתור נוסף בהצלחה לתא השמאלי של שורת הסיכום");
-      } else {
-        console.error("❌ לא מצאתי את התא השמאלי בטבלה");
-        // נסה לחפש מקום אחר
-        const tableElement = document.getElementById("sessionsTable");
-        if (tableElement) {
-          tableElement.insertAdjacentElement("afterend", loadMoreBtn);
-          console.log("🔄 כפתור נוסף אחרי הטבלה ישירות");
-        }
-      }
-    }
-
-    // עדכון הטקסט של הכפתור
-    const remainingSessions = allSessionsData.length - displayedSessionsCount;
-    const nextBatch = Math.min(sessionsPerPage, remainingSessions);
-    loadMoreBtn.innerHTML = `
-      <i class="fas fa-plus-circle" style="margin-left: 8px;"></i>
-      טען עוד ${nextBatch} סשנים (נותרו ${remainingSessions})
-    `;
-    loadMoreBtn.style.display = "block";
-    console.log(
-      "📝 עדכון טקסט הכפתור:",
-      `טען עוד ${nextBatch} סשנים (נותרו ${remainingSessions})`
-    );
-  } else {
-    console.log("❌ אין עוד סשנים להציג - מסתיר כפתור");
-    // הסתרת הכפתור אם אין עוד סשנים
-    if (loadMoreBtn) {
-      loadMoreBtn.style.display = "none";
-    }
-  }
-}
+// פונקציה זו הוסרה - עכשיו משתמשים ב-DataTable pagination
 
 // פתיחת פופאפ עריכת סשן
 $(document).on("click", ".edit-btn, .edit-btn i", function () {

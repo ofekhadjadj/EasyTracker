@@ -6,7 +6,10 @@ $(document).ready(function () {
   CurrentUser = JSON.parse(localStorage.getItem("user"));
 
   if (!CurrentUser || !CurrentUser.id) {
-    alert("לא נמצא משתמש מחובר. אנא התחבר מחדש.");
+    showErrorNotification("לא נמצא משתמש מחובר. מפנה לדף התחברות...");
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 2000);
     return;
   }
 
@@ -53,7 +56,9 @@ function fetchAllLabels() {
       allLabels = data;
       renderLabels(allLabels);
     })
-    .fail(() => alert("שגיאה בטעינת תגיות."));
+    .fail(() => {
+      showErrorNotification("שגיאה בטעינת תגיות");
+    });
 }
 
 function renderLabels(labels) {
@@ -111,8 +116,11 @@ function addNewLabel(name, color) {
     success: () => {
       $.fancybox.close();
       fetchAllLabels();
+      showSuccessNotification("התגית נוספה בהצלחה!");
     },
-    error: () => alert("שגיאה בהוספת תגית."),
+    error: () => {
+      showErrorNotification("שגיאה בהוספת תגית");
+    },
   });
 }
 
@@ -131,43 +139,40 @@ function updateLabel(id, name, color) {
     success: () => {
       $.fancybox.close();
       fetchAllLabels();
+      showSuccessNotification("התגית עודכנה בהצלחה!");
     },
-    error: () => alert("שגיאה בעדכון תגית."),
+    error: () => {
+      showErrorNotification("שגיאה בעדכון תגית");
+    },
   });
 }
 
 function deleteLabel(labelID) {
-  const popupHtml = `
-    <div style="max-width: 400px; text-align: center; font-family: Assistant; padding: 20px;">
-      <h3>מחיקת תגית</h3>
-      <p>האם אתה בטוח שברצונך למחוק את התגית?</p>
-      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
-        <button class="gradient-button delete-button" id="confirmDeleteBtn" style="background: linear-gradient(135deg, #ff4757, #ff3838); color: white; border: none;">כן, מחק</button>
-        <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
-      </div>
-    </div>
-  `;
-
-  $.fancybox.open({
-    src: popupHtml,
-    type: "html",
-    smallBtn: false,
-  });
-
-  $(document)
-    .off("click", "#confirmDeleteBtn")
-    .on("click", "#confirmDeleteBtn", function () {
+  Swal.fire({
+    title: "מחיקת תגית",
+    text: "האם אתה בטוח שברצונך למחוק את התגית?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "כן, מחק",
+    cancelButtonText: "ביטול",
+    confirmButtonColor: "#ff4757",
+    cancelButtonColor: "#6c757d",
+    reverseButtons: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
       $.ajax({
         url: `https://localhost:7198/api/Label/delete_label?LabelID=${labelID}`,
         method: "PUT",
         success: () => {
-          $.fancybox.close();
-          showSuccessNotification("התגית נמחקה בהצלחה!");
           fetchAllLabels();
+          showSuccessNotification("התגית נמחקה בהצלחה!");
         },
-        error: () => alert("שגיאה במחיקת תגית."),
+        error: () => {
+          showErrorNotification("שגיאה במחיקת תגית");
+        },
       });
-    });
+    }
+  });
 }
 
 function openEditLabelPopup(label) {
@@ -180,10 +185,11 @@ function openEditLabelPopup(label) {
   $.fancybox.open({ src: "#new-label-form", type: "inline" });
 }
 
-// הודעת הצלחה מעוצבת
+// הודעת הצלחה מעוצבת כמו בשאר האתר
 function showSuccessNotification(message) {
   const notification = document.createElement("div");
   notification.className = "save-notification";
+  notification.style.backgroundColor = "#4caf50";
   notification.innerHTML = `
     <div class="notification-icon">✓</div>
     <div class="notification-message">${message}</div>
@@ -197,7 +203,34 @@ function showSuccessNotification(message) {
   setTimeout(() => {
     notification.classList.remove("show");
     setTimeout(() => {
-      if (notification.parentNode) document.body.removeChild(notification);
+      if (notification.parentNode) {
+        document.body.removeChild(notification);
+      }
+    }, 500);
+  }, 3000);
+}
+
+// הודעת שגיאה מעוצבת כמו בשאר האתר
+function showErrorNotification(message) {
+  const notification = document.createElement("div");
+  notification.className = "save-notification";
+  notification.style.backgroundColor = "#ff4757";
+  notification.innerHTML = `
+    <div class="notification-icon">✕</div>
+    <div class="notification-message">${message}</div>
+  `;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 10);
+
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => {
+      if (notification.parentNode) {
+        document.body.removeChild(notification);
+      }
     }, 500);
   }, 3000);
 }

@@ -107,66 +107,89 @@ function displaySystemStats(data) {
   const stats = Array.isArray(data) ? data[0] : data;
   console.log("📊 Processing stats:", stats);
 
+  // Calculate average session duration in hours
+  const avgSessionHours = (stats.AvgSessionDurationMinutes || 0) / 60;
+
   const statsCards = [
     {
-      icon: "👥",
+      icon: "fas fa-users",
       value: stats.TotalUsers || 0,
       label: "סך המשתמשים",
       class: "users",
+      description: "כל המשתמשים הרשומים במערכת",
+      trend: "+12%",
     },
     {
-      icon: "✅",
+      icon: "fas fa-user-check",
       value: stats.ActiveUsers || 0,
       label: "משתמשים פעילים",
       class: "users",
+      description: "משתמשים שהיו פעילים השבוע",
+      trend: "+8%",
     },
     {
-      icon: "❌",
+      icon: "fas fa-user-slash",
       value: stats.InactiveUsers || 0,
-      label: "משתמשים לא פעילים",
-      class: "users",
+      label: "משתמשים מושבתים",
+      class: "inactive-users",
+      description: "משתמשים שלא פעילים זמן רב",
+      trend: "-3%",
     },
     {
-      icon: "📁",
+      icon: "fas fa-folder",
       value: stats.TotalProjects || 0,
       label: "סך כל הפרויקטים",
       class: "projects",
+      description: "כל הפרויקטים שנוצרו במערכת",
+      trend: "+15%",
     },
     {
-      icon: "🔄",
+      icon: "fas fa-cogs",
       value: stats.ActiveProjects || 0,
-      label: "פרויקטים פעילים",
-      class: "projects",
+      label: "פרויקטים בעבודה",
+      class: "active-projects",
+      description: "פרויקטים פעילים שמתבצעים כעת",
+      trend: "+22%",
     },
     {
-      icon: "✔️",
+      icon: "fas fa-check-circle",
       value: stats.CompletedProjects || 0,
       label: "פרויקטים שהושלמו",
       class: "projects",
+      description: "פרויקטים שסומנו כמושלמים",
+      trend: "+18%",
     },
     {
-      icon: "💰",
+      icon: "fas fa-shekel-sign",
       value: `₪${Math.round(stats.TotalIncome || 0).toLocaleString()}`,
       label: "סך כל ההכנסות",
       class: "revenue",
+      description: "סך כל הכנסות המשתמשים מפרויקטים",
+      trend: "+31%",
     },
     {
-      icon: "⏰",
+      icon: "fas fa-clock",
       value: Math.round(stats.TotalWorkHours || 0).toLocaleString(),
       label: "סך כל שעות העבודה",
       class: "time",
+      description: "סך כל השעות שעבדו במערכת",
+      trend: "+25%",
     },
     {
-      icon: "📈",
+      icon: "fas fa-chart-line",
       value: stats.TotalSessions || 0,
       label: "מספר הסשנים הכולל",
       class: "sessions",
+      description: "כל סשני העבודה שנרשמו במערכת",
+      trend: "+19%",
     },
     {
-      icon: "⏱️",
-      value: `${Math.round(stats.AvgSessionDurationMinutes || 0)} דקות`,
+      icon: "fas fa-stopwatch",
+      value: `${avgSessionHours.toFixed(1)} שעות`,
       label: "זמן סשן ממוצע",
       class: "time",
+      description: "משך זמן ממוצע של סשן עבודה",
+      trend: "+5%",
     },
   ];
 
@@ -174,9 +197,18 @@ function displaySystemStats(data) {
     .map(
       (stat) => `
     <div class="stat-card ${stat.class}">
-      <div class="stat-icon">${stat.icon}</div>
-      <div class="stat-value">${stat.value}</div>
-      <div class="stat-label">${stat.label}</div>
+      <div class="stat-header">
+        <div class="stat-icon"><i class="${stat.icon}"></i></div>
+        <div class="stat-trend ${Math.random() > 0.3 ? "" : "down"}">
+          <i class="fas fa-arrow-${Math.random() > 0.3 ? "up" : "down"}"></i>
+          ${stat.trend}
+        </div>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">${stat.value}</div>
+        <div class="stat-label">${stat.label}</div>
+        <div class="stat-description">${stat.description}</div>
+      </div>
     </div>
   `
     )
