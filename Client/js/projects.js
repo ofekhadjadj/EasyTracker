@@ -105,7 +105,8 @@ $(document).ready(function () {
   // שאר הסינון יבוצע ב-successCB כשהנתונים יגיעו מהשרת
 
   // פתיחת טופס יצירה
-  $('a[href="#new-project-form"]').on("click", function () {
+  $('a[href="#new-project-form"]').on("click", function (e) {
+    e.preventDefault();
     $("#project-form").removeData("projectid").removeData("image")[0].reset();
     $("#project-image-thumb").hide();
     $("#new-project-form h2").text("📝 יצירת פרויקט חדש");
@@ -325,6 +326,17 @@ function populateClientDropdown(clients) {
       `<option value="${client.clientID}">${client.companyName}</option>`
     );
   });
+  clientDropdown.append(
+    '<option value="add-new-client" style="color: #0072ff; font-weight: bold;">➕ הוסף לקוח חדש</option>'
+  );
+
+  // הוספת event listener לטיפול בבחירת "הוסף לקוח חדש"
+  clientDropdown.off("change.addClient").on("change.addClient", function () {
+    if ($(this).val() === "add-new-client") {
+      openNewClientForm();
+      $(this).val(""); // איפוס הבחירה
+    }
+  });
 }
 
 function PushInfoToProjectDone(ProjArray) {
@@ -351,4 +363,111 @@ function filterAndRenderActiveProjects() {
     .slice(0, -1)
     .filter((p) => !p.isDone && !p.IsDone);
   renderProjects(filtered);
+}
+
+// פונקציות לטיפול בהוספת לקוח חדש
+function openNewClientForm() {
+  // איפוס הטופס
+  $("#client-form-projects")[0].reset();
+  $("#client-image-thumb-projects").hide();
+
+  // הוספת event listener לטופס
+  $("#client-form-projects")
+    .off("submit")
+    .on("submit", handleCreateClientFromProjects);
+
+  // פתיחת הפופ-אפ
+  $.fancybox.open({
+    src: "#new-client-form-projects",
+    type: "inline",
+    beforeClose: function () {
+      // איפוס הבחירה ב-dropdown של הלקוח
+      $("#clientId").val("");
+    },
+  });
+}
+
+function handleCreateClientFromProjects(e) {
+  e.preventDefault();
+  const files = $("#clientImageFile-projects")[0].files;
+  if (files.length > 0) {
+    const formData = new FormData();
+    formData.append("files", files[0]);
+    $.ajax({
+      url: "https://localhost:7198/api/Upload",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (paths) {
+        createClientFromProjects(paths[0]);
+      },
+      error: function () {
+        alert("שגיאה בהעלאת התמונה.");
+      },
+    });
+  } else {
+    createClientFromProjects(null);
+  }
+}
+
+function createClientFromProjects(imagePath) {
+  const newClient = {
+    userID: CurrentUser.id,
+    companyName: $("#companyName-projects").val().trim(),
+    contactPerson: $("#contactPerson-projects").val().trim(),
+    email: $("#email-projects").val().trim(),
+    contactPersonPhone: $("#contactPersonPhone-projects").val().trim(),
+    officePhone: $("#officePhone-projects").val().trim(),
+    image: imagePath || "./images/def/client-def.jpg",
+  };
+
+  $.ajax({
+    url: "https://localhost:7198/api/Client/Add%20Client",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify(newClient),
+    success: function (response) {
+      showSuccessMessage("הלקוח נוסף בהצלחה!");
+      $.fancybox.close();
+
+      // רענון רשימת הלקוחות ובחירה אוטומטית של הלקוח החדש
+      loadClients();
+
+      // המתנה קצרה לטעינת הלקוח החדש ואז בחירה שלו
+      setTimeout(() => {
+        // מציאת הלקוח החדש לפי שם החברה
+        const newClientName = newClient.companyName;
+        $("#clientId option").each(function () {
+          if ($(this).text() === newClientName) {
+            $("#clientId").val($(this).val());
+            return false; // יציאה מהלולאה
+          }
+        });
+      }, 1000);
+    },
+    error: function (xhr, status, errorThrown) {
+      console.error("Add Client error:", status, errorThrown, xhr.responseText);
+      alert("אירעה שגיאה בהוספת הלקוח:\n" + xhr.responseText);
+    },
+  });
+}
+
+function showSuccessMessage(message) {
+  // יצירת הודעת הצלחה זמנית
+  const notification = $(`
+    <div class="save-notification show" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background-color: #4CAF50; color: white; padding: 15px 25px; border-radius: 8px; z-index: 10000; font-family: 'Assistant', sans-serif;">
+      <i class="fas fa-check-circle" style="margin-left: 8px;"></i>
+      ${message}
+    </div>
+  `);
+
+  $("body").append(notification);
+
+  // הסרת ההודעה אחרי 3 שניות
+  setTimeout(() => {
+    notification.fadeOut(500, function () {
+      $(this).remove();
+    });
+  }, 3000);
 }

@@ -17,6 +17,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
     />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/admin-mode.js"></script>
   </head>
   <body>
@@ -108,16 +109,6 @@
             <div class="help-nav">
               <ul>
                 <li>
-                  <a href="settings.html">
-                    <img
-                      src="./images/icons/settings-black.png"
-                      alt="הגדרות"
-                      class="nav-icon"
-                    />
-                    <span>הגדרות</span>
-                  </a>
-                </li>
-                <li>
                   <a href="help.html">
                     <img
                       src="./images/icons/help-black.png"
@@ -149,6 +140,33 @@
               <div class="loading-spinner">
                 <i class="fas fa-spinner fa-spin"></i>
                 <span>טוען נתונים...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- גרף מצטרפים -->
+          <div class="chart-section">
+            <h2>מגמת הצטרפות משתמשים</h2>
+            <div class="chart-container">
+              <div class="chart-controls">
+                <label for="period-select">בחר תקופה:</label>
+                <select id="period-select">
+                  <option value="week">שבוע אחרון</option>
+                  <option value="month" selected>חודש אחרון</option>
+                  <option value="year">שנה אחרונה</option>
+                </select>
+                <button id="refresh-chart-btn" class="refresh-btn">
+                  <i class="fas fa-sync-alt"></i> רענן
+                </button>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="registrations-chart"></canvas>
+                <div class="chart-loading" id="chart-loading">
+                  <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>טוען נתוני גרף...</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -1020,6 +1020,148 @@
   select.force-dropdown-down option {
     direction: rtl;
   }
+
+  /* עיצוב בוחר הצבעים המותאם אישית */
+  .color-picker-container {
+    margin-top: 8px;
+  }
+
+  .color-palette {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 8px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .color-option {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    position: relative;
+    margin: auto;
+  }
+
+  .color-option:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .color-option.selected {
+    border-color: #0072ff;
+    box-shadow: 0 0 0 2px #0072ff, 0 4px 8px rgba(0, 114, 255, 0.3);
+    transform: scale(1.1);
+  }
+
+  .color-option.custom-color {
+    background: linear-gradient(
+      45deg,
+      #ff6b6b 25%,
+      #4ecdc4 25%,
+      #4ecdc4 50%,
+      #45b7d1 50%,
+      #45b7d1 75%,
+      #96ceb4 75%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .color-option.custom-color:hover {
+    background: linear-gradient(
+      45deg,
+      #ff5252 25%,
+      #26c6da 25%,
+      #26c6da 50%,
+      #2196f3 50%,
+      #2196f3 75%,
+      #66bb6a 75%
+    );
+  }
+
+  /* עיצוב תצוגה מקדימה של התגית */
+  .label-preview-container {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .label-preview-container label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .label-preview {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 25px;
+    background-color: #6699cc;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    min-width: 120px;
+    max-width: 250px;
+    text-align: center;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+  }
+
+  .label-preview::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0.1)
+    );
+    border-radius: 28px;
+    z-index: -1;
+  }
+
+  #preview-text-project {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* עיצוב בוחר צבעים מותאם אישית לפופ אפ */
+  #custom-color-picker-project {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 300px !important;
+    height: 300px !important;
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+    z-index: 99999 !important;
+  }
 </style>
 
   </head>
@@ -1095,16 +1237,6 @@
             <div class="help-nav">
               <ul>
                 <li>
-                  <a href="settings.html">
-                    <img
-                      src="./images/icons/settings-black.png"
-                      alt="הגדרות"
-                      class="nav-icon"
-                    />
-                    <span>הגדרות</span>
-                  </a>
-                </li>
-                <li>
                   <a href="help.html">
                     <img
                       src="./images/icons/help-black.png"
@@ -1127,7 +1259,7 @@
                   
                   <nav class="breadcrumbs">
                     <a href="./projects.html">פרויקטים</a>
-                    <span>&gt;</span>
+                    <span class="separator"> › </span>
                     <span id="breadcrumbsProjName">פיתוח אתר אינטרנט - מכללת רופין</span>
                   </nav>
 
@@ -1417,6 +1549,7 @@
                 <div class="custom-select-wrapper">
                   <select id="edit-label-id" class="force-dropdown-down" size="1" style="width: 100%; padding: 12px; font-size: 15px; border-radius: 8px; border: 1px solid #ddd; background-color: white; cursor: pointer; box-sizing: border-box; transition: border-color 0.3s; display: block;">
                     <option value="">בחר תווית</option>
+                    <option value="add-new-label" style="color: #0072ff; font-weight: bold;">➕ הוסף תגית חדשה</option>
                   </select>
                 </div>
               </div>
@@ -1468,6 +1601,7 @@
                 <div class="custom-select-wrapper">
                   <select id="manual-label-id" class="force-dropdown-down" size="1" style="width: 100%; padding: 12px; font-size: 15px; border-radius: 8px; border: 1px solid #ddd; background-color: white; cursor: pointer; box-sizing: border-box; transition: border-color 0.3s; display: block;">
                     <option value="">בחר תווית</option>
+                    <option value="add-new-label" style="color: #0072ff; font-weight: bold;">➕ הוסף תגית חדשה</option>
                   </select>
                 </div>
               </div>
@@ -1576,6 +1710,7 @@
     <div class="custom-select-wrapper">
       <select id="session-label" class="force-dropdown-down" size="1" style="width: 100%; padding: 12px; font-size: 15px; border-radius: 8px; border: 1px solid #ddd; background-color: white; cursor: pointer; box-sizing: border-box; transition: border-color 0.3s; display: block;">
         <option value="">בחר תווית</option>
+        <option value="add-new-label" style="color: #0072ff; font-weight: bold;">➕ הוסף תגית חדשה</option>
         <!-- Options will be populated dynamically -->
       </select>
     </div>
@@ -1855,6 +1990,174 @@
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- פופ-אפ הוספת תגית חדשה -->
+    <div id="new-label-form-project" class="popup-form" style="display: none;">
+      <h2>➕ תגית חדשה</h2>
+      <form id="label-form-project">
+        <label for="labelName-project">שם תגית:</label>
+        <input type="text" id="labelName-project" name="labelName" required />
+
+        <label>בחר צבע:</label>
+        <div class="color-picker-container">
+          <div class="color-palette">
+            <!-- שורה ראשונה -->
+            <div
+              class="color-option"
+              data-color="#6699CC"
+              style="background-color: #6699cc"
+              title="כחול בהיר"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#FF6B6B"
+              style="background-color: #ff6b6b"
+              title="אדום"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#4ECDC4"
+              style="background-color: #4ecdc4"
+              title="טורקיז"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#45B7D1"
+              style="background-color: #45b7d1"
+              title="כחול"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#96CEB4"
+              style="background-color: #96ceb4"
+              title="ירוק בהיר"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#FECA57"
+              style="background-color: #feca57"
+              title="צהוב"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#FF9FF3"
+              style="background-color: #ff9ff3"
+              title="ורוד"
+            ></div>
+
+            <!-- שורה שנייה -->
+            <div
+              class="color-option"
+              data-color="#A8E6CF"
+              style="background-color: #a8e6cf"
+              title="ירוק רך"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#FFB3BA"
+              style="background-color: #ffb3ba"
+              title="ורוד בהיר"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#DDA0DD"
+              style="background-color: #dda0dd"
+              title="סגול בהיר"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#98D8C8"
+              style="background-color: #98d8c8"
+              title="ירוק ים"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#F7DC6F"
+              style="background-color: #f7dc6f"
+              title="צהוב בהיר"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#BB8FCE"
+              style="background-color: #bb8fce"
+              title="סגול"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#85C1E9"
+              style="background-color: #85c1e9"
+              title="כחול רך"
+            ></div>
+
+            <!-- שורה שלישית -->
+            <div
+              class="color-option custom-color"
+              id="custom-color-btn-project"
+              title="צבע מותאם אישית"
+            >
+              <i class="fas fa-palette"></i>
+            </div>
+            <div
+              class="color-option"
+              data-color="#BFBFBF"
+              style="background-color: #bfbfbf"
+              title="אפור"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#FF8A80"
+              style="background-color: #ff8a80"
+              title="אדום בהיר"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#8BC34A"
+              style="background-color: #8bc34a"
+              title="ירוק חי"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#795548"
+              style="background-color: #795548"
+              title="חום"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#607D8B"
+              style="background-color: #607d8b"
+              title="כחול אפור"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#E91E63"
+              style="background-color: #e91e63"
+              title="ורוד עז"
+            ></div>
+          </div>
+        </div>
+
+        <!-- תצוגה מקדימה של התגית -->
+        <div class="label-preview-container">
+          <label>תצוגה מקדימה:</label>
+          <div class="label-preview" id="label-preview-project">
+            <span id="preview-text-project">תגית חדשה</span>
+          </div>
+        </div>
+
+        <!-- שדה צבע נסתר לשמירת הערך -->
+        <input
+          type="hidden"
+          id="labelColor-project"
+          name="labelColor"
+          value="#6699CC"
+        />
+
+        <!-- input צבע נסתר לצבע מותאם אישית -->
+        <input type="color" id="custom-color-picker-project" style="display: none" />
+
+        <button type="submit" class="btn-submit">📤 שמור תגית</button>
+      </form>
     </div>
 
     <script src="js/admin-mode.js"></script>

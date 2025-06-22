@@ -75,6 +75,9 @@ $(document).ready(function () {
     CurrentUser.image || "./images/def/user-def.png"
   );
 
+  // עדכון פירורי לחם
+  updateBreadcrumbs();
+
   // Load project team avatars
   loadProjectTeam(CurrentProject.ProjectID, CurrentUser.id);
 
@@ -613,6 +616,38 @@ window.addEventListener("beforeunload", function () {
   // Final update of unread badges before leaving
   updateUnreadBadges();
 });
+
+// פונקציה לעדכון פירורי לחם
+function updateBreadcrumbs() {
+  const breadcrumbElement = document.getElementById("breadcrumb-project-name");
+  const breadcrumbLink = document.getElementById("breadcrumb-project-link");
+
+  if (breadcrumbElement && CurrentProject) {
+    const projectName = CurrentProject.ProjectName || "פרויקט";
+    const clientName = CurrentProject.CompanyName || "";
+    const breadcrumbText = clientName
+      ? `${projectName} - ${clientName}`
+      : projectName;
+
+    breadcrumbElement.textContent = breadcrumbText;
+
+    // הוספת event listener לקישור הפרויקט
+    if (breadcrumbLink) {
+      // הסרת font-weight bold מהקישור ומהspan בתוכו
+      breadcrumbLink.style.fontWeight = "normal";
+      breadcrumbLink.style.color = "#0072ff";
+      breadcrumbElement.style.fontWeight = "normal";
+      breadcrumbElement.style.color = "#0072ff";
+
+      breadcrumbLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        // שמירת הפרויקט הנוכחי ב-localStorage ומעבר לעמוד הפרויקט
+        localStorage.setItem("CurrentProject", JSON.stringify(CurrentProject));
+        window.location.href = "projectPage.html";
+      });
+    }
+  }
+}
 
 // Export functions for external use if needed
 window.chatFirebase = {

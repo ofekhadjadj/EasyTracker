@@ -12,10 +12,23 @@ namespace EasyTracker.Controllers
 
         // POST api/<LabelController>
         [HttpPost("addNewLabel")]
-        public int PostNewLabel([FromBody] Label label)
+        public IActionResult PostNewLabel([FromBody] Label label)
         {
-            return label.InsertNewLabel();
+            try
+            {
+                int result = label.InsertNewLabel();
+
+                if (result == -1)
+                    return Conflict("❌ תגית בשם זה כבר קיימת.");
+
+                return Ok(new { LabelID = result });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "שגיאת שרת: " + ex.Message);
+            }
         }
+
 
         [HttpPut("delete_label")]
         public IActionResult DeleteLabel([FromQuery] int LabelID)
@@ -46,10 +59,23 @@ namespace EasyTracker.Controllers
         public IActionResult UpdateLabel([FromBody] Label label)
         {
             Label l = new Label();
-            int rowsAffected = l.UpdateLabel(label);
+            try
+            {
+                int rowsAffected = l.UpdateLabel(label);
+                return Ok(rowsAffected);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("תגית בשם זה כבר קיימת"))
+                {
+                    return Conflict(ex.Message); // 409 - כפילות
+                }
 
-            return Ok(rowsAffected);
+                return StatusCode(500, "שגיאה בשרת: " + ex.Message); // כל שגיאה אחרת
+            }
         }
+
+
 
 
 

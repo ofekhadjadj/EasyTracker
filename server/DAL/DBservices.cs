@@ -1291,49 +1291,53 @@ finally
     //
     public int InsertNewLabel(Label label)
     {
-
         SqlConnection con;
         SqlCommand cmd;
 
         try
         {
-            con = connect("myProjDB"); // create the connection
+            con = connect("myProjDB"); // יצירת חיבור למסד
         }
         catch (Exception ex)
         {
-            // write to log
-            throw (ex);
+            throw ex;
         }
 
-        Dictionary<string, object> paramDic = new Dictionary<string, object>();
-        paramDic.Add("@LabelName", label.LabelName);
-        paramDic.Add("@LabelColor", label.LabelColor);
-        paramDic.Add("@UserID", label.UserID);
+        Dictionary<string, object> paramDic = new Dictionary<string, object>
+    {
+        { "@LabelName", label.LabelName },
+        { "@LabelColor", label.LabelColor },
+        { "@UserID", label.UserID }
+    };
 
-
-        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddLabel", con, paramDic);          // create the command
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_AddLabel", con, paramDic);
 
         try
         {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
+            SqlDataReader reader = cmd.ExecuteReader();
+            int result = -2; // ערך ברירת מחדל
+
+            if (reader.Read())
+            {
+                result = Convert.ToInt32(reader["LabelID"]);
+            }
+
+            reader.Close(); // תמיד טוב לסגור את ה-Reader
+            return result;
         }
         catch (Exception ex)
         {
-            // write to log
-            throw (ex);
+            throw ex;
         }
-
         finally
         {
             if (con != null)
             {
-                // close the db connection
                 con.Close();
             }
         }
-
     }
+
 
     //--------------------------------------------------------------------------------------------------
     // This method update label IsArchived in Labels table 
@@ -1568,18 +1572,16 @@ finally
     //--------------------------------------------------------------------------------------------------
     public int UpdateLabel(Label label)
     {
-
         SqlConnection con;
         SqlCommand cmd;
 
         try
         {
-            con = connect("myProjDB"); // create the connection
+            con = connect("myProjDB"); // פתיחת חיבור
         }
         catch (Exception ex)
         {
-            // write to log
-            throw (ex);
+            throw ex;
         }
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
@@ -1587,30 +1589,29 @@ finally
         paramDic.Add("@LabelName", label.LabelName);
         paramDic.Add("@LabelColor", label.LabelColor);
 
-        //paramDic.Add("@Name", user.Name);
-
-        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateLabel", con, paramDic);          // create the command
+        cmd = CreateCommandWithStoredProcedureGeneral("sp_ET_UpdateLabel", con, paramDic);
 
         try
         {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            int numEffected = cmd.ExecuteNonQuery();
             return numEffected;
         }
-        catch (Exception ex)
+        catch (SqlException ex)
         {
-            // write to log
-            throw (ex);
+            if (ex.Number == 50001)
+            {
+                // זריקה של שגיאה מותאמת שתיתפס בקונטרולר
+                throw new Exception("תגית בשם זה כבר קיימת.");
+            }
+            throw; // כל שגיאה אחרת
         }
-
         finally
         {
             if (con != null)
             {
-                // close the db connection
-                con.Close();
+                con.Close(); // סגירת חיבור
             }
         }
-
     }
 
 

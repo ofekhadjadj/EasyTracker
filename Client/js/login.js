@@ -1,4 +1,19 @@
 const loginForm = document.querySelector(".login-form");
+
+// פונקציה להצגה/הסתרה של סיסמה
+function togglePassword(inputId) {
+  const passwordInput = document.getElementById(inputId);
+  const toggleIcon = passwordInput.nextElementSibling;
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    toggleIcon.textContent = "🙈";
+  } else {
+    passwordInput.type = "password";
+    toggleIcon.textContent = "👁️";
+  }
+}
+
 loginForm.addEventListener("submit", function (event) {
   event.preventDefault(); // מונע את רענון הדף
   // שליפת ערכים מהשדות

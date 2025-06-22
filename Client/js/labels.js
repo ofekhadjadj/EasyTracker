@@ -34,6 +34,39 @@ $(document).ready(function () {
     renderLabels(filtered);
   });
 
+  // טיפול בפתיחת פופ-אפ תגית חדשה
+  $('a[href="#new-label-form"]').on("click", function (e) {
+    // איפוס הטופס לתגית חדשה
+    $("#labelName").val("");
+    selectColor("#6699CC");
+    $("#label-form").removeData("edit").removeData("labelid");
+    $("#new-label-form h2").text("➕ תגית חדשה");
+    $(".btn-submit").text("📤 שמור תגית");
+    updatePreview();
+  });
+
+  // עדכון תצוגה מקדימה כשמשנים את שם התגית
+  $(document).on("input", "#labelName", function () {
+    updatePreview();
+  });
+
+  // טיפול בלחיצה על צבע בפלטה
+  $(document).on("click", ".color-option:not(.custom-color)", function () {
+    const selectedColor = $(this).data("color");
+    selectColor(selectedColor);
+  });
+
+  // טיפול בלחיצה על כפתור צבע מותאם אישית
+  $(document).on("click", "#custom-color-btn", function () {
+    $("#custom-color-picker").click();
+  });
+
+  // טיפול בשינוי צבע מותאם אישית
+  $(document).on("change", "#custom-color-picker", function () {
+    const customColor = $(this).val().toUpperCase();
+    selectColor(customColor);
+  });
+
   $("#label-form").on("submit", function (e) {
     e.preventDefault();
     const labelName = $("#labelName").val();
@@ -118,8 +151,14 @@ function addNewLabel(name, color) {
       fetchAllLabels();
       showSuccessNotification("התגית נוספה בהצלחה!");
     },
-    error: () => {
-      showErrorNotification("שגיאה בהוספת תגית");
+    error: (xhr) => {
+      if (xhr.status === 409) {
+        showErrorNotification(
+          `תגית בשם "${name}" כבר קיימת במערכת. אנא בחר שם אחר.`
+        );
+      } else {
+        showErrorNotification("שגיאה בהוספת תגית. אנא נסה שוב.");
+      }
     },
   });
 }
@@ -141,8 +180,14 @@ function updateLabel(id, name, color) {
       fetchAllLabels();
       showSuccessNotification("התגית עודכנה בהצלחה!");
     },
-    error: () => {
-      showErrorNotification("שגיאה בעדכון תגית");
+    error: (xhr) => {
+      if (xhr.status === 409) {
+        showErrorNotification(
+          `תגית בשם "${name}" כבר קיימת במערכת. אנא בחר שם אחר.`
+        );
+      } else {
+        showErrorNotification("שגיאה בעדכון תגית. אנא נסה שוב.");
+      }
     },
   });
 }
@@ -177,12 +222,58 @@ function deleteLabel(labelID) {
 
 function openEditLabelPopup(label) {
   $("#labelName").val(label.labelName);
-  $("#labelColor").val(label.labelColor);
+  selectColor(label.labelColor);
   $("#label-form").data("edit", true).data("labelid", label.labelID);
   $("#new-label-form h2").text("✏️ עדכון תגית");
   $(".btn-submit").text("עדכן תגית");
+  updatePreview();
 
   $.fancybox.open({ src: "#new-label-form", type: "inline" });
+}
+
+// פונקציה לבחירת צבע ועדכון התצוגה
+function selectColor(color) {
+  // עדכון השדה הנסתר
+  $("#labelColor").val(color);
+
+  // הסרת הסימון הקודם והוספת סימון חדש
+  $(".color-option").removeClass("selected");
+  $(`.color-option[data-color="${color}"]`).addClass("selected");
+
+  // עדכון התצוגה המקדימה
+  updatePreview();
+}
+
+// פונקציה לעדכון תצוגה מקדימה של התגית
+function updatePreview() {
+  const labelName = $("#labelName").val().trim();
+  const labelColor = $("#labelColor").val();
+
+  // עדכון הטקסט
+  const previewText = labelName || "תגית חדשה";
+  $("#preview-text").text(previewText);
+
+  // עדכון הצבע
+  $("#label-preview").css("background-color", labelColor);
+
+  // בחירת צבע טקסט מתאים (בהיר או כהה) בהתאם לרקע
+  const textColor = getContrastTextColor(labelColor);
+  $("#label-preview").css("color", textColor);
+}
+
+// פונקציה לחישוב צבע טקסט מתאים (בהיר או כהה)
+function getContrastTextColor(hexColor) {
+  // המרת צבע hex לRGB
+  const hex = hexColor.replace("#", "");
+  const r = parseInt(hex.substr(0, 2), 16);
+  const g = parseInt(hex.substr(2, 2), 16);
+  const b = parseInt(hex.substr(4, 2), 16);
+
+  // חישוב בהירות הצבע
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+  // החזרת צבע טקסט מתאים
+  return brightness > 128 ? "#333" : "#fff";
 }
 
 // הודעת הצלחה מעוצבת כמו בשאר האתר

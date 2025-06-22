@@ -52,14 +52,27 @@
               required
             />
             <br />
-            <input
-              type="password"
-              placeholder="סיסמא"
-              id="password"
-              name="password"
-              value="aglv2876y"
-              required
-            />
+            <div class="password-wrapper">
+              <input
+                type="password"
+                placeholder="סיסמא"
+                id="password"
+                name="password"
+                value="aglv2876y"
+                pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$"
+                minlength="8"
+                maxlength="30"
+                required
+              />
+              <span class="password-toggle" onclick="togglePassword('password')"
+                >👁️</span
+              >
+            </div>
+            <div class="password-hint">
+              <small
+                >הסיסמה חייבת להכיל לפחות 8 תווים, כולל אותיות ומספרים</small
+              >
+            </div>
             <br />
 
             <button type="submit" class="login-btn">התחבר</button>
@@ -68,7 +81,7 @@
               התחבר באמצעות גוגל
             </button>
           </form>
-          <p>?עדיין אין לך משתמש <a href="register.html"> !הירשם עכשיו</a></p>
+          <p>עדיין אין לך משתמש? <a href="register.html">הירשם עכשיו</a></p>
         </div>
       </div>
     </div>

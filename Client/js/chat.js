@@ -25,6 +25,9 @@ $(document).ready(function () {
     CurrentUser.image || "./images/def/user-def.png"
   );
 
+  // עדכון פירורי לחם
+  updateBreadcrumbs();
+
   // 1. Load team avatars
   loadProjectTeam(CurrentProject.ProjectID, CurrentUser.id);
 
@@ -266,3 +269,17 @@ $("#user-password-form").on("submit", function (e) {
   e.preventDefault();
   // TODO: AJAX call to change password
 });
+
+// פונקציה לעדכון פירורי לחם
+function updateBreadcrumbs() {
+  const breadcrumbElement = document.getElementById("breadcrumb-project-name");
+  if (breadcrumbElement && CurrentProject) {
+    const projectName = CurrentProject.ProjectName || "פרויקט";
+    const clientName = CurrentProject.CompanyName || "";
+    const breadcrumbText = clientName
+      ? `${projectName} - ${clientName}`
+      : projectName;
+
+    breadcrumbElement.textContent = breadcrumbText;
+  }
+}

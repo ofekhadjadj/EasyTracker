@@ -68,7 +68,7 @@ function renderBreadcrumbAndTitle() {
 
   const clientName = SelectedClientProjects[0].CompanyName?.trim() || "לקוח";
   titleEl.innerText = `הפרויקטים של ${clientName}`;
-  breadcrumbEl.innerHTML = `<a href="clients.html">לקוחות</a> &gt; <span>${clientName}</span>`;
+  breadcrumbEl.innerHTML = `<a href="clients.html">לקוחות</a> <span class="separator"> › </span> <span>${clientName}</span>`;
 }
 
 function renderClientSummary() {

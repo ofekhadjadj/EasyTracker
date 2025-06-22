@@ -18,6 +18,7 @@
     />
 
     <!-- Page Styles -->
+    <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="chat.css" />
 
     <!-- jQuery -->
@@ -71,31 +72,43 @@
               <ul>
                 <li>
                   <a href="projects.html">
-                    <img src="./images/project icon.png" class="nav-icon" />
+                    <img src="./images/icons/proj-black.png" class="nav-icon" />
                     <span>פרויקטים</span>
                   </a>
                 </li>
                 <li>
                   <a href="clients.html">
-                    <img src="./images/customers icon.png" class="nav-icon" />
+                    <img
+                      src="./images/icons/customer-black.png"
+                      class="nav-icon"
+                    />
                     <span>לקוחות</span>
                   </a>
                 </li>
                 <li>
                   <a href="stats.html">
-                    <img src="./images/reports.png" class="nav-icon" />
-                    <span>ניתוחים ודוחות</span>
+                    <img
+                      src="./images/icons/statistics and analytics-black.png"
+                      class="nav-icon"
+                    />
+                    <span>ניתוח ודוחות</span>
                   </a>
                 </li>
                 <li>
                   <a href="labels.html">
-                    <img src="./images/tags.png" class="nav-icon" />
+                    <img
+                      src="./images/icons/lablels-black.png"
+                      class="nav-icon"
+                    />
                     <span>תיוגים</span>
                   </a>
                 </li>
                 <li>
                   <a href="assistant.html">
-                    <span class="nav-icon">🤖</span>
+                    <img
+                      src="./images/icons/aiassistant-black.png"
+                      class="nav-icon"
+                    />
                     <span>העוזר האישי</span>
                   </a>
                 </li>
@@ -104,14 +117,8 @@
             <div class="help-nav">
               <ul>
                 <li>
-                  <a href="settings.html">
-                    <img src="./images/settings-icon.png" class="nav-icon" />
-                    <span>הגדרות</span>
-                  </a>
-                </li>
-                <li>
                   <a href="help.html">
-                    <img src="./images/help-icon.png" class="nav-icon" />
+                    <img src="./images/icons/help-black.png" class="nav-icon" />
                     <span>עזרה</span>
                   </a>
                 </li>
@@ -124,6 +131,17 @@
       <!-- Main Content -->
       <div class="content">
         <div class="inner-content">
+          <!-- פירורי לחם -->
+          <nav class="breadcrumbs">
+            <a href="projects.html">פרויקטים</a>
+            <span class="separator"> › </span>
+            <a href="projectPage.html" id="breadcrumb-project-link">
+              <span id="breadcrumb-project-name">פרויקט</span>
+            </a>
+            <span class="separator"> › </span>
+            <span>צ'אט</span>
+          </nav>
+
           <!-- Header with Title & Avatars -->
           <div class="chat-header">
             <h1>מרכז תקשורת</h1>

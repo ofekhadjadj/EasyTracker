@@ -335,6 +335,14 @@ function loadAllUsers() {
       displayUsersTable(data);
       hideUsersLoading();
       showNotification(`${data.length} משתמשים נטענו בהצלחה`, "success");
+
+      // Refresh chart with new data if chart is initialized
+      if (registrationsChart) {
+        const currentPeriod = $("#period-select").val() || "month";
+        const chartData = processUsersDataForChart(data, currentPeriod);
+        updateChart(chartData, currentPeriod);
+        console.log("📊 Chart refreshed with real user data");
+      }
     },
     function (error) {
       console.error("❌ Error loading users:", error);
@@ -675,6 +683,317 @@ function refreshData() {
   loadSystemData();
 }
 
+// Chart functionality
+let registrationsChart = null;
+
+// Initialize chart
+function initializeChart() {
+  const ctx = document.getElementById("registrations-chart");
+  if (!ctx) {
+    console.error("❌ Chart canvas not found");
+    return;
+  }
+
+  registrationsChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: "מצטרפים חדשים",
+          data: [],
+          borderColor: "rgb(0, 114, 255)",
+          backgroundColor: "rgba(0, 114, 255, 0.1)",
+          borderWidth: 3,
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: "rgb(0, 114, 255)",
+          pointBorderColor: "#fff",
+          pointBorderWidth: 2,
+          pointRadius: 6,
+          pointHoverRadius: 8,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: "top",
+          align: "end",
+          labels: {
+            font: {
+              family: "Assistant",
+              size: 14,
+            },
+            usePointStyle: true,
+            padding: 20,
+          },
+        },
+        tooltip: {
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          titleColor: "#fff",
+          bodyColor: "#fff",
+          borderColor: "rgb(0, 114, 255)",
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: false,
+          callbacks: {
+            title: function (context) {
+              return context[0].label;
+            },
+            label: function (context) {
+              return `מצטרפים: ${context.parsed.y}`;
+            },
+          },
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: "rgba(0, 0, 0, 0.1)",
+          },
+          ticks: {
+            font: {
+              family: "Assistant",
+              size: 12,
+            },
+            color: "#666",
+          },
+        },
+        x: {
+          grid: {
+            color: "rgba(0, 0, 0, 0.1)",
+          },
+          ticks: {
+            font: {
+              family: "Assistant",
+              size: 12,
+            },
+            color: "#666",
+          },
+        },
+      },
+    },
+  });
+
+  // Load initial data
+  loadChartData("month");
+}
+
+// Load chart data
+function loadChartData(period) {
+  console.log(`📊 Loading chart data for period: ${period}`);
+
+  // Show loading
+  $("#chart-loading").removeClass("hidden");
+
+  // If we already have users data, process it for the chart
+  if (allUsers && allUsers.length > 0) {
+    console.log("📊 Processing existing users data for chart");
+    const chartData = processUsersDataForChart(allUsers, period);
+    updateChart(chartData, period);
+    $("#chart-loading").addClass("hidden");
+    return;
+  }
+
+  // Otherwise, load users data first
+  ajaxCall(
+    "GET",
+    "https://localhost:7198/api/AdminPanel/GetAllUsersOverview",
+    "",
+    function (data) {
+      console.log("✅ Users data loaded for chart:", data);
+      allUsers = data; // Store the data
+      const chartData = processUsersDataForChart(data, period);
+      updateChart(chartData, period);
+      $("#chart-loading").addClass("hidden");
+    },
+    function (error) {
+      console.error("❌ Error loading users data for chart:", error);
+      $("#chart-loading").addClass("hidden");
+      showNotification("שגיאה בטעינת נתוני הגרף", "error");
+
+      // Show demo data on error
+      showDemoChartData(period);
+    }
+  );
+}
+
+// Update chart with new data
+function updateChart(data, period) {
+  if (!registrationsChart) {
+    console.error("❌ Chart not initialized");
+    return;
+  }
+
+  let labels = [];
+  let chartData = [];
+
+  if (Array.isArray(data) && data.length > 0) {
+    labels = data.map((item) => item.date || item.label);
+    chartData = data.map((item) => item.count || item.value || 0);
+  }
+
+  registrationsChart.data.labels = labels;
+  registrationsChart.data.datasets[0].data = chartData;
+  registrationsChart.update("active");
+}
+
+// Process users data for chart
+function processUsersDataForChart(users, period) {
+  console.log(`📊 Processing ${users.length} users for ${period} chart`);
+
+  const now = new Date();
+  let startDate,
+    dateGroups = {};
+
+  // Determine date range and grouping
+  switch (period) {
+    case "week":
+      startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      break;
+    case "month":
+      startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      break;
+    case "year":
+      startDate = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+      break;
+    default:
+      startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  }
+
+  // Filter users by registration date and group them
+  users.forEach((user) => {
+    if (!user.RegistrationDate) return;
+
+    const regDate = new Date(user.RegistrationDate);
+    if (regDate < startDate) return;
+
+    let groupKey;
+
+    switch (period) {
+      case "week":
+        // Group by day
+        groupKey = regDate.toLocaleDateString("he-IL", { weekday: "long" });
+        break;
+      case "month":
+        // Group by week
+        const weekNumber = Math.ceil(regDate.getDate() / 7);
+        groupKey = `שבוע ${weekNumber}`;
+        break;
+      case "year":
+        // Group by month
+        groupKey = regDate.toLocaleDateString("he-IL", { month: "long" });
+        break;
+    }
+
+    if (groupKey) {
+      dateGroups[groupKey] = (dateGroups[groupKey] || 0) + 1;
+    }
+  });
+
+  // Convert to chart format
+  const chartData = Object.entries(dateGroups).map(([date, count]) => ({
+    date,
+    count,
+  }));
+
+  // Sort by chronological order
+  if (period === "year") {
+    const monthOrder = [
+      "ינואר",
+      "פברואר",
+      "מרץ",
+      "אפריל",
+      "מאי",
+      "יוני",
+      "יולי",
+      "אוגוסט",
+      "ספטמבר",
+      "אוקטובר",
+      "נובמבר",
+      "דצמבר",
+    ];
+    chartData.sort(
+      (a, b) => monthOrder.indexOf(a.date) - monthOrder.indexOf(b.date)
+    );
+  } else if (period === "week") {
+    const dayOrder = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
+    chartData.sort(
+      (a, b) => dayOrder.indexOf(a.date) - dayOrder.indexOf(b.date)
+    );
+  }
+
+  console.log("📊 Processed chart data:", chartData);
+  return chartData;
+}
+
+// Show demo data when API fails
+function showDemoChartData(period) {
+  let demoData = [];
+
+  switch (period) {
+    case "week":
+      demoData = [
+        { date: "ראשון", count: 3 },
+        { date: "שני", count: 7 },
+        { date: "שלישי", count: 5 },
+        { date: "רביעי", count: 12 },
+        { date: "חמישי", count: 8 },
+        { date: "שישי", count: 15 },
+        { date: "שבת", count: 4 },
+      ];
+      break;
+    case "month":
+      demoData = [
+        { date: "שבוע 1", count: 23 },
+        { date: "שבוע 2", count: 31 },
+        { date: "שבוע 3", count: 28 },
+        { date: "שבוע 4", count: 42 },
+      ];
+      break;
+    case "year":
+      demoData = [
+        { date: "ינואר", count: 85 },
+        { date: "פברואר", count: 92 },
+        { date: "מרץ", count: 78 },
+        { date: "אפריל", count: 105 },
+        { date: "מאי", count: 118 },
+        { date: "יוני", count: 134 },
+        { date: "יולי", count: 142 },
+        { date: "אוגוסט", count: 156 },
+        { date: "ספטמבר", count: 149 },
+        { date: "אוקטובר", count: 167 },
+        { date: "נובמבר", count: 178 },
+        { date: "דצמבר", count: 189 },
+      ];
+      break;
+  }
+
+  updateChart(demoData, period);
+  showNotification("מוצגים נתונים לדוגמה", "info");
+}
+
+// Initialize chart and event listeners when DOM is ready
+$(document).ready(function () {
+  // Initialize chart after other data loads
+  setTimeout(initializeChart, 1500);
+
+  // Event listeners for chart controls
+  $("#period-select").on("change", function () {
+    loadChartData($(this).val());
+  });
+
+  $("#refresh-chart-btn").on("click", function () {
+    const period = $("#period-select").val();
+    loadChartData(period);
+  });
+});
+
 // Export functions for global access
 window.toggleUserStatus = toggleUserStatus;
 window.resetUserPassword = resetUserPassword;
@@ -684,3 +1003,5 @@ window.loadSystemSummary = loadSystemSummary;
 window.loadAllUsers = loadAllUsers;
 window.loadTopActiveUsers = loadTopActiveUsers;
 window.loadTopEarningUsers = loadTopEarningUsers;
+window.initializeChart = initializeChart;
+window.loadChartData = loadChartData;

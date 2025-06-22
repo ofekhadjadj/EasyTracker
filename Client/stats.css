@@ -1001,6 +1001,21 @@ li a.active span {
 .breadcrumbs a {
   color: #0072ff;
   text-decoration: none;
+  font-weight: normal;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: none;
+}
+
+.breadcrumbs a span {
+  color: #0072ff !important;
+  font-weight: normal !important;
+}
+
+#breadcrumb-project-name {
+  color: #0072ff !important;
+  font-weight: normal !important;
 }
 
 .breadcrumbs .separator {
