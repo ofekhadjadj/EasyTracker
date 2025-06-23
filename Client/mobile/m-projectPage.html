@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Easy Tracker Mobile - עמוד פרויקט</title>
+    <link rel="icon" href="../images/fav-icon.png" type="images/png" />
+    <link rel="stylesheet" href="m-projectPage.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- jquery -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+      <div class="header-content">
+        <button class="back-btn" onclick="goBack()">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <div class="project-info">
+          <h1 id="project-title">פרויקט</h1>
+          <p id="project-client">לקוח</p>
+        </div>
+        <button class="menu-btn" onclick="toggleMobileMenu()">
+          <i class="fas fa-ellipsis-v"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="menu-overlay" onclick="toggleMobileMenu()"></div>
+      <div class="menu-content">
+        <div class="menu-header">
+          <h3>אפשרויות</h3>
+          <button class="close-menu" onclick="toggleMobileMenu()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="menu-items">
+          <a href="m-projects.html" class="menu-item">
+            <i class="fas fa-project-diagram"></i>
+            <span>כל הפרויקטים</span>
+          </a>
+          <a href="#" class="menu-item" onclick="viewProjectDetails()">
+            <i class="fas fa-info-circle"></i>
+            <span>פרטי פרויקט</span>
+          </a>
+          <a href="#" class="menu-item" onclick="exportSessions()">
+            <i class="fas fa-download"></i>
+            <span>ייצא סשנים</span>
+          </a>
+          <a href="../login.html" class="menu-item logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>התנתק</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Timer Section -->
+      <div class="timer-section">
+        <div class="timer-card">
+          <div class="timer-display">
+            <div class="time-text" id="time-display">00:00:00</div>
+            <div class="timer-status" id="timer-status">מוכן להתחיל</div>
+          </div>
+
+          <div class="progress-circle">
+            <svg class="progress-ring" width="120" height="120">
+              <circle
+                cx="60"
+                cy="60"
+                r="50"
+                stroke="#e1e8ed"
+                stroke-width="8"
+                fill="transparent"
+              />
+              <circle
+                cx="60"
+                cy="60"
+                r="50"
+                stroke="#0072ff"
+                stroke-width="8"
+                fill="transparent"
+                class="progress-ring-circle"
+                stroke-dasharray="314.16"
+                stroke-dashoffset="314.16"
+              />
+            </svg>
+            <div class="progress-text">0%</div>
+          </div>
+        </div>
+
+        <!-- Timer Controls -->
+        <div class="timer-controls">
+          <button
+            class="control-btn start-btn"
+            id="start-pause-btn"
+            onclick="toggleTimer()"
+          >
+            <i class="fas fa-play" id="timer-icon"></i>
+            <span id="timer-text">התחל</span>
+          </button>
+
+          <button
+            class="control-btn stop-btn"
+            id="stop-btn"
+            onclick="stopTimer()"
+            disabled
+          >
+            <i class="fas fa-stop"></i>
+            <span>סיים</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Project Progress -->
+      <div class="progress-section">
+        <div class="progress-card">
+          <h3>התקדמות הפרויקט</h3>
+          <div class="project-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" id="project-progress-fill"></div>
+            </div>
+            <div class="progress-info">
+              <span id="project-progress-text">0% הושלם</span>
+              <span id="project-hours-text">0 שעות מתוך 0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="stats-section">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number" id="total-hours">0</div>
+              <div class="stat-label">שעות סה"כ</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number" id="total-earnings">₪0</div>
+              <div class="stat-label">הכנסות סה"כ</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-calendar-day"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number" id="sessions-count">0</div>
+              <div class="stat-label">סשנים</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Sessions -->
+      <div class="sessions-section">
+        <div class="section-header">
+          <h3>סשנים אחרונים</h3>
+          <button class="view-all-btn" onclick="viewAllSessions()">
+            <span>הצג הכל</span>
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <div class="sessions-list" id="sessions-list">
+          <!-- Sessions will be loaded here -->
+          <div class="loading-sessions">
+            <div class="spinner"></div>
+            <p>טוען סשנים...</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- End Session Modal -->
+    <div class="modal" id="endSessionModal">
+      <div class="modal-overlay" onclick="closeEndSessionModal()"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>סיום סשן</h3>
+          <button class="close-modal" onclick="closeEndSessionModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <form class="session-form" id="endSessionForm">
+          <div class="form-group">
+            <label for="session-description">תיאור הסשן</label>
+            <textarea
+              id="session-description"
+              name="description"
+              rows="4"
+              placeholder="מה עשית בסשן זה?"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="session-label">תווית (אופציונלי)</label>
+            <select id="session-label" name="labelId">
+              <option value="">בחר תווית</option>
+            </select>
+          </div>
+
+          <div class="session-summary">
+            <div class="summary-item">
+              <span>זמן עבודה:</span>
+              <span id="session-duration">00:00:00</span>
+            </div>
+            <div class="summary-item">
+              <span>רווח משוער:</span>
+              <span id="session-earnings">₪0</span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="button"
+              class="btn-cancel"
+              onclick="closeEndSessionModal()"
+            >
+              ביטול
+            </button>
+            <button type="submit" class="btn-submit">
+              <i class="fas fa-save"></i>
+              שמור סשן
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="m-projectPage.js"></script>
+    <script src="../js/AjaxCall.js"></script>
+  </body>
+</html>

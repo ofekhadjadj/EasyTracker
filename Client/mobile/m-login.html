@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Easy Tracker Mobile - כניסה</title>
+    <link rel="icon" href="../images/fav-icon.png" type="images/png" />
+    <link rel="stylesheet" href="m-login.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- jquery -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="mobile-login-container">
+      <div class="login-header">
+        <img class="mobile-logo" src="../images/logo.png" alt="Easy Tracker" />
+        <h1>ברוך הבא! 👋</h1>
+        <p>התחבר והתחל לעבוד חכם יותר</p>
+      </div>
+
+      <div class="login-form-container">
+        <form class="mobile-login-form">
+          <div class="input-group">
+            <label for="mobile-email">אימייל</label>
+            <input
+              type="email"
+              id="mobile-email"
+              name="email"
+              value="rlybrmn@lvy.org"
+              placeholder="הכנס אימייל"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="mobile-password">סיסמה</label>
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="mobile-password"
+                name="password"
+                value="aglv2876y"
+                placeholder="הכנס סיסמה"
+                pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$"
+                minlength="8"
+                maxlength="30"
+                required
+              />
+              <span
+                class="password-toggle"
+                onclick="togglePassword('mobile-password')"
+                >👁️</span
+              >
+            </div>
+            <small class="password-hint"
+              >הסיסמה חייבת להכיל לפחות 8 תווים, כולל אותיות ומספרים</small
+            >
+          </div>
+
+          <button type="submit" class="mobile-login-btn">
+            <span class="btn-text">התחבר</span>
+            <span class="btn-loading" style="display: none">
+              <span class="spinner"></span>
+              מתחבר...
+            </span>
+          </button>
+
+          <button type="button" class="mobile-google-btn">
+            התחבר באמצעות גוגל
+          </button>
+        </form>
+
+        <div class="register-link">
+          <p>עדיין אין לך משתמש? <a href="m-register.html">הירשם עכשיו</a></p>
+        </div>
+      </div>
+
+      <div class="mobile-footer">
+        <div class="feature-highlight">
+          <h3>💰 עקוב על הזמן שלך בקלות</h3>
+          <p>הזמן שלך שווה הרבה יותר ממה שחשבת</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div class="loading-overlay" style="display: none">
+      <div class="loading-content">
+        <div class="spinner-large"></div>
+        <p>מתחבר...</p>
+      </div>
+    </div>
+
+    <script src="m-login.js"></script>
+    <script src="../js/AjaxCall.js"></script>
+  </body>
+</html>
