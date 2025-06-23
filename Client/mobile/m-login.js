@@ -46,15 +46,27 @@ function hideLoadingState() {
 
 // Show success notification
 function showSuccessNotification(message) {
+  // Remove any existing notifications
+  const existingNotification = document.querySelector(".success-notification");
+  if (existingNotification) {
+    existingNotification.remove();
+  }
+
   const notification = document.createElement("div");
   notification.className = "success-notification";
-  notification.textContent = message;
+  notification.innerHTML = `
+    <i class="fas fa-check-circle" style="margin-left: 8px;"></i>
+    ${message}
+  `;
 
   document.body.appendChild(notification);
 
+  // Auto-remove after message duration
   setTimeout(() => {
-    notification.remove();
-  }, 3000);
+    if (notification.parentNode) {
+      notification.remove();
+    }
+  }, 4000);
 }
 
 // Show error notification
@@ -127,20 +139,17 @@ function handleLogin(email, password) {
         if (isAdmin) {
           console.log("🔧 Admin user detected, redirecting to admin panel");
 
-          showSuccessNotification("מתחבר כאדמין...");
+          hideLoadingState();
 
-          setTimeout(() => {
-            // For mobile admin, redirect to desktop admin panel
-            window.location.href = "../adminPanel.html";
-          }, 1500);
+          // Direct redirect to admin panel
+          window.location.href = "../adminPanel.html";
         } else {
           console.log("👤 Regular user, redirecting to mobile projects");
 
-          showSuccessNotification("התחברות מוצלחת! מעביר לפרויקטים...");
+          hideLoadingState();
 
-          setTimeout(() => {
-            window.location.href = "./m-projects.html";
-          }, 1000);
+          // Immediate redirect - no delay or notification that might confuse users
+          window.location.href = "./m-projects.html";
         }
       } else {
         hideLoadingState();
