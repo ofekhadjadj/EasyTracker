@@ -10,8 +10,14 @@ function handleCreateProject() {
   if (files.length > 0) {
     const formData = new FormData();
     formData.append("files", files[0]);
+
+    // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+    console.log("🌐 Creating upload URL...");
+    const uploadUrl = apiConfig.createApiUrl("Upload");
+    console.log("📡 Upload URL:", uploadUrl);
+
     $.ajax({
-      url: "https://localhost:7198/api/Upload",
+      url: uploadUrl,
       type: "POST",
       data: formData,
       processData: false,
@@ -34,8 +40,13 @@ function createProject(imagePath) {
     ClientID: Number($("#clientId").val()),
     DurationGoal: Number($("#durationGoal").val()),
   };
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating project URL...");
+  const projectUrl = apiConfig.createApiUrl("Projects/addNewProject");
+  console.log("🎯 Project URL:", projectUrl);
+
   $.ajax({
-    url: "https://localhost:7198/api/Projects/addNewProject",
+    url: projectUrl,
     type: "POST",
     contentType: "application/json",
     data: JSON.stringify(newProj),
@@ -130,7 +141,14 @@ $(document).ready(function () {
 
 function LoadProject() {
   const userId = CurrentUser?.id;
-  const apiUrl = `https://localhost:7198/api/Projects/GetProjectByUserId/${userId}`;
+
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating projects URL...");
+  const apiUrl = apiConfig.createApiUrl(
+    `Projects/GetProjectByUserId/${userId}`
+  );
+  console.log("📂 Projects URL:", apiUrl);
+
   ajaxCall("GET", apiUrl, "", successCB, ErrorCB);
 }
 
@@ -236,8 +254,13 @@ function submitProjectEdit(finalImage) {
     durationGoal: Number($("#durationGoal").val()),
   };
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating update project URL...");
+  const updateUrl = apiConfig.createApiUrl("Projects/update_project");
+  console.log("🔄 Update URL:", updateUrl);
+
   $.ajax({
-    url: "https://localhost:7198/api/Projects/update_project",
+    url: updateUrl,
     type: "PUT",
     contentType: "application/json",
     data: JSON.stringify(updated),
@@ -253,7 +276,13 @@ function submitProjectEdit(finalImage) {
 }
 
 function checkSessionsBeforeDelete(project) {
-  const url = `https://localhost:7198/api/Session/GetAllSessionsByUserAndProject?userID=${CurrentUser.id}&projectID=${project.ProjectID}`;
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating sessions URL...");
+  const url = apiConfig.createApiUrl(
+    `Session/GetAllSessionsByUserAndProject?userID=${CurrentUser.id}&projectID=${project.ProjectID}`
+  );
+  console.log("⏱️ Sessions URL:", url);
+
   $.get(url)
     .done((sessions) => {
       const msg =
@@ -289,8 +318,15 @@ function confirmDeleteProject(message, projectId) {
 }
 
 function deleteProject(projectId) {
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating delete project URL...");
+  const deleteUrl = apiConfig.createApiUrl(
+    `Projects/delete_project?ProjectId=${projectId}`
+  );
+  console.log("🗑️ Delete URL:", deleteUrl);
+
   $.ajax({
-    url: `https://localhost:7198/api/Projects/delete_project?ProjectId=${projectId}`,
+    url: deleteUrl,
     type: "PUT",
     success: function () {
       alert("הפרויקט נמחק.");
@@ -305,7 +341,14 @@ function deleteProject(projectId) {
 function loadClients() {
   const userId = CurrentUser?.id;
   if (!userId) return;
-  const apiUrl = `https://localhost:7198/api/Client/GetAllClientsByUserID?userID=${userId}`;
+
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating clients URL...");
+  const apiUrl = apiConfig.createApiUrl(
+    `Client/GetAllClientsByUserID?userID=${userId}`
+  );
+  console.log("👥 Clients URL:", apiUrl);
+
   ajaxCall(
     "GET",
     apiUrl,
@@ -393,8 +436,14 @@ function handleCreateClientFromProjects(e) {
   if (files.length > 0) {
     const formData = new FormData();
     formData.append("files", files[0]);
+
+    // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+    console.log("🌐 Creating client upload URL...");
+    const uploadUrl = apiConfig.createApiUrl("Upload");
+    console.log("📡 Client Upload URL:", uploadUrl);
+
     $.ajax({
-      url: "https://localhost:7198/api/Upload",
+      url: uploadUrl,
       type: "POST",
       data: formData,
       processData: false,
@@ -422,8 +471,13 @@ function createClientFromProjects(imagePath) {
     image: imagePath || "./images/def/client-def.jpg",
   };
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating add client URL...");
+  const addClientUrl = apiConfig.createApiUrl("Client/Add Client");
+  console.log("👥 Add Client URL:", addClientUrl);
+
   $.ajax({
-    url: "https://localhost:7198/api/Client/Add%20Client",
+    url: addClientUrl,
     type: "POST",
     contentType: "application/json",
     data: JSON.stringify(newClient),

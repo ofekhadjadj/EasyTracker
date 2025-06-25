@@ -23,3 +23,11 @@ Thumbs.db
 appsettings.Development.json
 appsettings.Production.json
 appsettings.*.json
+server/Properties/PublishProfiles/FolderProfile.pubxml
+server/Properties/PublishProfiles/FolderProfile1.pubxml
+Server/Properties/PublishProfiles/FolderProfile3.pubxml
+Server/Properties/PublishProfiles/FolderProfile4.pubxml
+server/Properties/PublishProfiles/FolderProfile.pubxml
+server/Properties/PublishProfiles/FolderProfile1.pubxml
+server/Properties/PublishProfiles/FolderProfile.pubxml
+server/Properties/PublishProfiles/FolderProfile1.pubxml

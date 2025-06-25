@@ -28,7 +28,10 @@ function handleLogin(email, password) {
   console.log("Email:", email);
   console.log("Password:", password);
 
-  const apiUrl = "https://localhost:7198/api/Users/login";
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Using API Config to create login URL...");
+  const apiUrl = apiConfig.createApiUrl("Users/login");
+  console.log("🎯 Generated login URL:", apiUrl);
 
   const data = JSON.stringify({
     email: email,

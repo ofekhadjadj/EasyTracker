@@ -24,7 +24,12 @@ function loadTeamPreview() {
   // ננקה את התוכן הקיים
   teamContainer.innerHTML = "";
 
-  const url = `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${CurrentProject.ProjectID}`;
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating team URL...");
+  const url = apiConfig.createApiUrl(
+    `Projects/GetProjectTeam?ProjectID=${CurrentProject.ProjectID}`
+  );
+  console.log("👥 Team URL:", url);
 
   ajaxCall(
     "GET",
@@ -103,9 +108,14 @@ document.getElementById("desc-form").addEventListener("submit", function (e) {
     description: newDescription,
   };
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating update project URL...");
+  const updateUrl = apiConfig.createApiUrl("Projects/update_project");
+  console.log("🔄 Update URL:", updateUrl);
+
   ajaxCall(
     "PUT",
-    "https://localhost:7198/api/Projects/update_project",
+    updateUrl,
     JSON.stringify(updatedProject),
     () => {
       // Create and show success notification
@@ -136,7 +146,12 @@ document.getElementById("desc-form").addEventListener("submit", function (e) {
       }, 3000);
 
       // רענון localStorage מהשרת
-      const refreshedApiUrl = `https://localhost:7198/api/Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`;
+      console.log("🌐 Creating refresh project URL...");
+      const refreshedApiUrl = apiConfig.createApiUrl(
+        `Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`
+      );
+      console.log("🔄 Refresh URL:", refreshedApiUrl);
+
       ajaxCall("GET", refreshedApiUrl, "", (updated) => {
         CurrentProject = updated;
         localStorage.setItem("CurrentProject", JSON.stringify(CurrentProject));
@@ -164,7 +179,12 @@ document.getElementById("desc-form").addEventListener("submit", function (e) {
 });
 
 function openEndSessionPopup() {
-  const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating labels URL...");
+  const labelApi = apiConfig.createApiUrl(
+    `Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`
+  );
+  console.log("🏷️ Labels URL:", labelApi);
 
   // Clear any previous session description and AI states
   document.getElementById("session-description").value = "";
@@ -402,9 +422,14 @@ function openAddLabelPopup(fromEditSession = false) {
             userID: CurrentUser.id,
           };
 
+          // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+          console.log("🌐 Creating add label URL...");
+          const addLabelUrl = apiConfig.createApiUrl("Label/addNewLabel");
+          console.log("🏷️ Add Label URL:", addLabelUrl);
+
           // Using the correct endpoint and method from labels.js
           $.ajax({
-            url: "https://localhost:7198/api/Label/addNewLabel",
+            url: addLabelUrl,
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify(newLabel),
@@ -545,7 +570,12 @@ function checkActiveSessionOnPageLoad() {
     return;
   }
 
-  const checkActiveSessionUrl = `https://localhost:7198/api/Session/CheckActiveSession?userID=${CurrentUser.id}&projectID=${CurrentProject.ProjectID}`;
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating check active session URL...");
+  const checkActiveSessionUrl = apiConfig.createApiUrl(
+    `Session/CheckActiveSession?userID=${CurrentUser.id}&projectID=${CurrentProject.ProjectID}`
+  );
+  console.log("🔍 Check Active Session URL:", checkActiveSessionUrl);
 
   console.log("🔍 בודק אם יש סשן פעיל בעת טעינת הדף...");
 
@@ -726,9 +756,14 @@ toggleBtn.addEventListener("click", () => {
 
     console.log("⏸️ השהיית סשן | נשלח לשרת:", pausedSession);
 
+    // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+    console.log("🌐 Creating update session URL (pause)...");
+    const updateSessionUrl = apiConfig.createApiUrl("Session/update_session");
+    console.log("⏸️ Update Session URL:", updateSessionUrl);
+
     ajaxCall(
       "PUT",
-      "https://localhost:7198/api/Session/update_session",
+      updateSessionUrl,
       JSON.stringify(pausedSession),
       () => {
         console.log("✅ סשן הושהה בהצלחה!");
@@ -752,9 +787,14 @@ toggleBtn.addEventListener("click", () => {
         status: "Active",
       };
 
+      // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+      console.log("🌐 Creating update session URL (resume)...");
+      const resumeSessionUrl = apiConfig.createApiUrl("Session/update_session");
+      console.log("▶️ Resume Session URL:", resumeSessionUrl);
+
       ajaxCall(
         "PUT",
-        "https://localhost:7198/api/Session/update_session",
+        resumeSessionUrl,
         JSON.stringify(pausedSession),
         () => {
           console.log("✅ סשן הומשך בהצלחה!");
@@ -776,11 +816,14 @@ toggleBtn.addEventListener("click", () => {
       // קריאה לשרת לפני שמתחיל הסטופר
       const sessionStart = getLocalISOStringWithoutZ();
 
-      const apiUrl = `https://localhost:7198/api/Session/start_auto_session?userID=${
-        CurrentUser.id
-      }&projectID=${CurrentProject.ProjectID}&startDate=${encodeURIComponent(
-        sessionStart
-      )}`;
+      // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+      console.log("🌐 Creating start auto session URL...");
+      const apiUrl = apiConfig.createApiUrl(
+        `Session/start_auto_session?userID=${CurrentUser.id}&projectID=${
+          CurrentProject.ProjectID
+        }&startDate=${encodeURIComponent(sessionStart)}`
+      );
+      console.log("🎬 Start Auto Session URL:", apiUrl);
 
       ajaxCall(
         "POST",
@@ -868,9 +911,14 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
 
   console.log("📤 סיום סשן נשלח:", data);
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating end session URL...");
+  const endSessionUrl = apiConfig.createApiUrl("Session/update_session");
+  console.log("🏁 End Session URL:", endSessionUrl);
+
   ajaxCall(
     "PUT",
-    "https://localhost:7198/api/Session/update_session",
+    endSessionUrl,
     JSON.stringify(data),
     () => {
       // Close the popup completely including overlay
@@ -1042,10 +1090,15 @@ $(document).ready(function () {
       secret: "K-9U54djBYtdjnkeX-Xkbg",
     };
 
+    // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+    console.log("🌐 Creating Green Invoice token URL...");
+    const tokenUrl = apiConfig.createApiUrl("GreenInvoice/GetToken");
+    console.log("🧾 Token URL:", tokenUrl);
+
     // שליחת בקשה לשרת שלנו
     $.ajax({
       type: "POST",
-      url: "https://localhost:7198/api/GreenInvoice/GetToken",
+      url: tokenUrl,
       data: JSON.stringify(tokenData),
       contentType: "application/json",
       success: function (response) {
@@ -1146,10 +1199,17 @@ $(document).ready(function () {
 
     console.log("נתוני החשבונית שנשלחים:", invoiceData);
 
+    // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+    console.log("🌐 Creating Green Invoice create URL...");
+    const createInvoiceUrl = apiConfig.createApiUrl(
+      "GreenInvoice/CreateInvoice"
+    );
+    console.log("🧾 Create Invoice URL:", createInvoiceUrl);
+
     // שליחת בקשה ליצירת החשבונית
     $.ajax({
       type: "POST",
-      url: "https://localhost:7198/api/GreenInvoice/CreateInvoice",
+      url: createInvoiceUrl,
       headers: {
         Authorization: "Bearer " + token,
         "Content-Type": "application/json",
@@ -1627,8 +1687,12 @@ function calculateEarnings(hourlyRate, durationSeconds) {
 }
 
 function renderTableFromDB() {
-  //bring sessions from db
-  const apiUrl = `https://localhost:7198/api/Session/GetAllSessionsByUserAndProject?userID=${CurrentUser.id}&projectID=${CurrentProject.ProjectID}`;
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating sessions URL...");
+  const apiUrl = apiConfig.createApiUrl(
+    `Session/GetAllSessionsByUserAndProject?userID=${CurrentUser.id}&projectID=${CurrentProject.ProjectID}`
+  );
+  console.log("📅 Sessions URL:", apiUrl);
 
   console.log(apiUrl);
 
@@ -1778,7 +1842,12 @@ function renderTableFromDB() {
       });
 
     function deleteSession(sessionId, row, durationSeconds) {
-      const apiUrl = `https://localhost:7198/api/Session/delete_session?SessionID=${sessionId}`;
+      // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+      console.log("🌐 Creating delete session URL...");
+      const apiUrl = apiConfig.createApiUrl(
+        `Session/delete_session?SessionID=${sessionId}`
+      );
+      console.log("🗑️ Delete Session URL:", apiUrl);
 
       ajaxCall(
         "PUT",
@@ -2005,8 +2074,12 @@ $(document).on("click", ".edit-btn, .edit-btn i", function () {
         }
       });
 
-      // Fetch and add labels
-      const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
+      // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה - עריכת סשן נוספת
+      console.log("🌐 Creating edit session additional labels URL...");
+      const labelApi = apiConfig.createApiUrl(
+        `Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`
+      );
+      console.log("🏷️ Edit Session Additional Labels URL:", labelApi);
 
       ajaxCall(
         "GET",
@@ -2089,7 +2162,11 @@ $(document).on("submit", "#edit-session-form", function (e) {
 
   console.log("🟡 שולח עדכון סשן:", updatedSession);
 
-  const apiUrl = "https://localhost:7198/api/Session/update_session";
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating edit session URL...");
+  const apiUrl = apiConfig.createApiUrl("Session/update_session");
+  console.log("✏️ Edit Session URL:", apiUrl);
+
   ajaxCall(
     "PUT",
     apiUrl,
@@ -2114,7 +2191,12 @@ $(document).on("submit", "#edit-session-form", function (e) {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const apiUrl = `https://localhost:7198/api/Projects/GetLast5ProjectsByUserId/${CurrentUser.id}`;
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating last 5 projects URL...");
+  const apiUrl = apiConfig.createApiUrl(
+    `Projects/GetLast5ProjectsByUserId/${CurrentUser.id}`
+  );
+  console.log("📂 Last 5 Projects URL:", apiUrl);
 
   ajaxCall("GET", apiUrl, "", (projects) => {
     const wrapper = document.getElementById("recent-projects-wrapper");
@@ -2205,9 +2287,17 @@ const teamList = document.getElementById("team-list");
 
 function fetchTeamMembers() {
   const projectID = CurrentProject.ProjectID;
+
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating fetch team URL...");
+  const teamUrl = apiConfig.createApiUrl(
+    `Projects/GetProjectTeam?ProjectID=${projectID}`
+  );
+  console.log("👥 Fetch Team URL:", teamUrl);
+
   ajaxCall(
     "GET",
-    `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectID}`,
+    teamUrl,
     "",
     (members) => {
       console.log(members);
@@ -2226,9 +2316,15 @@ function fetchTeamMembers() {
 
 document.getElementById("add-user-btn").addEventListener("click", () => {
   const email = document.getElementById("add-user-email").value;
-  const url = `https://localhost:7198/api/Projects/AddNewTeamMemberToProject?TeamMemberEmail=${encodeURIComponent(
-    email
-  )}&projectID=${CurrentProject.ProjectID}`;
+
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating add team member URL...");
+  const url = apiConfig.createApiUrl(
+    `Projects/AddNewTeamMemberToProject?TeamMemberEmail=${encodeURIComponent(
+      email
+    )}&projectID=${CurrentProject.ProjectID}`
+  );
+  console.log("➕ Add Team Member URL:", url);
 
   ajaxCall(
     "POST",
@@ -2245,9 +2341,15 @@ document.getElementById("add-user-btn").addEventListener("click", () => {
 
 document.getElementById("remove-user-btn").addEventListener("click", () => {
   const email = document.getElementById("remove-user-email").value;
-  const url = `https://localhost:7198/api/Projects/RemoveTeamMemberFromProject?TeamMemberEmail=${encodeURIComponent(
-    email
-  )}&ProjectID=${CurrentProject.ProjectID}`;
+
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating remove team member URL...");
+  const url = apiConfig.createApiUrl(
+    `Projects/RemoveTeamMemberFromProject?TeamMemberEmail=${encodeURIComponent(
+      email
+    )}&ProjectID=${CurrentProject.ProjectID}`
+  );
+  console.log("➖ Remove Team Member URL:", url);
 
   ajaxCall(
     "PUT",
@@ -2391,9 +2493,16 @@ function loadCurrentTeamMembers() {
   const projectID = CurrentProject.ProjectID;
   const teamList = document.getElementById("current-team-list");
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating current team members URL...");
+  const teamUrl = apiConfig.createApiUrl(
+    `Projects/GetProjectTeam?ProjectID=${projectID}`
+  );
+  console.log("👥 Current Team Members URL:", teamUrl);
+
   ajaxCall(
     "GET",
-    `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectID}`,
+    teamUrl,
     "",
     (members) => {
       teamList.innerHTML = "";
@@ -2505,9 +2614,16 @@ function loadRemoveTeamMembers() {
   const projectID = CurrentProject.ProjectID;
   const teamList = document.getElementById("remove-team-list");
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating remove team members URL...");
+  const teamUrl = apiConfig.createApiUrl(
+    `Projects/GetProjectTeam?ProjectID=${projectID}`
+  );
+  console.log("👥 Remove Team Members URL:", teamUrl);
+
   ajaxCall(
     "GET",
-    `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectID}`,
+    teamUrl,
     "",
     (members) => {
       teamList.innerHTML = "";
@@ -2576,11 +2692,18 @@ function loadRemoveTeamMembers() {
               `האם אתה בטוח שברצונך להסיר את ${member.FullName} מהפרויקט?`,
               () => {
                 // Call API to remove user
+                // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+                console.log("🌐 Creating remove team member URL from list...");
+                const removeUrl = apiConfig.createApiUrl(
+                  `Projects/RemoveTeamMemberFromProject?TeamMemberEmail=${encodeURIComponent(
+                    member.Email
+                  )}&ProjectID=${CurrentProject.ProjectID}`
+                );
+                console.log("🗑️ Remove Team Member from List URL:", removeUrl);
+
                 ajaxCall(
                   "PUT",
-                  `https://localhost:7198/api/Projects/RemoveTeamMemberFromProject?TeamMemberEmail=${encodeURIComponent(
-                    member.Email
-                  )}&ProjectID=${CurrentProject.ProjectID}`,
+                  removeUrl,
                   "",
                   () => {
                     showCustomAlert(
@@ -2685,9 +2808,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const url = `https://localhost:7198/api/Projects/AddNewTeamMemberToProject?TeamMemberEmail=${encodeURIComponent(
-        email
-      )}&projectID=${CurrentProject.ProjectID}`;
+      // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+      console.log("🌐 Creating add team member by email URL...");
+      const url = apiConfig.createApiUrl(
+        `Projects/AddNewTeamMemberToProject?TeamMemberEmail=${encodeURIComponent(
+          email
+        )}&projectID=${CurrentProject.ProjectID}`
+      );
+      console.log("➕ Add Team Member by Email URL:", url);
 
       ajaxCall(
         "POST",
@@ -2829,10 +2957,17 @@ function loadTeamMembersForTasksDropdown() {
     CurrentUser.firstName + " " + CurrentUser.lastName + " (אני)";
   userSelect.appendChild(currentUserOption);
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating tasks dropdown team URL...");
+  const teamUrl = apiConfig.createApiUrl(
+    `Projects/GetProjectTeam?ProjectID=${projectID}`
+  );
+  console.log("📋 Tasks Dropdown Team URL:", teamUrl);
+
   // Load team members
   ajaxCall(
     "GET",
-    `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectID}`,
+    teamUrl,
     "",
     (members) => {
       members.forEach((member) => {
@@ -2959,10 +3094,17 @@ function loadTasksForUser(userId) {
   // Store the selected user ID for later use
   window.selectedTaskUserId = userId;
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating tasks URL...");
+  const tasksUrl = apiConfig.createApiUrl(
+    `Task/GetTasksByUserAndProject?userID=${userId}&projectID=${projectId}`
+  );
+  console.log("📋 Tasks URL:", tasksUrl);
+
   // Fetch tasks from API
   ajaxCall(
     "GET",
-    `https://localhost:7198/api/Task/GetTasksByUserAndProject?userID=${userId}&projectID=${projectId}`,
+    tasksUrl,
     "",
     (tasks) => {
       console.log("Tasks received:", tasks);
@@ -3157,10 +3299,15 @@ function updateTask(taskId, description, dueDate) {
 
   console.log("Updating task:", taskData);
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating update task URL...");
+  const updateTaskUrl = apiConfig.createApiUrl("Task/UpdateTask");
+  console.log("📝 Update Task URL:", updateTaskUrl);
+
   // Send the update request
   ajaxCall(
     "PUT",
-    "https://localhost:7198/api/Task/UpdateTask",
+    updateTaskUrl,
     JSON.stringify(taskData),
     (response) => {
       console.log("Task updated successfully:", response);
@@ -3182,9 +3329,16 @@ function updateTask(taskId, description, dueDate) {
 function deleteTask(taskId) {
   console.log("Deleting task ID:", taskId);
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating archive task URL...");
+  const archiveTaskUrl = apiConfig.createApiUrl(
+    `Task/ArchiveTask?taskID=${taskId}`
+  );
+  console.log("🗑️ Archive Task URL:", archiveTaskUrl);
+
   ajaxCall(
     "PUT",
-    `https://localhost:7198/api/Task/ArchiveTask?taskID=${taskId}`,
+    archiveTaskUrl,
     "",
     (response) => {
       console.log("Task deleted successfully:", response);
@@ -3259,10 +3413,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       console.log("Adding new task:", taskData);
 
+      // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+      console.log("🌐 Creating add task URL...");
+      const addTaskUrl = apiConfig.createApiUrl("Task/AddTask");
+      console.log("➕ Add Task URL:", addTaskUrl);
+
       // Send the add task request
       ajaxCall(
         "POST",
-        "https://localhost:7198/api/Task/AddTask",
+        addTaskUrl,
         JSON.stringify(taskData),
         (response) => {
           console.log("Task added successfully:", response);
@@ -3296,10 +3455,17 @@ function loadMyTasks(userId) {
     `Loading tasks for team member ${userId} in project ${projectId}`
   );
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating my tasks URL...");
+  const myTasksUrl = apiConfig.createApiUrl(
+    `Task/GetTasksByUserAndProject?userID=${userId}&projectID=${projectId}`
+  );
+  console.log("🎯 My Tasks URL:", myTasksUrl);
+
   // Fetch tasks from API
   ajaxCall(
     "GET",
-    `https://localhost:7198/api/Task/GetTasksByUserAndProject?userID=${userId}&projectID=${projectId}`,
+    myTasksUrl,
     "",
     (tasks) => {
       console.log("My tasks received:", tasks);
@@ -3385,10 +3551,17 @@ function updateTaskStatus(taskId, isDone) {
     }`
   );
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating update task status URL...");
+  const updateStatusUrl = apiConfig.createApiUrl(
+    `Task/UpdateTaskStatus?taskID=${taskId}&isDone=${isDone}`
+  );
+  console.log("✅ Update Task Status URL:", updateStatusUrl);
+
   // Send API request to update task status
   ajaxCall(
     "PUT",
-    `https://localhost:7198/api/Task/UpdateTaskStatus?taskID=${taskId}&isDone=${isDone}`,
+    updateStatusUrl,
     "",
     (response) => {
       console.log("Task status updated successfully:", response);
@@ -3741,8 +3914,12 @@ $(document).on("reopenEditSessionPopup", function (event, newLabelID) {
         }
       });
 
-      // Fetch and add labels
-      const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
+      // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה - תוויות חדשות
+      console.log("🌐 Creating new labels URL...");
+      const labelApi = apiConfig.createApiUrl(
+        `Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`
+      );
+      console.log("🏷️ New Labels URL:", labelApi);
 
       ajaxCall(
         "GET",
@@ -3840,7 +4017,10 @@ function setupProjectStatusToggle() {
         }
 
         $.ajax({
-          url: `https://localhost:7198/api/Projects/MarkProjectAsDone?projectID=${CurrentProject.ProjectID}`,
+          // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+          url: apiConfig.createApiUrl(
+            `Projects/MarkProjectAsDone?projectID=${CurrentProject.ProjectID}`
+          ),
           type: "PUT",
           success: function () {
             if (newStatus) {
@@ -3848,7 +4028,10 @@ function setupProjectStatusToggle() {
             } else {
               // שלוף מהשרת את הפרויקט המעודכן אחרי החזרה לפעיל
               $.ajax({
-                url: `https://localhost:7198/api/Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`,
+                // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+                url: apiConfig.createApiUrl(
+                  `Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`
+                ),
                 type: "GET",
                 success: function (updatedProject) {
                   CurrentProject = updatedProject;
@@ -3895,7 +4078,13 @@ function refreshProjectFromServer() {
       resolve();
       return;
     }
-    const url = `https://localhost:7198/api/Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`;
+    // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+    console.log("🌐 Creating refresh project URL...");
+    const url = apiConfig.createApiUrl(
+      `Projects/GetThisProject/ProjectID/${CurrentProject.ProjectID}/UserID/${CurrentUser.id}`
+    );
+    console.log("🔄 Refresh Project URL:", url);
+
     $.ajax({
       url: url,
       type: "GET",
@@ -4044,9 +4233,14 @@ function callGeminiAPI(text) {
     prompt: prompt,
   };
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating Gemini API URL...");
+  const geminiUrl = apiConfig.createApiUrl("Gemini/ask");
+  console.log("🤖 Gemini URL:", geminiUrl);
+
   ajaxCall(
     "POST",
-    "https://localhost:7198/api/Gemini/ask",
+    geminiUrl,
     JSON.stringify(requestData),
     (response) => {
       console.log("תשובה גולמית מהבינה המלאכותית:", response);
@@ -4153,11 +4347,15 @@ function openAddManualSessionPopup() {
   document.getElementById("manual-end-time").value = "";
   document.getElementById("manual-description").value = "";
 
-  // טעינת תוויות
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה - סשן ידני
+  console.log("🌐 Creating manual session labels URL...");
   const labelSelect = document.getElementById("manual-label-id");
   labelSelect.innerHTML = '<option value="">בחר תווית</option>';
 
-  const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
+  const labelApi = apiConfig.createApiUrl(
+    `Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`
+  );
+  console.log("🏷️ Manual Session Labels URL:", labelApi);
 
   ajaxCall(
     "GET",
@@ -4278,7 +4476,7 @@ $(document).on("submit", "#add-manual-session-form", function (e) {
   // שליחה לשרת
   ajaxCall(
     "POST",
-    "https://localhost:7198/api/Session/insert_session_Manually",
+    apiConfig.createApiUrl("Session/insert_session_Manually"),
     JSON.stringify(sessionData),
     () => {
       // סגירת הפופאפ
@@ -4623,9 +4821,12 @@ function callGeminiAPIForEndMessage(text, onSuccess, onError) {
     prompt: text,
   };
 
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  const geminiEndUrl = apiConfig.createApiUrl("Gemini/ask");
+
   ajaxCall(
     "POST",
-    "https://localhost:7198/api/Gemini/ask",
+    geminiEndUrl,
     JSON.stringify(requestData),
     (response) => {
       console.log("✅ תשובה מ-Gemini API התקבלה!", response);
@@ -5068,7 +5269,7 @@ function addNewLabelProject(name, color) {
   };
 
   $.ajax({
-    url: "https://localhost:7198/api/Label/addNewLabel",
+    url: apiConfig.createApiUrl("Label/addNewLabel"),
     method: "POST",
     contentType: "application/json",
     data: JSON.stringify(newLabel),
@@ -5092,7 +5293,12 @@ function addNewLabelProject(name, color) {
 
 // פונקציה לרענון כל ה-dropdowns של התגיות
 function refreshAllLabelDropdowns() {
-  const labelApi = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה - רענון תגיות
+  console.log("🌐 Creating refresh labels URL...");
+  const labelApi = apiConfig.createApiUrl(
+    `Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`
+  );
+  console.log("🔄 Refresh Labels URL:", labelApi);
 
   $.get(labelApi)
     .done((labels) => {
