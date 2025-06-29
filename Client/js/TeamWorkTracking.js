@@ -12,7 +12,9 @@ $(document).ready(function () {
   );
 
   // URL של ה-API לקבלת נתוני מעקב צוות
-  const apiUrl = `https://localhost:7198/api/Reports/GetTeamMonitoringData?managerUserID=${managerID}`;
+  const apiUrl = apiConfig.createApiUrl("Reports/GetTeamMonitoringData", {
+    managerUserID: managerID,
+  });
 
   let allData = [];
 

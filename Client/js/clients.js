@@ -21,8 +21,26 @@ $(document).ready(function () {
 
   // הגדרת תמונת משתמש ושם בתפריט הצדדי
   const avatarImg = document.querySelector(".avatar-img");
-  if (avatarImg)
-    avatarImg.src = CurrentUser.image || "./images/def/user-def.png";
+  if (avatarImg) {
+    let userImageUrl = CurrentUser?.image || "./images/def/user-def.png";
+
+    // אם אני בפרודקשן ויש localhost ב-URL, תחליף אותו
+    const isProduction =
+      window.location.hostname !== "localhost" &&
+      window.location.hostname !== "127.0.0.1";
+
+    if (
+      isProduction &&
+      userImageUrl &&
+      userImageUrl.includes("localhost:7198")
+    ) {
+      const filename = userImageUrl.split("/").pop();
+      userImageUrl = `https://proj.ruppin.ac.il/igroup4/prod/images/${filename}`;
+      console.log("🔄 Fixed avatar URL for production:", userImageUrl);
+    }
+
+    avatarImg.src = userImageUrl;
+  }
   const ProfName = document.getElementById("menu-prof-name");
   if (ProfName) ProfName.innerText = CurrentUser.firstName;
 
@@ -38,8 +56,19 @@ $(document).ready(function () {
     $("#client-form").off("submit").on("submit", handleCreateClient);
   });
 
-  // שליפת כל הנתונים
-  fetchAllData();
+  // שליפת כל הנתונים - אחרי שה-API Config נטען
+  if (typeof apiConfig !== "undefined") {
+    fetchAllData();
+  } else {
+    // המתן שה-API Config יטען
+    setTimeout(() => {
+      if (typeof apiConfig !== "undefined") {
+        fetchAllData();
+      } else {
+        console.error("API Config not loaded after timeout");
+      }
+    }, 100);
+  }
 
   // חיפוש דינמי לפי שם החברה
   $("#search-client").on("input", function () {
@@ -60,8 +89,13 @@ function handleCreateClient(e) {
   if (files.length > 0) {
     const formData = new FormData();
     formData.append("files", files[0]);
+    // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+    console.log("🌐 Creating client upload URL...");
+    const uploadUrl = apiConfig.createApiUrl("Upload");
+    console.log("📤 Client upload URL:", uploadUrl);
+
     $.ajax({
-      url: "https://localhost:7198/api/Upload",
+      url: uploadUrl,
       type: "POST",
       data: formData,
       processData: false,
@@ -89,8 +123,13 @@ function createClient(imagePath) {
     officePhone: $("#officePhone").val().trim(),
     image: imagePath || "./images/def/client-def.jpg",
   };
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating add client URL...");
+  const addClientUrl = apiConfig.createApiUrl("Client/Add%20Client");
+  console.log("➕ Add client URL:", addClientUrl);
+
   $.ajax({
-    url: "https://localhost:7198/api/Client/Add%20Client",
+    url: addClientUrl,
     type: "POST",
     contentType: "application/json",
     data: JSON.stringify(newClient),
@@ -109,15 +148,22 @@ function createClient(imagePath) {
 // שליפת נתונים: לקוחות, תקצירים, פרויקטים
 function fetchAllData() {
   const userID = CurrentUser.id;
-  const urls = [
-    $.get(
-      `https://localhost:7198/api/Client/GetAllClientsByUserID?userID=${userID}`
-    ),
-    $.get(
-      `https://localhost:7198/api/Client/GetClientSummariesByUserID?userID=${userID}`
-    ),
-    $.get(`https://localhost:7198/api/Projects/GetProjectByUserId/${userID}`),
-  ];
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating client data URLs...");
+  const clientsUrl = apiConfig.createApiUrl(
+    `Client/GetAllClientsByUserID?userID=${userID}`
+  );
+  const summariesUrl = apiConfig.createApiUrl(
+    `Client/GetClientSummariesByUserID?userID=${userID}`
+  );
+  const projectsUrl = apiConfig.createApiUrl(
+    `Projects/GetProjectByUserId/${userID}`
+  );
+  console.log("📊 Clients URL:", clientsUrl);
+  console.log("📈 Summaries URL:", summariesUrl);
+  console.log("📂 Projects URL:", projectsUrl);
+
+  const urls = [$.get(clientsUrl), $.get(summariesUrl), $.get(projectsUrl)];
   Promise.all(urls)
     .then(([clientsRes, summaryRes, projectsRes]) => {
       allClients = clientsRes;
@@ -222,8 +268,13 @@ function openEditPopup(client) {
       if (files.length > 0) {
         const formData = new FormData();
         formData.append("files", files[0]);
+        // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+        console.log("🌐 Creating client edit upload URL...");
+        const editUploadUrl = apiConfig.createApiUrl("Upload");
+        console.log("📤 Client edit upload URL:", editUploadUrl);
+
         $.ajax({
-          url: "https://localhost:7198/api/Upload",
+          url: editUploadUrl,
           type: "POST",
           data: formData,
           processData: false,
@@ -249,8 +300,13 @@ function updateClient(clientID, imagePath) {
     officePhone: $("#officePhone").val(),
     image: imagePath,
   };
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating update client URL...");
+  const updateClientUrl = apiConfig.createApiUrl("Client/Update%20Client");
+  console.log("🔄 Update client URL:", updateClientUrl);
+
   $.ajax({
-    url: "https://localhost:7198/api/Client/Update%20Client",
+    url: updateClientUrl,
     type: "PUT",
     contentType: "application/json",
     data: JSON.stringify(updatedClient),
@@ -314,8 +370,15 @@ function showSuccessNotification(message) {
 
 // קריאה למחיקת לקוח (ארכיון)
 function archiveClient(clientID) {
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating delete client URL...");
+  const deleteClientUrl = apiConfig.createApiUrl(
+    `Client/Delete%20Client/${clientID}`
+  );
+  console.log("🗑️ Delete client URL:", deleteClientUrl);
+
   $.ajax({
-    url: `https://localhost:7198/api/Client/Delete%20Client/${clientID}`,
+    url: deleteClientUrl,
     type: "PUT",
     success: function () {
       showSuccessNotification("הלקוח הועבר לארכיון בהצלחה.");

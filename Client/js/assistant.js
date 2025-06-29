@@ -1174,7 +1174,9 @@ function loadTeamMonitoringData(userId) {
 
     ajaxCall(
       "GET",
-      `https://localhost:7198/api/Reports/GetTeamMonitoringData?managerUserID=${userId}`,
+      apiConfig.createApiUrl("Reports/GetTeamMonitoringData", {
+        managerUserID: userId,
+      }),
       "",
       function (response) {
         try {
@@ -1214,7 +1216,9 @@ function loadAssistantData(userId) {
   const assistantDataPromise = new Promise((resolve, reject) => {
     ajaxCall(
       "GET",
-      `https://localhost:7198/api/Reports/GetFullAssistantData?userId=${userId}`,
+      apiConfig.createApiUrl("Reports/GetFullAssistantData", {
+        userId: userId,
+      }),
       "",
       function (response) {
         // עיבוד הנתונים מהשרת
@@ -1310,7 +1314,10 @@ function loadAssistantData(userId) {
 
         addMessage(
           "assistant",
-          `🔧 שיפורים חדשים! עכשיו אני יכול לענות על שאלות על:\n\n• 📊 משימות ומצב השלמתן\n• 👥 אנשי צוות בפרויקטים\n• 📈 תשובות בפורמט טבלאות וגרפים אינטראקטיביים!\n• 📊 גרפי עמודות, עוגות וקווים עם Chart.js\n• 🎯 הכל עם חישובים מדויקים!\n• 🔍 ניתוח מפורט של ביצועי הצוות\n\n🔧 סטטוס גרפים: ${chartStatus}\n🔧 סטטוס נתוני צוות: ${teamStatus}\n\n⚠️ אם אתה רואה שגיאות, אנא רענן את הדף וודא שהשרת רץ על https://localhost:7198\n\nשאל אותי משהו! ✨`
+          `🔧 שיפורים חדשים! עכשיו אני יכול לענות על שאלות על:\n\n• 📊 משימות ומצב השלמתן\n• 👥 אנשי צוות בפרויקטים\n• 📈 תשובות בפורמט טבלאות וגרפים אינטראקטיביים!\n• 📊 גרפי עמודות, עוגות וקווים עם Chart.js\n• 🎯 הכל עם חישובים מדויקים!\n• 🔍 ניתוח מפורט של ביצועי הצוות\n\n🔧 סטטוס גרפים: ${chartStatus}\n🔧 סטטוס נתוני צוות: ${teamStatus}\n\n⚠️ אם אתה רואה שגיאות, אנא רענן את הדף וודא שהשרת רץ על ${apiConfig.baseUrl.replace(
+            "/api",
+            ""
+          )}\n\nשאל אותי משהו! ✨`
         );
       }
     })
@@ -1491,7 +1498,10 @@ function sendToGemini(userQuestion) {
       isLoading = false;
       addMessage(
         "assistant",
-        "מצטער, אין לי נתוני משימות זמינים כרגע. 😔\n\n🔧 **כדי לקבל נתוני משימות:**\n• וודא שהשרת רץ על https://localhost:7198\n• וודא שיש לך הרשאות לגשת לנתוני הצוות\n• בדוק בקונסול (F12) אם יש שגיאות\n\n💡 **בינתיים אני יכול לעזור עם:**\n• שאלות על פרויקטים ולקוחות\n• הכנסות ושעות עבודה\n• ניתוח ביצועים\n• יצירת גרפים וטבלאות"
+        `מצטער, אין לי נתוני משימות זמינים כרגע. 😔\n\n🔧 **כדי לקבל נתוני משימות:**\n• וודא שהשרת רץ על ${apiConfig.baseUrl.replace(
+          "/api",
+          ""
+        )}\n• וודא שיש לך הרשאות לגשת לנתוני הצוות\n• בדוק בקונסול (F12) אם יש שגיאות\n\n💡 **בינתיים אני יכול לעזור עם:**\n• שאלות על פרויקטים ולקוחות\n• הכנסות ושעות עבודה\n• ניתוח ביצועים\n• יצירת גרפים וטבלאות`
       );
       return;
     }
@@ -1846,7 +1856,7 @@ ${userQuestion}
 
   ajaxCall(
     "POST",
-    "https://localhost:7198/api/Gemini/ask",
+    apiConfig.createApiUrl("Gemini/ask"),
     requestData,
     function (response) {
       console.log("תשובה גולמית מהשרת:", response);

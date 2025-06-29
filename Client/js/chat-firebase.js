@@ -110,7 +110,9 @@ $(document).ready(function () {
 
 // Load project team avatars (keeping existing functionality)
 function loadProjectTeam(projectId, currentUserId) {
-  const url = `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectId}`;
+  const url = window.apiConfig.createApiUrl("Projects/GetProjectTeam", {
+    ProjectID: projectId,
+  });
 
   $.getJSON(url, function (team) {
     const currentUser = team.find((u) => u.UserID === currentUserId);

@@ -36,20 +36,27 @@ namespace EasyTracker.Controllers
 
             long size = files.Sum(f => f.Length);
 
+
+
+
+            // מצביע לתיקיית uploadedFiles בתוך prod
+            string prodUploadPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "prod", "uploadedFiles");
+            Directory.CreateDirectory(prodUploadPath); // מוודא שהתיקייה קיימת
+
+
             foreach (var formFile in files)
             {
                 if (formFile.Length > 0)
                 {
-                    var filePath = Path.Combine(path, "uploadedFiles/" + formFile.FileName);
+                    var filePath = Path.Combine(prodUploadPath, formFile.FileName);
 
                     using (var stream = System.IO.File.Create(filePath))
                     {
                         await formFile.CopyToAsync(stream);
                     }
-                    //imageLinks.Add(formFile.FileName);
-                    //imageLinks.Add("/Images/" + formFile.FileName);
-                    imageLinks.Add($"{Request.Scheme}://{Request.Host}/Images/{formFile.FileName}");
 
+                    // כתובת ציבורית לגישה לתמונה
+                    imageLinks.Add($"https://proj.ruppin.ac.il/igroup4/prod/uploadedFiles/{formFile.FileName}");
                 }
             }
 

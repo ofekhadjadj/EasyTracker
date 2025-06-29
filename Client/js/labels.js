@@ -83,7 +83,9 @@ $(document).ready(function () {
 });
 
 function fetchAllLabels() {
-  const url = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${CurrentUser.id}`;
+  const url = apiConfig.createApiUrl("Label/GetAllLabelsByUserID", {
+    userID: CurrentUser.id,
+  });
   $.get(url)
     .done((data) => {
       allLabels = data;
@@ -142,7 +144,7 @@ function addNewLabel(name, color) {
   };
 
   $.ajax({
-    url: "https://localhost:7198/api/Label/addNewLabel",
+    url: apiConfig.createApiUrl("Label/addNewLabel"),
     method: "POST",
     contentType: "application/json",
     data: JSON.stringify(newLabel),
@@ -171,7 +173,7 @@ function updateLabel(id, name, color) {
   };
 
   $.ajax({
-    url: "https://localhost:7198/api/Label/update_label",
+    url: apiConfig.createApiUrl("Label/update_label"),
     method: "PUT",
     contentType: "application/json",
     data: JSON.stringify(updatedLabel),
@@ -206,7 +208,7 @@ function deleteLabel(labelID) {
   }).then((result) => {
     if (result.isConfirmed) {
       $.ajax({
-        url: `https://localhost:7198/api/Label/delete_label?LabelID=${labelID}`,
+        url: apiConfig.createApiUrl("Label/delete_label", { LabelID: labelID }),
         method: "PUT",
         success: () => {
           fetchAllLabels();

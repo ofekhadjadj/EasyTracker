@@ -69,7 +69,7 @@ $(document).ready(function () {
 });
 
 function loadDashboardSummary(userID) {
-  const url = `https://localhost:7198/api/Reports/GetDashboardSummary?userID=${userID}`;
+  const url = apiConfig.createApiUrl(`Reports/GetDashboardSummary`, { userID });
   ajaxCall("GET", url, null, (data) => {
     if (!data || !data.length) {
       console.error("No dashboard summary data received");
@@ -106,7 +106,9 @@ function loadDashboardSummary(userID) {
 }
 
 function loadTopClients(userID) {
-  const url = `https://localhost:7198/api/Reports/GetTopEarning5Clients?userID=${userID}`;
+  const url = apiConfig.createApiUrl(`Reports/GetTopEarning5Clients`, {
+    userID,
+  });
   ajaxCall("GET", url, null, (clients) => {
     if (!clients || !clients.length) {
       console.error("No top clients data received");
@@ -142,7 +144,9 @@ function loadTopClients(userID) {
 }
 
 function loadTopProjects(userID) {
-  const url = `https://localhost:7198/api/Reports/GetTopEarning5Projects?userID=${userID}`;
+  const url = apiConfig.createApiUrl(`Reports/GetTopEarning5Projects`, {
+    userID,
+  });
   ajaxCall("GET", url, null, (projects) => {
     if (!projects || !projects.length) {
       console.error("No top projects data received");
@@ -180,10 +184,11 @@ function loadTopProjects(userID) {
 function showSummaryPopup(type, userID) {
   const popupID =
     type === "client" ? "client-summary-popup" : "project-summary-popup";
-  const url =
+  const endpoint =
     type === "client"
-      ? `https://localhost:7198/api/Reports/GetClientSummaries?userID=${userID}`
-      : `https://localhost:7198/api/Reports/GetProjectSummaries?userID=${userID}`;
+      ? "Reports/GetClientSummaries"
+      : "Reports/GetProjectSummaries";
+  const url = apiConfig.createApiUrl(endpoint, { userID });
 
   ajaxCall("GET", url, null, (data) => {
     if (!data || !data.length) {
@@ -320,10 +325,10 @@ function loadCharts(userID, filters = {}) {
 }
 
 function loadWorkSummaryOverTime(userID, filters = {}) {
-  let url = `https://localhost:7198/api/Reports/GetWorkSummaryOverTime?userID=${userID}`;
+  // Create base params
+  let params = { userID, ...filters };
 
-  // Add filters to URL
-  url = appendFiltersToUrl(url, filters);
+  const url = apiConfig.createApiUrl("Reports/GetWorkSummaryOverTime", params);
 
   ajaxCall("GET", url, null, (data) => {
     if (!data || !data.length) {
@@ -393,13 +398,15 @@ function loadWorkSummaryOverTime(userID, filters = {}) {
 }
 
 function loadWorkByLabel(userID, filters = {}) {
-  let url = `https://localhost:7198/api/Reports/GetWorkByLabel?userID=${userID}`;
+  // Create base params
+  let params = { userID, ...filters };
 
-  // Add filters to URL
-  url = appendFiltersToUrl(url, filters);
+  const url = apiConfig.createApiUrl("Reports/GetWorkByLabel", params);
 
   // First get all labels to get their colors
-  const labelsUrl = `https://localhost:7198/api/Label/GetAllLabelsByUserID?userID=${userID}`;
+  const labelsUrl = apiConfig.createApiUrl("Label/GetAllLabelsByUserID", {
+    userID,
+  });
 
   ajaxCall("GET", labelsUrl, null, (labelsData) => {
     // Create a map of label names to their colors
@@ -490,10 +497,13 @@ function loadWorkByLabel(userID, filters = {}) {
 }
 
 function loadMonthlyWorkAndEarnings(userID, filters = {}) {
-  let url = `https://localhost:7198/api/Reports/GetWorkAndEarningsByPeriod?userID=${userID}`;
+  // Create base params
+  let params = { userID, ...filters };
 
-  // Add filters to URL
-  url = appendFiltersToUrl(url, filters);
+  const url = apiConfig.createApiUrl(
+    "Reports/GetWorkAndEarningsByPeriod",
+    params
+  );
 
   ajaxCall("GET", url, null, (data) => {
     if (!data || !data.length) {
@@ -568,31 +578,6 @@ function loadMonthlyWorkAndEarnings(userID, filters = {}) {
   });
 }
 
-// Helper function to add filters to API URL
-function appendFiltersToUrl(url, filters) {
-  if (filters.groupBy) {
-    url += `&groupBy=${filters.groupBy}`;
-  }
-
-  if (filters.fromDate) {
-    url += `&fromDate=${filters.fromDate}`;
-  }
-
-  if (filters.toDate) {
-    url += `&toDate=${filters.toDate}`;
-  }
-
-  if (filters.clientID) {
-    url += `&clientID=${filters.clientID}`;
-  }
-
-  if (filters.projectID) {
-    url += `&projectID=${filters.projectID}`;
-  }
-
-  return url;
-}
-
 // Format period labels based on groupBy
 function formatPeriodLabel(period, groupBy) {
   if (typeof period !== "string" || typeof groupBy !== "string") return "";
@@ -639,7 +624,9 @@ function formatMinutesToHHMM(minutes) {
 
 // Load clients for the filter dropdown
 function loadClientsForFilter(userID) {
-  const url = `https://localhost:7198/api/Client/GetAllClientsByUserID?userID=${userID}`;
+  const url = apiConfig.createApiUrl("Client/GetAllClientsByUserID", {
+    userID,
+  });
 
   ajaxCall("GET", url, null, (clients) => {
     console.log("לקוחות שהתקבלו:", clients);
@@ -668,7 +655,7 @@ function loadClientsForFilter(userID) {
 
 // Load projects for the filter dropdown
 function loadProjectsForFilter(userID) {
-  const url = `https://localhost:7198/api/Projects/GetProjectByUserId/${userID}`;
+  const url = apiConfig.createApiUrl(`Projects/GetProjectByUserId/${userID}`);
 
   ajaxCall("GET", url, null, (projects) => {
     console.log("פרויקטים שהתקבלו מהשרת:", projects);
@@ -711,7 +698,10 @@ function loadProjectsForFilter(userID) {
 
 // Load projects for a specific client
 function loadProjectsForClient(userID, clientID) {
-  const url = `https://localhost:7198/api/Projects/GetProjectsByClient?userID=${userID}&clientID=${clientID}`;
+  const url = apiConfig.createApiUrl("Projects/GetProjectsByClient", {
+    userID,
+    clientID,
+  });
   ajaxCall("GET", url, null, (projects) => {
     if (!projects || !projects.length) {
       console.error("No projects data received for client");

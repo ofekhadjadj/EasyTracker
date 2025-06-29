@@ -6,7 +6,10 @@ $(document).ready(function () {
 
   function checkChatNotifications() {
     $.getJSON(
-      `https://localhost:7198/api/Chat/GetUnreadStatus?userID=${user.id}&projectID=${project.ProjectID}`,
+      apiConfig.createApiUrl("Chat/GetUnreadStatus", {
+        userID: user.id,
+        projectID: project.ProjectID,
+      }),
       (status) => {
         const hasGroup = status.groupUnreadCount > 0;
         const hasPrivate = status.private.some((p) => p.unreadCount > 0);

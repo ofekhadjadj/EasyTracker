@@ -71,7 +71,7 @@ function loadSystemSummary() {
 
   ajaxCall(
     "GET",
-    "https://localhost:7198/api/AdminPanel/GetSystemSummary",
+    apiConfig.createApiUrl("AdminPanel/GetSystemSummary"),
     "",
     function (data) {
       console.log("✅ System summary loaded:", data);
@@ -235,7 +235,7 @@ function loadTopActiveUsers() {
 
   ajaxCall(
     "GET",
-    "https://localhost:7198/api/AdminPanel/GetTop5ActiveUsers",
+    apiConfig.createApiUrl("AdminPanel/GetTop5ActiveUsers"),
     "",
     function (data) {
       console.log("✅ Top active users loaded:", data);
@@ -259,7 +259,7 @@ function loadTopEarningUsers() {
 
   ajaxCall(
     "GET",
-    "https://localhost:7198/api/AdminPanel/GetTop5EarningUsers",
+    apiConfig.createApiUrl("AdminPanel/GetTop5EarningUsers"),
     "",
     function (data) {
       console.log("✅ Top earning users loaded:", data);
@@ -325,7 +325,7 @@ function loadAllUsers() {
 
   ajaxCall(
     "GET",
-    "https://localhost:7198/api/AdminPanel/GetAllUsersOverview",
+    apiConfig.createApiUrl("AdminPanel/GetAllUsersOverview"),
     "",
     function (data) {
       console.log("✅ All users loaded:", data);
@@ -470,7 +470,9 @@ function toggleUserStatus(userId, isActive) {
   // Use jQuery AJAX directly since the API returns text, not JSON
   $.ajax({
     type: "PUT",
-    url: `https://localhost:7198/api/AdminPanel/ToggleUserActiveStatus?userId=${userId}`,
+    url: apiConfig.createApiUrl("AdminPanel/ToggleUserActiveStatus", {
+      userId: userId,
+    }),
     timeout: 60000,
     success: function (response, textStatus, jqXHR) {
       console.log("✅ User status toggle success:", response);
@@ -527,7 +529,7 @@ function resetUserPassword(userId) {
 
   ajaxCall(
     "PUT",
-    `https://localhost:7198/api/AdminPanel/ResetUserPassword?userId=${userId}`,
+    apiConfig.createApiUrl("AdminPanel/ResetUserPassword", { userId: userId }),
     "",
     function (response) {
       console.log("✅ Password reset:", response);
@@ -803,7 +805,7 @@ function loadChartData(period) {
   // Otherwise, load users data first
   ajaxCall(
     "GET",
-    "https://localhost:7198/api/AdminPanel/GetAllUsersOverview",
+    apiConfig.createApiUrl("AdminPanel/GetAllUsersOverview"),
     "",
     function (data) {
       console.log("✅ Users data loaded for chart:", data);

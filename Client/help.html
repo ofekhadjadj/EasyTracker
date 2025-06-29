@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Easy Tracker - עזרה</title>
+    <link rel="icon" href="./images/fav-icon.png" type="images/png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <style>
+      /* סגנונות מיוחדים לעמוד העזרה */
+      .help-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .help-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 30px;
+        background: linear-gradient(
+          135deg,
+          #0097ff 0%,
+          #007eff 50%,
+          #0054ff 100%
+        );
+        border-radius: 20px;
+        color: white;
+        box-shadow: 0 10px 30px rgba(0, 114, 255, 0.3);
+      }
+
+      .help-header h1 {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .help-header p {
+        font-size: 22px;
+        font-weight: 300;
+        opacity: 0.95;
+        line-height: 1.6;
+      }
+
+      .help-section {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid #f0f4f8;
+      }
+
+      .help-section h2 {
+        font-size: 32px;
+        font-weight: 600;
+        color: #0072ff;
+        margin-bottom: 20px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .help-section h2::before,
+      .help-section h2::after {
+        content: "";
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(90deg, #0097ff, #0054ff);
+        border-radius: 2px;
+      }
+
+      .video-container {
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        margin-top: 30px;
+      }
+
+      .video-item {
+        flex: 1;
+        min-width: 450px;
+        max-width: 550px;
+        background: #f8fbff;
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(0, 114, 255, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 2px solid transparent;
+      }
+
+      .video-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 114, 255, 0.25);
+        border-color: #0097ff;
+      }
+
+      .video-item h3 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #0072ff;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .video-item video {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        border: 3px solid white;
+        transition: transform 0.3s ease;
+      }
+
+      .video-item video:hover {
+        transform: scale(1.02);
+      }
+
+      .video-description {
+        margin-top: 15px;
+        font-size: 16px;
+        color: #555;
+        line-height: 1.6;
+        text-align: right;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+      }
+
+      .feature-card {
+        background: linear-gradient(135deg, #f8fbff 0%, #e8f4ff 100%);
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+        border: 2px solid #e1ecf7;
+        transition: all 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        border-color: #0097ff;
+        box-shadow: 0 10px 30px rgba(0, 114, 255, 0.2);
+      }
+
+      .feature-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+        display: block;
+      }
+
+      .feature-card h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #0072ff;
+        margin-bottom: 10px;
+      }
+
+      .feature-card p {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.5;
+      }
+
+      .support-section {
+        background: linear-gradient(135deg, #f0f8ff 0%, #e8f4ff 100%);
+        border: 2px solid #d1e7ff;
+        text-align: center;
+      }
+
+      .support-section .contact-info {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 18px;
+        color: #0072ff;
+        font-weight: 500;
+      }
+
+      .contact-item span {
+        font-size: 24px;
+      }
+
+      /* אנימציות */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .help-section {
+        animation: fadeInUp 0.6s ease forwards;
+      }
+
+      .help-section:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .help-section:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+      .help-section:nth-child(4) {
+        animation-delay: 0.3s;
+      }
+
+      /* ריספונסיב */
+      @media (max-width: 768px) {
+        .help-header h1 {
+          font-size: 36px;
+        }
+
+        .help-header p {
+          font-size: 18px;
+        }
+
+        .video-item {
+          min-width: 300px;
+        }
+
+        .contact-info {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .help-section {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="projects-continer">
+      <div class="sidbar wow fadeInRightBig">
+        <div class="inner-sidbar">
+          <div class="profile">
+            <img src="#" class="avatar-img" alt="" />
+            <h3>הי, <span id="menu-prof-name">משתמש</span> 👋</h3>
+            <span class="profile-arrow"
+              ><i class="fas fa-chevron-down"></i
+            ></span>
+            <div id="user-dropdown-menu" style="display: none">
+              <button id="edit-profile-btn" class="user-menu-btn">
+                ✏️ עריכת פרופיל
+              </button>
+              <button id="logout-btn" class="user-menu-btn">🚪 התנתק</button>
+            </div>
+          </div>
+          <img src="./images/logo.png" class="logo-sidebar" alt="" />
+          <div class="nav-continer">
+            <div class="main-nav">
+              <ul>
+                <li>
+                  <a href="projects.html" class="">
+                    <img
+                      src="./images/icons/proj-black.png"
+                      alt="פרויקטים"
+                      class="nav-icon"
+                    />
+                    <span>פרויקטים</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="clients.html" class="">
+                    <img
+                      src="./images/icons/customer-black.png"
+                      alt="לקוחות"
+                      class="nav-icon"
+                    />
+                    <span>לקוחות</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="stats.html" class="">
+                    <img
+                      src="./images/icons/statistics and analytics-black.png"
+                      alt="דוחות"
+                      class="nav-icon"
+                    />
+                    <span>ניתוח ודוחות</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="labels.html" class="">
+                    <img
+                      src="./images/icons/lablels-black.png"
+                      alt="תיוגים"
+                      class="nav-icon"
+                    />
+                    <span>תיוגים</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="assistant.html" class="">
+                    <img
+                      src="./images/icons/aiassistant-black.png"
+                      alt="העוזר האישי"
+                      class="nav-icon"
+                    />
+                    <span>העוזר האישי</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="help-nav">
+              <ul>
+                <li>
+                  <a href="help.html" class="active">
+                    <img
+                      src="./images/icons/help-white.png"
+                      alt="עזרה"
+                      class="nav-icon"
+                    />
+                    <span>עזרה</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="content">
+        <div class="inner-content">
+          <div class="help-content">
+            <!-- Header -->
+            <div class="help-header">
+              <h1>🆘 מרכז העזרה</h1>
+              <p>
+                כל מה שצריכים לדעת על Easy Tracker - המערכת החכמה לניהול זמן
+                ופרויקטים
+              </p>
+            </div>
+
+            <!-- Video Tutorials Section -->
+            <div class="help-section">
+              <h2>🎬 סרטוני הדרכה</h2>
+              <p
+                style="
+                  text-align: center;
+                  font-size: 18px;
+                  color: #666;
+                  margin-bottom: 10px;
+                "
+              >
+                צפו בסרטוני ההדרכה שלנו ותלמדו איך להפיק את המקסימום מהמערכת
+              </p>
+
+              <div class="video-container">
+                <div class="video-item">
+                  <h3>🤖 עוזר AI ו צ'אט חכם</h3>
+                  <video controls preload="metadata">
+                    <source src="./images/vid/chat-ai.mp4" type="video/mp4" />
+                    הדפדפן שלך לא תומך בהצגת וידאו.
+                  </video>
+                  <div class="video-description">
+                    <strong>למדו איך להשתמש בעוזר AI החכם:</strong><br />
+                    • איך לשאול שאלות ולקבל תשובות מדויקות<br />
+                    • שימוש בצ'אט לניהול פרויקטים<br />
+                    • טיפים וטריקים לשיפור היעילות<br />
+                    • קבלת המלצות אישיות למערכת
+                  </div>
+                </div>
+
+                <div class="video-item">
+                  <h3>🖥️ סיור במערכת</h3>
+                  <video controls preload="metadata">
+                    <source src="./images/vid/des-ai.mp4" type="video/mp4" />
+                    הדפדפן שלך לא תומך בהצגת וידאו.
+                  </video>
+                  <div class="video-description">
+                    <strong>הכירו את כל התכונות של המערכת:</strong><br />
+                    • ניווט בין העמודים השונים<br />
+                    • יצירה וניהול פרויקטים<br />
+                    • מעקב אחר זמן עבודה<br />
+                    • הפקת דוחות ואנליטיקות
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Features Overview -->
+            <div class="help-section">
+              <h2>⭐ תכונות עיקריות</h2>
+              <div class="features-grid">
+                <div class="feature-card">
+                  <span class="feature-icon">📊</span>
+                  <h3>ניהול פרויקטים</h3>
+                  <p>
+                    צרו וניהלו פרויקטים, הגדירו יעדים ועקבו אחר התקדמות בזמן אמת
+                  </p>
+                </div>
+
+                <div class="feature-card">
+                  <span class="feature-icon">⏱️</span>
+                  <h3>מעקב זמן חכם</h3>
+                  <p>עקבו אחר שעות העבודה בדיוק, עם טיימר מתקדם וניתוח מפורט</p>
+                </div>
+
+                <div class="feature-card">
+                  <span class="feature-icon">👥</span>
+                  <h3>ניהול לקוחות</h3>
+                  <p>ארגנו את הלקוחות שלכם, עקבו אחר פרויקטים ויצרו חשבוניות</p>
+                </div>
+
+                <div class="feature-card">
+                  <span class="feature-icon">🏷️</span>
+                  <h3>מערכת תוויות</h3>
+                  <p>
+                    סווגו את העבודות שלכם עם תוויות צבעוניות וארגנו את הזמן
+                    בחכמה
+                  </p>
+                </div>
+
+                <div class="feature-card">
+                  <span class="feature-icon">📈</span>
+                  <h3>דוחות ואנליטיקה</h3>
+                  <p>קבלו תובנות מעמיקות על הביצועים שלכם עם דוחות מפורטים</p>
+                </div>
+
+                <div class="feature-card">
+                  <span class="feature-icon">🤖</span>
+                  <h3>בינה מלאכותית</h3>
+                  <p>
+                    עוזר AI חכם שיעזור לכם לייעל את העבודה ולקבל המלצות אישיות
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Getting Started -->
+            <div class="help-section">
+              <h2>🚀 בואו נתחיל</h2>
+              <div
+                style="
+                  text-align: right;
+                  font-size: 18px;
+                  line-height: 2;
+                  color: #555;
+                "
+              >
+                <p>
+                  <strong>שלב 1:</strong> צרו פרויקט חדש מהעמוד "פרויקטים" 📝
+                </p>
+                <p>
+                  <strong>שלב 2:</strong> הוסיפו לקוח חדש מהעמוד "לקוחות" 👤
+                </p>
+                <p>
+                  <strong>שלב 3:</strong> התחילו לעקוב אחר הזמן עם הטיימר החכם
+                  ⏰
+                </p>
+                <p><strong>שלב 4:</strong> צפו בסטטיסטיקות ובדוחות שלכם 📊</p>
+                <p>
+                  <strong>שלב 5:</strong> השתמשו בעוזר AI לקבלת עצות והמלצות 🤖
+                </p>
+              </div>
+            </div>
+
+            <!-- Support Section -->
+            <div class="help-section support-section">
+              <h2>💬 זקוקים לעזרה נוספת?</h2>
+              <p style="font-size: 18px; color: #666; margin-bottom: 20px">
+                הצוות שלנו כאן כדי לעזור לכם! צרו קשר בכל דרך שנוחה לכם
+              </p>
+
+              <div class="contact-info">
+                <div class="contact-item">
+                  <span>📧</span>
+                  <span>support@easytracker.co.il</span>
+                </div>
+                <div class="contact-item">
+                  <span>💬</span>
+                  <span>צ'אט חי באתר</span>
+                </div>
+                <div class="contact-item">
+                  <span>🤖</span>
+                  <span>עוזר AI זמין 24/7</span>
+                </div>
+              </div>
+
+              <p style="margin-top: 25px; font-size: 16px; color: #888">
+                זמן התגובה: עד 24 שעות | תמיכה בעברית, אנגלית וערבית
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/api-config.js"></script>
+    <script src="js/AjaxCall.js"></script>
+    <script src="js/sidebar-active.js"></script>
+    <script src="js/edit-user.js"></script>
+    <script>
+      // Help page specific functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("🆘 Help page loaded successfully");
+
+        // Load user profile data
+        const CurrentUser = JSON.parse(localStorage.getItem("CurrentUser"));
+        if (CurrentUser && CurrentUser.firstName) {
+          const menuProfileName = document.getElementById("menu-prof-name");
+          if (menuProfileName) {
+            menuProfileName.textContent = CurrentUser.firstName;
+          }
+
+          // Set profile image if exists
+          if (CurrentUser.userImageFile) {
+            const profileImg = document.querySelector(".avatar-img");
+            if (profileImg) {
+              profileImg.src = CurrentUser.userImageFile;
+            }
+          }
+        }
+
+        // Auto-play videos when they come into view
+        const videos = document.querySelectorAll("video");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.setAttribute("preload", "auto");
+              }
+            });
+          },
+          { threshold: 0.5 }
+        );
+
+        videos.forEach((video) => {
+          observer.observe(video);
+        });
+
+        // Add smooth scrolling to sections
+        const sections = document.querySelectorAll(".help-section");
+        const sectionObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        sections.forEach((section) => {
+          sectionObserver.observe(section);
+        });
+      });
+
+      // User dropdown functions
+      function toggleUserDropdown() {
+        const dropdown = document.getElementById("user-dropdown-menu");
+        const arrow = document.querySelector(".profile-arrow");
+
+        if (dropdown.style.display === "block") {
+          dropdown.style.display = "none";
+          arrow.classList.remove("active");
+        } else {
+          dropdown.style.display = "block";
+          arrow.classList.add("active");
+        }
+      }
+
+      function openEditUserForm() {
+        // This would typically open a user edit modal
+        console.log("Opening edit user form...");
+        toggleUserDropdown();
+      }
+
+      function logout() {
+        if (confirm("האם אתה בטוח שברצונך להתנתק?")) {
+          localStorage.removeItem("CurrentUser");
+          window.location.href = "login.html";
+        }
+      }
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (e) {
+        const dropdown = document.getElementById("user-dropdown-menu");
+        const profileArea = document.querySelector(".profile");
+
+        if (
+          !profileArea.contains(e.target) &&
+          dropdown.style.display === "block"
+        ) {
+          toggleUserDropdown();
+        }
+      });
+    </script>
+  </body>
+</html>

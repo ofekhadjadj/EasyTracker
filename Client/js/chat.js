@@ -51,7 +51,9 @@ $(document).ready(function () {
 
 // Load project team avatars based on role
 function loadProjectTeam(projectId, currentUserId) {
-  const url = `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectId}`;
+  const url = apiConfig.createApiUrl("Projects/GetProjectTeam", {
+    ProjectID: projectId,
+  });
   $.getJSON(url, function (team) {
     const currentUser = team.find((u) => u.UserID === currentUserId);
     if (!currentUser) return;
@@ -155,14 +157,21 @@ function loadChatMessages() {
   if (isGroup) {
     // קבוצתי
     $.post(
-      `https://localhost:7198/api/Chat/MarkGroupAsRead?userID=${CurrentUser.id}&projectID=${projectID}`
+      apiConfig.createApiUrl("Chat/MarkGroupAsRead", {
+        userID: CurrentUser.id,
+        projectID: projectID,
+      })
     ).always(() => {
       updateUnreadBadges();
     });
   } else {
     // פרטי
     $.post(
-      `https://localhost:7198/api/Chat/MarkPrivateAsRead?userID=${CurrentUser.id}&otherUserID=${selectedReceiverId}&projectID=${projectID}`
+      apiConfig.createApiUrl("Chat/MarkPrivateAsRead", {
+        userID: CurrentUser.id,
+        otherUserID: selectedReceiverId,
+        projectID: projectID,
+      })
     ).always(() => {
       updateUnreadBadges();
     });
@@ -170,8 +179,12 @@ function loadChatMessages() {
 
   // עכשיו נטען את ההודעות
   const url = isGroup
-    ? `https://localhost:7198/api/Chat/GetGroupChat?projectID=${projectID}`
-    : `https://localhost:7198/api/Chat/GetPrivateChat?userID1=${CurrentUser.id}&userID2=${selectedReceiverId}&projectID=${projectID}`;
+    ? apiConfig.createApiUrl("Chat/GetGroupChat", { projectID: projectID })
+    : apiConfig.createApiUrl("Chat/GetPrivateChat", {
+        userID1: CurrentUser.id,
+        userID2: selectedReceiverId,
+        projectID: projectID,
+      });
 
   $.getJSON(url, function (messages) {
     const $container = $("#chat-messages");
@@ -211,7 +224,7 @@ function sendMessage() {
   };
 
   $.ajax({
-    url: "https://localhost:7198/api/Chat/SendMessage",
+    url: apiConfig.createApiUrl("Chat/SendMessage"),
     method: "POST",
     contentType: "application/json",
     data: JSON.stringify(message),
@@ -226,7 +239,10 @@ function sendMessage() {
 }
 
 function updateUnreadBadges() {
-  const url = `https://localhost:7198/api/Chat/GetUnreadStatus?userID=${CurrentUser.id}&projectID=${CurrentProject.ProjectID}`;
+  const url = apiConfig.createApiUrl("Chat/GetUnreadStatus", {
+    userID: CurrentUser.id,
+    projectID: CurrentProject.ProjectID,
+  });
 
   $.getJSON(url, (status) => {
     // –––––– קבוצתי ––––––

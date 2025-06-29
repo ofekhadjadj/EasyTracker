@@ -140,7 +140,9 @@ function format(description) {
 // Load user's projects
 function loadUserProjects() {
   const userId = CurrentUser.id;
-  const apiUrl = `https://localhost:7198/api/Projects/GetProjectByUserId/${userId}`;
+  const apiUrl = apiConfig.createApiUrl(
+    `Projects/GetProjectByUserId/${userId}`
+  );
 
   console.log("📋 Loading projects for user:", userId);
 
@@ -180,7 +182,9 @@ function populateProjectsDropdown(projects) {
 function loadTeamMembers(projectId) {
   console.log("👥 Loading team members for project:", projectId);
 
-  const apiUrl = `https://localhost:7198/api/Projects/GetProjectTeam?ProjectID=${projectId}`;
+  const apiUrl = apiConfig.createApiUrl(`Projects/GetProjectTeam`, {
+    ProjectID: projectId,
+  });
 
   ajaxCall(
     "GET",
@@ -227,7 +231,10 @@ function populateTeamMembersDropdown(teamMembers) {
 function loadSessions(userId, projectId) {
   console.log("📊 Loading sessions for user:", userId, "project:", projectId);
 
-  const apiUrl = `https://localhost:7198/api/Session/GetAllSessionsByUserAndProject?userID=${userId}&projectID=${projectId}`;
+  const apiUrl = apiConfig.createApiUrl(
+    `Session/GetAllSessionsByUserAndProject`,
+    { userID: userId, projectID: projectId }
+  );
   console.log("🔗 API URL:", apiUrl);
 
   ajaxCall(

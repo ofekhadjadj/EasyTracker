@@ -108,7 +108,7 @@ function handleLogin(email, password) {
   console.log("Mobile Login - Email:", email);
   console.log("Mobile Login - Password:", password);
 
-  const apiUrl = "https://localhost:7198/api/Users/login";
+  const apiUrl = apiConfig.createApiUrl("Users/login");
 
   const data = JSON.stringify({
     email: email,
