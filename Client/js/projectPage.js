@@ -712,21 +712,34 @@ function updateOverallProgress() {
 
 // 🟦 המרת זמן לשעון ישראל
 function getLocalISOString() {
-  const tzOffset = new Date().getTimezoneOffset() * 60000; // זמן מקומי מול UTC
-  return new Date(Date.now() - tzOffset).toISOString();
+  const now = new Date();
+
+  // שיטה פשוטה יותר לקבלת זמן מקומי בפורמט ISO עם Z
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+  const milliseconds = String(now.getMilliseconds()).padStart(3, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
 }
 
 // 🟦 כפתור הפעלה
 function getLocalISOStringWithoutZ() {
   const now = new Date();
 
-  // מחשב את ההפרש בין הזמן המקומי ל־UTC
-  const localOffsetMs = now.getTimezoneOffset() * -60000;
+  // שיטה פשוטה יותר לקבלת זמן מקומי בפורמט ISO
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+  const milliseconds = String(now.getMilliseconds()).padStart(3, "0");
 
-  // מוסיף את ההפרש כדי להגיע לזמן מקומי אמיתי
-  const localDate = new Date(now.getTime() + localOffsetMs);
-
-  return localDate.toISOString().replace("Z", "");
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
 }
 
 toggleBtn.addEventListener("click", () => {
@@ -815,6 +828,7 @@ toggleBtn.addEventListener("click", () => {
 
       // קריאה לשרת לפני שמתחיל הסטופר
       const sessionStart = getLocalISOStringWithoutZ();
+      console.log("🕐 זמן התחלת סשן:", sessionStart);
 
       // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
       console.log("🌐 Creating start auto session URL...");
@@ -832,11 +846,24 @@ toggleBtn.addEventListener("click", () => {
         (response) => {
           console.log("✅ סשן התחיל בהצלחה:", response);
 
-          // שמירת מזהה הסשן החדש
+          // שמירת מזהה הסשן החדש וזמן ההתחלה
           currentActiveSessionID = response.sessionID;
+          window.currentSessionStartDate = sessionStart; // שמור את זמן ההתחלה
 
-          // Clear and completely refresh the table with newest sessions at top
+          // רענן את הטבלה מהשרת כדי לקבל את הסשן החדש
           renderTableFromDB();
+
+          // וודא שהטבלה ממויינת נכון אחרי הרענון
+          setTimeout(() => {
+            if (table) {
+              table
+                .order([
+                  [1, "desc"],
+                  [2, "desc"],
+                ])
+                .draw();
+            }
+          }, 500);
         },
         (xhr) => {
           console.error("❌ שגיאה בהתחלת סשן:", xhr);
@@ -854,7 +881,7 @@ toggleBtn.addEventListener("click", () => {
 
 //סיום סשן
 stopBtn.addEventListener("click", () => {
-  if (!currentActiveSessionID) {
+  if (!isRunning) {
     showCustomAlert("לא ניתן לסיים סשן לפני שהתחלת אחד", "error");
     return;
   }
@@ -866,28 +893,35 @@ stopBtn.addEventListener("click", () => {
   const endDate = getLocalISOStringWithoutZ();
   const durationSeconds = seconds;
 
-  const lastSessionRow = $("#sessionsTable tbody tr").first();
-  const sessionData = lastSessionRow.data("session");
-
-  if (!sessionData) {
-    console.error("❌ לא נמצא סשן פעיל לעדכון.");
+  // השתמש ב-currentActiveSessionID שמכיל את ה-ID הנכון של הסשן החדש
+  if (!currentActiveSessionID) {
+    console.error("❌ לא נמצא מזהה סשן פעיל.");
     return;
   }
 
+  // נסה לקחת נתוני סשן מהטבלה, אבל אם לא קיימים - השתמש בערכי ברירת מחדל
+  const lastSessionRow = $("#sessionsTable tbody tr").first();
+  const sessionData = lastSessionRow.data("session");
+
   // שמור משתנים זמניים לצורך השליחה בסיום הפופאפ
   window.sessionToClose = {
-    sessionID: sessionData.SessionID,
-    projectID: sessionData.ProjectID,
-    startDate: sessionData.StartDate,
+    sessionID: currentActiveSessionID, // השתמש ב-ID הנכון מהמשתנה הגלובלי!
+    projectID: sessionData ? sessionData.ProjectID : CurrentProject.ProjectID,
+    startDate:
+      window.currentSessionStartDate ||
+      (sessionData ? sessionData.StartDate : getLocalISOStringWithoutZ()), // השתמש בזמן ההתחלה הנכון!
     endDate,
     durationSeconds,
-    hourlyRate: sessionData.HourlyRate,
-    userID: sessionData.UserID,
+    hourlyRate: sessionData
+      ? sessionData.HourlyRate
+      : CurrentProject.HourlyRate || 0,
+    userID: sessionData ? sessionData.UserID : CurrentUser.id,
   };
 
   // אפס סטופר
   seconds = 0;
   currentActiveSessionID = null; // ניקוי מזהה הסשן הפעיל
+  window.currentSessionStartDate = null; // ניקוי זמן ההתחלה
   timeDisplay.textContent = "00:00:00";
   circle.style.strokeDashoffset = circumference;
   progressFill.style.width = `0%`;
@@ -910,6 +944,8 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
   };
 
   console.log("📤 סיום סשן נשלח:", data);
+  console.log("🕐 זמן התחלה:", data.startDate);
+  console.log("🕐 זמן סיום:", data.endDate);
 
   // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
   console.log("🌐 Creating end session URL...");
@@ -967,8 +1003,15 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
       //   }, 500);
       // }, 3000);
 
-      // Clear and refresh the table completely to ensure newest sessions are at the top
+      // רענן את הטבלה מהשרת לאחר עדכון הסשן
       renderTableFromDB();
+
+      // וודא שהטבלה מתרענה אחרי עדכון
+      setTimeout(() => {
+        if (table) {
+          table.draw();
+        }
+      }, 500);
     },
     () => {
       // Close the popup to avoid UI issues
@@ -1020,11 +1063,18 @@ $(document).ready(function () {
       emptyTable: "אין סשנים זמינים בטבלה",
       zeroRecords: "לא נמצאו רשומות תואמות",
     },
-    order: [[1, "desc"]], // Sort by date descending
+    ordering: false, // Disable automatic sorting - we pre-sort the data
     columnDefs: [
       {
-        targets: [2, 3], // Start time and end time columns
-        type: "time",
+        targets: 1, // Date column
+        render: function (data, type, row) {
+          if (type === "display") {
+            // For display, format the date nicely
+            const { formattedDate } = formatDateTime(data);
+            return formattedDate;
+          }
+          return data; // For other cases, return raw data
+        },
       },
       {
         targets: [5, 6], // Work time and earnings columns
@@ -1032,12 +1082,7 @@ $(document).ready(function () {
       },
       {
         targets: [7, 8], // Buttons columns
-        orderable: false,
-      },
-      {
-        targets: 8, // Details control column
-        className: "details-control",
-        orderable: false,
+        className: "text-center",
       },
     ],
     pageLength: 5,
@@ -1705,18 +1750,55 @@ function renderTableFromDB() {
     // First clear the table to avoid duplication issues
     table.clear();
 
-    // Sort sessions by StartDate in descending order (newest first)
-    response.sort((a, b) => new Date(b.StartDate) - new Date(a.StartDate));
+    // Sort sessions by StartDate in descending order (newest first, oldest last)
+    response.sort((a, b) => {
+      const dateA = new Date(a.StartDate);
+      const dateB = new Date(b.StartDate);
+
+      // Sort by full date and time in descending order
+      return dateB.getTime() - dateA.getTime();
+    });
+
+    console.log(
+      "📅 סדר הסשנים אחרי מיון (חדש ראשון, ישן אחרון):",
+      response.map((s, index) => ({
+        position: index + 1,
+        id: s.SessionID,
+        startDate: s.StartDate,
+        formatted: formatDateTime(s.StartDate),
+        timestamp: new Date(s.StartDate).getTime(),
+      }))
+    );
+
+    // Verify sorting is correct
+    for (let i = 1; i < response.length; i++) {
+      const prev = new Date(response[i - 1].StartDate).getTime();
+      const curr = new Date(response[i].StartDate).getTime();
+      if (prev < curr) {
+        console.error(
+          `❌ שגיאה במיון! האינדקס ${i - 1} (${
+            response[i - 1].StartDate
+          }) צריך להיות אחרי האינדקס ${i} (${response[i].StartDate})`
+        );
+      }
+    }
 
     // שמירת כל הנתונים במשתנה גלובלי
     allSessionsData = response;
 
-    // הוספת כל הסשנים לטבלה בבת אחת
-    allSessionsData.forEach((session) => {
-      addSessionRowToDataTable(session);
+    // הוספת כל הסשנים לטבלה בבת אחת (בלי למיין בכל הוספה)
+    console.log("🔨 מתחיל להוסיף סשנים לטבלה בסדר:");
+    allSessionsData.forEach((session, index) => {
+      console.log(
+        `   ${index + 1}. סשן ${session.SessionID} - ${
+          formatDateTime(session.StartDate).formattedDate
+        } ${formatDateTime(session.StartDate).time}`
+      );
+      addSessionRowToDataTable(session, true); // Skip sorting during bulk load
     });
 
-    // Redraw the table
+    // Draw the table (data is already pre-sorted)
+    console.log("📊 מציג טבלה עם נתונים ממוינים (חדש ראשון, ישן אחרון)");
     table.draw();
 
     // חישוב סיכומים עבור כל הסשנים (מבוסס על כל הנתונים)
@@ -1939,7 +2021,7 @@ function renderTableFromDB() {
 // פונקציה זו הוסרה - עכשיו משתמשים ב-DataTable pagination
 
 // פונקציה להוספת שורת סשן יחידה לטבלת DataTable
-function addSessionRowToDataTable(session) {
+function addSessionRowToDataTable(session, skipSort = false) {
   const rawDate = session.StartDate;
   const { time, formattedDate } = formatDateTime(rawDate);
 
@@ -1962,7 +2044,7 @@ function addSessionRowToDataTable(session) {
 
   const newRow = [
     labelHtml, // תווית
-    formattedDate, // תאריך
+    session.StartDate, // תאריך גולמי למיון (תוצג כתאריך מפורמט)
     time, // שעת התחלה
     endTimeDisplay, // שעת סיום
     session.HourlyRate, // תעריף
@@ -1978,6 +2060,15 @@ function addSessionRowToDataTable(session) {
   // Store session data in the row
   $(rowNode).data("session", session); // שמירת הסשן כולו
   $(rowNode).attr("data-session-id", session.SessionID); // שמירת ה-ID כשדה data
+
+  // For new sessions added individually, we need to insert at the correct position
+  if (!skipSort) {
+    console.log("📊 הוספת סשן חדש - רענון מלא מהשרת");
+    // Instead of trying to sort, refresh the entire table from server to maintain correct order
+    setTimeout(() => {
+      renderTableFromDB();
+    }, 100);
+  }
 }
 
 // פונקציה זו הוסרה - עכשיו משתמשים ב-DataTable pagination
