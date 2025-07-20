@@ -73,7 +73,43 @@
 
       /* הודעות הצלחה */
       .save-notification {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-100%);
+        background-color: #4caf50;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        font-family: "Assistant", sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+
+      .save-notification.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
         animation: slideDown 0.3s ease-out;
+      }
+
+      .save-notification.error {
+        background-color: #ff4757 !important;
+      }
+
+      .save-notification .notification-icon {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .save-notification .notification-message {
+        flex: 1;
       }
 
       @keyframes slideDown {
@@ -309,7 +345,7 @@
           min="1"
         />
 
-        <button type="submit" class="btn-submit">📤 שמור פרויקט</button>
+        <button type="submit" class="btn-submit">שמור פרויקט</button>
       </form>
     </div>
 
@@ -360,9 +396,9 @@
         <label>סיסמה נוכחית:</label>
         <input type="password" id="user-current-password" required />
 
-        <button type="submit" class="btn-submit">📤 שמור פרטים</button>
+        <button type="submit" class="btn-submit">שמור פרטים</button>
         <button type="button" id="open-password-popup" class="btn-submit">
-          🔒 החלפת סיסמה
+          החלפת סיסמה
         </button>
       </form>
     </div>
@@ -385,7 +421,7 @@
           placeholder="לפחות 8 תווים – אותיות ומספרים"
         />
 
-        <button type="submit" class="btn-submit">🔁 שנה סיסמה</button>
+        <button type="submit" class="btn-submit">שנה סיסמה</button>
       </form>
     </div>
 
@@ -441,7 +477,7 @@
           accept="image/*"
         />
 
-        <button type="submit" class="btn-submit">📤 שמור לקוח</button>
+        <button type="submit" class="btn-submit">שמור לקוח</button>
       </form>
     </div>
 

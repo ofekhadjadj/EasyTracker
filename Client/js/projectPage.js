@@ -528,7 +528,16 @@ function FillDeatils() {
   let breadcrumbsText = `${CurrentProject.ProjectName} - ${CurrentProject.CompanyName}`;
   breadcrumbsProjName.innerText = breadcrumbsText;
   projectName.innerText = CurrentProject.ProjectName;
-  ProjectClient.innerText = CurrentProject.CompanyName;
+
+  // בדיקה האם המשתמש הנוכחי הוא מנהל הפרויקט
+  if (CurrentProject.Role === "TeamMember") {
+    // אם המשתמש הוא חבר צוות, נטען את שם מנהל הפרויקט
+    loadProjectManagerName();
+  } else {
+    // אם המשתמש הוא מנהל הפרויקט, נציג את שם הלקוח
+    ProjectClient.innerText = CurrentProject.CompanyName;
+  }
+
   if (avatarImg) {
     avatarImg.src = CurrentUser?.image || "./images/def/user-def.png";
   }
@@ -540,6 +549,50 @@ function FillDeatils() {
   setTimeout(() => {
     refreshAllLabelDropdowns();
   }, 1000);
+}
+
+// פונקציה לטעינת שם מנהל הפרויקט
+function loadProjectManagerName() {
+  const ProjectClient = document.getElementById("ProjectClient");
+
+  // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+  console.log("🌐 Creating team URL for project manager...");
+  const url = apiConfig.createApiUrl(
+    `Projects/GetProjectTeam?ProjectID=${CurrentProject.ProjectID}`
+  );
+  console.log("👥 Team URL for manager:", url);
+
+  ajaxCall(
+    "GET",
+    url,
+    "",
+    (members) => {
+      // חיפוש מנהל הפרויקט מתוך רשימת חברי הצוות
+      const projectManager = members.find(
+        (member) => member.Role === "ProjectManager"
+      );
+
+      if (projectManager) {
+        // הצגת שם מנהל הפרויקט
+        ProjectClient.innerText = projectManager.FullName;
+
+        // עדכון ה-breadcrumbs גם כן
+        const breadcrumbsProjName = document.getElementById(
+          "breadcrumbsProjName"
+        );
+        let breadcrumbsText = `${CurrentProject.ProjectName} - מנהל: ${projectManager.FullName}`;
+        breadcrumbsProjName.innerText = breadcrumbsText;
+      } else {
+        // במקרה שלא נמצא מנהל פרויקט, נציג את שם הלקוח
+        ProjectClient.innerText = CurrentProject.CompanyName;
+      }
+    },
+    (err) => {
+      console.error("❌ שגיאה בשליפת נתוני מנהל הפרויקט:", err);
+      // במקרה של שגיאה, נציג את שם הלקוח
+      ProjectClient.innerText = CurrentProject.CompanyName;
+    }
+  );
 }
 
 let currentActiveSessionID = null; // משתנה לאחסון מזהה הסשן הפעיל

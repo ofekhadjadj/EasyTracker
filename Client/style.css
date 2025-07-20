@@ -190,24 +190,15 @@ table {
 }
 
 .login-btn,
-.login-google-btn,
 .register-btn {
   width: 49%;
   padding: 15px;
   margin: 10px;
   border-radius: 10px;
   cursor: pointer;
-}
-
-.login-btn,
-.register-btn {
   background: linear-gradient(90deg, #0097ff 26%, #007eff 56%, #0054ff 100%);
   color: white;
   border: none;
-}
-.login-google-btn {
-  border: #c9c9c999 1px solid;
-  background-color: white;
 }
 
 /* עיצוב הוראות הסיסמה */
@@ -252,15 +243,28 @@ table {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  font-size: 16px;
-  color: #666;
+  font-size: 18px;
+  color: #0072ff;
   user-select: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   z-index: 10;
+  opacity: 0.7;
 }
 
 .password-toggle:hover {
-  color: #0072ff;
+  color: #0054ff;
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.fa-eye-slash {
+  color: #ff6b6b !important;
+  opacity: 0.8;
+}
+
+.fa-eye-slash:hover {
+  color: #ff5252 !important;
+  opacity: 1;
 }
 
 /* עיצוב כפתור החזרה לדף הכניסה */
@@ -435,6 +439,35 @@ li.active span {
   color: white;
 }
 
+/* החלפת אייקונים ללבן במצב active */
+.main-nav li.active img[src*="proj-black.png"] {
+  content: url("./images/icons/proj-white.png");
+}
+
+.main-nav li.active img[src*="customer-black.png"] {
+  content: url("./images/icons/customer-whitek.png");
+}
+
+.main-nav li.active img[src*="statistics and analytics-black.png"] {
+  content: url("./images/icons/statistics and analytics-white.png");
+}
+
+.main-nav li.active img[src*="lablels-black.png"] {
+  content: url("./images/icons/lablels-white.png");
+}
+
+.main-nav li.active img[src*="aiassistant-black.png"] {
+  content: url("./images/icons/aiassistant-white.png");
+}
+
+.main-nav li.active img[src*="help-black.png"] {
+  content: url("./images/icons/help-white.png");
+}
+
+.main-nav li.active img[src*="settings-black.png"] {
+  content: url("./images/icons/settings-white.png");
+}
+
 /* עיצוב פריט במעבר עכבר */
 .main-nav li:hover {
   background-color: #e8f4ff;
@@ -538,6 +571,35 @@ img.logo-sidebar {
 .help-nav li.active {
   background: linear-gradient(90deg, #0097ff 26%, #007eff 56%, #0054ff 100%);
   color: white;
+}
+
+/* החלפת אייקונים ללבן במצב active */
+.help-nav li.active img[src*="proj-black.png"] {
+  content: url("./images/icons/proj-white.png");
+}
+
+.help-nav li.active img[src*="customer-black.png"] {
+  content: url("./images/icons/customer-whitek.png");
+}
+
+.help-nav li.active img[src*="statistics and analytics-black.png"] {
+  content: url("./images/icons/statistics and analytics-white.png");
+}
+
+.help-nav li.active img[src*="lablels-black.png"] {
+  content: url("./images/icons/lablels-white.png");
+}
+
+.help-nav li.active img[src*="aiassistant-black.png"] {
+  content: url("./images/icons/aiassistant-white.png");
+}
+
+.help-nav li.active img[src*="help-black.png"] {
+  content: url("./images/icons/help-white.png");
+}
+
+.help-nav li.active img[src*="settings-black.png"] {
+  content: url("./images/icons/settings-white.png");
 }
 
 /* עיצוב פריט במעבר עכבר */
@@ -788,6 +850,8 @@ img.logo-sidebar {
   margin-top: 15px;
   width: 100%;
   font-size: 16px;
+  font-family: "Assistant", sans-serif;
+  font-weight: 500;
   transition: background 0.3s ease;
 }
 
@@ -1409,6 +1473,8 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
   border-radius: 6px;
   width: 100%;
   font-size: 16px;
+  font-family: "Assistant", sans-serif;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -1530,6 +1596,35 @@ body > div > div.content > div > div.header-projects > div.title-and-btn > a {
 
 li a.active span {
   color: white;
+}
+
+/* החלפת אייקונים ללבן במצב active */
+.sidbar ul li a.active img[src*="proj-black.png"] {
+  content: url("./images/icons/proj-white.png");
+}
+
+.sidbar ul li a.active img[src*="customer-black.png"] {
+  content: url("./images/icons/customer-whitek.png");
+}
+
+.sidbar ul li a.active img[src*="statistics and analytics-black.png"] {
+  content: url("./images/icons/statistics and analytics-white.png");
+}
+
+.sidbar ul li a.active img[src*="lablels-black.png"] {
+  content: url("./images/icons/lablels-white.png");
+}
+
+.sidbar ul li a.active img[src*="aiassistant-black.png"] {
+  content: url("./images/icons/aiassistant-white.png");
+}
+
+.sidbar ul li a.active img[src*="help-black.png"] {
+  content: url("./images/icons/help-white.png");
+}
+
+.sidbar ul li a.active img[src*="settings-black.png"] {
+  content: url("./images/icons/settings-white.png");
 }
 
 .sidbar ul li {

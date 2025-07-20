@@ -7,10 +7,10 @@ function togglePassword(inputId) {
 
   if (passwordInput.type === "password") {
     passwordInput.type = "text";
-    toggleIcon.textContent = "🙈";
+    toggleIcon.className = "fa-solid fa-eye-slash password-toggle";
   } else {
     passwordInput.type = "password";
-    toggleIcon.textContent = "👁️";
+    toggleIcon.className = "fa-solid fa-eye password-toggle";
   }
 }
 
@@ -216,16 +216,8 @@ document.addEventListener("DOMContentLoaded", function () {
     handleLogin(email, password);
   });
 
-  // Handle Google login button (placeholder)
-  const googleBtn = document.querySelector(".mobile-google-btn");
-  googleBtn.addEventListener("click", function () {
-    showErrorNotification("התחברות באמצעות גוגל עדיין לא זמינה במובייל");
-  });
-
   // Add touch feedback for buttons
-  const buttons = document.querySelectorAll(
-    ".mobile-login-btn, .mobile-google-btn"
-  );
+  const buttons = document.querySelectorAll(".mobile-login-btn");
   buttons.forEach((button) => {
     button.addEventListener("touchstart", function () {
       this.style.transform = "scale(0.98)";

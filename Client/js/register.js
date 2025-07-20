@@ -7,10 +7,10 @@ function togglePassword(inputId) {
 
   if (passwordInput.type === "password") {
     passwordInput.type = "text";
-    toggleIcon.textContent = "🙈";
+    toggleIcon.className = "fa-solid fa-eye-slash password-toggle";
   } else {
     passwordInput.type = "password";
-    toggleIcon.textContent = "👁️";
+    toggleIcon.className = "fa-solid fa-eye password-toggle";
   }
 }
 

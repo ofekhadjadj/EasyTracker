@@ -110,7 +110,11 @@ function renderProjects(projects, withAnimation = true) {
       <div class="project-content">
         ${statusHtml}
         <h2>${project.ProjectName}</h2>
-        <p>${project.CompanyName}</p>
+        <p class="project-client-placeholder">${
+          project.Role === "TeamMember"
+            ? "טוען מנהל פרויקט..."
+            : project.CompanyName
+        }</p>
         <p><strong>הכנסה:</strong> ₪${income.toFixed(2)}</p>
       </div>
       <div class="client-actions">
@@ -130,9 +134,53 @@ function renderProjects(projects, withAnimation = true) {
     });
 
     CardsDiv.appendChild(card);
+
+    // אם המשתמש הוא חבר צוות, נטען את שם מנהל הפרויקט
+    if (project.Role === "TeamMember") {
+      const placeholder = card.querySelector(".project-client-placeholder");
+      loadProjectManagerForCardClient(project.ProjectID, placeholder);
+    }
   });
 
   if (withAnimation && typeof WOW === "function") new WOW().init();
+
+  // פונקציה לטעינת שם מנהל הפרויקט לכרטיס פרויקט בעמוד הלקוח
+  function loadProjectManagerForCardClient(projectId, element) {
+    // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+    console.log("🌐 Creating team URL for client page project card manager...");
+    const url = apiConfig.createApiUrl(
+      `Projects/GetProjectTeam?ProjectID=${projectId}`
+    );
+    console.log("👥 Client Page Team URL for card manager:", url);
+
+    ajaxCall(
+      "GET",
+      url,
+      "",
+      (members) => {
+        // חיפוש מנהל הפרויקט מתוך רשימת חברי הצוות
+        const projectManager = members.find(
+          (member) => member.Role === "ProjectManager"
+        );
+
+        if (projectManager) {
+          // הצגת שם מנהל הפרויקט
+          element.textContent = `מנהל: ${projectManager.FullName}`;
+        } else {
+          // במקרה שלא נמצא מנהל פרויקט, נציג "מנהל לא זמין"
+          element.textContent = "מנהל לא זמין";
+        }
+      },
+      (err) => {
+        console.error(
+          "❌ שגיאה בשליפת נתוני מנהל הפרויקט לכרטיס בעמוד לקוח:",
+          err
+        );
+        // במקרה של שגיאה, נציג הודעת שגיאה
+        element.textContent = "שגיאה בטעינת מנהל";
+      }
+    );
+  }
 
   $(".edit-icon")
     .off()

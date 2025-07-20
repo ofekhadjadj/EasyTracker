@@ -173,6 +173,42 @@ body {
   color: white;
 }
 
+/* החלפת אייקונים ללבן במצב active */
+.main-nav a.active img[src*="proj-black.png"],
+.help-nav a.active img[src*="proj-black.png"] {
+  content: url("./images/icons/proj-white.png");
+}
+
+.main-nav a.active img[src*="customer-black.png"],
+.help-nav a.active img[src*="customer-black.png"] {
+  content: url("./images/icons/customer-whitek.png");
+}
+
+.main-nav a.active img[src*="statistics and analytics-black.png"],
+.help-nav a.active img[src*="statistics and analytics-black.png"] {
+  content: url("./images/icons/statistics and analytics-white.png");
+}
+
+.main-nav a.active img[src*="lablels-black.png"],
+.help-nav a.active img[src*="lablels-black.png"] {
+  content: url("./images/icons/lablels-white.png");
+}
+
+.main-nav a.active img[src*="aiassistant-black.png"],
+.help-nav a.active img[src*="aiassistant-black.png"] {
+  content: url("./images/icons/aiassistant-white.png");
+}
+
+.main-nav a.active img[src*="help-black.png"],
+.help-nav a.active img[src*="help-black.png"] {
+  content: url("./images/icons/help-white.png");
+}
+
+.main-nav a.active img[src*="settings-black.png"],
+.help-nav a.active img[src*="settings-black.png"] {
+  content: url("./images/icons/settings-white.png");
+}
+
 .nav-icon {
   width: 30px;
   height: auto;

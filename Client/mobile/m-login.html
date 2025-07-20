@@ -18,6 +18,11 @@
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"
     ></script>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
   </head>
   <body>
     <div class="mobile-login-container">
@@ -55,11 +60,10 @@
                 maxlength="30"
                 required
               />
-              <span
-                class="password-toggle"
+              <i
+                class="fa-solid fa-eye password-toggle"
                 onclick="togglePassword('mobile-password')"
-                >👁️</span
-              >
+              ></i>
             </div>
             <small class="password-hint"
               >הסיסמה חייבת להכיל לפחות 8 תווים, כולל אותיות ומספרים</small
@@ -72,10 +76,6 @@
               <span class="spinner"></span>
               מתחבר...
             </span>
-          </button>
-
-          <button type="button" class="mobile-google-btn">
-            התחבר באמצעות גוגל
           </button>
         </form>
 

@@ -536,7 +536,7 @@
         console.log("🆘 Help page loaded successfully");
 
         // Load user profile data
-        const CurrentUser = JSON.parse(localStorage.getItem("CurrentUser"));
+        const CurrentUser = JSON.parse(localStorage.getItem("user"));
         if (CurrentUser && CurrentUser.firstName) {
           const menuProfileName = document.getElementById("menu-prof-name");
           if (menuProfileName) {
@@ -544,10 +544,10 @@
           }
 
           // Set profile image if exists
-          if (CurrentUser.userImageFile) {
+          if (CurrentUser.image) {
             const profileImg = document.querySelector(".avatar-img");
             if (profileImg) {
-              profileImg.src = CurrentUser.userImageFile;
+              profileImg.src = CurrentUser.image;
             }
           }
         }

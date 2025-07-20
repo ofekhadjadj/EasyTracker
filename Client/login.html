@@ -19,6 +19,11 @@
       crossorigin="anonymous"
     ></script>
     <link rel="stylesheet" href="animate.css" />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
   </head>
   <body>
     <div class="continer-login">
@@ -64,9 +69,10 @@
                 maxlength="30"
                 required
               />
-              <span class="password-toggle" onclick="togglePassword('password')"
-                >👁️</span
-              >
+              <i
+                class="fa-solid fa-eye password-toggle"
+                onclick="togglePassword('password')"
+              ></i>
             </div>
             <div class="password-hint">
               <small
@@ -76,10 +82,6 @@
             <br />
 
             <button type="submit" class="login-btn">התחבר</button>
-            <br />
-            <button type="submit" class="login-google-btn">
-              התחבר באמצעות גוגל
-            </button>
           </form>
           <p>עדיין אין לך משתמש? <a href="register.html">הירשם עכשיו</a></p>
         </div>

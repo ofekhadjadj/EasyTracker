@@ -200,6 +200,35 @@ img.logo-sidebar {
   color: white;
 }
 
+/* החלפת אייקונים ללבן במצב active */
+.sidbar ul li a.active img[src*="proj-black.png"] {
+  content: url("./images/icons/proj-white.png");
+}
+
+.sidbar ul li a.active img[src*="customer-black.png"] {
+  content: url("./images/icons/customer-whitek.png");
+}
+
+.sidbar ul li a.active img[src*="statistics and analytics-black.png"] {
+  content: url("./images/icons/statistics and analytics-white.png");
+}
+
+.sidbar ul li a.active img[src*="lablels-black.png"] {
+  content: url("./images/icons/lablels-white.png");
+}
+
+.sidbar ul li a.active img[src*="aiassistant-black.png"] {
+  content: url("./images/icons/aiassistant-white.png");
+}
+
+.sidbar ul li a.active img[src*="help-black.png"] {
+  content: url("./images/icons/help-white.png");
+}
+
+.sidbar ul li a.active img[src*="settings-black.png"] {
+  content: url("./images/icons/settings-white.png");
+}
+
 .sidbar ul li a:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }

@@ -51,7 +51,7 @@ function createProject(imagePath) {
     contentType: "application/json",
     data: JSON.stringify(newProj),
     success: function () {
-      alert("הפרויקט נוסף בהצלחה.");
+      showSuccessNotification("הפרויקט נוסף בהצלחה! 🎉");
       $.fancybox.close();
       LoadProject();
     },
@@ -186,11 +186,29 @@ function renderProjects(projects) {
     card.style.backgroundImage = `url('${
       project.Image || "./images/def/proj-def.jpg"
     }')`;
+
+    // בדיקה אם המשתמש הוא מנהל הפרויקט או חבר צוות
+    const clientDisplayElement = document.createElement("p");
+    clientDisplayElement.className = "project-client-name";
+
+    if (project.Role === "TeamMember") {
+      // אם המשתמש הוא חבר צוות, נטען את שם מנהל הפרויקט
+      clientDisplayElement.textContent = "טוען מנהל פרויקט...";
+      loadProjectManagerForCard(project.ProjectID, clientDisplayElement);
+    } else {
+      // אם המשתמש הוא מנהל הפרויקט, נציג את שם הלקוח
+      clientDisplayElement.textContent = project.CompanyName;
+    }
+
     card.innerHTML = `
       <div class="project-content">
         ${statusHtml}
         <h2>${project.ProjectName}</h2>
-        <p>${project.CompanyName}</p>
+        <p class="project-client-placeholder">${
+          project.Role === "TeamMember"
+            ? "טוען מנהל פרויקט..."
+            : project.CompanyName
+        }</p>
       </div>
       <div class="client-actions">
         <i class="fas fa-edit edit-icon" title="ערוך פרויקט"></i>
@@ -198,7 +216,48 @@ function renderProjects(projects) {
       </div>
     `;
     CardsDiv.appendChild(card);
+
+    // אם המשתמש הוא חבר צוות, נטען את שם מנהל הפרויקט
+    if (project.Role === "TeamMember") {
+      const placeholder = card.querySelector(".project-client-placeholder");
+      loadProjectManagerForCard(project.ProjectID, placeholder);
+    }
   });
+
+  // פונקציה לטעינת שם מנהל הפרויקט לכרטיס פרויקט
+  function loadProjectManagerForCard(projectId, element) {
+    // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה
+    console.log("🌐 Creating team URL for project card manager...");
+    const url = apiConfig.createApiUrl(
+      `Projects/GetProjectTeam?ProjectID=${projectId}`
+    );
+    console.log("👥 Team URL for card manager:", url);
+
+    ajaxCall(
+      "GET",
+      url,
+      "",
+      (members) => {
+        // חיפוש מנהל הפרויקט מתוך רשימת חברי הצוות
+        const projectManager = members.find(
+          (member) => member.Role === "ProjectManager"
+        );
+
+        if (projectManager) {
+          // הצגת שם מנהל הפרויקט
+          element.textContent = `מנהל: ${projectManager.FullName}`;
+        } else {
+          // במקרה שלא נמצא מנהל פרויקט, נציג "מנהל לא זמין"
+          element.textContent = "מנהל לא זמין";
+        }
+      },
+      (err) => {
+        console.error("❌ שגיאה בשליפת נתוני מנהל הפרויקט לכרטיס:", err);
+        // במקרה של שגיאה, נציג הודעת שגיאה
+        element.textContent = "שגיאה בטעינת מנהל";
+      }
+    );
+  }
 
   // bind אירועים לעריכה ומחיקה
   $(".edit-icon")
@@ -265,7 +324,7 @@ function submitProjectEdit(finalImage) {
     contentType: "application/json",
     data: JSON.stringify(updated),
     success: function () {
-      alert("הפרויקט עודכן בהצלחה.");
+      showSuccessNotification("הפרויקט עודכן בהצלחה! ✨");
       $.fancybox.close();
       LoadProject();
     },
@@ -329,7 +388,7 @@ function deleteProject(projectId) {
     url: deleteUrl,
     type: "PUT",
     success: function () {
-      alert("הפרויקט נמחק.");
+      showSuccessNotification("הפרויקט נמחק בהצלחה! 🗑️");
       LoadProject();
     },
     error: function () {
@@ -523,5 +582,55 @@ function showSuccessMessage(message) {
     notification.fadeOut(500, function () {
       $(this).remove();
     });
+  }, 3000);
+}
+
+// הודעת הצלחה מעוצבת כמו בשאר האתר
+function showSuccessNotification(message) {
+  const notification = document.createElement("div");
+  notification.className = "save-notification";
+  notification.style.backgroundColor = "#4caf50";
+  notification.innerHTML = `
+    <div class="notification-icon">✓</div>
+    <div class="notification-message">${message}</div>
+  `;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 10);
+
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => {
+      if (notification.parentNode) {
+        document.body.removeChild(notification);
+      }
+    }, 500);
+  }, 3000);
+}
+
+// הודעת שגיאה מעוצבת כמו בשאר האתר
+function showErrorNotification(message) {
+  const notification = document.createElement("div");
+  notification.className = "save-notification";
+  notification.style.backgroundColor = "#ff4757";
+  notification.innerHTML = `
+    <div class="notification-icon">✕</div>
+    <div class="notification-message">${message}</div>
+  `;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 10);
+
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => {
+      if (notification.parentNode) {
+        document.body.removeChild(notification);
+      }
+    }, 500);
   }, 3000);
 }
