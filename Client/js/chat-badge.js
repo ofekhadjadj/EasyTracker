@@ -4,25 +4,16 @@ $(document).ready(function () {
 
   if (!user || !project) return;
 
-  function checkChatNotifications() {
-    $.getJSON(
-      apiConfig.createApiUrl("Chat/GetUnreadStatus", {
-        userID: user.id,
-        projectID: project.ProjectID,
-      }),
-      (status) => {
-        const hasGroup = status.groupUnreadCount > 0;
-        const hasPrivate = status.private.some((p) => p.unreadCount > 0);
+  // TODO: Implement Firebase-based chat notification checking
+  // This should listen to Firebase realtime database for unread message status
+  // and update the #chat-unread-dot visibility accordingly
 
-        if (hasGroup || hasPrivate) {
-          $("#chat-unread-dot").show();
-        } else {
-          $("#chat-unread-dot").hide();
-        }
-      }
-    );
+  function checkChatNotifications() {
+    // TODO: Replace with Firebase realtime listener
+    // Listen to unread message counts from Firebase
+    // Show/hide #chat-unread-dot based on Firebase data
   }
 
-  checkChatNotifications();
-  setInterval(checkChatNotifications, 5000); // בדיקה כל 5 שניות
+  // TODO: Replace setInterval with Firebase realtime listeners
+  // Firebase will automatically notify when unread status changes
 });

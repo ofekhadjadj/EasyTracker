@@ -28,57 +28,28 @@ $(document).ready(function () {
   // עדכון פירורי לחם
   updateBreadcrumbs();
 
-  // 1. Load team avatars
+  // 1. Load team avatars (Firebase-based implementation needed)
   loadProjectTeam(CurrentProject.ProjectID, CurrentUser.id);
-
-  // 2. Immediate badge–update + polling every 5 seconds
-  updateUnreadBadges();
-  setInterval(updateUnreadBadges, 5000);
 
   // Chat send handlers
   $("#sendMessageBtn").on("click", sendMessage);
   $("#chatText").on("keypress", function (e) {
     if (e.which === 13) sendMessage();
   });
-
-  // Polling: every 3 seconds, reload if a chat is active
-  setInterval(() => {
-    if ($(".chat-avatar.active").length) {
-      loadChatMessages();
-    }
-  }, 3000);
 });
 
-// Load project team avatars based on role
+// Load project team avatars based on role (Firebase implementation needed)
 function loadProjectTeam(projectId, currentUserId) {
-  const url = apiConfig.createApiUrl("Projects/GetProjectTeam", {
-    ProjectID: projectId,
-  });
-  $.getJSON(url, function (team) {
-    const currentUser = team.find((u) => u.UserID === currentUserId);
-    if (!currentUser) return;
+  // TODO: Implement Firebase-based team loading
+  const avatarContainer = $("#chat-avatars");
+  avatarContainer.empty();
 
-    const isManager = currentUser.Role === "ProjectManager";
-    let visibleUsers = team.filter(
-      (u) =>
-        u.UserID !== currentUserId && (isManager || u.Role === "ProjectManager")
-    );
+  // Group chat avatar
+  avatarContainer.append(
+    createAvatar("group", "שיחה קבוצתית", "./images/group.png", null)
+  );
 
-    const avatarContainer = $("#chat-avatars");
-    avatarContainer.empty();
-
-    // Group chat avatar
-    avatarContainer.append(
-      createAvatar("group", "שיחה קבוצתית", "./images/group.png", null)
-    );
-
-    // Private chat avatars
-    visibleUsers.forEach((user) => {
-      avatarContainer.append(
-        createAvatar("user", user.FullName, user.Image, user.UserID)
-      );
-    });
-  });
+  // TODO: Load team members from Firebase and create their avatars
 }
 
 // Create an avatar element and handle click
@@ -116,7 +87,7 @@ function createAvatar(type, name, imageUrl, userId) {
     $(this).addClass("active");
     selectedReceiverId = userId;
 
-    // איתחול מחדש של הצ'אט כדי לטעון אותו מה־API
+    // איתחול מחדש של הצ'אט כדי לטעון אותו מפיירבייס
     lastMessageCount = 0;
     hasSwitchedChat = true;
     loadChatMessages();
@@ -143,7 +114,7 @@ function appendMessage(msg, $container) {
   `);
 }
 
-// Load messages for selected chat, with differential DOM updates
+// Load messages for selected chat (Firebase implementation needed)
 function loadChatMessages() {
   const projectID = CurrentProject.ProjectID;
   const isGroup = selectedReceiverId === null;
@@ -153,63 +124,14 @@ function loadChatMessages() {
 
   $("#chat-container .chat-title").text(chatTitle);
 
-  // סימון קריאה תמידית לפני שליפת ההודעות
-  if (isGroup) {
-    // קבוצתי
-    $.post(
-      apiConfig.createApiUrl("Chat/MarkGroupAsRead", {
-        userID: CurrentUser.id,
-        projectID: projectID,
-      })
-    ).always(() => {
-      updateUnreadBadges();
-    });
-  } else {
-    // פרטי
-    $.post(
-      apiConfig.createApiUrl("Chat/MarkPrivateAsRead", {
-        userID: CurrentUser.id,
-        otherUserID: selectedReceiverId,
-        projectID: projectID,
-      })
-    ).always(() => {
-      updateUnreadBadges();
-    });
-  }
+  // TODO: Implement Firebase-based message loading and mark as read functionality
+  const $container = $("#chat-messages");
 
-  // עכשיו נטען את ההודעות
-  const url = isGroup
-    ? apiConfig.createApiUrl("Chat/GetGroupChat", { projectID: projectID })
-    : apiConfig.createApiUrl("Chat/GetPrivateChat", {
-        userID1: CurrentUser.id,
-        userID2: selectedReceiverId,
-        projectID: projectID,
-      });
-
-  $.getJSON(url, function (messages) {
-    const $container = $("#chat-messages");
-
-    // רענון מלא בפעם הראשונה או אחרי החלפת שיחה
-    if (hasSwitchedChat || lastMessageCount === 0) {
-      $container.empty();
-      messages.forEach((msg) => appendMessage(msg, $container));
-    } else {
-      // הוספת הודעות חדשות בלבד
-      for (let i = lastMessageCount; i < messages.length; i++) {
-        appendMessage(messages[i], $container);
-      }
-    }
-
-    // גלילה לסוף
-    $container.scrollTop($container[0].scrollHeight);
-
-    // עדכון הספירה וסימון שאין מעבר שיחה
-    lastMessageCount = messages.length;
-    hasSwitchedChat = false;
-  });
+  // Placeholder for Firebase implementation
+  // This will be replaced with Firebase realtime listeners
 }
 
-// Send a new message
+// Send a new message (Firebase implementation needed)
 function sendMessage() {
   const text = $("#chatText").val().trim();
   if (!text) return;
@@ -223,50 +145,15 @@ function sendMessage() {
     senderName: `${CurrentUser.firstName} ${CurrentUser.lastName}`,
   };
 
-  $.ajax({
-    url: apiConfig.createApiUrl("Chat/SendMessage"),
-    method: "POST",
-    contentType: "application/json",
-    data: JSON.stringify(message),
-    success: () => {
-      $("#chatText").val("");
-      loadChatMessages();
-    },
-    error: (xhr) => {
-      alert("שליחת ההודעה נכשלה:\n" + xhr.responseText);
-    },
-  });
+  // TODO: Implement Firebase-based message sending
+  $("#chatText").val("");
+
+  // Placeholder - will be replaced with Firebase write operation
 }
 
+// Update unread badges (Firebase implementation needed)
 function updateUnreadBadges() {
-  const url = apiConfig.createApiUrl("Chat/GetUnreadStatus", {
-    userID: CurrentUser.id,
-    projectID: CurrentProject.ProjectID,
-  });
-
-  $.getJSON(url, (status) => {
-    // –––––– קבוצתי ––––––
-    const $group = $("#chat-avatars .group-avatar");
-    if (selectedReceiverId === null) {
-      // אם אנחנו כבר בצ'אט קבוצתי, נסיר כל badge
-      $group.removeClass("unread");
-    } else {
-      // אחרת, נראה אם יש הודעות חדשות
-      $group.toggleClass("unread", status.groupUnreadCount > 0);
-    }
-
-    // –––––– פרטי ––––––
-    status.private.forEach((p) => {
-      const $av = $(`.chat-avatar[data-userid=${p.otherUserID}]`);
-      if (selectedReceiverId === p.otherUserID) {
-        // אם אנחנו בצ'אט הזה כרגע, אין נקודה
-        $av.removeClass("unread");
-      } else {
-        // אחרת, הוסף/הסר לפי מצב השרת
-        $av.toggleClass("unread", p.unreadCount > 0);
-      }
-    });
-  });
+  // TODO: Implement Firebase-based unread status tracking
 }
 
 // Highlight active sidebar link (from sidebar-active.js)

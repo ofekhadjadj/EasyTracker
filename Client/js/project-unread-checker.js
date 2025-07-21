@@ -58,7 +58,7 @@ function startUnreadChecker() {
   checkUnreadMessages();
 
   // Check every 5 seconds for better real-time response
-  setInterval(checkUnreadMessages, 5000);
+  setInterval(checkUnreadMessages, 10000);
 
   console.log("📡 Started unread message checker for project page");
 }
