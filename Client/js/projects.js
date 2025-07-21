@@ -356,6 +356,12 @@ function checkSessionsBeforeDelete(project) {
 }
 
 function confirmDeleteProject(message, projectId) {
+  // בדיקה שאין כבר פופאפ פתוח
+  if ($.fancybox.getInstance()) {
+    console.log("פופאפ כבר פתוח, מתעלם מהקליק");
+    return;
+  }
+
   const popupHtml = `
     <div style="max-width: 400px; text-align: center; font-family: Assistant; padding: 20px;">
       <h3>מחיקת פרויקט</h3>
@@ -367,13 +373,34 @@ function confirmDeleteProject(message, projectId) {
     </div>
   `;
 
-  $.fancybox.open({ src: popupHtml, type: "html", smallBtn: false });
-  $(document)
-    .off("click", "#confirmDeleteBtn")
-    .on("click", "#confirmDeleteBtn", function () {
-      deleteProject(projectId);
-      $.fancybox.close();
-    });
+  $.fancybox.open({
+    src: popupHtml,
+    type: "html",
+    smallBtn: false,
+    afterShow: function () {
+      // הוספת event listener רק לאחר שהפופאפ נפתח
+      $("#confirmDeleteBtn")
+        .off("click")
+        .on("click", function () {
+          const button = $(this);
+          if (button.data("deleting")) {
+            return false;
+          }
+          button.data("deleting", true);
+
+          deleteProject(projectId);
+          $.fancybox.close();
+
+          setTimeout(() => {
+            button.data("deleting", false);
+          }, 1000);
+        });
+    },
+    beforeClose: function () {
+      // ניקוי event listeners
+      $("#confirmDeleteBtn").off("click");
+    },
+  });
 }
 
 function deleteProject(projectId) {

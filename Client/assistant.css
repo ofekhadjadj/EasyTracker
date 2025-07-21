@@ -515,6 +515,24 @@ img.logo-sidebar {
   .chat-container {
     height: 70vh;
   }
+
+  /* כפתורי שאלות נפוצות במובייל */
+  .faq-buttons {
+    gap: 4px;
+    margin: 10px 0;
+  }
+
+  .faq-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .faq-btn {
+    padding: 8px 10px;
+    font-size: 12px;
+    height: 32px;
+    border-radius: 6px;
+  }
 }
 
 /* טבלאות HTML בתשובות העוזר */
@@ -531,7 +549,7 @@ img.logo-sidebar {
 }
 
 .assistant-table th {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, #0097ff 26%, #007eff 56%, #0054ff 100%);
   color: white;
   font-weight: bold;
   text-align: center;
@@ -595,6 +613,72 @@ img.logo-sidebar {
   direction: ltr; /* הגרף עצמו יהיה LTR */
 }
 
+/* עיצוב כפתורי שאלות נפוצות */
+.faq-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 5px 0 15px 0;
+  direction: rtl;
+}
+
+/* הורדה בשורה של שאלות נפוצות בתוך הודעת העוזר */
+.message.assistant .faq-buttons {
+  margin-top: 15px;
+}
+
+.faq-row {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+}
+
+.faq-row .faq-btn {
+  flex: 1;
+}
+
+.faq-btn {
+  background: linear-gradient(90deg, #0097ff 26%, #007eff 56%, #0054ff 100%);
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: Assistant;
+  text-align: center;
+  direction: rtl;
+  box-shadow: 0 2px 8px rgba(0, 151, 255, 0.25);
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.faq-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 20px rgba(0, 151, 255, 0.4);
+  background: linear-gradient(90deg, #0080e6 26%, #0066d9 56%, #0040d9 100%);
+}
+
+.faq-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(0, 151, 255, 0.3);
+}
+
+.faq-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 /* טבלאות רספונסיביות */
 @media (max-width: 768px) {
   .assistant-table {
@@ -617,5 +701,20 @@ img.logo-sidebar {
   .chart-container canvas,
   .chart-placeholder canvas {
     max-height: 250px !important;
+  }
+
+  /* כפתורי שאלות נפוצות ברספונסיבי */
+  .faq-buttons {
+    gap: 4px;
+  }
+
+  .faq-row {
+    gap: 4px;
+  }
+
+  .faq-btn {
+    padding: 6px 8px;
+    font-size: 12px;
+    height: 30px;
   }
 }

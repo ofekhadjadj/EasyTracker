@@ -195,30 +195,62 @@ function updateLabel(id, name, color) {
 }
 
 function deleteLabel(labelID) {
-  Swal.fire({
-    title: "מחיקת תגית",
-    text: "האם אתה בטוח שברצונך למחוק את התגית?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "כן, מחק",
-    cancelButtonText: "ביטול",
-    confirmButtonColor: "#ff4757",
-    cancelButtonColor: "#6c757d",
-    reverseButtons: true,
-  }).then((result) => {
-    if (result.isConfirmed) {
-      $.ajax({
-        url: apiConfig.createApiUrl("Label/delete_label", { LabelID: labelID }),
-        method: "PUT",
-        success: () => {
-          fetchAllLabels();
-          showSuccessNotification("התגית נמחקה בהצלחה!");
-        },
-        error: () => {
-          showErrorNotification("שגיאה במחיקת תגית");
-        },
-      });
-    }
+  // בדיקה שאין כבר פופאפ פתוח
+  if ($.fancybox.getInstance()) {
+    console.log("פופאפ כבר פתוח, מתעלם מהקליק");
+    return;
+  }
+
+  const popupHtml = `
+    <div style="max-width: 400px; text-align: center; font-family: Assistant; padding: 20px;">
+      <h3>מחיקת תגית</h3>
+      <p>האם אתה בטוח שברצונך למחוק את התגית?</p>
+      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+        <button class="gradient-button" id="confirmDeleteLabelBtn" style="background: linear-gradient(135deg, #d50000, #ff4e50); color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(255, 78, 80, 0.3);">כן, מחק</button>
+        <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
+      </div>
+    </div>
+  `;
+
+  $.fancybox.open({
+    src: popupHtml,
+    type: "html",
+    smallBtn: false,
+    afterShow: function () {
+      // הוספת event listener רק לאחר שהפופאפ נפתח
+      $("#confirmDeleteLabelBtn")
+        .off("click")
+        .on("click", function () {
+          const button = $(this);
+          if (button.data("deleting")) {
+            return false;
+          }
+          button.data("deleting", true);
+
+          $.ajax({
+            url: apiConfig.createApiUrl("Label/delete_label", {
+              LabelID: labelID,
+            }),
+            method: "PUT",
+            success: () => {
+              fetchAllLabels();
+              showSuccessNotification("התגית נמחקה בהצלחה!");
+            },
+            error: () => {
+              showErrorNotification("שגיאה במחיקת תגית");
+            },
+          });
+          $.fancybox.close();
+
+          setTimeout(() => {
+            button.data("deleting", false);
+          }, 1000);
+        });
+    },
+    beforeClose: function () {
+      // ניקוי event listeners
+      $("#confirmDeleteLabelBtn").off("click");
+    },
   });
 }
 

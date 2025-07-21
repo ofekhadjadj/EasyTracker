@@ -98,6 +98,87 @@ function toIsoLocalFormat(date) {
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 }
 
+// פונקציה לבדיקת שעות עתידיות
+function isTimeInFuture(dateStr, timeStr) {
+  const inputDateTime = toLocalDateObject(dateStr, timeStr);
+  const now = new Date();
+  return inputDateTime > now;
+}
+
+// פונקציה לחישוב משך זמן עם טיפול במעבר חצות
+function calculateDurationWithMidnightCrossing(dateStr, startTime, endTime) {
+  const startDateTime = toLocalDateObject(dateStr, startTime);
+  let endDateTime = toLocalDateObject(dateStr, endTime);
+
+  // אם שעת הסיום קודמת לשעת ההתחלה, זה אומר שעבר חצות
+  if (endDateTime <= startDateTime) {
+    // הוספת יום אחד לשעת הסיום
+    endDateTime.setDate(endDateTime.getDate() + 1);
+    console.log("מעבר חצות זוהה - הוספת יום לשעת הסיום:", endDateTime);
+  }
+
+  const durationSeconds = Math.floor((endDateTime - startDateTime) / 1000);
+  return { startDateTime, endDateTime, durationSeconds };
+}
+
+// פונקציה להגבלת זמנים עתידיים בשדות זמן
+function setupTimeValidation(dateFieldId, timeFieldId) {
+  const dateField = document.getElementById(dateFieldId);
+  const timeField = document.getElementById(timeFieldId);
+
+  if (!dateField || !timeField) return;
+
+  function validateTime() {
+    const selectedDate = dateField.value;
+    const selectedTime = timeField.value;
+
+    if (selectedDate && selectedTime) {
+      const now = new Date();
+      const today = now.toISOString().split("T")[0];
+
+      // אם התאריך הוא היום, בדוק שהשעה לא עתידית
+      if (
+        selectedDate === today &&
+        isTimeInFuture(selectedDate, selectedTime)
+      ) {
+        const currentTime =
+          now.getHours().toString().padStart(2, "0") +
+          ":" +
+          now.getMinutes().toString().padStart(2, "0");
+        timeField.value = currentTime;
+        showCustomAlert("לא ניתן להזין שעה עתידית", "warning", false);
+      }
+    }
+  }
+
+  function updateMaxTime() {
+    const selectedDate = dateField.value;
+    const now = new Date();
+    const today = now.toISOString().split("T")[0];
+
+    // אם התאריך שנבחר הוא היום, הגבל את השעה המקסימלית
+    if (selectedDate === today) {
+      const currentTime =
+        now.getHours().toString().padStart(2, "0") +
+        ":" +
+        now.getMinutes().toString().padStart(2, "0");
+      timeField.setAttribute("max", currentTime);
+    } else {
+      timeField.removeAttribute("max");
+    }
+  }
+
+  timeField.addEventListener("blur", validateTime);
+  timeField.addEventListener("change", validateTime);
+  dateField.addEventListener("change", function () {
+    updateMaxTime();
+    validateTime();
+  });
+
+  // קריאה ראשונית להגדרת ההגבלה
+  updateMaxTime();
+}
+
 //שליחה לשרת של התיאור פרויקט מהכפתור שמירת פרטים
 document.getElementById("desc-form").addEventListener("submit", function (e) {
   e.preventDefault();
@@ -1911,10 +1992,11 @@ function renderTableFromDB() {
             return;
           }
 
-          // שמור את הפרטים למחיקה גלובלית
-          window._deleteSessionId = sessionId;
-          window._deleteSessionRow = row;
-          window._deleteSessionDuration = session.DurationSeconds;
+          // בדיקה שאין כבר פופאפ פתוח
+          if ($.fancybox.getInstance()) {
+            console.log("פופאפ כבר פתוח, מתעלם מהקליק");
+            return;
+          }
 
           const message = `האם למחוק את הסשן שנוצר בתאריך ${
             formatDateTime(session.StartDate).formattedDate
@@ -1926,7 +2008,7 @@ function renderTableFromDB() {
           <p>${message}</p>
           <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
             <button class="gradient-button" id="confirmDeleteSessionBtn" style="background: linear-gradient(135deg, #d50000, #ff4e50); color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(255, 78, 80, 0.3);">כן, מחק</button>
-            <button class="gradient-button" onclick="$.fancybox.close()" style="background: #f0f0f0; color: #333; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold;">ביטול</button>
+            <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
           </div>
         </div>
       `;
@@ -1935,45 +2017,31 @@ function renderTableFromDB() {
             src: popupHtml,
             type: "html",
             smallBtn: false,
+            afterShow: function () {
+              // הוספת event listener רק לאחר שהפופאפ נפתח
+              $("#confirmDeleteSessionBtn")
+                .off("click")
+                .on("click", function () {
+                  const button = $(this);
+                  if (button.data("deleting")) {
+                    return false;
+                  }
+                  button.data("deleting", true);
+
+                  deleteSession(sessionId, row, session.DurationSeconds);
+                  $.fancybox.close();
+
+                  setTimeout(() => {
+                    button.data("deleting", false);
+                  }, 1000);
+                });
+            },
+            beforeClose: function () {
+              // ניקוי event listeners
+              $("#confirmDeleteSessionBtn").off("click");
+            },
           });
         }
-      });
-
-    // --- העבר את ה-event delegation החוצה ---
-    $(document)
-      .off("click", "#confirmDeleteSessionBtn")
-      .on("click", "#confirmDeleteSessionBtn", function (confirmEvent) {
-        confirmEvent.preventDefault();
-        confirmEvent.stopPropagation();
-
-        // מניעת קליקים מרובים
-        const button = $(this);
-        if (button.data("deleting")) {
-          return false;
-        }
-        button.data("deleting", true);
-
-        // קרא למחיקה עם הערכים הגלובליים
-        if (window._deleteSessionId && window._deleteSessionRow) {
-          deleteSession(
-            window._deleteSessionId,
-            window._deleteSessionRow,
-            window._deleteSessionDuration
-          );
-        }
-        $.fancybox.close();
-
-        // איפוס הדגל אחרי זמן קצר
-        setTimeout(() => {
-          button.data("deleting", false);
-        }, 1000);
-
-        // איפוס משתנים גלובליים
-        window._deleteSessionId = null;
-        window._deleteSessionRow = null;
-        window._deleteSessionDuration = null;
-
-        return false;
       });
 
     function deleteSession(sessionId, row, durationSeconds) {
@@ -2146,6 +2214,10 @@ $(document).on("click", ".edit-btn, .edit-btn i", function () {
   $("#edit-rate").val(session.HourlyRate || 0);
   $("#edit-description").val(session.Description || "");
 
+  // הגבלת זמנים עתידיים בעריכת סשן
+  setupTimeValidation("edit-date", "edit-start-time");
+  setupTimeValidation("edit-date", "edit-end-time");
+
   // פתח את הפופאפ עם fancybox
   $.fancybox.open({
     src: "#edit-session-modal",
@@ -2285,11 +2357,31 @@ $(document).on("submit", "#edit-session-form", function (e) {
     ? parseInt($("#edit-label-id").val())
     : null;
 
-  const startDateTime = toLocalDateObject(startDate, startTime);
+  // בדיקת שעות עתידיות
+  if (isTimeInFuture(startDate, startTime)) {
+    showCustomAlert("לא ניתן להזין שעת התחלה עתידית", "error", false);
+    return;
+  }
 
-  const endDateTime = toLocalDateObject(startDate, endTime);
+  if (isTimeInFuture(startDate, endTime)) {
+    showCustomAlert("לא ניתן להזין שעת סיום עתידית", "error", false);
+    return;
+  }
 
-  const durationSeconds = Math.floor((endDateTime - startDateTime) / 1000);
+  // חישוב זמנים עם טיפול במעבר חצות
+  const { startDateTime, endDateTime, durationSeconds } =
+    calculateDurationWithMidnightCrossing(startDate, startTime, endTime);
+
+  // בדיקת תקינות משך הסשן (מקסימום 24 שעות)
+  if (durationSeconds > 24 * 60 * 60) {
+    showCustomAlert("משך הסשן לא יכול להיות יותר מ-24 שעות", "error", false);
+    return;
+  }
+
+  if (durationSeconds <= 0) {
+    showCustomAlert("משך הסשן חייב להיות חיובי", "error", false);
+    return;
+  }
 
   const updatedSession = {
     sessionID: sessionID,
@@ -3986,6 +4078,10 @@ $(document).on("reopenEditSessionPopup", function (event, newLabelID) {
   $("#edit-rate").val(pendingData.rate);
   $("#edit-description").val(pendingData.description);
 
+  // הגבלת זמנים עתידיים בעריכת סשן
+  setupTimeValidation("edit-date", "edit-start-time");
+  setupTimeValidation("edit-date", "edit-end-time");
+
   // פתיחת הפופאפ
   $.fancybox.open({
     src: "#edit-session-modal",
@@ -4491,6 +4587,10 @@ function openAddManualSessionPopup() {
   document.getElementById("manual-end-time").value = "";
   document.getElementById("manual-description").value = "";
 
+  // הגבלת זמנים עתידיים
+  setupTimeValidation("manual-date", "manual-start-time");
+  setupTimeValidation("manual-date", "manual-end-time");
+
   // ✨ שימוש ב-API Config לזיהוי אוטומטי של הסביבה - סשן ידני
   console.log("🌐 Creating manual session labels URL...");
   const labelSelect = document.getElementById("manual-label-id");
@@ -4590,15 +4690,31 @@ $(document).on("submit", "#add-manual-session-form", function (e) {
     return;
   }
 
-  if (startTime >= endTime) {
-    showCustomAlert("שעת הסיום חייבת להיות אחרי שעת ההתחלה", "error", false);
+  // בדיקת שעות עתידיות
+  if (isTimeInFuture(date, startTime)) {
+    showCustomAlert("לא ניתן להזין שעת התחלה עתידית", "error", false);
     return;
   }
 
-  // חישוב זמנים
-  const startDateTime = toLocalDateObject(date, startTime);
-  const endDateTime = toLocalDateObject(date, endTime);
-  const durationSeconds = Math.floor((endDateTime - startDateTime) / 1000);
+  if (isTimeInFuture(date, endTime)) {
+    showCustomAlert("לא ניתן להזין שעת סיום עתידית", "error", false);
+    return;
+  }
+
+  // חישוב זמנים עם טיפול במעבר חצות
+  const { startDateTime, endDateTime, durationSeconds } =
+    calculateDurationWithMidnightCrossing(date, startTime, endTime);
+
+  // בדיקת תקינות משך הסשן (מקסימום 24 שעות)
+  if (durationSeconds > 24 * 60 * 60) {
+    showCustomAlert("משך הסשן לא יכול להיות יותר מ-24 שעות", "error", false);
+    return;
+  }
+
+  if (durationSeconds <= 0) {
+    showCustomAlert("משך הסשן חייב להיות חיובי", "error", false);
+    return;
+  }
 
   // יצירת אובייקט הסשן
   const sessionData = {

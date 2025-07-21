@@ -425,7 +425,6 @@ function calculateOverallStats(data) {
   let totalTasks = 0;
   let totalCompletedTasks = 0;
   const uniqueProjects = new Set();
-  const uniqueClients = new Set();
   const allTeamMembers = new Set();
   const projectsForTasks = new Set();
 
@@ -434,7 +433,6 @@ function calculateOverallStats(data) {
     totalHours += hours;
     totalRevenue += hours * session.SessionHourlyRate;
     uniqueProjects.add(session.ProjectID);
-    uniqueClients.add(session.ClientID);
 
     // חישוב משימות (רק פעם אחת לכל פרויקט)
     if (!projectsForTasks.has(session.ProjectID)) {
@@ -453,6 +451,9 @@ function calculateOverallStats(data) {
   const hours = Math.floor(totalHours);
   const minutes = Math.round((totalHours - hours) * 60);
 
+  // חישוב מספר לקוחות נכון
+  const correctClientCount = calculateCorrectClientCount(data);
+
   return {
     totalHours: hours,
     totalMinutes: minutes,
@@ -460,7 +461,7 @@ function calculateOverallStats(data) {
     totalRevenue: Math.round(totalRevenue),
     totalSessions: data.Sessions.length,
     uniqueProjects: uniqueProjects.size,
-    uniqueClients: uniqueClients.size,
+    uniqueClients: correctClientCount,
     totalTasks,
     totalCompletedTasks,
     totalPendingTasks: totalTasks - totalCompletedTasks,
@@ -576,10 +577,18 @@ function findAbsoluteLastSession(data) {
         sessionStartDate: session.SessionStartDate,
         sessionDate: sessionDate,
         sessionFormatted: sessionDate.toLocaleDateString("he-IL"),
-        sessionTime: sessionDate.toLocaleTimeString("he-IL", {
+        sessionStartTime: sessionDate.toLocaleTimeString("he-IL", {
           hour: "2-digit",
           minute: "2-digit",
         }),
+        sessionEndTime: session.SessionEndDate
+          ? new Date(session.SessionEndDate).toLocaleTimeString("he-IL", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })
+          : "לא זמין",
+        sessionStartDate: session.SessionStartDate,
+        sessionEndDate: session.SessionEndDate || "לא זמין",
         sessionDuration: session.SessionDurationHours,
         sessionFormattedDuration: formatDurationFromHours(
           session.SessionDurationHours
@@ -694,6 +703,318 @@ function calculateRecentActivity(data, daysBack = 30) {
   return activityByProject;
 }
 
+function calculateDetailedSessionsByProject(data) {
+  if (!data || !data.Sessions) return {};
+
+  const sessionsByProject = {};
+
+  data.Sessions.forEach((session) => {
+    const projectId = session.ProjectID;
+    const sessionStartDate = new Date(session.SessionStartDate);
+    const sessionEndDate = session.SessionEndDate
+      ? new Date(session.SessionEndDate)
+      : null;
+
+    if (!sessionsByProject[projectId]) {
+      sessionsByProject[projectId] = {
+        projectName: session.ProjectName,
+        clientName: session.ClientCompanyName,
+        sessions: [],
+      };
+    }
+
+    // פורמטינג זמנים מדויק
+    const startTime = sessionStartDate.toLocaleTimeString("he-IL", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const endTime = sessionEndDate
+      ? sessionEndDate.toLocaleTimeString("he-IL", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "לא זמין";
+
+    const sessionDate = sessionStartDate.toLocaleDateString("he-IL");
+
+    // הוספת מידע על מי ביצע את הסשן
+    const performedByName = `${session.SessionPerformedByFirstName || ""} ${
+      session.SessionPerformedByLastName || ""
+    }`.trim();
+
+    sessionsByProject[projectId].sessions.push({
+      sessionId: session.SessionID || session.ID,
+      date: sessionDate,
+      startTime: startTime,
+      endTime: endTime,
+      startDateTime: session.SessionStartDate,
+      endDateTime: session.SessionEndDate || "לא זמין",
+      duration: formatDurationFromHours(session.SessionDurationHours),
+      durationHours: session.SessionDurationHours,
+      daysAgo: Math.floor(
+        (new Date() - sessionStartDate) / (1000 * 60 * 60 * 24)
+      ),
+      // פרטי מבצע הסשן
+      performedBy: performedByName || "לא ידוע",
+      performedByUserId: session.SessionPerformedByUserID,
+      performedByEmail: session.SessionPerformedByEmail || "לא ידוע",
+      isMySession: session.IsMySession === 1,
+      isSessionPerformedByCurrentUser:
+        session.IsSessionPerformedByCurrentUser === 1,
+      // פרטי תגית הסשן
+      labelName:
+        session.LabelIsArchived === true || session.LabelIsArchived === 1
+          ? "ללא תגית"
+          : session.LabelName || "ללא תגית",
+      labelColor:
+        session.LabelIsArchived === true || session.LabelIsArchived === 1
+          ? "#e0e0e0"
+          : session.LabelColor || "#e0e0e0",
+      labelId:
+        session.LabelIsArchived === true || session.LabelIsArchived === 1
+          ? null
+          : session.LabelID || null,
+    });
+  });
+
+  // מיון הסשנים לפי תאריך (החדשים ראשונים)
+  Object.keys(sessionsByProject).forEach((projectId) => {
+    sessionsByProject[projectId].sessions.sort((a, b) => a.daysAgo - b.daysAgo);
+
+    // סימון הסשן האחרון
+    if (sessionsByProject[projectId].sessions.length > 0) {
+      sessionsByProject[projectId].lastSession =
+        sessionsByProject[projectId].sessions[0];
+    }
+  });
+
+  return sessionsByProject;
+}
+
+function calculateTeamPerformanceByProject(data) {
+  if (!data || !data.Sessions) return {};
+
+  const teamPerformanceByProject = {};
+
+  data.Sessions.forEach((session) => {
+    const projectId = session.ProjectID;
+    const projectName = session.ProjectName;
+    const clientName = session.ClientCompanyName;
+
+    // זיהוי מבצע הסשן
+    const performedByName = `${session.SessionPerformedByFirstName || ""} ${
+      session.SessionPerformedByLastName || ""
+    }`.trim();
+    const performedByUserId = session.SessionPerformedByUserID;
+    const performedByEmail = session.SessionPerformedByEmail || "לא ידוע";
+
+    if (!performedByName) return; // דלג על סשנים ללא מבצע מזוהה
+
+    if (!teamPerformanceByProject[projectId]) {
+      teamPerformanceByProject[projectId] = {
+        projectName: projectName,
+        clientName: clientName,
+        teamMembers: {},
+      };
+    }
+
+    if (!teamPerformanceByProject[projectId].teamMembers[performedByUserId]) {
+      teamPerformanceByProject[projectId].teamMembers[performedByUserId] = {
+        name: performedByName,
+        email: performedByEmail,
+        sessionCount: 0,
+        totalHours: 0,
+        totalRevenue: 0,
+        sessions: [],
+      };
+    }
+
+    const member =
+      teamPerformanceByProject[projectId].teamMembers[performedByUserId];
+    member.sessionCount++;
+    member.totalHours += session.SessionDurationHours || 0;
+    member.totalRevenue +=
+      (session.SessionDurationHours || 0) * (session.SessionHourlyRate || 0);
+
+    // הוספת פרטי הסשן
+    member.sessions.push({
+      date: new Date(session.SessionStartDate).toLocaleDateString("he-IL"),
+      duration: formatDurationFromHours(session.SessionDurationHours),
+      startTime: new Date(session.SessionStartDate).toLocaleTimeString(
+        "he-IL",
+        {
+          hour: "2-digit",
+          minute: "2-digit",
+        }
+      ),
+      endTime: session.SessionEndDate
+        ? new Date(session.SessionEndDate).toLocaleTimeString("he-IL", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : "לא זמין",
+    });
+  });
+
+  // עיבוד נתונים נוספים
+  Object.keys(teamPerformanceByProject).forEach((projectId) => {
+    const project = teamPerformanceByProject[projectId];
+
+    // המרה לפורמט שעות:דקות עבור כל חבר צוות
+    Object.keys(project.teamMembers).forEach((userId) => {
+      const member = project.teamMembers[userId];
+      const totalHoursDecimal = member.totalHours;
+      const hours = Math.floor(totalHoursDecimal);
+      const minutes = Math.round((totalHoursDecimal - hours) * 60);
+      member.formattedTime = `${hours}:${minutes.toString().padStart(2, "0")}`;
+
+      // מיון הסשנים לפי תאריך
+      member.sessions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    });
+
+    // חישוב סטטיסטיקות כלליות לפרויקט
+    const membersArray = Object.values(project.teamMembers);
+    project.totalSessions = membersArray.reduce(
+      (sum, member) => sum + member.sessionCount,
+      0
+    );
+    project.totalHours = membersArray.reduce(
+      (sum, member) => sum + member.totalHours,
+      0
+    );
+    project.totalRevenue = membersArray.reduce(
+      (sum, member) => sum + member.totalRevenue,
+      0
+    );
+    project.teamMemberCount = membersArray.length;
+  });
+
+  return teamPerformanceByProject;
+}
+
+function calculateLabelUsageByProject(data) {
+  if (!data || !data.Sessions) return {};
+
+  const labelUsageByProject = {};
+
+  data.Sessions.forEach((session) => {
+    const projectId = session.ProjectID;
+    const projectName = session.ProjectName;
+    const clientName = session.ClientCompanyName;
+
+    // זיהוי תגית הסשן
+    const labelName = session.LabelName || "ללא תגית";
+    const labelColor = session.LabelColor || "#e0e0e0";
+    const labelId = session.LabelID;
+    const labelIsArchived =
+      session.LabelIsArchived === true || session.LabelIsArchived === 1;
+
+    if (!labelUsageByProject[projectId]) {
+      labelUsageByProject[projectId] = {
+        projectName: projectName,
+        clientName: clientName,
+        labels: {},
+        totalSessionsWithLabels: 0,
+        totalSessions: 0,
+      };
+    }
+
+    labelUsageByProject[projectId].totalSessions++;
+
+    // אם התגית נמחקה (archived), לא נכלול אותה בחישובים
+    if (labelIsArchived) {
+      // נחשיב את הסשן כ"ללא תגית" אם התגית נמחקה
+      const noLabelKey = "ללא תגית";
+      if (!labelUsageByProject[projectId].labels[noLabelKey]) {
+        labelUsageByProject[projectId].labels[noLabelKey] = {
+          labelName: noLabelKey,
+          labelColor: "#e0e0e0",
+          labelId: null,
+          usageCount: 0,
+          sessions: [],
+        };
+      }
+
+      labelUsageByProject[projectId].labels[noLabelKey].usageCount++;
+      labelUsageByProject[projectId].labels[noLabelKey].sessions.push({
+        date: new Date(session.SessionStartDate).toLocaleDateString("he-IL"),
+        duration: formatDurationFromHours(session.SessionDurationHours),
+        description: session.Description || "ללא תיאור",
+      });
+
+      return; // דלג על שאר העיבוד לסשן זה
+    }
+
+    if (!labelUsageByProject[projectId].labels[labelName]) {
+      labelUsageByProject[projectId].labels[labelName] = {
+        labelName: labelName,
+        labelColor: labelColor,
+        labelId: labelId,
+        usageCount: 0,
+        sessions: [],
+      };
+    }
+
+    labelUsageByProject[projectId].labels[labelName].usageCount++;
+    labelUsageByProject[projectId].labels[labelName].sessions.push({
+      date: new Date(session.SessionStartDate).toLocaleDateString("he-IL"),
+      duration: formatDurationFromHours(session.SessionDurationHours),
+      description: session.Description || "ללא תיאור",
+    });
+
+    // אם יש תגית (לא "ללא תגית")
+    if (labelName !== "ללא תגית") {
+      labelUsageByProject[projectId].totalSessionsWithLabels++;
+    }
+  });
+
+  // עיבוד נתונים נוספים
+  Object.keys(labelUsageByProject).forEach((projectId) => {
+    const project = labelUsageByProject[projectId];
+
+    // מיון התגיות לפי כמות השימוש
+    const sortedLabels = Object.values(project.labels).sort(
+      (a, b) => b.usageCount - a.usageCount
+    );
+
+    project.sortedLabels = sortedLabels;
+    project.mostUsedLabel = sortedLabels.length > 0 ? sortedLabels[0] : null;
+    project.labelUsagePercentage =
+      project.totalSessions > 0
+        ? Math.round(
+            (project.totalSessionsWithLabels / project.totalSessions) * 100
+          )
+        : 0;
+  });
+
+  return labelUsageByProject;
+}
+
+function calculateCorrectClientCount(data) {
+  if (!data || !data.Sessions) return 0;
+
+  // שליפת לקוחות רק מפרויקטים שהמשתמש הוא מנהל שלהם או הבעלים שלהם
+  const myClients = new Set();
+  const projectsIManagedOrOwn = new Set();
+
+  data.Sessions.forEach((session) => {
+    // אם זה הסשן שלי או אני מנהל הפרויקט, זה פרויקט שלי
+    if (session.IsMySession === 1 || session.Role === "ProjectManager") {
+      projectsIManagedOrOwn.add(session.ProjectID);
+    }
+  });
+
+  // רק עבור פרויקטים שאני מנהל או בעלים שלהם, ספור את הלקוחות
+  data.Sessions.forEach((session) => {
+    if (projectsIManagedOrOwn.has(session.ProjectID)) {
+      myClients.add(session.ClientID);
+    }
+  });
+
+  return myClients.size;
+}
+
 function prepareChartData(processedData) {
   // הכנת נתונים לגרפי עמודות - שעות לפי פרויקט
   const projectHoursChart = {
@@ -747,6 +1068,9 @@ function createProcessedDataSummary(data) {
   const recentActivity = calculateRecentActivity(data);
   const sessionExtremes = calculateSessionExtremes(data);
   const overallStats = calculateOverallStats(data);
+  const detailedSessionsByProject = calculateDetailedSessionsByProject(data);
+  const teamPerformanceByProject = calculateTeamPerformanceByProject(data);
+  const labelUsageByProject = calculateLabelUsageByProject(data);
 
   // עיבוד נתוני ניטור הצוות (אם קיימים)
   let teamMemberStats = {};
@@ -798,6 +1122,9 @@ function createProcessedDataSummary(data) {
     absoluteLastSession,
     recentActivity,
     sessionExtremes,
+    detailedSessionsByProject,
+    teamPerformanceByProject,
+    labelUsageByProject,
 
     // נתוני ניטור הצוות החדשים
     teamMemberStats,
@@ -891,11 +1218,53 @@ function loadChatHistory() {
 
 function clearChatHistory() {
   try {
-    if (confirm("האם אתה בטוח שברצונך לנקות את כל היסטוריית השיחה? 🤔")) {
-      localStorage.removeItem(CHAT_HISTORY_KEY);
-      $("#chat-messages").empty();
-      updateWelcomeMessage();
+    // בדיקה שאין כבר פופאפ פתוח
+    if ($.fancybox.getInstance()) {
+      console.log("פופאפ כבר פתוח, מתעלם מהקליק");
+      return;
     }
+
+    const popupHtml = `
+      <div style="max-width: 400px; text-align: center; font-family: Assistant; padding: 20px;">
+        <h3>ניקוי היסטוריית שיחה</h3>
+        <p>האם אתה בטוח שברצונך לנקות את כל היסטוריית השיחה? 🤔</p>
+        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+          <button class="gradient-button" id="confirmClearHistoryBtn" style="background: linear-gradient(135deg, #d50000, #ff4e50); color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(255, 78, 80, 0.3);">כן, נקה</button>
+          <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
+        </div>
+      </div>
+    `;
+
+    $.fancybox.open({
+      src: popupHtml,
+      type: "html",
+      smallBtn: false,
+      afterShow: function () {
+        // הוספת event listener רק לאחר שהפופאפ נפתח
+        $("#confirmClearHistoryBtn")
+          .off("click")
+          .on("click", function () {
+            const button = $(this);
+            if (button.data("clearing")) {
+              return false;
+            }
+            button.data("clearing", true);
+
+            localStorage.removeItem(CHAT_HISTORY_KEY);
+            $("#chat-messages").empty();
+            updateWelcomeMessage();
+            $.fancybox.close();
+
+            setTimeout(() => {
+              button.data("clearing", false);
+            }, 1000);
+          });
+      },
+      beforeClose: function () {
+        // ניקוי event listeners
+        $("#confirmClearHistoryBtn").off("click");
+      },
+    });
   } catch (error) {
     console.error("שגיאה בניקוי היסטוריית שיחה:", error);
   }
@@ -1210,7 +1579,6 @@ function loadTeamMonitoringData(userId) {
 
 function loadAssistantData(userId) {
   showLoading(true);
-  addMessage("assistant", "טוען את הנתונים שלך... ⏳");
 
   // טעינת שני ה-APIs במקביל
   const assistantDataPromise = new Promise((resolve, reject) => {
@@ -1292,33 +1660,6 @@ function loadAssistantData(userId) {
       );
       if (history.length === 0) {
         updateWelcomeMessage();
-      } else {
-        // הודעה על שיפור החישובים
-        const chartStatus =
-          typeof Chart !== "undefined"
-            ? "✅ Chart.js זמין"
-            : "❌ Chart.js לא זמין";
-
-        const teamStatus =
-          teamMonitoringData && teamMonitoringData.length > 0
-            ? `✅ נתוני צוות (${teamMonitoringData.length} רשומות)`
-            : "⚠️ נתוני צוות לא זמינים";
-
-        // לוג לבדיקה
-        console.log("מצב נתוני הצוות:", {
-          teamMonitoringData: teamMonitoringData,
-          length: teamMonitoringData ? teamMonitoringData.length : 0,
-          taskSummariesEmpty:
-            Object.keys(assistantData.taskSummaries || {}).length === 0,
-        });
-
-        addMessage(
-          "assistant",
-          `🔧 שיפורים חדשים! עכשיו אני יכול לענות על שאלות על:\n\n• 📊 משימות ומצב השלמתן\n• 👥 אנשי צוות בפרויקטים\n• 📈 תשובות בפורמט טבלאות וגרפים אינטראקטיביים!\n• 📊 גרפי עמודות, עוגות וקווים עם Chart.js\n• 🎯 הכל עם חישובים מדויקים!\n• 🔍 ניתוח מפורט של ביצועי הצוות\n\n🔧 סטטוס גרפים: ${chartStatus}\n🔧 סטטוס נתוני צוות: ${teamStatus}\n\n⚠️ אם אתה רואה שגיאות, אנא רענן את הדף וודא שהשרת רץ על ${apiConfig.baseUrl.replace(
-            "/api",
-            ""
-          )}\n\nשאל אותי משהו! ✨`
-        );
       }
     })
     .catch((error) => {
@@ -1340,88 +1681,23 @@ function enableChat() {
 function updateWelcomeMessage() {
   $(".message.assistant").last().remove();
 
-  // יצירת סיכום מדויק
-  const processedData = createProcessedDataSummary(assistantData);
-  const stats = processedData.overallStats;
-  const teamStats = processedData.teamOverallStats;
-
-  // בניית מידע על הצוות
-  let teamInfo = "";
-  if (
-    teamStats &&
-    typeof teamStats === "object" &&
-    Object.keys(teamStats).length > 0
-  ) {
-    teamInfo = `
-👥 סיכום ניטור הצוות:
-• ${teamStats.totalTeamMembers || 0} אנשי צוות פעילים
-• ${teamStats.totalProjectsWithTeam || 0} פרויקטים עם צוות
-• ${teamStats.totalTasks || 0} משימות בסך הכל
-• ${teamStats.totalCompletedTasks || 0} משימות הושלמו (${
-      teamStats.overallCompletionRate || 0
-    }%)
-• ${teamStats.totalPendingTasks || 0} משימות בתהליך`;
-  }
-
   const welcomeMsg = `שלום! 👋 אני העוזר האישי שלך ונתוניך נטענו בהצלחה! 🎉
+<br><br>
+💡 **שאלות נפוצות:**
+<div class="faq-buttons">
+  <div class="faq-row">
+    <button class="faq-btn" onclick="sendFAQQuestion('כמה שעות עבדתי השבוע?')">⏰ כמה שעות עבדתי השבוע?</button>
+    <button class="faq-btn" onclick="sendFAQQuestion('כמה הרווחתי החודש?')">💰 כמה הרווחתי החודש?</button>
+    <button class="faq-btn" onclick="sendFAQQuestion('איזה פרויקט הכי רווחי החודש?')">🏆 איזה פרויקט הכי רווחי החודש?</button>
+  </div>
+  <div class="faq-row">
+    <button class="faq-btn" onclick="sendFAQQuestion('כמה סשנים ביצעתי החודש?')">📊 כמה סשנים ביצעתי החודש?</button>
+    <button class="faq-btn" onclick="sendFAQQuestion('מה היה היום הכי עמוס שלי החודש?')">🔥 מה היה היום הכי עמוס שלי החודש?</button>
+    <button class="faq-btn" onclick="sendFAQQuestion('כמה משימות פתוחות יש לי עכשיו?')">✅ כמה משימות פתוחות יש לי עכשיו?</button>
+  </div>
+</div>
+🤖 **או שאל אותי כל שאלה אחרת על הנתונים שלך!**`;
 
-📊 סיכום המערכת שלך:
-• ${stats.uniqueProjects} פרויקטים פעילים
-• ${stats.uniqueClients} לקוחות
-• ${stats.totalSessions} שעות עבודה רשומות
-• סה"כ ${stats.formattedTime} שעות עבודה
-• סה"כ הכנסה: ₪${stats.totalRevenue.toLocaleString()}
-• ${stats.totalTasks} משימות (${stats.totalCompletedTasks} הושלמו, ${
-    stats.totalPendingTasks
-  } בתהליך)
-• ${stats.totalTeamMembers} אנשי צוות
-${teamInfo}
-
-🏆 הפרויקט הכי רווחי שלך:
-${Object.entries(processedData.projectSummaries)
-  .sort(([, a], [, b]) => b.totalRevenue - a.totalRevenue)
-  .slice(0, 1)
-  .map(
-    ([id, data]) =>
-      `"${data.projectName}" - ₪${Math.round(
-        data.totalRevenue
-      ).toLocaleString()}`
-  )
-  .join("")}
-
-🔥 הסשן האחרון שלך:
-${
-  processedData.absoluteLastSession
-    ? `"${processedData.absoluteLastSession.projectName}" ב-${processedData.absoluteLastSession.sessionFormatted} בשעה ${processedData.absoluteLastSession.sessionTime} (${processedData.absoluteLastSession.sessionFormattedDuration})`
-    : "אין נתוני סשנים"
-}
-
-🧪 **בדיקת גרפים:** <button onclick="testChartFunction()" style="background: #4a90e2; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">בדוק גרף</button>
-
-💬 אתה יכול לשאול אותי שאלות כגון:
-• כמה עבדתי בפרויקט מסוים?
-• מתי עבדתי בפעם האחרונה על פרויקט X?
-• כמה זמן עבדתי בסשן האחרון של פרויקט Y?
-• מה הסשן הכי ארוך שעבדתי על פרויקט Z?
-• מה הסשן הכי קצר שעבדתי על פרויקט W?
-• מה ההכנסה שלי מלקוח מסוים?
-• איזה פרויקט הכי רווחי?
-• כמה אני מרוויח לשעה בפרויקט מסוים?
-• מה התעריף השעתי שלי?
-• מה מצב המשימות בפרויקט X?
-• איזה אנשי צוות עובדים על פרויקט Y?
-• כמה משימות יש לאיש צוות מסוים?
-• מי איש הצוות עם הכי הרבה משימות שהושלמו?
-• איזה פרויקט צריך יותר תשומת לב מבחינת משימות?
-• השווה בין ביצועי אנשי הצוות
-• תן לי פירוט שעות עבודה לחודש הזה
-• השווה בין הפרויקטים שלי (בטבלה או בגרף)
-• תמצא לי פרויקטים עם משימות מעוכבות
-• הצג לי גרף של שעות העבודה לכל פרויקט
-• על איזה פרויקטים לא עבדתי הכי הרבה זמן?
-• תן לי ניתוח מפורט של ביצועי הצוות
-
-מה תרצה לדעת? 😊`;
   addMessage("assistant", welcomeMsg);
 }
 
@@ -1702,7 +1978,7 @@ ${(() => {
 🔥 הסשן האחרון בכלל (בכל הפרויקטים):
 ${
   processedData.absoluteLastSession
-    ? `• פרויקט "${processedData.absoluteLastSession.projectName}" ב-${processedData.absoluteLastSession.sessionFormatted} בשעה ${processedData.absoluteLastSession.sessionTime} (לפני ${processedData.absoluteLastSession.daysSinceSession} ימים), משך ${processedData.absoluteLastSession.sessionFormattedDuration}`
+    ? `• פרויקט "${processedData.absoluteLastSession.projectName}" ב-${processedData.absoluteLastSession.sessionFormatted} התחלה: ${processedData.absoluteLastSession.sessionStartTime}, סיום: ${processedData.absoluteLastSession.sessionEndTime} (לפני ${processedData.absoluteLastSession.daysSinceSession} ימים), משך ${processedData.absoluteLastSession.sessionFormattedDuration}`
     : "• אין נתוני סשנים"
 }
 
@@ -1712,6 +1988,94 @@ ${Object.entries(processedData.lastSessionData)
     ([id, data]) =>
       `• פרויקט "${data.projectName}": סשן אחרון ${data.lastSessionFormatted} (לפני ${data.daysSinceLastSession} ימים), משך ${data.lastSessionFormattedDuration}`
   )
+  .join("\n")}
+
+📝 פירוט סשנים מפורט לפי פרויקט (עם שעות התחלה וסיום):
+${Object.entries(processedData.detailedSessionsByProject)
+  .map(([projectId, projectData]) => {
+    const recentSessions = projectData.sessions.slice(0, 5); // הצגת 5 הסשנים האחרונים
+    let projectInfo = `• **פרויקט "${projectData.projectName}"** (לקוח: ${projectData.clientName}):\n`;
+
+    if (projectData.lastSession) {
+      projectInfo += `  ← הסשן האחרון: ${projectData.lastSession.date} התחלה: ${projectData.lastSession.startTime}, סיום: ${projectData.lastSession.endTime}, משך: ${projectData.lastSession.duration}, בוצע על ידי: ${projectData.lastSession.performedBy}, תגית: ${projectData.lastSession.labelName}\n`;
+    }
+
+    if (recentSessions.length > 1) {
+      projectInfo += `  ← הסשנים האחרונים:\n`;
+      recentSessions.forEach((session, index) => {
+        if (index > 0) {
+          // דלג על האחרון שכבר הצגנו
+          projectInfo += `    - ${session.date} התחלה: ${session.startTime}, סיום: ${session.endTime}, משך: ${session.duration}, בוצע על ידי: ${session.performedBy}, תגית: ${session.labelName}\n`;
+        }
+      });
+    }
+
+    // הוספת הסשן הראשון (הישן ביותר)
+    if (projectData.sessions.length > 0) {
+      const firstSession =
+        projectData.sessions[projectData.sessions.length - 1]; // האחרון במיון = הראשון בזמן
+      projectInfo += `  ← הסשן הראשון (הישן ביותר): ${firstSession.date} התחלה: ${firstSession.startTime}, סיום: ${firstSession.endTime}, משך: ${firstSession.duration}, בוצע על ידי: ${firstSession.performedBy}, תגית: ${firstSession.labelName}\n`;
+      projectInfo += `  ← סה"כ ${projectData.sessions.length} סשנים בפרויקט זה\n`;
+    }
+
+    return projectInfo;
+  })
+  .join("\n")}
+
+👥 ביצועי אנשי צוות לפי פרויקט (מפורט):
+${Object.entries(processedData.teamPerformanceByProject)
+  .map(([projectId, projectData]) => {
+    let projectInfo = `• **פרויקט "${projectData.projectName}"** (לקוח: ${projectData.clientName}):\n`;
+    projectInfo += `  ← סה"כ ${projectData.totalSessions} סשנים, ${Math.floor(
+      projectData.totalHours
+    )}:${Math.round((projectData.totalHours % 1) * 60)
+      .toString()
+      .padStart(2, "0")} שעות, ₪${Math.round(
+      projectData.totalRevenue
+    ).toLocaleString()} הכנסה\n`;
+    projectInfo += `  ← אנשי צוות (${projectData.teamMemberCount}):\n`;
+
+    // מיון חברי הצוות לפי מספר סשנים
+    const sortedMembers = Object.values(projectData.teamMembers).sort(
+      (a, b) => b.sessionCount - a.sessionCount
+    );
+
+    sortedMembers.forEach((member) => {
+      projectInfo += `    - ${member.name} (${member.email}): ${
+        member.sessionCount
+      } סשנים, ${member.formattedTime} שעות, ₪${Math.round(
+        member.totalRevenue
+      ).toLocaleString()} הכנסה\n`;
+    });
+
+    return projectInfo;
+  })
+  .join("\n")}
+
+🏷️ שימוש בתגיות לפי פרויקט:
+${Object.entries(processedData.labelUsageByProject)
+  .map(([projectId, projectData]) => {
+    let projectInfo = `• **פרויקט "${projectData.projectName}"** (לקוח: ${projectData.clientName}):\n`;
+    projectInfo += `  ← סה"כ ${projectData.totalSessions} סשנים, ${projectData.totalSessionsWithLabels} עם תגיות (${projectData.labelUsagePercentage}%)\n`;
+
+    if (projectData.sortedLabels.length > 0) {
+      projectInfo += `  ← תגיות בשימוש:\n`;
+      projectData.sortedLabels.forEach((label) => {
+        const percentage = Math.round(
+          (label.usageCount / projectData.totalSessions) * 100
+        );
+        projectInfo += `    - "${label.labelName}": ${label.usageCount} פעמים (${percentage}%)\n`;
+      });
+
+      if (projectData.mostUsedLabel) {
+        projectInfo += `  ← התגית הכי פופולרית: "${projectData.mostUsedLabel.labelName}" (${projectData.mostUsedLabel.usageCount} פעמים)\n`;
+      }
+    } else {
+      projectInfo += `  ← אין תגיות בשימוש בפרויקט זה\n`;
+    }
+
+    return projectInfo;
+  })
   .join("\n")}
 
 🕐 פעילות אחרונה (30 ימים אחרונים):
@@ -1735,36 +2099,72 @@ ${Object.entries(processedData.sessionExtremes)
   )
   .join("\n")}
 
+🔍 **מידע נוסף על אנשי צוות:**
+הנתונים כוללים מידע על מי ביצע כל סשן:
+• SessionPerformedByFirstName/LastName - שם מי שביצע את הסשן
+• SessionPerformedByEmail - אימייל של מי שביצע
+• IsSessionPerformedByCurrentUser - האם המשתמש הנוכחי ביצע את הסשן
+
+עבור שאלות על ביצועי צוות - קבץ סשנים לפי שם מלא של איש הצוות וחשב סה"כ שעות/הכנסה.
+
 === השאלה ===
 ${userQuestion}
 
 === הוראות תשובה ===
 ענה בעברית בצורה ברורה ותמציתית. השתמש באימוג'ים כדי להפוך את התשובה לידידותית יותר.
 
+**חשוב - תמציתיות:**
+• אם השאלה מבקשת **מספר בלבד** (כמה פרויקטים, כמה תגיות, כמה לקוחות) - תן רק את המספר ואימוג'י. ללא פירוט נוסף!
+• אם השאלה מבקשת **מידע כללי** (איזה פרויקט, מתי, כמה זמן) - תן תשובה קצרה ומדויקת בלבד
+• **פירוט נוסף רק אם נשאל במפורש:** "תפרט", "הרחב", "איזה", "רשימה", "פירוט"
+• **דוגמאות לתשובות קצרות:**
+  - "כמה פרויקטים יש לי?" → "יש לך 8 פרויקטים 📂"
+  - "כמה תגיות יש לי?" → "יש לך 12 תגיות 🏷️"
+  - "כמה הרווחתי החודש?" → "הרווחת ₪15,240 החודש 💰"
+  - "מתי עבדתי בפעם האחרונה?" → "עבדת בפעם האחרונה ב-15.12.2024 ב-14:30 🕐"
+
 **הוראות מיוחדות:**
-• אם נשאלת על "הסשן האחרון" או "מתי עבדתי בפעם האחרונה" - השתמש בנתונים מ"🔥 הסשן האחרון בכלל" שכולל תאריך ושעה מדויקים
-• אם נשאלת על סשן אחרון של פרויקט ספציפי - השתמש בנתונים מ"📅 סשן אחרון לכל פרויקט"
-• תמיד ציין את השעה המדויקת כאשר זמינה
+• אם נשאלת על "הסשן האחרון" או "מתי עבדתי בפעם האחרונה" - השתמש בנתונים מ"🔥 הסשן האחרון בכלל" שכולל תאריך ושעות התחלה וסיום מדויקים
+• אם נשאלת על סשן אחרון של פרויקט ספציפי - השתמש בנתונים מ"📝 פירוט סשנים מפורט לפי פרויקט" שכולל שעות התחלה וסיום מדויקות
+• **הסשן הראשון/הישן ביותר:** אם נשאלת על "הסשן הראשון" או "הסשן הישן ביותר" בפרויקט - חפש במידע "הסשן הראשון (הישן ביותר)" ב"📝 פירוט סשנים מפורט לפי פרויקט"
+• **הבנת הקשר של שאלות המשך:** אם המשתמש שואל שאלה ללא ציון שם פרויקט (כמו "מתי היה הסשן הראשון בפרויקט הזה?") - השתמש בהיסטוריית השיחה כדי לזהות איזה פרויקט הוזכר בשאלה הקודמת והתייחס אליו
+• **חשוב לגבי זמנים:** תמיד ציין גם שעת התחלה וגם שעת הסיום כאשר זמינים - למשל: "התחלת ב-7:00 וסיימת ב-9:54"
+• אם נשאלת "מתי התחיל הסשן" או "מתי הסתיים הסשן" - השתמש בשדות startTime ו-endTime מ"📝 פירוט סשנים מפורט"
 • עבור שאלות על צוות ומשימות - השתמש בעיקר בנתונים מ"👥 נתוני ניטור הצוות (מפורט)"
 • כאשר נשאלת "מי איש הצוות עם הכי הרבה משימות" - השתמש ברשימה הממוינת ב"📊 פירוט ביצועי אנשי הצוות"
 • עבור שאלות על משימות בפרויקט ספציפי - השתמש בעיקר ב"🎯 פירוט צוות לפי פרויקט" (נתונים מדויקים יותר)
-• אם נתוני המשימות ב"✅ סיכום משימות לפי פרויקטים" ריקים או 0 - השתמש רק בנתוני הצוות החדשים
-• כאשר נשאלת "כמה משימות יש בפרויקט X" - חפש בין נתוני הצוות לפי פרויקט
-• עבור שאלות על משימות של איש צוות ספציפי - השתמש בנתונים מ"📊 פירוט ביצועי אנשי הצוות"
-• זכור שיש מידע על משימות באיחור - השתמש בו כאשר רלוונטי
-• כאשר מבקשים פירוט משימות של אדם - תוכל להציג גם את תיאור המשימות ותאריכי היעד
-• כאשר מבקשים השוואה בין אנשי צוות - השתמש בטבלה או גרף מתאים
-• תמיד ציין אחוזי השלמה כאשר זמינים
-• **חשוב לגבי תעריף שעתי:** כאשר נשאלת "כמה אני מרוויח לשעה" או "מה התעריף השעתי" בפרויקט מסוים - השתמש בערך "תעריף שעתי" שמופיע בפירוט הפרויקטים למעלה. אל תחשב - הנתון כבר מוכן! לדוגמה: אם הפרויקט מוצג עם "תעריף שעתי: ₪150" - זה המחיר לשעה.
+• כאשר נשאלת על פרויקט ספציפי לפי שם (כמו "מערכת CRM") - חפש אותו ב"📝 פירוט סשנים מפורט לפי פרויקט" ותן מידע מדויק על הסשנים שלו
+• **זיהוי הקשר אוטומטי:** אם שאלה מתחילה ב"מתי", "כמה", "איזה", "איך", "ומתי", "וכמה", "ואיזה", "ואיך" ללא ציון פרויקט ספציפי - בדוק בהיסטוריית השיחה איזה פרויקט הוזכר לאחרונה והתייחס אליו
+• **שאלות קצרות עם חיבור:** אם שאלה מתחילה ב"ו" + מילת שאלה (כמו "ומתי הסשן הראשון?") - זה המשך לשאלה קודמת על אותו פרויקט
+
+• **לשאלות על אנשי צוות וביצועיהם:** השתמש בעיקר ב"👥 ביצועי אנשי צוות לפי פרויקט (מפורט)" - שם תמצא בדיוק כמה סשנים ביצע כל איש צוות בכל פרויקט
+• **מי ביצע איזה סשן:** השתמש בשדה "בוצע על ידי" ב"📝 פירוט סשנים מפורט לפי פרויקט" לזיהוי מבצע כל סשן ספציפי
+• **לטבלאות צוות:** הצג שם, מספר סשנים, שעות והכנסה מ"👥 ביצועי אנשי צוות לפי פרויקט"
+• **כשנשאלת "כמה סשנים ביצע כל אחד":** חפש בפרויקט הספציפי ב"👥 ביצועי אנשי צוות לפי פרויקט" ותן תשובה מדויקת לכל איש צוות
+
+• **לשאלות על תגיות (Labels):** השתמש ב"🏷️ שימוש בתגיות לפי פרויקט" למידע על איזה תגיות נעשה שימוש ובכמה פעמים
+• **"באיזה תגיות השתמשתי בפרויקט הזה?"** - חפש בפרויקט הספציפי ברשימת התגיות והצג את כל התגיות עם מספר השימושים
+• **"איזו תגית הכי פופולרית בפרויקט?"** - השתמש ב"התגית הכי פופולרית" מנתוני התגיות
+• **"כמה פעמים השתמשתי בתגית X?"** - חפש את התגית הספציפית ברשימת התגיות של הפרויקט
+• **תגיות בסשנים ספציפיים:** השתמש בשדה "תגית" ב"📝 פירוט סשנים מפורט לפי פרויקט" לזיהוי איזו תגית שויכה לכל סשן ספציפי
+• **חשוב לגבי תגיות מחוקות:** תגיות שנמחקו (LabelIsArchived=true) מוצגות כ"ללא תגית" - זה נכון ומכוון, כדי לא להציג תגיות שכבר לא קיימות במערכת
+
+**מילות מפתח לזיהוי סוג התשובה:**
+• **תשובה קצרה (מספר/מידע בסיסי):** "כמה", "מתי", "איזה" (ללא "תפרט")
+• **תשובה מפורטת:** "תפרט", "הרחב", "רשימה", "פירוט", "איזה X יש לי", "מה השמות"
+• **דוגמאות נוספות:**
+  - "כמה שעות עבדתי השבוע?" → "עבדת 32:45 שעות השבוע 🕒"
+  - "איזה פרויקט הכי רווחי?" → "הפרויקט הכי רווחי הוא 'מערכת CRM' 🏆"
+  - "תפרט לי על הפרויקטים שלי" → [פירוט מלא עם טבלאות]
 
 ** חשוב לגבי פורמט התשובה: **
-1. אם התשובה כוללת נתונים מספריים או השוואות - השתמש בטבלאות HTML כמו:
+1. **רק לתשובות מפורטות:** אם נשאל פירוט והתשובה כוללת נתונים מספריים או השוואות - השתמש בטבלאות HTML כמו:
    <table>
    <tr><th>פרויקט</th><th>שעות</th><th>הכנסה</th></tr>
    <tr><td>משהו</td><td>10:30</td><td>₪1,500</td></tr>
    </table>
 
-2. אם המידע מתאים להצגה כגרף - השתמש באחת מהשיטות הבאות:
+2. **רק לתשובות מפורטות:** אם המידע מתאים להצגה כגרף - השתמש באחת מהשיטות הבאות:
 
    **שיטה 1 - גרף פשוט (מומלץ):**
    <div class="chart-placeholder" data-type="bar" data-labels="פרויקט א,פרויקט ב,פרויקט ג" data-values="25,19,8" data-colors="#4a90e2,#7b68ee,#50c878"></div>
@@ -1831,10 +2231,17 @@ ${userQuestion}
    📝 **אלטרנטיבה:** אם יש בעיה עם גרף, תוכל להשתמש בקריאה לפונקציה:
    <div id="simple-chart-123" class="chart-placeholder" data-type="bar" data-labels="פרויקט א,פרויקט ב" data-values="25,19" data-colors="#4a90e2,#7b68ee"></div>
 
-3. אם התשובה ארוכה - פרק אותה לפסקאות קצרות עם שורות ריקות ביניהן
-4. השתמש ברשימות עם תבליטים (•) כשמתאים
-5. הוסף כותרות עם אימוג'ים לחלקים שונים
-6. אל תעטוף את התשובה כולה בגרשיים - כתוב אותה ישירות
+3. **לתשובות קצרות:** השתמש רק בטקסט פשוט + אימוג'י רלוונטי
+4. **לתשובות מפורטות:** פרק לפסקאות קצרות עם שורות ריקות ביניהן
+5. השתמש ברשימות עם תבליטים (•) כשמתאים בתשובות מפורטות
+6. הוסף כותרות עם אימוג'ים רק בתשובות מפורטות
+7. אל תעטוף את התשובה כולה בגרשיים - כתוב אותה ישירות
+
+**עקרון הזהב: תמיד התחל מהתשובה הקצרה ביותר!**
+- השאלה "כמה X יש לי?" = מספר + אימוג'י
+- השאלה "מתי X?" = תאריך/שעה + אימוג'י  
+- השאלה "איזה X הכי Y?" = שם + אימוג'י
+- רק אם יש בקשה מפורשת לפירוט - תן טבלאות וגרפים
 
 השתמש בסיכומים המדויקים שלמעלה לחישובים (הם כבר מחושבים נכון!).
 אם השאלה אינה קשורה לנתונים, הסבר בנימוס שאתה מספק מענה רק על שאלות הקשורות לפרויקטים, לקוחות, שעות עבודה, הכנסות, משימות, אנשי צוות וסטטיסטיקות מהמערכת.
@@ -2294,20 +2701,25 @@ function addMessageToUI(sender, text) {
   // אם זו הודעת עוזר, נאפשר HTML (כולל טבלאות)
   let processedText;
   if (sender === "assistant") {
-    // נחליף רק שורות חדשות שלא בתוך טגי HTML
-    processedText = text
-      .replace(/\n(?![^<]*>)/g, "<br>")
-      // הסרת BR מיותרים לפני טבלאות וגרפים
-      .replace(/(<br\s*\/?>)+\s*<table/gi, "<table")
-      .replace(/\s*<br\s*\/?>\s*<table/gi, "<table")
-      .replace(
-        /(<br\s*\/?>)+\s*<div class="chart-container"/gi,
-        '<div class="chart-container"'
-      )
-      .replace(
-        /\s*<br\s*\/?>\s*<div class="chart-container"/gi,
-        '<div class="chart-container"'
-      );
+    // בדיקה אם זו הודעת כפתורי FAQ - אם כן, לא נוסיף BR
+    if (text.includes("faq-buttons") || text.includes("faq-row")) {
+      processedText = text;
+    } else {
+      // נחליף רק שורות חדשות שלא בתוך טגי HTML
+      processedText = text
+        .replace(/\n(?![^<]*>)/g, "<br>")
+        // הסרת BR מיותרים לפני טבלאות וגרפים
+        .replace(/(<br\s*\/?>)+\s*<table/gi, "<table")
+        .replace(/\s*<br\s*\/?>\s*<table/gi, "<table")
+        .replace(
+          /(<br\s*\/?>)+\s*<div class="chart-container"/gi,
+          '<div class="chart-container"'
+        )
+        .replace(
+          /\s*<br\s*\/?>\s*<div class="chart-container"/gi,
+          '<div class="chart-container"'
+        );
+    }
   } else {
     // עבור הודעות משתמש, נמיר הכל לטקסט בטוח
     processedText = text.replace(/\n/g, "<br>");
@@ -2369,3 +2781,17 @@ function showLoading(show) {
 function hideLoading() {
   $("#loading-indicator").hide();
 }
+
+// פונקציה לשליחת שאלות נפוצות
+function sendFAQQuestion(question) {
+  if (isLoading) return;
+
+  // הוספת השאלה לצ'אט כהודעת משתמש
+  addMessage("user", question);
+
+  // שליחה לעוזר ישירות ללא הכנסה לתיבת הטקסט
+  sendToGemini(question);
+}
+
+// הפיכת הפונקציה לגלובלית
+window.sendFAQQuestion = sendFAQQuestion;
