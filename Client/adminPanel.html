@@ -204,6 +204,34 @@
           <!-- טבלת משתמשים -->
           <div class="users-section">
             <h2>כל המשתמשים במערכת</h2>
+            <div class="users-controls">
+              <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input
+                  type="text"
+                  id="users-search"
+                  placeholder="חפש לפי שם או אימייל..."
+                  class="search-input"
+                />
+                <button
+                  id="clear-search"
+                  class="clear-search-btn"
+                  style="display: none"
+                >
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+              <div class="results-count">
+                <span id="results-count">טוען...</span>
+                <button
+                  id="refresh-users-btn"
+                  class="refresh-users-btn"
+                  title="רענן רשימת משתמשים"
+                >
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+              </div>
+            </div>
             <div class="users-table-container">
               <div class="loading-overlay" id="users-loading">
                 <div class="loading-spinner">
@@ -214,16 +242,36 @@
               <table class="users-table" id="users-table">
                 <thead>
                   <tr>
-                    <th>שם פרטי</th>
-                    <th>שם משפחה</th>
-                    <th>אימייל</th>
-                    <th>תפקיד</th>
-                    <th>תאריך הרשמה</th>
-                    <th>מספר פרויקטים</th>
-                    <th>סך הכנסות</th>
-                    <th>מספר סשנים</th>
-                    <th>סשן אחרון</th>
-                    <th>פעיל</th>
+                    <th class="sortable" data-sort="FirstName">
+                      שם פרטי <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="LastName">
+                      שם משפחה <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="Email">
+                      אימייל <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="Role">
+                      תפקיד <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="RegistrationDate">
+                      תאריך הרשמה <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="ProjectCount">
+                      מספר פרויקטים <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="TotalEarnings">
+                      סך הכנסות <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="SessionCount">
+                      מספר סשנים <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="LastSessionDate">
+                      סשן אחרון <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="IsActive">
+                      פעיל <i class="fas fa-sort sort-icon"></i>
+                    </th>
                     <th>פעולות</th>
                   </tr>
                 </thead>

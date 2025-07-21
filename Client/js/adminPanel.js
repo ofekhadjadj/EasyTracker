@@ -1,7 +1,9 @@
 // Admin Panel JavaScript
 let currentUser = null;
 let allUsers = [];
+let filteredUsers = [];
 let systemStats = null;
+let currentSort = { field: null, direction: "asc" };
 
 // Initialize page when DOM is ready
 $(document).ready(function () {
@@ -48,6 +50,9 @@ $(document).ready(function () {
 
   // Load all data
   loadSystemData();
+
+  // Initialize search and sort functionality
+  initializeSearchAndSort();
 });
 
 // Load all system data
@@ -332,7 +337,9 @@ function loadAllUsers() {
       console.log("📊 Number of users:", data.length);
       console.log("📊 First user structure:", data[0]);
       allUsers = data;
-      displayUsersTable(data);
+      filteredUsers = [...data]; // Initialize filtered users
+      displayUsersTable(filteredUsers);
+      updateResultsCount(); // Initialize results count
       hideUsersLoading();
       showNotification(`${data.length} משתמשים נטענו בהצלחה`, "success");
 
@@ -488,6 +495,14 @@ function toggleUserStatus(userId, isActive) {
         console.log(`✅ Updated user ${userId} IsActive to ${isActive}`);
       }
 
+      // Update user in filteredUsers array too
+      const filteredUserIndex = filteredUsers.findIndex(
+        (u) => u.UserID === userId
+      );
+      if (filteredUserIndex !== -1) {
+        filteredUsers[filteredUserIndex].IsActive = isActive;
+      }
+
       // Re-enable the toggle and keep it in the correct position
       if (toggleSwitch) {
         toggleSwitch.disabled = false;
@@ -522,24 +537,71 @@ function resetUserPassword(userId) {
     return;
   }
 
-  // Show confirmation dialog
-  if (!confirm("האם אתה בטוח שברצונך לאפס את סיסמת המשתמש?")) {
+  // Find the user data from allUsers array
+  const targetUser = allUsers.find((u) => u.UserID === userId);
+  const userName = targetUser
+    ? `${targetUser.FirstName} ${targetUser.LastName}`
+    : "המשתמש";
+
+  // בדיקה שאין כבר פופאפ פתוח
+  if ($.fancybox.getInstance()) {
+    console.log("פופאפ כבר פתוח, מתעלם מהקליק");
     return;
   }
 
-  ajaxCall(
-    "PUT",
-    apiConfig.createApiUrl("AdminPanel/ResetUserPassword", { userId: userId }),
-    "",
-    function (response) {
-      console.log("✅ Password reset:", response);
-      showNotification("סיסמת המשתמש אופסה בהצלחה", "success");
+  const popupHtml = `
+    <div style="max-width: 400px; text-align: center; font-family: Assistant; padding: 20px;">
+      <h3>איפוס סיסמה</h3>
+      <p>האם אתה בטוח שברצונך לאפס את סיסמת ${userName}?</p>
+      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+        <button class="gradient-button" id="confirmResetBtn" style="background: linear-gradient(135deg, #d50000, #ff4e50); color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(255, 78, 80, 0.3);">כן, אפס סיסמה</button>
+        <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
+      </div>
+    </div>
+  `;
+
+  $.fancybox.open({
+    src: popupHtml,
+    type: "html",
+    smallBtn: false,
+    afterShow: function () {
+      // הוספת event listener רק לאחר שהפופאפ נפתח
+      $("#confirmResetBtn")
+        .off("click")
+        .on("click", function () {
+          const button = $(this);
+          if (button.data("resetting")) {
+            return false;
+          }
+          button.data("resetting", true);
+
+          ajaxCall(
+            "PUT",
+            apiConfig.createApiUrl("AdminPanel/ResetUserPassword", {
+              userId: userId,
+            }),
+            "",
+            function (response) {
+              console.log("✅ Password reset:", response);
+              showNotification("סיסמת המשתמש אופסה בהצלחה", "success");
+            },
+            function (error) {
+              console.error("❌ Error resetting password:", error);
+              showNotification("שגיאה באיפוס סיסמת המשתמש", "error");
+            }
+          );
+          $.fancybox.close();
+
+          setTimeout(() => {
+            button.data("resetting", false);
+          }, 1000);
+        });
     },
-    function (error) {
-      console.error("❌ Error resetting password:", error);
-      showNotification("שגיאה באיפוס סיסמת המשתמש", "error");
-    }
-  );
+    beforeClose: function () {
+      // ניקוי event listeners
+      $("#confirmResetBtn").off("click");
+    },
+  });
 }
 
 // Login as user
@@ -558,45 +620,81 @@ function loginAsUser(userId) {
     return;
   }
 
-  // Show confirmation dialog
-  if (
-    !confirm(
-      `האם אתה בטוח שברצונך להתחבר כמשתמש ${targetUser.FirstName} ${targetUser.LastName}?`
-    )
-  ) {
+  // בדיקה שאין כבר פופאפ פתוח
+  if ($.fancybox.getInstance()) {
+    console.log("פופאפ כבר פתוח, מתעלם מהקליק");
     return;
   }
 
-  console.log(`🔄 Switching to user:`, targetUser);
+  const popupHtml = `
+    <div style="max-width: 400px; text-align: center; font-family: Assistant; padding: 20px;">
+      <h3>כניסה כמשתמש</h3>
+      <p>האם אתה בטוח שברצונך להתחבר כמשתמש <strong>${targetUser.FirstName} ${targetUser.LastName}</strong>?</p>
+      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+        <button class="gradient-button" id="confirmLoginBtn" style="background: linear-gradient(135deg, #d50000, #ff4e50); color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(255, 78, 80, 0.3);">כן, היכנס</button>
+        <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
+      </div>
+    </div>
+  `;
 
-  // Save current admin user
-  const adminUser = JSON.parse(localStorage.getItem("user"));
-  localStorage.setItem("adminUser", JSON.stringify(adminUser));
+  $.fancybox.open({
+    src: popupHtml,
+    type: "html",
+    smallBtn: false,
+    afterShow: function () {
+      // הוספת event listener רק לאחר שהפופאפ נפתח
+      $("#confirmLoginBtn")
+        .off("click")
+        .on("click", function () {
+          const button = $(this);
+          if (button.data("logging")) {
+            return false;
+          }
+          button.data("logging", true);
 
-  // Create user object in the format expected by the system
-  const userForLogin = {
-    id: targetUser.UserID,
-    firstName: targetUser.FirstName,
-    lastName: targetUser.LastName,
-    email: targetUser.Email,
-    role: targetUser.Role,
-    isActive: targetUser.IsActive,
-    image: targetUser.image, // Add the user's image
-    isAdminMode: true, // Flag to indicate this is admin mode
-  };
+          console.log(`🔄 Switching to user:`, targetUser);
 
-  // Set the target user as current user
-  localStorage.setItem("user", JSON.stringify(userForLogin));
+          // Save current admin user
+          const adminUser = JSON.parse(localStorage.getItem("user"));
+          localStorage.setItem("adminUser", JSON.stringify(adminUser));
 
-  showNotification(
-    `מתחבר כמשתמש ${targetUser.FirstName} ${targetUser.LastName}...`,
-    "success"
-  );
+          // Create user object in the format expected by the system
+          const userForLogin = {
+            id: targetUser.UserID,
+            firstName: targetUser.FirstName,
+            lastName: targetUser.LastName,
+            email: targetUser.Email,
+            role: targetUser.Role,
+            isActive: targetUser.IsActive,
+            image: targetUser.image, // Add the user's image
+            isAdminMode: true, // Flag to indicate this is admin mode
+          };
 
-  // Redirect to projects page
-  setTimeout(() => {
-    window.location.href = "projects.html";
-  }, 1000);
+          // Set the target user as current user
+          localStorage.setItem("user", JSON.stringify(userForLogin));
+
+          showNotification(
+            `מתחבר כמשתמש ${targetUser.FirstName} ${targetUser.LastName}...`,
+            "success"
+          );
+
+          $.fancybox.close();
+
+          // Redirect to projects page
+          setTimeout(() => {
+            window.location.href = "projects.html";
+          }, 1000);
+
+          setTimeout(() => {
+            button.data("logging", false);
+          }, 1000);
+        });
+    },
+    beforeClose: function () {
+      // ניקוי event listeners
+      $("#confirmLoginBtn").off("click");
+    },
+  });
 }
 
 // Format date helper function
@@ -658,6 +756,12 @@ function showNotification(message, type = "success") {
 function refreshData() {
   console.log("🔄 Refreshing all data...");
   showNotification("מרענן נתונים...", "success");
+
+  // Clear search and sort
+  $("#users-search").val("");
+  $("#clear-search").hide();
+  currentSort = { field: null, direction: "asc" };
+  $(".users-table th.sortable").removeClass("sort-asc sort-desc");
 
   // Show loading states
   document.getElementById("stats-grid").innerHTML = `
@@ -995,6 +1099,155 @@ $(document).ready(function () {
     loadChartData(period);
   });
 });
+
+// Initialize search and sort functionality
+function initializeSearchAndSort() {
+  // Search input event listeners
+  const searchInput = $("#users-search");
+  const clearBtn = $("#clear-search");
+
+  // Real-time search
+  searchInput.on("input", function () {
+    const searchTerm = $(this).val().trim();
+
+    if (searchTerm) {
+      clearBtn.show();
+    } else {
+      clearBtn.hide();
+    }
+
+    filterUsers(searchTerm);
+  });
+
+  // Clear search
+  clearBtn.on("click", function () {
+    searchInput.val("");
+    $(this).hide();
+    filterUsers("");
+  });
+
+  // Sort functionality
+  $(".users-table").on("click", "th.sortable", function () {
+    const field = $(this).data("sort");
+    const currentDirection =
+      currentSort.field === field ? currentSort.direction : "asc";
+    const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+    sortUsers(field, newDirection);
+  });
+
+  // Refresh users button
+  $("#refresh-users-btn").on("click", function () {
+    $(this).addClass("fa-spin");
+    loadAllUsers();
+    setTimeout(() => {
+      $(this).removeClass("fa-spin");
+    }, 1000);
+  });
+}
+
+// Filter users based on search term
+function filterUsers(searchTerm) {
+  if (!allUsers || allUsers.length === 0) {
+    return;
+  }
+
+  if (!searchTerm) {
+    filteredUsers = [...allUsers];
+  } else {
+    const term = searchTerm.toLowerCase();
+    filteredUsers = allUsers.filter((user) => {
+      const firstName = (user.FirstName || "").toLowerCase();
+      const lastName = (user.LastName || "").toLowerCase();
+      const email = (user.Email || "").toLowerCase();
+      const fullName = `${firstName} ${lastName}`;
+
+      return (
+        firstName.includes(term) ||
+        lastName.includes(term) ||
+        fullName.includes(term) ||
+        email.includes(term)
+      );
+    });
+  }
+
+  // Apply current sort if any
+  if (currentSort.field) {
+    applySortToFilteredUsers();
+  }
+
+  // Update display
+  displayUsersTable(filteredUsers);
+  updateResultsCount();
+}
+
+// Sort users by field and direction
+function sortUsers(field, direction) {
+  // Update sort state
+  currentSort = { field, direction };
+
+  // Update UI to show sort direction
+  $(".users-table th.sortable").removeClass("sort-asc sort-desc");
+  $(`.users-table th[data-sort="${field}"]`).addClass(`sort-${direction}`);
+
+  // Apply sort to current filtered results
+  applySortToFilteredUsers();
+
+  // Update display
+  displayUsersTable(filteredUsers);
+}
+
+// Apply current sort to filtered users
+function applySortToFilteredUsers() {
+  if (!currentSort.field || !filteredUsers) return;
+
+  filteredUsers.sort((a, b) => {
+    let aVal = a[currentSort.field];
+    let bVal = b[currentSort.field];
+
+    // Handle different data types
+    if (
+      currentSort.field === "RegistrationDate" ||
+      currentSort.field === "LastSessionDate"
+    ) {
+      aVal = aVal ? new Date(aVal) : new Date(0);
+      bVal = bVal ? new Date(bVal) : new Date(0);
+    } else if (
+      currentSort.field === "ProjectCount" ||
+      currentSort.field === "SessionCount" ||
+      currentSort.field === "TotalEarnings"
+    ) {
+      aVal = Number(aVal) || 0;
+      bVal = Number(bVal) || 0;
+    } else if (currentSort.field === "IsActive") {
+      aVal = aVal ? 1 : 0;
+      bVal = bVal ? 1 : 0;
+    } else {
+      // String comparison
+      aVal = (aVal || "").toString().toLowerCase();
+      bVal = (bVal || "").toString().toLowerCase();
+    }
+
+    if (aVal < bVal) return currentSort.direction === "asc" ? -1 : 1;
+    if (aVal > bVal) return currentSort.direction === "asc" ? 1 : -1;
+    return 0;
+  });
+}
+
+// Update results count display
+function updateResultsCount() {
+  const total = allUsers.length;
+  const filtered = filteredUsers.length;
+
+  let text;
+  if (filtered === total) {
+    text = `${total} משתמשים`;
+  } else {
+    text = `${filtered} מתוך ${total} משתמשים`;
+  }
+
+  $("#results-count").text(text);
+}
 
 // Export functions for global access
 window.toggleUserStatus = toggleUserStatus;
