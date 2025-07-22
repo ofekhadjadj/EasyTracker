@@ -118,7 +118,7 @@ registerForm.addEventListener("submit", function (event) {
     formData.append("files", imageFile);
 
     $.ajax({
-      url: "https://localhost:7198/api/Upload",
+      url: apiConfig.createApiUrl("Upload"),
       type: "POST",
       data: formData,
       processData: false,
@@ -173,7 +173,7 @@ function handleRegister(
   // Show loading notification
   showNotification("נרשם...", "success");
 
-  const apiUrl = "https://localhost:7198/api/Users/addNewUser";
+  const apiUrl = apiConfig.createApiUrl("Users/addNewUser");
 
   const data = JSON.stringify({
     firstName: firstName,

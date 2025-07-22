@@ -350,6 +350,52 @@ function openEndSessionPopup() {
         stopVoiceRecording();
         isVoiceRecording = false;
         hasShownAiTooltip = false;
+
+        // בדוק אם המשתמש סגר את הפופאפ בלי לסיים את הסשן
+        if (isStopProcessing && window.sessionToClose) {
+          console.log(
+            "🔄 המשתמש סגר את הפופאפ בלי לסיים את הסשן, מחזיר את הסטופר"
+          );
+
+          // חשב את הזמן שעבר בעת שהפופאפ היה פתוח
+          const popupDuration = Math.floor((Date.now() - popupOpenTime) / 1000);
+
+          // החזר את הזמן שהיה בעת לחיצה על כפתור הסיום + הזמן שעבר בפופאפ
+          seconds = window.sessionSecondsAtStop + popupDuration;
+
+          // שחזר את מצב הסטופר
+          isRunning = true;
+          toggleText.textContent = "השהה";
+          toggleIcon.src = "./images/puse icon.png";
+
+          // התחל את הסטופר מחדש אם הוא לא פועל
+          if (!interval) {
+            interval = setInterval(updateTime, 1000);
+          }
+
+          // עדכן את התצוגה
+          const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
+          const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+          const s = String(seconds % 60).padStart(2, "0");
+          timeDisplay.textContent = `${h}:${m}:${s}`;
+
+          // עדכן את הפרוגרס
+          const progress = Math.min(
+            seconds / (CurrentProject.DurationGoal * 3600 || 3600),
+            1
+          );
+          circle.style.strokeDashoffset = circumference * (1 - progress);
+          progressFill.style.width = `${progress * 100}%`;
+          progressText.textContent = `${Math.round(progress * 100)}%`;
+
+          // נקה את הנתונים הזמניים
+          window.sessionToClose = null;
+          window.sessionSecondsAtStop = null;
+          isStopProcessing = false;
+          popupOpenTime = null;
+
+          console.log(`✅ הסטופר חזר לפעולה עם ${seconds} שניות`);
+        }
       },
       afterShow: function () {
         // Initialize AI helper for session description
@@ -1014,15 +1060,22 @@ toggleBtn.addEventListener("click", () => {
 });
 
 //סיום סשן
+let isStopProcessing = false; // דגל למניעת לחיצות כפולות
+let popupOpenTime = null; // זמן פתיחת הפופאפ
+
 stopBtn.addEventListener("click", () => {
   if (!isRunning) {
     showCustomAlert("לא ניתן לסיים סשן לפני שהתחלת אחד", "error");
     return;
   }
-  clearInterval(interval);
-  isRunning = false;
-  toggleText.textContent = "התחל";
-  toggleIcon.src = "./images/play-icon.png";
+
+  if (isStopProcessing) {
+    console.log("⚠️ כבר מעבד סגירת סשן, מתעלם מלחיצה נוספת");
+    return;
+  }
+
+  isStopProcessing = true;
+  popupOpenTime = Date.now(); // שמור זמן פתיחת הפופאפ
 
   const endDate = getLocalISOStringWithoutZ();
   const durationSeconds = seconds;
@@ -1030,6 +1083,7 @@ stopBtn.addEventListener("click", () => {
   // השתמש ב-currentActiveSessionID שמכיל את ה-ID הנכון של הסשן החדש
   if (!currentActiveSessionID) {
     console.error("❌ לא נמצא מזהה סשן פעיל.");
+    isStopProcessing = false;
     return;
   }
 
@@ -1052,16 +1106,10 @@ stopBtn.addEventListener("click", () => {
     userID: sessionData ? sessionData.UserID : CurrentUser.id,
   };
 
-  // אפס סטופר
-  seconds = 0;
-  currentActiveSessionID = null; // ניקוי מזהה הסשן הפעיל
-  window.currentSessionStartDate = null; // ניקוי זמן ההתחלה
-  timeDisplay.textContent = "00:00:00";
-  circle.style.strokeDashoffset = circumference;
-  progressFill.style.width = `0%`;
-  progressText.textContent = `0%`;
+  // שמור את הזמן המדויק שהסטופר היה עליו כשנלחץ כפתור הסיום
+  window.sessionSecondsAtStop = seconds;
 
-  // פתח פופאפ לסיום סשן
+  // פתח פופאפ לסיום סשן (הסטופר ימשיך לרוץ)
   openEndSessionPopup();
 });
 
@@ -1091,6 +1139,28 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
     endSessionUrl,
     JSON.stringify(data),
     () => {
+      // עצור את הסטופר לחלוטין
+      clearInterval(interval);
+      interval = null;
+      isRunning = false;
+      toggleText.textContent = "התחל";
+      toggleIcon.src = "./images/play-icon.png";
+
+      // אפס את הסטופר
+      seconds = 0;
+      currentActiveSessionID = null;
+      window.currentSessionStartDate = null;
+      timeDisplay.textContent = "00:00:00";
+      circle.style.strokeDashoffset = circumference;
+      progressFill.style.width = `0%`;
+      progressText.textContent = `0%`;
+
+      // נקה את הנתונים הזמניים
+      window.sessionToClose = null;
+      window.sessionSecondsAtStop = null;
+      isStopProcessing = false;
+      popupOpenTime = null;
+
       // Close the popup completely including overlay
       $.fancybox.close(true);
 
@@ -1113,30 +1183,6 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
         document.getElementById("session-description").value || "";
       triggerEndSessionCelebration(sessionDescription);
 
-      // Replace alert with elegant notification (מוסתר כי יש לנו את ההודעה החדשה)
-      // const notification = document.createElement("div");
-      // notification.className = "save-notification";
-      // notification.innerHTML = `
-      //   <div class="notification-icon">✓</div>
-      //   <div class="notification-message">הסשן הסתיים בהצלחה!</div>
-      // `;
-      // document.body.appendChild(notification);
-
-      // Animate notification
-      // setTimeout(() => {
-      //   notification.classList.add("show");
-      // }, 10);
-
-      // Remove notification after delay
-      // setTimeout(() => {
-      //   notification.classList.remove("show");
-      //   setTimeout(() => {
-      //     if (notification.parentNode) {
-      //       document.body.removeChild(notification);
-      //     }
-      //   }, 500);
-      // }, 3000);
-
       // רענן את הטבלה מהשרת לאחר עדכון הסשן
       renderTableFromDB();
 
@@ -1148,6 +1194,26 @@ document.getElementById("submit-end-session").addEventListener("click", () => {
       }, 500);
     },
     () => {
+      // במקרה של שגיאה, עצור את הסטופר גם כן
+      clearInterval(interval);
+      interval = null;
+      isRunning = false;
+      toggleText.textContent = "התחל";
+      toggleIcon.src = "./images/play-icon.png";
+      seconds = 0;
+      currentActiveSessionID = null;
+      window.currentSessionStartDate = null;
+      timeDisplay.textContent = "00:00:00";
+      circle.style.strokeDashoffset = circumference;
+      progressFill.style.width = `0%`;
+      progressText.textContent = `0%`;
+
+      // נקה את הנתונים הזמניים
+      window.sessionToClose = null;
+      window.sessionSecondsAtStop = null;
+      isStopProcessing = false;
+      popupOpenTime = null;
+
       // Close the popup to avoid UI issues
       $.fancybox.close(true);
 
