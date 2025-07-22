@@ -4,6 +4,7 @@ let allUsers = [];
 let filteredUsers = [];
 let systemStats = null;
 let currentSort = { field: null, direction: "asc" };
+let usersTable = null;
 
 // Initialize page when DOM is ready
 $(document).ready(function () {
@@ -370,85 +371,103 @@ function loadAllUsers() {
   );
 }
 
+// Initialize DataTable for pagination only
+function initializeUsersTable() {
+  console.log("📊 Initializing users DataTable for pagination...");
+
+  usersTable = $("#users-table").DataTable({
+    paging: true,
+    searching: false, // Disable built-in search (we have our own)
+    ordering: false, // Disable built-in sorting (we have our own)
+    info: true, // Enable info text
+    lengthChange: true,
+    pageLength: 5,
+    lengthMenu: [5, 10, 25, 50, 100],
+    language: {
+      lengthMenu: "הצג _MENU_ משתמשים",
+      info: "מציג _START_ עד _END_ מתוך _TOTAL_ משתמשים",
+      infoEmpty: "מציג 0 עד 0 מתוך 0 משתמשים",
+      infoFiltered: "(מסונן מתוך _MAX_ משתמשים)",
+      paginate: {
+        first: "ראשון",
+        last: "אחרון",
+        next: "הבא",
+        previous: "קודם",
+      },
+      emptyTable: "אין משתמשים זמינים בטבלה",
+    },
+  });
+
+  console.log("✅ Users DataTable initialized successfully");
+}
+
 // Display users table
 function displayUsersTable(users) {
-  const tbody = document.getElementById("users-tbody");
   console.log("📋 Displaying users table with", users?.length || 0, "users");
+
+  // Initialize DataTable if not already done
+  if (!usersTable) {
+    initializeUsersTable();
+  }
+
+  // Clear existing data
+  usersTable.clear();
 
   if (!users || users.length === 0) {
     console.log("⚠️ No users to display");
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="11" style="text-align: center; padding: 40px; color: #666;">
-          <i class="fas fa-users" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
-          אין משתמשים במערכת
-        </td>
-      </tr>
-    `;
+    usersTable.draw();
     return;
   }
 
-  tbody.innerHTML = users
-    .map(
-      (user) => `
-    <tr>
-      <td>${user.FirstName || "-"}</td>
-      <td>${user.LastName || "-"}</td>
-      <td>${user.Email || "-"}</td>
-      <td>${user.Role || "משתמש"}</td>
-      <td>${formatDate(user.RegistrationDate)}</td>
-      <td>${user.ProjectCount || 0}</td>
-      <td>₪${Math.round(user.TotalEarnings || 0).toLocaleString()}</td>
-      <td>${user.SessionCount || 0}</td>
-      <td>${
-        user.LastSessionDate ? formatDate(user.LastSessionDate) : "אין"
-      }</td>
-      <td>
-        <label class="toggle-switch">
-          <input type="checkbox" ${user.IsActive ? "checked" : ""} 
-                 onchange="toggleUserStatus(${user.UserID}, this.checked)"
-                 ${!user.UserID ? "disabled" : ""}>
-          <span class="toggle-slider ${!user.UserID ? "disabled" : ""}"></span>
-        </label>
-      </td>
-      <td>
-        <div class="action-buttons">
-          <button class="action-btn login-as" 
-                  onclick="loginAsUser(${user.UserID})"
-                  ${!user.UserID ? "disabled" : ""}
-                  title="היכנס כמשתמש">
-            <i class="fas fa-user"></i>
-            היכנס
-          </button>
-          <button class="action-btn reset-password" 
-                  onclick="resetUserPassword(${user.UserID})"
-                  ${!user.UserID ? "disabled" : ""}
-                  title="איפוס סיסמה">
-            <i class="fas fa-key"></i>
-            איפוס
-          </button>
-        </div>
-      </td>
-    </tr>
-  `
-    )
-    .join("");
+  // Add users to table
+  users.forEach((user) => {
+    const rowData = [
+      user.FirstName || "-",
+      user.LastName || "-",
+      user.Email || "-",
+      user.Role || "משתמש",
+      formatDate(user.RegistrationDate),
+      user.ProjectCount || 0,
+      `₪${Math.round(user.TotalEarnings || 0).toLocaleString()}`,
+      user.SessionCount || 0,
+      user.LastSessionDate ? formatDate(user.LastSessionDate) : "אין",
+      `<label class="toggle-switch">
+        <input type="checkbox" ${user.IsActive ? "checked" : ""} 
+               onchange="toggleUserStatus(${user.UserID}, this.checked)"
+               ${!user.UserID ? "disabled" : ""}>
+        <span class="toggle-slider ${!user.UserID ? "disabled" : ""}"></span>
+      </label>`,
+      `<div class="action-buttons">
+        <button class="action-btn login-as" 
+                onclick="loginAsUser(${user.UserID})"
+                ${!user.UserID ? "disabled" : ""}
+                title="היכנס כמשתמש">
+          <i class="fas fa-user"></i>
+          היכנס
+        </button>
+        <button class="action-btn reset-password" 
+                onclick="resetUserPassword(${user.UserID})"
+                ${!user.UserID ? "disabled" : ""}
+                title="איפוס סיסמה">
+          <i class="fas fa-key"></i>
+          איפוס
+        </button>
+      </div>`,
+    ];
+
+    usersTable.row.add(rowData);
+  });
+
+  // Draw the table
+  usersTable.draw();
 }
 
 // Display error for users table
 function displayUsersTableError() {
-  const tbody = document.getElementById("users-tbody");
-  tbody.innerHTML = `
-    <tr>
-      <td colspan="11" style="text-align: center; padding: 40px; color: #dc3545;">
-        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
-        <p>שגיאה בטעינת רשימת המשתמשים</p>
-        <button onclick="loadAllUsers()" style="margin-top: 15px; padding: 10px 20px; background: #0072ff; color: white; border: none; border-radius: 8px; cursor: pointer;">
-          🔄 נסה שוב
-        </button>
-      </td>
-    </tr>
-  `;
+  if (usersTable) {
+    usersTable.clear().draw();
+  }
+  showNotification("שגיאה בטעינת רשימת המשתמשים", "error");
 }
 
 // Hide users loading overlay
@@ -763,6 +782,11 @@ function refreshData() {
   currentSort = { field: null, direction: "asc" };
   $(".users-table th.sortable").removeClass("sort-asc sort-desc");
 
+  // Reset DataTable if exists
+  if (usersTable) {
+    usersTable.page.len(5).draw(); // Reset to 5 items per page
+  }
+
   // Show loading states
   document.getElementById("stats-grid").innerHTML = `
     <div class="loading-spinner" style="grid-column: 1 / -1;">
@@ -859,15 +883,25 @@ function initializeChart() {
       scales: {
         y: {
           beginAtZero: true,
+          min: 0,
+          suggestedMax: 3,
           grid: {
             color: "rgba(0, 0, 0, 0.1)",
           },
           ticks: {
+            stepSize: 1,
             font: {
               family: "Assistant",
               size: 12,
             },
             color: "#666",
+            callback: function (value) {
+              // Only show whole numbers
+              if (Number.isInteger(value)) {
+                return value;
+              }
+              return null;
+            },
           },
         },
         x: {
@@ -877,9 +911,19 @@ function initializeChart() {
           ticks: {
             font: {
               family: "Assistant",
-              size: 12,
+              size: 13,
             },
             color: "#666",
+            maxRotation: 0,
+            minRotation: 0,
+            callback: function (value, index, values) {
+              // Handle multi-line labels for month view
+              const label = this.getLabelForValue(value);
+              if (label && label.includes("\n")) {
+                return label.split("\n");
+              }
+              return label;
+            },
           },
         },
       },
@@ -891,15 +935,17 @@ function initializeChart() {
 }
 
 // Load chart data
-function loadChartData(period) {
-  console.log(`📊 Loading chart data for period: ${period}`);
+function loadChartData(period, forceRefresh = false) {
+  console.log(
+    `📊 Loading chart data for period: ${period}, forceRefresh: ${forceRefresh}`
+  );
 
   // Show loading
   $("#chart-loading").removeClass("hidden");
 
-  // If we already have users data, process it for the chart
-  if (allUsers && allUsers.length > 0) {
-    console.log("📊 Processing existing users data for chart");
+  // If we already have users data and not forcing refresh, process it for the chart
+  if (allUsers && allUsers.length > 0 && !forceRefresh) {
+    console.log("📊 Using cached users data for chart (no server call needed)");
     const chartData = processUsersDataForChart(allUsers, period);
     updateChart(chartData, period);
     $("#chart-loading").addClass("hidden");
@@ -907,6 +953,11 @@ function loadChartData(period) {
   }
 
   // Otherwise, load users data first
+  console.log(
+    forceRefresh
+      ? "🔄 FORCE REFRESH: Loading fresh data from server for chart"
+      : "🔄 Loading fresh data from server for chart (no cached data available)"
+  );
   ajaxCall(
     "GET",
     apiConfig.createApiUrl("AdminPanel/GetAllUsersOverview"),
@@ -917,11 +968,30 @@ function loadChartData(period) {
       const chartData = processUsersDataForChart(data, period);
       updateChart(chartData, period);
       $("#chart-loading").addClass("hidden");
+
+      // Show success notification if this was a forced refresh
+      if (forceRefresh) {
+        showNotification("נתוני הגרף עודכנו בהצלחה", "success");
+      }
     },
     function (error) {
       console.error("❌ Error loading users data for chart:", error);
       $("#chart-loading").addClass("hidden");
-      showNotification("שגיאה בטעינת נתוני הגרף", "error");
+
+      if (forceRefresh) {
+        showNotification(
+          "שגיאה ברענון נתוני הגרף. מציג נתונים קיימים.",
+          "error"
+        );
+        // If refresh failed but we have existing data, use it
+        if (allUsers && allUsers.length > 0) {
+          const chartData = processUsersDataForChart(allUsers, period);
+          updateChart(chartData, period);
+          return;
+        }
+      } else {
+        showNotification("שגיאה בטעינת נתוני הגרף", "error");
+      }
 
       // Show demo data on error
       showDemoChartData(period);
@@ -944,6 +1014,13 @@ function updateChart(data, period) {
     chartData = data.map((item) => item.count || item.value || 0);
   }
 
+  // Calculate dynamic max for Y axis
+  const maxValue = Math.max(...chartData, 0);
+  const suggestedMax = Math.max(3, maxValue + 1); // At least 3, or max value + 1
+
+  // Update Y axis configuration
+  registrationsChart.options.scales.y.suggestedMax = suggestedMax;
+
   registrationsChart.data.labels = labels;
   registrationsChart.data.datasets[0].data = chartData;
   registrationsChart.update("active");
@@ -955,7 +1032,8 @@ function processUsersDataForChart(users, period) {
 
   const now = new Date();
   let startDate,
-    dateGroups = {};
+    dateGroups = {},
+    weekRanges = {}; // Store week date ranges for month view
 
   // Determine date range and grouping
   switch (period) {
@@ -964,75 +1042,244 @@ function processUsersDataForChart(users, period) {
       break;
     case "month":
       startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      console.log(
+        `📊 Month chart - Start date: ${startDate.toLocaleDateString(
+          "he-IL"
+        )}, End date: ${now.toLocaleDateString("he-IL")}`
+      );
       break;
     case "year":
       startDate = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+      console.log(
+        `📊 Year chart - Start date: ${startDate.toLocaleDateString(
+          "he-IL"
+        )}, End date: ${now.toLocaleDateString("he-IL")}`
+      );
       break;
     default:
       startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
   }
+
+  // Initialize all periods with 0
+  let allPeriods = [];
+
+  switch (period) {
+    case "week":
+      // Calculate 7 days back from today
+      allPeriods = [];
+      for (let i = 6; i >= 0; i--) {
+        const dayDate = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+        const dayName = dayDate.toLocaleDateString("he-IL", {
+          weekday: "long",
+        });
+        const dateStr = `${dayDate.getDate().toString().padStart(2, "0")}/${(
+          dayDate.getMonth() + 1
+        )
+          .toString()
+          .padStart(2, "0")}`;
+        const dayLabel = `${dayName}\n${dateStr}`;
+        allPeriods.push(dayLabel);
+
+        console.log(
+          `📅 Week chart day: ${dayLabel} (${dayDate.toLocaleDateString(
+            "he-IL"
+          )})`
+        );
+      }
+      break;
+    case "month":
+      // Calculate actual week ranges for the last 30 days
+      const endDate = new Date(now);
+      const startDateMonth = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+      // Start from the beginning of the week containing startDate (Sunday = 0)
+      const firstWeekStart = new Date(startDateMonth);
+      firstWeekStart.setDate(
+        firstWeekStart.getDate() - firstWeekStart.getDay()
+      );
+
+      let weekNumber = 1;
+      let currentWeekStart = new Date(firstWeekStart);
+
+      while (currentWeekStart <= endDate && weekNumber <= 5) {
+        const weekEnd = new Date(currentWeekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+
+        // Format dates
+        const startStr = `${currentWeekStart
+          .getDate()
+          .toString()
+          .padStart(2, "0")}/${(currentWeekStart.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}`;
+        const endStr = `${weekEnd.getDate().toString().padStart(2, "0")}/${(
+          weekEnd.getMonth() + 1
+        )
+          .toString()
+          .padStart(2, "0")}`;
+
+        const weekLabel = `שבוע ${weekNumber}\nמ-${startStr} עד-${endStr}`;
+        allPeriods.push(weekLabel);
+
+        // Store the actual date range for this week
+        weekRanges[weekLabel] = {
+          start: new Date(currentWeekStart),
+          end: new Date(weekEnd),
+        };
+
+        console.log(
+          `📊 Week range: ${weekLabel} - Start: ${currentWeekStart.toLocaleDateString(
+            "he-IL"
+          )} End: ${weekEnd.toLocaleDateString("he-IL")}`
+        );
+
+        // Move to next week
+        currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+        weekNumber++;
+      }
+      break;
+    case "year":
+      // Calculate 12 months back from current date
+      const currentDate = new Date(now);
+      allPeriods = [];
+
+      // Start from 12 months ago
+      for (let i = 11; i >= 0; i--) {
+        const monthDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() - i,
+          1
+        );
+        const monthName = monthDate.toLocaleDateString("he-IL", {
+          month: "long",
+        });
+        const year = monthDate.getFullYear();
+
+        const monthLabel = `${monthName}\n${year}`;
+        allPeriods.push(monthLabel);
+
+        console.log(
+          `📅 Year chart month: ${monthLabel} (${monthDate.toLocaleDateString(
+            "he-IL"
+          )})`
+        );
+      }
+      break;
+  }
+
+  // Initialize all periods with 0
+  allPeriods.forEach((period) => {
+    dateGroups[period] = 0;
+  });
 
   // Filter users by registration date and group them
   users.forEach((user) => {
     if (!user.RegistrationDate) return;
 
     const regDate = new Date(user.RegistrationDate);
-    if (regDate < startDate) return;
+    if (regDate < startDate) {
+      console.log(
+        `📅 User ${user.FirstName} ${
+          user.LastName
+        } registered ${regDate.toLocaleDateString(
+          "he-IL"
+        )} is before startDate ${startDate.toLocaleDateString("he-IL")}`
+      );
+      return;
+    }
 
     let groupKey;
 
     switch (period) {
       case "week":
-        // Group by day
-        groupKey = regDate.toLocaleDateString("he-IL", { weekday: "long" });
+        // Group by specific day with date
+        const dayName = regDate.toLocaleDateString("he-IL", {
+          weekday: "long",
+        });
+        const dateStr = `${regDate.getDate().toString().padStart(2, "0")}/${(
+          regDate.getMonth() + 1
+        )
+          .toString()
+          .padStart(2, "0")}`;
+        groupKey = `${dayName}\n${dateStr}`;
+
+        console.log(
+          `📅 User ${user.FirstName} ${
+            user.LastName
+          } registered ${regDate.toLocaleDateString(
+            "he-IL"
+          )} assigned to ${groupKey}`
+        );
         break;
       case "month":
-        // Group by week
-        const weekNumber = Math.ceil(regDate.getDate() / 7);
-        groupKey = `שבוע ${weekNumber}`;
+        // Find which week this date belongs to
+        groupKey = null;
+        // Create a date object that only considers the date part (not time)
+        const regDateOnly = new Date(
+          regDate.getFullYear(),
+          regDate.getMonth(),
+          regDate.getDate()
+        );
+
+        for (const [weekLabel, range] of Object.entries(weekRanges)) {
+          const startDateOnly = new Date(
+            range.start.getFullYear(),
+            range.start.getMonth(),
+            range.start.getDate()
+          );
+          const endDateOnly = new Date(
+            range.end.getFullYear(),
+            range.end.getMonth(),
+            range.end.getDate()
+          );
+
+          if (regDateOnly >= startDateOnly && regDateOnly <= endDateOnly) {
+            groupKey = weekLabel;
+            console.log(
+              `📅 User registered ${regDate.toLocaleDateString(
+                "he-IL"
+              )} assigned to ${weekLabel}`
+            );
+            break;
+          }
+        }
+
+        if (!groupKey) {
+          console.log(
+            `⚠️ User registered ${regDate.toLocaleDateString(
+              "he-IL"
+            )} could not be assigned to any week`
+          );
+        }
         break;
       case "year":
-        // Group by month
-        groupKey = regDate.toLocaleDateString("he-IL", { month: "long" });
+        // Group by month and year
+        const monthName = regDate.toLocaleDateString("he-IL", {
+          month: "long",
+        });
+        const year = regDate.getFullYear();
+        groupKey = `${monthName}\n${year}`;
+
+        console.log(
+          `📅 User ${user.FirstName} ${
+            user.LastName
+          } registered ${regDate.toLocaleDateString(
+            "he-IL"
+          )} assigned to ${groupKey}`
+        );
         break;
     }
 
-    if (groupKey) {
-      dateGroups[groupKey] = (dateGroups[groupKey] || 0) + 1;
+    if (groupKey && dateGroups.hasOwnProperty(groupKey)) {
+      dateGroups[groupKey] += 1;
     }
   });
 
-  // Convert to chart format
-  const chartData = Object.entries(dateGroups).map(([date, count]) => ({
-    date,
-    count,
+  // Convert to chart format in the correct order
+  const chartData = allPeriods.map((period) => ({
+    date: period,
+    count: dateGroups[period],
   }));
-
-  // Sort by chronological order
-  if (period === "year") {
-    const monthOrder = [
-      "ינואר",
-      "פברואר",
-      "מרץ",
-      "אפריל",
-      "מאי",
-      "יוני",
-      "יולי",
-      "אוגוסט",
-      "ספטמבר",
-      "אוקטובר",
-      "נובמבר",
-      "דצמבר",
-    ];
-    chartData.sort(
-      (a, b) => monthOrder.indexOf(a.date) - monthOrder.indexOf(b.date)
-    );
-  } else if (period === "week") {
-    const dayOrder = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
-    chartData.sort(
-      (a, b) => dayOrder.indexOf(a.date) - dayOrder.indexOf(b.date)
-    );
-  }
 
   console.log("📊 Processed chart data:", chartData);
   return chartData;
@@ -1044,39 +1291,92 @@ function showDemoChartData(period) {
 
   switch (period) {
     case "week":
-      demoData = [
-        { date: "ראשון", count: 3 },
-        { date: "שני", count: 7 },
-        { date: "שלישי", count: 5 },
-        { date: "רביעי", count: 12 },
-        { date: "חמישי", count: 8 },
-        { date: "שישי", count: 15 },
-        { date: "שבת", count: 4 },
-      ];
+      // Generate demo data for 7 days back
+      const nowDemo = new Date();
+      demoData = [];
+      const weekDemoCountsData = [3, 7, 5, 12, 8, 15, 4];
+
+      for (let i = 6; i >= 0; i--) {
+        const dayDate = new Date(nowDemo.getTime() - i * 24 * 60 * 60 * 1000);
+        const dayName = dayDate.toLocaleDateString("he-IL", {
+          weekday: "long",
+        });
+        const dateStr = `${dayDate.getDate().toString().padStart(2, "0")}/${(
+          dayDate.getMonth() + 1
+        )
+          .toString()
+          .padStart(2, "0")}`;
+        const dayLabel = `${dayName}\n${dateStr}`;
+
+        demoData.push({
+          date: dayLabel,
+          count: weekDemoCountsData[6 - i],
+        });
+      }
       break;
     case "month":
-      demoData = [
-        { date: "שבוע 1", count: 23 },
-        { date: "שבוע 2", count: 31 },
-        { date: "שבוע 3", count: 28 },
-        { date: "שבוע 4", count: 42 },
-      ];
+      // Generate demo data for weeks with date ranges
+      const currentDate = new Date();
+      const startDate = new Date(
+        currentDate.getTime() - 30 * 24 * 60 * 60 * 1000
+      );
+      const firstWeekStart = new Date(startDate);
+      firstWeekStart.setDate(
+        firstWeekStart.getDate() - firstWeekStart.getDay()
+      );
+
+      demoData = [];
+      const weekDemoCounts = [23, 31, 28, 42, 35];
+      let weekNumber = 1;
+      let currentWeekStart = new Date(firstWeekStart);
+
+      while (currentWeekStart <= currentDate && weekNumber <= 5) {
+        const weekEnd = new Date(currentWeekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+
+        const startStr = `${currentWeekStart
+          .getDate()
+          .toString()
+          .padStart(2, "0")}/${(currentWeekStart.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}`;
+        const endStr = `${weekEnd.getDate().toString().padStart(2, "0")}/${(
+          weekEnd.getMonth() + 1
+        )
+          .toString()
+          .padStart(2, "0")}`;
+        const weekLabel = `שבוע ${weekNumber}\nמ-${startStr} עד-${endStr}`;
+
+        demoData.push({
+          date: weekLabel,
+          count: weekDemoCounts[weekNumber - 1] || 0,
+        });
+
+        currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+        weekNumber++;
+      }
       break;
     case "year":
-      demoData = [
-        { date: "ינואר", count: 85 },
-        { date: "פברואר", count: 92 },
-        { date: "מרץ", count: 78 },
-        { date: "אפריל", count: 105 },
-        { date: "מאי", count: 118 },
-        { date: "יוני", count: 134 },
-        { date: "יולי", count: 142 },
-        { date: "אוגוסט", count: 156 },
-        { date: "ספטמבר", count: 149 },
-        { date: "אוקטובר", count: 167 },
-        { date: "נובמבר", count: 178 },
-        { date: "דצמבר", count: 189 },
+      // Generate demo data for 12 months back
+      const now = new Date();
+      demoData = [];
+      const monthDemoCounts = [
+        85, 92, 78, 105, 118, 134, 142, 156, 149, 167, 178, 189,
       ];
+
+      for (let i = 11; i >= 0; i--) {
+        const monthDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const monthName = monthDate.toLocaleDateString("he-IL", {
+          month: "long",
+        });
+        const year = monthDate.getFullYear();
+        const monthLabel = `${monthName}\n${year}`;
+
+        demoData.push({
+          date: monthLabel,
+          count: monthDemoCounts[11 - i],
+        });
+      }
       break;
   }
 
@@ -1091,12 +1391,24 @@ $(document).ready(function () {
 
   // Event listeners for chart controls
   $("#period-select").on("change", function () {
-    loadChartData($(this).val());
+    const selectedPeriod = $(this).val();
+    console.log(`📊 Period changed to: ${selectedPeriod}`);
+    loadChartData(selectedPeriod);
   });
 
   $("#refresh-chart-btn").on("click", function () {
     const period = $("#period-select").val();
-    loadChartData(period);
+    console.log("🔄 Chart refresh button clicked");
+
+    // Add spinning animation to button
+    $(this).addClass("fa-spin");
+    setTimeout(() => {
+      $(this).removeClass("fa-spin");
+    }, 1500);
+
+    // Force refresh the chart data
+    loadChartData(period, true);
+    showNotification("מרענן נתוני הגרף...", "success");
   });
 });
 

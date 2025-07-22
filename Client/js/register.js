@@ -1,5 +1,43 @@
 const registerForm = document.querySelector(".register-form");
 
+// Show notification
+function showNotification(message, type = "success") {
+  // Remove existing notifications
+  const existingNotifications = document.querySelectorAll(".notification");
+  existingNotifications.forEach((notification) => {
+    if (notification.parentNode) {
+      document.body.removeChild(notification);
+    }
+  });
+
+  // Create notification element
+  const notification = document.createElement("div");
+  notification.className = `notification ${type}`;
+
+  const icon = type === "error" ? "✗" : "✓";
+  notification.innerHTML = `
+    <div class="notification-icon">${icon}</div>
+    <div class="notification-message">${message}</div>
+  `;
+
+  document.body.appendChild(notification);
+
+  // Show notification
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 100);
+
+  // Hide notification after delay
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => {
+      if (notification.parentNode) {
+        document.body.removeChild(notification);
+      }
+    }, 500);
+  }, 4000);
+}
+
 // פונקציה להצגה/הסתרה של סיסמה
 function togglePassword(inputId) {
   const passwordInput = document.getElementById(inputId);
@@ -72,6 +110,9 @@ registerForm.addEventListener("submit", function (event) {
   const imageFile = document.getElementById("userImageFile-register").files[0];
 
   if (imageFile) {
+    // Show loading notification for image upload
+    showNotification("מעלה תמונה...", "success");
+
     // העלאת תמונה תחילה
     const formData = new FormData();
     formData.append("files", imageFile);
@@ -86,8 +127,22 @@ registerForm.addEventListener("submit", function (event) {
         // אחרי העלאת התמונה בהצלחה, יצירת המשתמש עם התמונה
         handleRegister(firstName, lastName, email, password, paths[0]);
       },
-      error: function () {
-        alert("שגיאה בהעלאת התמונה. נסה שוב.");
+      error: function (xhr, status, error) {
+        console.error("שגיאה בהעלאת התמונה:", error);
+        console.error("Status:", status);
+        console.error("Response:", xhr.responseText);
+
+        let errorMessage = "שגיאה בהעלאת התמונה. נסה שוב.";
+
+        if (xhr.status === 0) {
+          errorMessage = "לא ניתן להתחבר לשרת. בדוק את החיבור לאינטרנט.";
+        } else if (xhr.status === 413) {
+          errorMessage = "התמונה גדולה מדי. נסה עם תמונה קטנה יותר.";
+        } else if (xhr.status === 415) {
+          errorMessage = "סוג הקובץ לא נתמך. השתמש בתמונות JPG, PNG או GIF.";
+        }
+
+        showNotification(errorMessage, "error");
       },
     });
   } else {
@@ -115,6 +170,9 @@ function handleRegister(
   console.log("Password: ", password);
   console.log("Image: ", imagePath);
 
+  // Show loading notification
+  showNotification("נרשם...", "success");
+
   const apiUrl = "https://localhost:7198/api/Users/addNewUser";
 
   const data = JSON.stringify({
@@ -134,14 +192,40 @@ function handleRegister(
 
       if (response === 7) {
         console.log("הרשמה הצליחה!");
-        window.location.href = "login.html";
+        showNotification("הרשמה הצליחה! מעביר לעמוד ההתחברות...", "success");
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 2000);
+      } else if (response === 1) {
+        showNotification(
+          "המשתמש כבר קיים במערכת. נסה עם כתובת אימייל אחרת.",
+          "error"
+        );
       } else {
-        alert("הרשמה נכשלה. ייתכן שהמשתמש כבר קיים.");
+        showNotification(
+          "הרשמה נכשלה. ייתכן שהמשתמש כבר קיים או שחסרים פרטים.",
+          "error"
+        );
       }
     },
     function (xhr, status, error) {
-      console.error("שגיאת התחברות:", error);
-      alert("אירעה שגיאה בשרת. נסה שוב מאוחר יותר.");
+      console.error("שגיאת רשמה:", error);
+      console.error("Status:", status);
+      console.error("Response:", xhr.responseText);
+
+      let errorMessage = "אירעה שגיאה בשרת. נסה שוב מאוחר יותר.";
+
+      if (xhr.status === 0) {
+        errorMessage = "לא ניתן להתחבר לשרת. בדוק את החיבור לאינטרנט.";
+      } else if (xhr.status === 400) {
+        errorMessage = "נתונים לא תקינים. אנא בדוק את הפרטים שהזנת.";
+      } else if (xhr.status === 409) {
+        errorMessage = "המשתמש כבר קיים במערכת. נסה עם כתובת אימייל אחרת.";
+      } else if (xhr.status === 500) {
+        errorMessage = "שגיאת שרת פנימית. נסה שוב מאוחר יותר.";
+      }
+
+      showNotification(errorMessage, "error");
     }
   );
 }

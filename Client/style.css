@@ -2631,3 +2631,54 @@ li a.active span {
     opacity: 0.7;
   }
 }
+
+/* הודעות הצלחה ושגיאה */
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%, -100px);
+  padding: 15px 25px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+  font-family: "Assistant", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  max-width: 90%;
+}
+
+.notification.show {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+.notification.success {
+  background-color: #28a745;
+  color: white;
+}
+
+.notification.error {
+  background-color: #dc3545;
+  color: white;
+}
+
+.notification-icon {
+  width: 24px;
+  height: 24px;
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.notification-message {
+  font-size: 16px;
+}

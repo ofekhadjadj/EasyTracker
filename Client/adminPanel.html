@@ -22,7 +22,12 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+    />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/api-config.js"></script>
     <script src="js/admin-mode.js"></script>
@@ -158,9 +163,9 @@
               <div class="chart-controls">
                 <label for="period-select">בחר תקופה:</label>
                 <select id="period-select">
-                  <option value="week">שבוע אחרון</option>
-                  <option value="month" selected>חודש אחרון</option>
-                  <option value="year">שנה אחרונה</option>
+                  <option value="week">שבוע אחורה</option>
+                  <option value="month" selected>חודש אחורה</option>
+                  <option value="year">שנה אחורה</option>
                 </select>
                 <button id="refresh-chart-btn" class="refresh-btn">
                   <i class="fas fa-sync-alt"></i> רענן

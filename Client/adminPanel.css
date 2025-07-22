@@ -791,6 +791,64 @@ input:checked + .toggle-slider:before {
   }
 }
 
+/* Simple DataTable pagination styling */
+.dataTables_wrapper {
+  margin-top: 20px;
+  font-family: "Assistant", sans-serif;
+}
+
+.dataTables_length {
+  margin-bottom: 15px;
+}
+
+.dataTables_length select {
+  border: 1px solid #dfe5f2;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-family: "Assistant", sans-serif;
+  margin: 0 5px;
+}
+
+.dataTables_paginate {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.dataTables_paginate .paginate_button {
+  background: #f8f9fa !important;
+  border: 1px solid #dfe5f2 !important;
+  color: #333 !important;
+  margin: 0 2px;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  font-family: "Assistant", sans-serif;
+}
+
+.dataTables_paginate .paginate_button:hover {
+  background: #e9ecef !important;
+  border-color: #adb5bd !important;
+  color: #333 !important;
+}
+
+.dataTables_paginate .paginate_button.current {
+  background: linear-gradient(135deg, #0072ff, #00a8ff) !important;
+  border-color: #0072ff !important;
+  color: white !important;
+}
+
+.dataTables_paginate .paginate_button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+.dataTables_info {
+  margin-top: 15px;
+  color: #666;
+  font-size: 14px;
+  font-family: "Assistant", sans-serif;
+  text-align: left;
+}
+
 /* Search and Sorting Styles */
 .users-controls {
   display: flex;
