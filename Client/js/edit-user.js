@@ -72,7 +72,7 @@ $(document).ready(function () {
       formData.append("files", fileInput.files[0]);
 
       $.ajax({
-        url: "https://localhost:7198/api/Upload",
+        url: apiConfig.createApiUrl("Upload"),
         type: "POST",
         data: formData,
         processData: false,
@@ -101,7 +101,7 @@ $(document).ready(function () {
     };
 
     $.ajax({
-      url: "https://localhost:7198/api/Users/change-details",
+      url: apiConfig.createApiUrl("Users/change-details"),
       type: "PUT",
       contentType: "application/json",
       data: JSON.stringify(data),
@@ -140,7 +140,7 @@ $(document).ready(function () {
     };
 
     $.ajax({
-      url: "https://localhost:7198/api/Users/change-password",
+      url: apiConfig.createApiUrl("Users/change-password"),
       type: "PUT",
       contentType: "application/json",
       data: JSON.stringify(data),

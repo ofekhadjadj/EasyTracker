@@ -37,7 +37,7 @@ $(document).ready(() => {
         const formData = new FormData();
         formData.append("files", files[0]);
         $.ajax({
-          url: "https://localhost:7198/api/Upload",
+          url: apiConfig.createApiUrl("Upload"),
           type: "POST",
           data: formData,
           processData: false,
@@ -226,7 +226,9 @@ function openEditPopup(project) {
 
 function loadClientsIntoDropdown(callback) {
   const userId = CurrentUser.id;
-  const apiUrl = `https://localhost:7198/api/Client/GetAllClientsByUserID?userID=${userId}`;
+  const apiUrl = apiConfig.createApiUrl(
+    `Client/GetAllClientsByUserID?userID=${userId}`
+  );
 
   $.get(apiUrl)
     .done((clients) => {
@@ -257,7 +259,7 @@ function submitProjectEdit(imagePath) {
     durationGoal: Number($("#durationGoal").val()),
   };
   $.ajax({
-    url: "https://localhost:7198/api/Projects/update_project",
+    url: apiConfig.createApiUrl("Projects/update_project"),
     type: "PUT",
     contentType: "application/json",
     data: JSON.stringify(data),
@@ -287,7 +289,9 @@ function submitProjectEdit(imagePath) {
 }
 
 function checkSessionsBeforeDelete(project) {
-  const url = `https://localhost:7198/api/Session/GetAllSessionsByUserAndProject?userID=${CurrentUser.id}&projectID=${project.ProjectID}`;
+  const url = apiConfig.createApiUrl(
+    `Session/GetAllSessionsByUserAndProject?userID=${CurrentUser.id}&projectID=${project.ProjectID}`
+  );
   $.get(url)
     .done((sessions) => {
       const msg =
@@ -349,7 +353,9 @@ function confirmDeleteProject(message, projectId) {
 
 function deleteProject(projectId) {
   $.ajax({
-    url: `https://localhost:7198/api/Projects/delete_project?ProjectId=${projectId}`,
+    url: apiConfig.createApiUrl(
+      `Projects/delete_project?ProjectId=${projectId}`
+    ),
     type: "PUT",
     success: function () {
       alert("הפרויקט נמחק.");
