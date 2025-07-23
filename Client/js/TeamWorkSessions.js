@@ -137,22 +137,58 @@ function format(description) {
     `;
 }
 
-// Load user's projects
+// Load user's projects where user is manager
 function loadUserProjects() {
-  const userId = CurrentUser.id;
-  const apiUrl = apiConfig.createApiUrl(
-    `Projects/GetProjectByUserId/${userId}`
-  );
+  const managerID = CurrentUser.id;
+  const apiUrl = apiConfig.createApiUrl("Reports/GetTeamMonitoringData", {
+    managerUserID: managerID,
+  });
 
-  console.log("📋 Loading projects for user:", userId);
+  console.log("📋 Loading projects where user is manager:", managerID);
 
   ajaxCall(
     "GET",
     apiUrl,
     "",
-    function (projects) {
-      console.log("✅ Projects loaded:", projects);
-      console.log("📝 First project structure:", projects[0]);
+    function (data) {
+      console.log("✅ Team monitoring data loaded:", data);
+
+      // Extract unique projects from the data
+      const projectSet = new Set();
+      const projects = [];
+
+      data.forEach((item) => {
+        if (
+          item.ProjectID &&
+          item.ProjectName &&
+          !projectSet.has(item.ProjectID)
+        ) {
+          projectSet.add(item.ProjectID);
+          projects.push({
+            ProjectID: item.ProjectID,
+            ProjectName: item.ProjectName,
+            ClientName: item.ClientName,
+          });
+        }
+      });
+
+      console.log("📝 Extracted projects where user is manager:", projects);
+
+      if (projects.length === 0) {
+        console.log("⚠️ User is not a manager in any project");
+        showNotification(
+          "אינך מנהל באף פרויקט. רק מנהלי פרויקטים יכולים לצפות בסשנים של חברי הצוות.",
+          "error"
+        );
+
+        // Show message in project dropdown
+        const projectSelect = document.getElementById("projectFilter");
+        projectSelect.innerHTML =
+          '<option value="">אינך מנהל באף פרויקט</option>';
+        projectSelect.disabled = true;
+        return;
+      }
+
       allProjects = projects;
       populateProjectsDropdown(projects);
     },
@@ -173,7 +209,11 @@ function populateProjectsDropdown(projects) {
   projects.forEach((project) => {
     const option = document.createElement("option");
     option.value = project.ProjectID;
-    option.textContent = project.ProjectName;
+    // Include client name if available
+    const displayText = project.ClientName
+      ? `${project.ProjectName} (${project.ClientName})`
+      : project.ProjectName;
+    option.textContent = displayText;
     projectSelect.appendChild(option);
   });
 }

@@ -1064,7 +1064,8 @@ let isStopProcessing = false; // דגל למניעת לחיצות כפולות
 let popupOpenTime = null; // זמן פתיחת הפופאפ
 
 stopBtn.addEventListener("click", () => {
-  if (!isRunning) {
+  // בדיקה שיש סשן פעיל (רץ או מושהה)
+  if (!isRunning && !currentActiveSessionID) {
     showCustomAlert("לא ניתן לסיים סשן לפני שהתחלת אחד", "error");
     return;
   }
@@ -2058,6 +2059,12 @@ function renderTableFromDB() {
             return;
           }
 
+          // בדיקה שהסשן לא פעיל (יש לו EndDate)
+          if (!session.EndDate) {
+            console.log("⚠️ לא ניתן למחוק סשן פעיל");
+            return;
+          }
+
           // בדיקה שאין כבר פופאפ פתוח
           if ($.fancybox.getInstance()) {
             console.log("פופאפ כבר פתוח, מתעלם מהקליק");
@@ -2229,6 +2236,12 @@ function addSessionRowToDataTable(session, skipSort = false) {
     session.LabelName ?? "-"
   }</span>`;
 
+  // בדיקה אם הסשן פעיל (אין לו EndDate) - אם כן, לא להציג כפתורי עריכה ומחיקה
+  const isActiveSession = !session.EndDate;
+  const actionButtons = isActiveSession
+    ? '<span style="color: #0072ff; font-weight: 600; font-size: 14px;">סשן פעיל</span>'
+    : '<button class="edit-btn"><i class="fas fa-edit"></i></button><button class="delete-btn"><i class="fas fa-trash-alt"></i></button>';
+
   const newRow = [
     labelHtml, // תווית
     session.StartDate, // תאריך גולמי למיון (תוצג כתאריך מפורמט)
@@ -2237,7 +2250,7 @@ function addSessionRowToDataTable(session, skipSort = false) {
     session.HourlyRate, // תעריף
     formatSecondsToHHMMSS(session.DurationSeconds), // משך זמן
     earnings, // שכר
-    '<button class="edit-btn"><i class="fas fa-edit"></i></button><button class="delete-btn"><i class="fas fa-trash-alt"></i></button>', // כפתורים
+    actionButtons, // כפתורים (רק אם הסשן לא פעיל)
     '<button class="details-control"><i class="fas fa-chevron-down"></i></button>', // פרטים נוספים
   ];
 
@@ -2265,6 +2278,12 @@ $(document).on("click", ".edit-btn, .edit-btn i", function () {
   const row = $(this).closest("tr");
   const session = row.data("session");
   if (!session) return;
+
+  // בדיקה שהסשן לא פעיל (יש לו EndDate)
+  if (!session.EndDate) {
+    console.log("⚠️ לא ניתן לערוך סשן פעיל");
+    return;
+  }
 
   const start = new Date(session.StartDate);
   const end = new Date(session.EndDate);
@@ -3942,106 +3961,58 @@ function updateTaskStatus(taskId, isDone) {
   );
 }
 
-// Function to show custom confirmation dialog
-function showCustomConfirm(message, onConfirm, confirmBtnText = "כן, הסר") {
-  // Remove any existing confirmation dialogs
-  const existingConfirms = document.querySelectorAll(".custom-confirm");
-  existingConfirms.forEach((confirm) => {
-    if (confirm.parentNode) {
-      document.body.removeChild(confirm);
-    }
-  });
+// Function to show custom confirmation dialog - styled like session delete popup
+function showCustomConfirm(message, onConfirm, confirmBtnText = "כן, בצע") {
+  // בדיקה שאין כבר פופאפ פתוח
+  if ($.fancybox.getInstance()) {
+    console.log("פופאפ כבר פתוח, מתעלם מהקליק");
+    return;
+  }
 
-  // Create confirm container
-  const confirmContainer = document.createElement("div");
-  confirmContainer.className = "custom-alert custom-confirm";
+  // כל כפתורי האישור יהיו באדום (הן "כן, סמן" והן "כן, החזר")
+  const buttonStyle =
+    "background: linear-gradient(135deg, #d50000, #ff4e50); box-shadow: 0 2px 5px rgba(255, 78, 80, 0.3);";
 
-  // Create warning icon
-  const icon = document.createElement("div");
-  icon.className = "alert-icon";
-  icon.innerHTML = `
-    <svg viewBox="0 0 52 52" width="50" height="50">
-      <circle cx="26" cy="26" r="25" fill="none" stroke="#FF9800" stroke-width="2"></circle>
-      <path fill="none" stroke="#FF9800" stroke-width="3" d="M26 15v17"></path>
-      <circle cx="26" cy="38" r="2" fill="#FF9800"></circle>
-    </svg>
+  // יצירת HTML עבור הפופאפ בסגנון זהה לפופאפ מחיקת סשן
+  const popupHtml = `
+    <div style="max-width: 400px; text-align: center; font-family: Assistant; padding: 20px;">
+      <h3>אישור פעולה</h3>
+      <p>${message}</p>
+      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+        <button class="gradient-button" id="confirmCustomActionBtn" style="${buttonStyle} color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold;">${confirmBtnText}</button>
+        <button class="gradient-button" onclick="$.fancybox.close()">ביטול</button>
+      </div>
+    </div>
   `;
 
-  // Create content
-  const content = document.createElement("div");
-  content.className = "alert-content";
+  $.fancybox.open({
+    src: popupHtml,
+    type: "html",
+    smallBtn: false,
+    afterShow: function () {
+      // הוספת event listener רק לאחר שהפופאפ נפתח
+      $("#confirmCustomActionBtn")
+        .off("click")
+        .on("click", function () {
+          const button = $(this);
+          if (button.data("processing")) {
+            return false;
+          }
+          button.data("processing", true);
 
-  const title = document.createElement("h3");
-  title.className = "alert-title";
-  title.textContent = "אישור פעולה";
+          onConfirm(); // ביצוע הפעולה
+          $.fancybox.close();
 
-  const text = document.createElement("p");
-  text.className = "alert-text";
-  text.textContent = message;
-
-  content.appendChild(title);
-  content.appendChild(text);
-
-  // Create buttons container
-  const buttonsContainer = document.createElement("div");
-  buttonsContainer.className = "confirm-buttons";
-
-  // Create confirm button
-  const confirmBtn = document.createElement("button");
-  confirmBtn.className = "confirm-btn confirm-yes";
-  confirmBtn.textContent = confirmBtnText;
-  confirmBtn.addEventListener("click", () => {
-    confirmContainer.classList.add("closing");
-    setTimeout(() => {
-      if (confirmContainer.parentNode) {
-        document.body.removeChild(confirmContainer);
-        onConfirm(); // Execute the callback function
-      }
-    }, 300);
+          setTimeout(() => {
+            button.data("processing", false);
+          }, 1000);
+        });
+    },
+    beforeClose: function () {
+      // ניקוי event listeners
+      $("#confirmCustomActionBtn").off("click");
+    },
   });
-
-  // Create cancel button
-  const cancelBtn = document.createElement("button");
-  cancelBtn.className = "confirm-btn confirm-no";
-  cancelBtn.textContent = "ביטול";
-  cancelBtn.addEventListener("click", () => {
-    confirmContainer.classList.add("closing");
-    setTimeout(() => {
-      if (confirmContainer.parentNode) {
-        document.body.removeChild(confirmContainer);
-      }
-    }, 300);
-  });
-
-  // Add buttons to container
-  buttonsContainer.appendChild(cancelBtn);
-  buttonsContainer.appendChild(confirmBtn);
-
-  // Create close button
-  const closeBtn = document.createElement("button");
-  closeBtn.className = "alert-close";
-  closeBtn.innerHTML = "&times;";
-  closeBtn.addEventListener("click", () => {
-    confirmContainer.classList.add("closing");
-    setTimeout(() => {
-      if (confirmContainer.parentNode) {
-        document.body.removeChild(confirmContainer);
-      }
-    }, 300);
-  });
-  // Assemble the confirm dialog
-  confirmContainer.appendChild(icon);
-  confirmContainer.appendChild(content);
-  confirmContainer.appendChild(buttonsContainer);
-  confirmContainer.appendChild(closeBtn);
-
-  // Add to document
-  document.body.appendChild(confirmContainer);
-
-  // Animate in
-  setTimeout(() => {
-    confirmContainer.classList.add("show");
-  }, 10);
 }
 
 // Function to handle the chat button
@@ -4290,6 +4261,29 @@ function setupProjectStatusToggle() {
   const toggle = document.getElementById("project-status-toggle");
   if (!toggle) return;
 
+  // בדיקת הרשאות - רק מנהל פרויקט יכול לשנות סטטוס פרויקט
+  const isProjectManager = CurrentProject.Role === "ProjectManager";
+  const toggleContainer = toggle.closest(".toggle-container");
+
+  if (!isProjectManager) {
+    // אם המשתמש אינו מנהל פרויקט, הפוך את הטוגל ללא זמין
+    toggleContainer.classList.add("disabled");
+
+    // הוסף הסבר שזה רק למנהל פרויקט
+    const toggleLabel = toggleContainer.querySelector(".toggle-label");
+    if (toggleLabel) {
+      toggleLabel.textContent = "פרויקט הושלם (רק מנהל פרויקט)";
+    }
+  } else {
+    // אם המשתמש הוא מנהל פרויקט, וודא שהטוגל פעיל
+    toggleContainer.classList.remove("disabled");
+
+    const toggleLabel = toggleContainer.querySelector(".toggle-label");
+    if (toggleLabel) {
+      toggleLabel.textContent = "פרויקט הושלם";
+    }
+  }
+
   // עדכון מצב הטוגל בהתאם לסטטוס הפרויקט
   if (CurrentProject.IsDone || CurrentProject.isDone) {
     toggle.classList.add("active");
@@ -4299,8 +4293,17 @@ function setupProjectStatusToggle() {
     setPlayStopDisabled(false);
   }
 
-  // הוסף event listener לטוגל
+  // הוסף event listener לטוגל (רק אם המשתמש הוא מנהל פרויקט)
   toggle.onclick = function () {
+    // בדיקת הרשאות נוספת
+    if (!isProjectManager) {
+      showCustomAlert(
+        "רק מנהל הפרויקט יכול לשנות את סטטוס הפרויקט",
+        "error",
+        false
+      );
+      return;
+    }
     const isCurrentlyDone = toggle.classList.contains("active");
     const newStatus = !isCurrentlyDone;
 

@@ -200,6 +200,17 @@ function renderProjects(projects) {
       clientDisplayElement.textContent = project.CompanyName;
     }
 
+    // בדיקה אם המשתמש הוא מנהל הפרויקט כדי להציג כפתורי עריכה ומחיקה
+    const isProjectManager = project.Role === "ProjectManager";
+    const actionsHtml = isProjectManager
+      ? `<div class="client-actions">
+           <i class="fas fa-edit edit-icon" title="ערוך פרויקט"></i>
+           <i class="fas fa-trash delete-icon" title="מחק פרויקט"></i>
+         </div>`
+      : `<div class="client-actions">
+           <span style="color: #0072ff; font-weight: 600; font-size: 14px; padding: 8px;">חבר צוות</span>
+         </div>`;
+
     card.innerHTML = `
       <div class="project-content">
         ${statusHtml}
@@ -210,10 +221,7 @@ function renderProjects(projects) {
             : project.CompanyName
         }</p>
       </div>
-      <div class="client-actions">
-        <i class="fas fa-edit edit-icon" title="ערוך פרויקט"></i>
-        <i class="fas fa-trash delete-icon" title="מחק פרויקט"></i>
-      </div>
+      ${actionsHtml}
     `;
     CardsDiv.appendChild(card);
 
@@ -266,6 +274,13 @@ function renderProjects(projects) {
       e.stopPropagation();
       const projectId = $(this).closest(".project-card").attr("projectId");
       const project = allProjects.find((p) => p.ProjectID == projectId);
+
+      // בדיקת הרשאות - רק מנהל פרויקט יכול לערוך
+      if (project.Role !== "ProjectManager") {
+        showErrorNotification("רק מנהל הפרויקט יכול לערוך את הפרויקט");
+        return;
+      }
+
       openEditPopup(project);
     });
 
@@ -275,6 +290,13 @@ function renderProjects(projects) {
       e.stopPropagation();
       const projectId = $(this).closest(".project-card").attr("projectId");
       const project = allProjects.find((p) => p.ProjectID == projectId);
+
+      // בדיקת הרשאות - רק מנהל פרויקט יכול למחוק
+      if (project.Role !== "ProjectManager") {
+        showErrorNotification("רק מנהל הפרויקט יכול למחוק את הפרויקט");
+        return;
+      }
+
       checkSessionsBeforeDelete(project);
     });
 }

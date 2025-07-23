@@ -87,12 +87,36 @@ function handleLogin(email, password) {
           }, 1000);
         }
       } else {
-        alert("שם משתמש או סיסמה שגויים!");
+        Swal.fire({
+          icon: "error",
+          title: "שגיאת התחברות",
+          text: "שם משתמש או סיסמה שגויים!",
+          confirmButtonText: "אוקיי",
+          confirmButtonColor: "#ff4757",
+          background: "#fff",
+          customClass: {
+            title: "swal-title-rtl",
+            content: "swal-content-rtl",
+            confirmButton: "swal-confirm-btn",
+          },
+        });
       }
     },
     function (xhr, status, error) {
       console.error("שגיאת התחברות:", error);
-      alert("אירעה שגיאה בשרת. נסה שוב מאוחר יותר.");
+      Swal.fire({
+        icon: "error",
+        title: "שגיאת התחברות",
+        text: "אחד הפרטים שהזנת לא נכונים, אנא בדוק שוב.",
+        confirmButtonText: "אוקיי",
+        confirmButtonColor: "#ff4757",
+        background: "#fff",
+        customClass: {
+          title: "swal-title-rtl",
+          content: "swal-content-rtl",
+          confirmButton: "swal-confirm-btn",
+        },
+      });
     }
   );
 }

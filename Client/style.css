@@ -2682,3 +2682,70 @@ li a.active span {
 .notification-message {
   font-size: 16px;
 }
+
+/* Sweet Alert RTL Styles */
+.swal-title-rtl {
+  direction: rtl !important;
+  text-align: center !important;
+  font-family: "Assistant", sans-serif !important;
+  font-weight: 600 !important;
+  color: #333 !important;
+}
+
+.swal-content-rtl {
+  direction: rtl !important;
+  text-align: center !important;
+  font-family: "Assistant", sans-serif !important;
+  font-size: 16px !important;
+  color: #666 !important;
+  line-height: 1.6 !important;
+}
+
+.swal-confirm-btn {
+  font-family: "Assistant", sans-serif !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  padding: 12px 24px !important;
+  font-size: 14px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal-confirm-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Sweet Alert Container Styling */
+.swal2-popup {
+  border-radius: 15px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+  font-family: "Assistant", sans-serif !important;
+  direction: rtl !important;
+  text-align: center !important;
+}
+
+.swal2-title {
+  direction: rtl !important;
+  text-align: center !important;
+  font-family: "Assistant", sans-serif !important;
+}
+
+.swal2-content {
+  direction: rtl !important;
+  text-align: center !important;
+  font-family: "Assistant", sans-serif !important;
+}
+
+.swal2-icon {
+  border: none !important;
+  margin: 0 auto 20px auto !important;
+}
+
+.swal2-icon.swal2-error {
+  color: #ff4757 !important;
+}
+
+.swal2-icon.swal2-warning {
+  color: #ff9800 !important;
+}
